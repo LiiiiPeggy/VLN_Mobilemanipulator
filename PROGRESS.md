@@ -1,59 +1,52 @@
 # PROGRESS.md — 当前状态
 
-更新时间：2026-10-29  
+更新时间：2026-10-29（容器实测后）  
 证据优先于本文；冲突时以代码、`reports/`、`runs/`、容器实测为准。
 
 ## 研究目标与阶段
 
 **目标**：六套 VLN/ObjectNav baseline 可复现评测 → 再适配 RangerBox-CR10 移动机械臂。
 
-**当前阶段**：源码导入 + 仓库级记忆/Docker 脚手架刚落地；**尚未**构建镜像、安装完整依赖或跑通任何 episode。
+**当前阶段**：源码统一管理 + **六个独立容器已创建验证** + 共享权重部分就绪；官方单 episode **仍阻塞于 HM3D 场景与正式 Habitat 镜像**。
 
 ## Baseline 状态
 
 状态枚举：`NOT_STARTED / CLONED / CONTAINER_READY / DEPENDENCIES_READY / MODEL_LOADED / SINGLE_EPISODE_OK / BATCH_OK / BLOCKED`
 
-| Baseline | 源码 | 容器 | 依赖 | 模型推理 | 单 Episode | 小批量 | 结果路径 |
-|----------|------|------|------|----------|------------|--------|----------|
-| VLFM | `CLONED` (`584ed56…`) | compose 已写，**镜像未 build** | 未装 | 未验证（仓内有 pointnav 权重） | — | — | `runs/VLFM/` 空 |
-| ApexNav | `CLONED` (`049971b…`) | compose 已写，**镜像未 build** | 未装 | 未验证 | — | — | `runs/ApexNav/` 空 |
-| MSGNav | `CLONED` (`03681a1…`) | compose 已写，**镜像未 build** | 未装 | 未验证 | — | — | `runs/MSGNav/` 空 |
-| APRR | `CLONED` (`046c9c2…`) | compose 已写（lite），**镜像未 build** | 子模块不全 | 未验证 | — | — | `runs/APRR/` 空 |
-| SG-Nav | `CLONED` (`d56863c…`) | compose 已写，**镜像未 build** | 未装 | 未验证 | — | — | `runs/SG-Nav/` 空 |
-| UniGoal | `CLONED` (`e2c6d45…`) | compose 已写，**镜像未 build** | 未装 | 未验证 | — | — | `runs/UniGoal/` 空 |
-
-说明：
-
-- SHA 见 `reports/source_versions.md` / `reports/source_versions.json`。
-- Compose：`baselines/<Name>/docker-compose.yml`；共享 Dockerfile：`shared/docker/`。
-- `docker images` / `docker ps`（2026-10-29）无 `vln-*` 镜像或容器 → **不能**标 `CONTAINER_READY`。
-- 嵌套 `.git` 已由 `scripts/strip_nested_git.py` 清除。
+| Baseline | 状态 | 证据摘要 |
+|----------|------|----------|
+| VLFM | `CONTAINER_READY`（仿真 `BLOCKED`：HM3D+Habitat0.2.4 实装） | `vln-vlfm` Up；`data/` 已链 GroundingDINO/MobileSAM/YOLOv7/PointNav；容器内 `torch.cuda` OK |
+| ApexNav | `CONTAINER_READY`（仿真 `BLOCKED`） | `vln-apexnav` Up；权重软链就绪；需 ROS+Habitat0.3.1 |
+| MSGNav | `CONTAINER_READY`（仿真 `BLOCKED`） | `vln-msgnav` Up；缺场景/SAM-L/API |
+| APRR | `CONTAINER_READY`（轻量） | `vln-aprr` Up；入口 `home-robot/runb.sh`、`run_rl.sh` 可见；百度权重未下 |
+| SG-Nav | `CONTAINER_READY`（轻量） | `vln-sgnav` Up；`SG_Nav.py` 可见；需 MP3D+GLIP；Habitat 版本应对齐 0.2.4 |
+| UniGoal | `CONTAINER_READY`（轻量） | `vln-unigoal` Up；`main.py` 可见；需 HM3D+目标数据集 |
 
 ## 已完成（有证据）
 
 | 项 | 证据 |
 |----|------|
-| 六套上游源码导入 umbrella | `baselines/*`；`reports/source_versions.*` |
-| 根 `.gitignore`、共享目录与 D 盘软链 | `.gitignore`；`shared/*_large` → `/media/ubuntu/D/VLN_shared` |
-| 工程记忆四文件 | `AGENTS.md` / `MEMORY.md` / `PROGRESS.md` / `PROCESS.md` |
-| 每 baseline 独立 compose + 共享 Dockerfile 草稿 | `baselines/*/docker-compose.yml`；`shared/docker/Dockerfile.*` |
-| 嵌套 git 剥离 | `find baselines -name .git` 为空；`source_versions.json` |
+| 六套源码 + SHA | `reports/source_versions.*`；嵌套 `.git` 已删 |
+| 六 compose + 容器 Up | `docker ps --filter name=vln-`；`reports/baseline_validation.md` |
+| 共享权重复用/下载 | GroundingDINO（NBV）、MobileSAM 39MB、YOLOv7 291MB、PointNav；路径 `/media/ubuntu/D/VLN_shared/checkpoints/` |
+| 轻量审计 | `reports/lightweight_audit.md` |
+| 手动下载清单 | `reports/manual_downloads.md`（**P0=HM3D val**） |
+| 校验脚本 | `scripts/verify_shared_assets.sh` |
 
 ## 阻塞 / 风险
 
-| 项 | 说明 | 日志/位置 |
-|----|------|-----------|
-| 镜像未构建 | Dockerfile 仅为脚手架；`habitat-lab` 安装步骤含 `\|\| true` 等占位 | `shared/docker/Dockerfile.habitat024` |
-| Habitat 版本与镜像映射未对齐 | UniGoal 文档要 0.2.3、SG-Nav 要 0.2.4，但 compose 暂挂 `vln-habitat025` | 各 compose；`MEMORY.md` §4 |
-| APRR 子模块不全 | 数据与部分 detection 未初始化 | `reports/source_versions.md` |
-| VLFM 缺 yolov7 树 | README 要求仓内克隆 | `baselines/VLFM/` |
-| 场景/权重未就绪 | D 盘 `VLN_shared/{datasets,checkpoints}` 为空 | `/media/ubuntu/D/VLN_shared` |
-| 无评测 runs | 六个 `runs/*` 目录空 | `runs/` |
+| 项 | 说明 |
+|----|------|
+| HM3D val 场景 | Matterport 授权；本机无 `.basis` 场景 → 官方闭环阻塞 |
+| 镜像为 pytorch 占位 | `vln-habitat024/025` / `vln-apexnav` 现 tag 自 pytorch 2.3.1，**非**正式 Habitat 栈 |
+| ObjectNav episodes | 公开 zip 未落地 `shared/datasets_large/objectnav` |
+| MSGNav API | `src/const.py` 仍为占位；无密钥不调用付费 API |
+| 磁盘 | 根分区约 91%；大文件必须落 D 盘 |
 
 ## 下一步（最多 5 项）
 
-1. **Build 并验证** 共享镜像（优先 `vln-habitat024` / `vln-apexnav` / `vln-lite`），`docker compose config` + 容器内 Python/CUDA 冒烟；成功后再标 `CONTAINER_READY`。  
-2. **对齐 Habitat 镜像映射**（尤其 SG-Nav 0.2.4、UniGoal 0.2.3），避免误用 0.2.5。  
-3. **准备数据与权重**：HM3D/MP3D 与各模型放到 `shared/*_large`；补 VLFM `yolov7`。  
-4. **选一个 baseline（建议 VLFM 或 ApexNav）打通 `SINGLE_EPISODE_OK`**，结果写入 `runs/<Name>/`。  
-5. **补齐 APRR home-robot 子模块**（仅评测所需），再考虑其容器从 lite 升级。
+1. 用户放入 **HM3D val**（及可选 ObjectNav zip）后跑 `verify_shared_assets.sh`。  
+2. 构建并替换正式 `vln-habitat024` / `vln-habitat025` / `vln-apexnav` 镜像。  
+3. VLFM：VLM 服务 + 单 episode。  
+4. ApexNav → MSGNav 依次单 episode（同时段只跑一个 GPU 导航任务）。  
+5. 补全移动机械臂接口锚点与 4070 8GB 判断（`baseline_validation.md` §7）。
