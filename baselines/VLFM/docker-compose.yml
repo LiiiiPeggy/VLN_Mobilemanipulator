@@ -1,0 +1,37 @@
+name: vln-vlfm
+
+services:
+  vlfm:
+    image: vln-habitat024:latest
+    build:
+      context: ../../shared/docker
+      dockerfile: Dockerfile.habitat024
+    container_name: vln-vlfm
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility,graphics
+      - TORCH_HOME=/shared/cache/torch
+      - HF_HOME=/shared/cache/huggingface
+      - TRANSFORMERS_CACHE=/shared/cache/huggingface
+      - HABITAT_SIM_LOG=quiet
+      - MAGNUM_LOG=quiet
+    volumes:
+      - ./:/workspace/VLFM
+      - ../../shared/datasets:/shared/datasets
+      - /media/ubuntu/D/VLN_shared/datasets:/shared/datasets_large
+      - ../../shared/checkpoints:/shared/checkpoints
+      - /media/ubuntu/D/VLN_shared/checkpoints:/shared/checkpoints_large
+      - /media/ubuntu/D/VLN_shared/cache:/shared/cache
+      - /media/ubuntu/D/VLN_shared/runs/VLFM:/workspace/runs
+      - /home/ubuntu/locomani/NBV_Mobilemanipulator/checkpoints/grounding_dino:/shared/weights/grounding_dino:ro
+    working_dir: /workspace/VLFM
+    ports:
+      - "12181:12181"
+      - "12182:12182"
+      - "12183:12183"
+      - "12184:12184"
+    shm_size: "16gb"
+    stdin_open: true
+    tty: true
+    command: ["bash", "-lc", "sleep infinity"]

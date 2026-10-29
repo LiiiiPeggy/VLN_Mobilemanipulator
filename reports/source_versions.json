@@ -1,0 +1,32 @@
+{
+  "VLFM": {
+    "url": "https://github.com/rai-opensource/vlfm.git",
+    "branch": "main",
+    "sha": "584ed56008754fde7997d904983607def8328322"
+  },
+  "ApexNav": {
+    "url": "https://github.com/Robotics-STAR-Lab/ApexNav.git",
+    "branch": "main",
+    "sha": "049971b613fcd2554b034bd4a853d79cc1e61613"
+  },
+  "MSGNav": {
+    "url": "https://github.com/ylwhxht/MSGNav.git",
+    "branch": "main",
+    "sha": "03681a178d6993265e838e1fbbaf2338c54e1c62"
+  },
+  "APRR": {
+    "url": "https://github.com/qinliangql/APRR.git",
+    "branch": "main",
+    "sha": "046c9c24d688c9b6acd7fc8c52abe1c6c2086e56"
+  },
+  "SG-Nav": {
+    "url": "https://github.com/bagh2178/SG-Nav.git",
+    "branch": "main",
+    "sha": "d56863c96dea311aaa67fb0d39a1a8ccc3f0487f"
+  },
+  "UniGoal": {
+    "url": "https://github.com/bagh2178/UniGoal.git",
+    "branch": "main",
+    "sha": "e2c6d456d53150db507a008250f50c34798daad5"
+  }
+}

@@ -1,0 +1,31 @@
+name: vln-apexnav
+
+services:
+  apexnav:
+    image: vln-apexnav:latest
+    build:
+      context: ../../shared/docker
+      dockerfile: Dockerfile.apexnav
+    container_name: vln-apexnav
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility,graphics
+      - TORCH_HOME=/shared/cache/torch
+      - HF_HOME=/shared/cache/huggingface
+      - HABITAT_SIM_LOG=quiet
+      - MAGNUM_LOG=quiet
+    volumes:
+      - ./:/workspace/ApexNav
+      - ../../shared/datasets:/shared/datasets
+      - /media/ubuntu/D/VLN_shared/datasets:/shared/datasets_large
+      - ../../shared/checkpoints:/shared/checkpoints
+      - /media/ubuntu/D/VLN_shared/checkpoints:/shared/checkpoints_large
+      - /media/ubuntu/D/VLN_shared/cache:/shared/cache
+      - /media/ubuntu/D/VLN_shared/runs/ApexNav:/workspace/runs
+      - /home/ubuntu/locomani/NBV_Mobilemanipulator/checkpoints/grounding_dino:/shared/weights/grounding_dino:ro
+    working_dir: /workspace/ApexNav
+    shm_size: "16gb"
+    stdin_open: true
+    tty: true
+    command: ["bash", "-lc", "sleep infinity"]

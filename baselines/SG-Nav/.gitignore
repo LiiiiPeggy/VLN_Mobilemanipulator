@@ -1,0 +1,12 @@
+**/__pycache__/
+glip_large_model.pth
+/data
+/GLIP/build
+/GLIP/maskrcnn_benchmark.egg-info
+/segment_anything/segment_anything.egg-info/
+*.so
+segment_anything/sam_vit_*
+GroundingDINO/groundingdino_swint_ogc.pth
+.vscode
+start.py
+start_multiprocess.py

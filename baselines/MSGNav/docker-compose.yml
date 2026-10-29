@@ -1,0 +1,33 @@
+name: vln-msgnav
+
+services:
+  msgnav:
+    image: vln-habitat025:latest
+    build:
+      context: ../../shared/docker
+      dockerfile: Dockerfile.habitat025
+    container_name: vln-msgnav
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility,graphics
+      - TORCH_HOME=/shared/cache/torch
+      - HF_HOME=/shared/cache/huggingface
+      - HABITAT_SIM_LOG=quiet
+      - MAGNUM_LOG=quiet
+      # API keys must be injected at runtime via host env / .env (never committed)
+      - QWEN_OPENAI_KEY=${QWEN_OPENAI_KEY:-}
+      - GPT_OPENAI_KEY=${GPT_OPENAI_KEY:-}
+    volumes:
+      - ./:/workspace/MSGNav
+      - ../../shared/datasets:/shared/datasets
+      - /media/ubuntu/D/VLN_shared/datasets:/shared/datasets_large
+      - ../../shared/checkpoints:/shared/checkpoints
+      - /media/ubuntu/D/VLN_shared/checkpoints:/shared/checkpoints_large
+      - /media/ubuntu/D/VLN_shared/cache:/shared/cache
+      - /media/ubuntu/D/VLN_shared/runs/MSGNav:/workspace/runs
+    working_dir: /workspace/MSGNav
+    shm_size: "16gb"
+    stdin_open: true
+    tty: true
+    command: ["bash", "-lc", "sleep infinity"]

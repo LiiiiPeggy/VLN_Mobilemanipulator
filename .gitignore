@@ -1,0 +1,115 @@
+# Secrets and local env
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*token*
+*credentials*
+secrets/
+.api_keys/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+dist/
+build/
+.venv/
+venv/
+env/
+*.egg
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# Conda / local envs
+.conda/
+conda-env/
+
+# IDE / OS
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Model weights and large binaries
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.bin
+*.onnx
+*.engine
+*.trt
+*.h5
+*.pkl
+!**/pointnav_weights.pth
+
+# Datasets and Habitat assets
+shared/datasets/**
+!shared/datasets/.gitkeep
+**/scene_datasets/
+**/hm3d*/
+**/mp3d/
+**/gibson/
+**/objectnav*/
+**/goatbench*/
+**/*.glb
+**/*.ply
+**/*.navmesh
+**/*.basis
+**/*.habitat
+
+# Caches
+shared/cache/**
+!shared/cache/.gitkeep
+shared/checkpoints/**
+!shared/checkpoints/.gitkeep
+**/.cache/
+**/huggingface/
+**/torch_cache/
+**/wandb/
+**/lightning_logs/
+
+# Runtime artifacts (keep tiny summaries only)
+runs/**
+!runs/**/.gitkeep
+!runs/**/summary.md
+!runs/**/*.json
+!runs/**/*.csv
+!runs/**/*.txt
+!runs/**/*.md
+*.mp4
+*.avi
+*.mov
+*.mkv
+*.webm
+*.gif
+*.png
+*.jpg
+*.jpeg
+*.so
+!docs/**/*.png
+!reports/**/*.png
+# Keep empty run dirs in git
+!runs/**/.gitkeep
+
+# Logs
+*.log
+logs/
+tmux*/
+
+# Nested git leftovers (should be removed after import)
+**/.git/
+!**/.gitkeep
+
+# Docker build cache leftovers
+**/.dockerignore.bak
+
+# Node (if any tooling)
+node_modules/

@@ -1,0 +1,28 @@
+name: vln-sgnav
+
+services:
+  sgnav:
+    image: vln-habitat025:latest
+    build:
+      context: ../../shared/docker
+      dockerfile: Dockerfile.habitat025
+    container_name: vln-sgnav
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility,graphics
+      - TORCH_HOME=/shared/cache/torch
+      - HF_HOME=/shared/cache/huggingface
+    volumes:
+      - ./:/workspace/SG-Nav
+      - ../../shared/datasets:/shared/datasets
+      - /media/ubuntu/D/VLN_shared/datasets:/shared/datasets_large
+      - ../../shared/checkpoints:/shared/checkpoints
+      - /media/ubuntu/D/VLN_shared/checkpoints:/shared/checkpoints_large
+      - /media/ubuntu/D/VLN_shared/cache:/shared/cache
+      - ../../runs/SG-Nav:/workspace/runs
+    working_dir: /workspace/SG-Nav
+    shm_size: "8gb"
+    stdin_open: true
+    tty: true
+    command: ["bash", "-lc", "sleep infinity"]

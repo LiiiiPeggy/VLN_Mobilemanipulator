@@ -1,0 +1,26 @@
+# ApexNav stack: Habitat 0.3.1 + PyTorch 2.5 (ROS host tools optional; sim path first).
+FROM nvidia/cuda:12.1.1-cudnn8-devel-ubuntu22.04
+
+ENV DEBIAN_FRONTEND=noninteractive \
+    LANG=C.UTF-8 \
+    PYTHONUNBUFFERED=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    TORCH_HOME=/shared/cache/torch \
+    HF_HOME=/shared/cache/huggingface
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git curl wget ca-certificates build-essential cmake ninja-build \
+    libgl1-mesa-dev libglib2.0-0 libsm6 libxext6 libxrender1 libegl1 \
+    libarmadillo-dev libompl-dev \
+    python3.10 python3.10-dev python3-pip python-is-python3 \
+    tmux vim unzip \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN pip install --upgrade pip setuptools wheel \
+ && pip install torch==2.5.0 torchvision==0.20.0 torchaudio==2.5.0 \
+      --index-url https://download.pytorch.org/whl/cu121 \
+ && pip install numpy==1.23.5 numba==0.60.0 flask open3d opencv-python \
+      salesforce-lavis==1.0.2 omegaconf hydra-core
+
+WORKDIR /workspace
+CMD ["bash"]

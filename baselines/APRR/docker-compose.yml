@@ -1,0 +1,26 @@
+name: vln-aprr
+
+services:
+  aprr:
+    image: vln-lite:latest
+    build:
+      context: ../../shared/docker
+      dockerfile: Dockerfile.lite
+    container_name: vln-aprr
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+    volumes:
+      - ./:/workspace/APRR
+      - ../../shared/datasets:/shared/datasets
+      - /media/ubuntu/D/VLN_shared/datasets:/shared/datasets_large
+      - ../../shared/checkpoints:/shared/checkpoints
+      - /media/ubuntu/D/VLN_shared/checkpoints:/shared/checkpoints_large
+      - /media/ubuntu/D/VLN_shared/cache:/shared/cache
+      - ../../runs/APRR:/workspace/runs
+    working_dir: /workspace/APRR
+    shm_size: "8gb"
+    stdin_open: true
+    tty: true
+    command: ["bash", "-lc", "sleep infinity"]
