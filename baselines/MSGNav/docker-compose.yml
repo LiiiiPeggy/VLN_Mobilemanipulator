@@ -2,12 +2,15 @@ name: vln-msgnav
 
 services:
   msgnav:
-    image: vln-habitat025:latest
+    # Runtime extras (hipart/pytorch3d/clip) committed as :msgnav-deps; base build remains :latest.
+    image: vln-habitat025:msgnav-deps
     build:
       context: ../../shared/docker
       dockerfile: Dockerfile.habitat025
     container_name: vln-msgnav
     runtime: nvidia
+    env_file:
+      - .env
     environment:
       - NVIDIA_VISIBLE_DEVICES=all
       - NVIDIA_DRIVER_CAPABILITIES=compute,utility,graphics
@@ -15,9 +18,17 @@ services:
       - HF_HOME=/shared/cache/huggingface
       - HABITAT_SIM_LOG=quiet
       - MAGNUM_LOG=quiet
-      # API keys must be injected at runtime via host env / .env (never committed)
+      # API keys from baselines/MSGNav/.env only (gitignored; never commit)
+      - API_MODE=${API_MODE:-gpt}
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - GPT_OPENAI_KEY=${GPT_OPENAI_KEY:-${OPENAI_API_KEY:-}}
+      - GPT_END_POINT=${GPT_END_POINT:-https://model8.run/v1}
+      - OPENAI_BASE_URL=${OPENAI_BASE_URL:-${GPT_END_POINT:-https://model8.run/v1}}
+      - GPT_MODEL=${GPT_MODEL:-gpt-5.6-sol}
       - QWEN_OPENAI_KEY=${QWEN_OPENAI_KEY:-}
-      - GPT_OPENAI_KEY=${GPT_OPENAI_KEY:-}
+      - Qwen_OPENAI_KEY=${Qwen_OPENAI_KEY:-${QWEN_OPENAI_KEY:-}}
+      - Qwen_END_POINT=${Qwen_END_POINT:-https://dashscope.aliyuncs.com/compatible-mode/v1}
+      - QWEN_MODEL=${QWEN_MODEL:-qwen-vl-max}
     volumes:
       - ./:/workspace/MSGNav
       - ../../shared/datasets:/shared/datasets
@@ -26,6 +37,8 @@ services:
       - /media/ubuntu/D/VLN_shared/checkpoints:/shared/checkpoints_large
       - /media/ubuntu/D/VLN_shared/cache:/shared/cache
       - /media/ubuntu/D/VLN_shared/runs/MSGNav:/workspace/runs
+      # Host absolute symlinks under data/ point here; keep path identical in-container.
+      - /media/ubuntu/D/VLN_shared:/media/ubuntu/D/VLN_shared
     working_dir: /workspace/MSGNav
     shm_size: "16gb"
     stdin_open: true

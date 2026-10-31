@@ -1,5 +1,5 @@
-# Shared Habitat 0.2.4 + CUDA base for VLFM-class stacks (torch 1.12 / habitat-sim 0.2.4).
-# Built once and reused by compose services that pin the same stack.
+# VLFM / SG-Nav class: Habitat-sim 0.2.4 (headless) + habitat-lab 0.2.420230405 + torch 1.12.1+cu113
+# Bypass broken LAN apt proxies; use Aliyun Ubuntu mirror.
 FROM nvidia/cuda:11.7.1-cudnn8-devel-ubuntu22.04
 
 ENV DEBIAN_FRONTEND=noninteractive \
@@ -8,26 +8,59 @@ ENV DEBIAN_FRONTEND=noninteractive \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
     TORCH_HOME=/shared/cache/torch \
     HF_HOME=/shared/cache/huggingface \
-    TRANSFORMERS_CACHE=/shared/cache/huggingface
+    TRANSFORMERS_CACHE=/shared/cache/huggingface \
+    CONDA_DIR=/opt/conda \
+    PATH=/opt/conda/bin:$PATH \
+    http_proxy= \
+    https_proxy= \
+    HTTP_PROXY= \
+    HTTPS_PROXY= \
+    ALL_PROXY= \
+    all_proxy=
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    git curl wget ca-certificates build-essential cmake ninja-build \
-    libgl1-mesa-dev libglib2.0-0 libsm6 libxext6 libxrender1 libegl1 \
-    libjpeg-dev libglm-dev freeglut3-dev mesa-utils \
-    python3.10 python3.10-dev python3-pip python-is-python3 \
-    tmux vim unzip \
-    && rm -rf /var/lib/apt/lists/*
+RUN set -eux; \
+    if [ -f /etc/apt/sources.list ]; then \
+      sed -i 's|http://archive.ubuntu.com/ubuntu|http://mirrors.aliyun.com/ubuntu|g; s|http://security.ubuntu.com/ubuntu|http://mirrors.aliyun.com/ubuntu|g' /etc/apt/sources.list; \
+    fi; \
+    if [ -d /etc/apt/sources.list.d ]; then \
+      find /etc/apt/sources.list.d -type f -name '*.list' -exec sed -i 's|http://archive.ubuntu.com/ubuntu|http://mirrors.aliyun.com/ubuntu|g; s|http://security.ubuntu.com/ubuntu|http://mirrors.aliyun.com/ubuntu|g' {} +; \
+    fi; \
+    printf 'Acquire::Retries "5";\nAcquire::http::Pipeline-Depth "0";\nAcquire::https::Verify-Peer "true";\n' > /etc/apt/apt.conf.d/80retries; \
+    apt-get clean; rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/partial/*; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends \
+      git curl wget ca-certificates build-essential cmake ninja-build \
+      libgl1 libgl1-mesa-dev libjpeg-dev libglm-dev libegl1-mesa-dev \
+      mesa-utils freeglut3-dev \
+      libglib2.0-0 libsm6 libxext6 libxrender1 \
+      tmux vim unzip; \
+    rm -rf /var/lib/apt/lists/*
 
-RUN pip install --upgrade pip setuptools wheel \
+RUN curl -fsSL https://repo.anaconda.com/miniconda/Miniconda3-py39_24.7.1-0-Linux-x86_64.sh -o /tmp/miniconda.sh \
+ && bash /tmp/miniconda.sh -b -p ${CONDA_DIR} \
+ && rm /tmp/miniconda.sh \
+ && conda config --set always_yes yes \
+ && conda clean -afy
+
+RUN conda install -y -c conda-forge -c aihabitat "habitat-sim=0.2.4" headless \
+ && conda clean -afy
+
+# Core stack only. VLFM's salesforce-lavis pulls modern spaCy that needs Py>=3.10;
+# install LAVIS later inside the VLFM container with pinned spaCy (see scripts).
+# Aliyun PyPI mirror: files.pythonhosted.org is ~50KB/s on this host (open3d 420MB).
+RUN pip install --upgrade "pip<25" setuptools wheel \
+      -i https://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com \
  && pip install torch==1.12.1+cu113 torchvision==0.13.1+cu113 \
       -f https://download.pytorch.org/whl/torch_stable.html \
- && pip install numpy==1.26.4 opencv-python==4.5.5.64 flask>=2.3.2 seaborn open3d \
-      transformers==4.26.0 timm==0.4.12 salesforce-lavis==1.0.2 \
-      withbullet
+ && pip install numpy==1.23.5 opencv-python==4.5.5.64 flask seaborn \
+      "open3d>=0.17.0,<0.18" transformers==4.26.0 timm==0.4.12 \
+      omegaconf hydra-core \
+      -i https://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com
 
-# Habitat packages (sim may take long; prefer prebuilt wheels when available)
-RUN pip install habitat-baselines==0.2.420230405 habitat-lab==0.2.420230405 \
- || true
+RUN pip install habitat-lab==0.2.420230405 habitat-baselines==0.2.420230405 \
+      -i https://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com
+
+RUN python -c "import habitat_sim, habitat, torch; print('habitat_sim', habitat_sim.__version__); print('torch', torch.__version__)"
 
 WORKDIR /workspace
 CMD ["bash"]

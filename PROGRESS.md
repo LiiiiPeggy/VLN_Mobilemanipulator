@@ -1,13 +1,13 @@
 # PROGRESS.md — 当前状态
 
-更新时间：2026-10-29（容器实测后）  
+更新时间：2026-11-01（VLFM 单 ep OK；MSGNav deps 就绪但单 ep 卡在 open_clip HF 权重；ApexNav 仍在拉 CUDA base）  
 证据优先于本文；冲突时以代码、`reports/`、`runs/`、容器实测为准。
 
 ## 研究目标与阶段
 
 **目标**：六套 VLN/ObjectNav baseline 可复现评测 → 再适配 RangerBox-CR10 移动机械臂。
 
-**当前阶段**：源码统一管理 + **六个独立容器已创建验证** + 共享权重部分就绪；官方单 episode **仍阻塞于 HM3D 场景与正式 Habitat 镜像**。
+**当前阶段**：正式 Habitat 镜像就位；**VLFM=`SINGLE_EPISODE_OK`**；**MSGNav=`DEPENDENCIES_READY`**（单 ep 尝试失败）；ApexNav 正式镜像仍在构建。
 
 ## Baseline 状态
 
@@ -15,38 +15,40 @@
 
 | Baseline | 状态 | 证据摘要 |
 |----------|------|----------|
-| VLFM | `CONTAINER_READY`（仿真 `BLOCKED`：HM3D+Habitat0.2.4 实装） | `vln-vlfm` Up；`data/` 已链 GroundingDINO/MobileSAM/YOLOv7/PointNav；容器内 `torch.cuda` OK |
-| ApexNav | `CONTAINER_READY`（仿真 `BLOCKED`） | `vln-apexnav` Up；权重软链就绪；需 ROS+Habitat0.3.1 |
-| MSGNav | `CONTAINER_READY`（仿真 `BLOCKED`） | `vln-msgnav` Up；缺场景/SAM-L/API |
-| APRR | `CONTAINER_READY`（轻量） | `vln-aprr` Up；入口 `home-robot/runb.sh`、`run_rl.sh` 可见；百度权重未下 |
-| SG-Nav | `CONTAINER_READY`（轻量） | `vln-sgnav` Up；`SG_Nav.py` 可见；需 MP3D+GLIP；Habitat 版本应对齐 0.2.4 |
-| UniGoal | `CONTAINER_READY`（轻量） | `vln-unigoal` Up；`main.py` 可见；需 HM3D+目标数据集 |
+| VLFM | `SINGLE_EPISODE_OK` | 镜像 `vln-habitat024:latest`=`fe6b1ca643fd`（含 runtime deps）；VLM 12181–12184；单 ep 日志 `runs/VLFM/single_episode_20261101_001121.log`；摘要 `runs/VLFM/single_episode_status.md`（success=0 / false_positive，管道 OK） |
+| ApexNav | `CONTAINER_READY`（正式镜像 `BUILDING`） | 占位 `vln-apexnav:latest` 仍 Up；`docker build -t vln-apexnav:build` 拉 CUDA base ~1.04/1.47GB → `runs/_build/apexnav_build.log` |
+| MSGNav | `DEPENDENCIES_READY`（单 ep `BLOCKED`） | 镜像 `vln-habitat025:msgnav-deps`=`24b7c26315a3`；deps/API 见 `runs/MSGNav/deps_status.md`；单 ep YOLO/SAM OK，open_clip DFN5B 权重 HF 不可达 → `runs/MSGNav/single_episode_status.md` |
+| APRR | `CONTAINER_READY`（轻量） | `vln-aprr` Up；百度权重已就位 |
+| SG-Nav | `CONTAINER_READY`（轻量） | `vln-sgnav` 在 `vln-habitat025`；需 MP3D+GLIP；Habitat 应对齐 0.2.4 |
+| UniGoal | `CONTAINER_READY`（轻量） | `vln-unigoal` 在 `vln-habitat025`；需 HM3D+目标数据集 |
 
 ## 已完成（有证据）
 
 | 项 | 证据 |
 |----|------|
 | 六套源码 + SHA | `reports/source_versions.*`；嵌套 `.git` 已删 |
-| 六 compose + 容器 Up | `docker ps --filter name=vln-`；`reports/baseline_validation.md` |
-| 共享权重复用/下载 | GroundingDINO（NBV）、MobileSAM 39MB、YOLOv7 291MB、PointNav；路径 `/media/ubuntu/D/VLN_shared/checkpoints/` |
-| 轻量审计 | `reports/lightweight_audit.md` |
-| 手动下载清单 | `reports/manual_downloads.md`（**P0=HM3D val**） |
-| 校验脚本 | `scripts/verify_shared_assets.sh` |
+| 六 compose + 容器 Up | `docker ps --filter name=vln-` |
+| 正式 habitat024 / 025 | `vln-habitat024:latest`=`fe6b1ca643fd`；`vln-habitat025:latest`=`ff049f5c4eed`；MSGNav 专用 tag `:msgnav-deps` |
+| 共享权重/数据 | `verify_shared_assets.sh` → ok=11 miss=0；HM3D / ObjectNav / SAM 等已挂 D 盘 |
+| VLFM runtime deps + dummy policy | `data/dummy_policy.pth`；`dash<3` 修复 open3d/pydantic |
+| VLFM VLM 服务 + 单 episode | `runs/VLFM/single_episode_status.md` |
+| MSGNav API / deps | 本地 `.env`（gitignored）；冒烟 `gpt-5.6-sol`；`runs/MSGNav/deps_status.md` |
+| MSGNav 路径/配置 | compose 挂载 D 盘；`cfg/eval_hm3d.yaml` + `eval_hm3d_single_ep.yaml`；密钥改走 env |
 
 ## 阻塞 / 风险
 
 | 项 | 说明 |
 |----|------|
-| HM3D val 场景 | Matterport 授权；本机无 `.basis` 场景 → 官方闭环阻塞 |
-| 镜像为 pytorch 占位 | `vln-habitat024/025` / `vln-apexnav` 现 tag 自 pytorch 2.3.1，**非**正式 Habitat 栈 |
-| ObjectNav episodes | 公开 zip 未落地 `shared/datasets_large/objectnav` |
-| MSGNav API | `src/const.py` 仍为占位；无密钥不调用付费 API |
-| 磁盘 | 根分区约 91%；大文件必须落 D 盘 |
+| MSGNav open_clip 权重 | 缺 `apple/DFN5B-CLIP-ViT-H-14`（~数 GB）；容器直连 HF 失败；正用 `hf-mirror.com` 写入 `/shared/cache/huggingface`（待验证完成） |
+| ApexNav 正式镜像 | CUDA base 层慢拉（~1.04/1.47GB）；日志 `runs/_build/apexnav_build.log` |
+| GPU | 当前显存占用较低（~5GB，含他人进程）；跑 MSGNav/ApexNav 前仍先 `nvidia-smi` |
+| 磁盘 | `/` 约 281G 可用（~92%）；大文件必须落 D 盘 |
+| VLFM 任务成功率 | 单 ep 为 false_positive（非崩溃）；批量前可再选 ep |
 
 ## 下一步（最多 5 项）
 
-1. 用户放入 **HM3D val**（及可选 ObjectNav zip）后跑 `verify_shared_assets.sh`。  
-2. 构建并替换正式 `vln-habitat024` / `vln-habitat025` / `vln-apexnav` 镜像。  
-3. VLFM：VLM 服务 + 单 episode。  
-4. ApexNav → MSGNav 依次单 episode（同时段只跑一个 GPU 导航任务）。  
-5. 补全移动机械臂接口锚点与 4070 8GB 判断（`baseline_validation.md` §7）。
+1. 完成 DFN5B open_clip 权重落地 → 重跑 MSGNav `eval_hm3d_single_ep.yaml` → 争取 `SINGLE_EPISODE_OK`。  
+2. 等待 `vln-apexnav:build` 完成 → tag `:latest`、重建容器、smoke habitat_sim 0.3.1。  
+3. 按需把 SG-Nav 对齐 habitat024；补 MP3D。  
+4. UniGoal 数据与版本核对。  
+5. 移动机械臂接口锚点与 4070 8GB 判断（`baseline_validation.md` §7）。

@@ -1,13 +1,19 @@
 # Secrets and local env
 .env
 .env.*
+**/.env
+**/.env.*
 !.env.example
+!**/.env.example
 *.pem
 *.key
 *token*
 *credentials*
 secrets/
 .api_keys/
+baselines/MSGNav/.env
+**/openai_credentials.json
+**/*api_key*
 
 # Python
 __pycache__/
@@ -76,14 +82,15 @@ shared/checkpoints/**
 **/wandb/
 **/lightning_logs/
 
-# Runtime artifacts (keep tiny summaries only)
+# Runtime artifacts (keep tiny summaries only).
+# Must un-ignore directories (`!runs/**/`) before file exceptions can apply.
 runs/**
+!runs/**/
 !runs/**/.gitkeep
-!runs/**/summary.md
+!runs/**/*.md
 !runs/**/*.json
 !runs/**/*.csv
 !runs/**/*.txt
-!runs/**/*.md
 *.mp4
 *.avi
 *.mov
@@ -96,8 +103,6 @@ runs/**
 *.so
 !docs/**/*.png
 !reports/**/*.png
-# Keep empty run dirs in git
-!runs/**/.gitkeep
 
 # Logs
 *.log
@@ -113,3 +118,7 @@ tmux*/
 
 # Node (if any tooling)
 node_modules/
+
+# Local VLFM offline tokenizer/model copy
+baselines/VLFM/bert-base-uncased/
+baselines/VLFM/data/bert-base-uncased/

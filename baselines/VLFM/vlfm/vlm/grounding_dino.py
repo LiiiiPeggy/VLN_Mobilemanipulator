@@ -1,5 +1,6 @@
 # Copyright (c) 2023 Boston Dynamics AI Institute LLC. All rights reserved.
 
+import os
 from typing import Optional
 
 import numpy as np
@@ -15,8 +16,14 @@ try:
 except ModuleNotFoundError:
     print("Could not import groundingdino. This is OK if you are only using the client.")
 
-GROUNDING_DINO_CONFIG = "GroundingDINO/groundingdino/config/GroundingDINO_SwinT_OGC.py"
-GROUNDING_DINO_WEIGHTS = "data/groundingdino_swint_ogc.pth"
+GROUNDING_DINO_CONFIG = os.environ.get(
+    "GROUNDING_DINO_CONFIG",
+    "GroundingDINO/groundingdino/config/GroundingDINO_SwinT_OGC.py",
+)
+GROUNDING_DINO_WEIGHTS = os.environ.get(
+    "GROUNDING_DINO_WEIGHTS",
+    "data/groundingdino_swint_ogc.pth",
+)
 CLASSES = "chair . person . dog ."  # Default classes. Can be overridden at inference.
 
 

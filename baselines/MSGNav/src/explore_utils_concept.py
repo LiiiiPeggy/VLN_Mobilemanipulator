@@ -14,8 +14,10 @@ import ollama
 import re
 from src.utils import resize_image
 from src.const import *
-END_POINT = "https://dashscope.aliyuncs.com/compatible-mode/v1"
-OPENAI_KEY = "sk-79813f085233441f8b86bac4cb411786"
+
+# Use env-backed keys from const.py (never hardcode secrets here).
+END_POINT = Qwen_END_POINT if API_MODE == "qwen" else GPT_END_POINT
+OPENAI_KEY = Qwen_OPENAI_KEY if API_MODE == "qwen" else GPT_OPENAI_KEY
 
 client = OpenAI(
     base_url=END_POINT,
@@ -100,7 +102,7 @@ def call_openai_api(sys_prompt, contents) -> Optional[str]:
     while retry_count < max_tries:
         try:
             completion = client.chat.completions.create(
-                model="qwen-vl-max",  # model = "deployment_name"
+                model=GPT_MODEL if API_MODE == "gpt" else QWEN_MODEL,
                 messages=message_text,
                 temperature=0.7,
                 max_tokens=4096,
@@ -132,7 +134,9 @@ def call_openai_api_sg(sys_prompt, contents) -> Optional[str]:
     while retry_count < max_tries:
         try:
             completion = client.chat.completions.create(
-                model="qwen3-235b-a22b-instruct-2507",  # model = "deployment_name"
+                model=GPT_MODEL if API_MODE == "gpt" else os.getenv(
+                    "QWEN_SG_MODEL", "qwen3-235b-a22b-instruct-2507"
+                ),
                 messages=message_text,
                 temperature=0.7,
                 max_tokens=4096,

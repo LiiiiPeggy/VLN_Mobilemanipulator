@@ -3,9 +3,11 @@ seed: 77
 exp_name: "example_hm3dv2"
 
 output_parent_dir: "results"
-scene_dataset_config_path: "data/hm3d_annotated_basis.scene_dataset_config.json"
-scene_data_path: "/home/dataset-assist-0/hsun/hsun/previous/Dataset/data/versioned_data/hm3d-0.2/hm3d"
-test_data_dir: "/home/dataset-assist-0/hsun/hsun/previous/Dataset/HM-Challenge-content"
+# Shared HM3D layout (absolute so habitat resolves glb next to this config).
+scene_dataset_config_path: "/media/ubuntu/D/VLN_shared/datasets/scene_datasets/hm3d/hm3d_annotated_basis.scene_dataset_config.json"
+scene_data_path: "/media/ubuntu/D/VLN_shared/datasets/scene_datasets/hm3d"
+# MSGNav reads plain JSON (not .json.gz); gunzipped copy under data/.
+test_data_dir: "data/objectnav_hm3d_v2_val_content"
 
 
 concept_graph_config_path: "cfg/concept_graph_default.yaml"

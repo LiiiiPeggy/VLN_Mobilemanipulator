@@ -25,6 +25,8 @@ services:
       - /media/ubuntu/D/VLN_shared/cache:/shared/cache
       - /media/ubuntu/D/VLN_shared/runs/VLFM:/workspace/runs
       - /home/ubuntu/locomani/NBV_Mobilemanipulator/checkpoints/grounding_dino:/shared/weights/grounding_dino:ro
+      # Host absolute symlinks under data/ point here; keep path identical in-container.
+      - /media/ubuntu/D/VLN_shared:/media/ubuntu/D/VLN_shared
     working_dir: /workspace/VLFM
     ports:
       - "12181:12181"

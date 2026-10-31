@@ -81,3 +81,79 @@
 **结论**：后续会话任务开始必读 `AGENTS.md` + `PROGRESS.md`；状态变更只改变化项。  
 
 **相关**：四记忆文件；参照 `/home/ubuntu/locomani/NBV_Mobilemanipulator/AGENTS.md`
+
+---
+
+## 2026-10-31 habitat025 libOpenGL + VLFM 软链挂载 / 单 episode
+
+**模块**：Docker / VLFM / MSGNav  
+
+**问题**：
+
+1. `habitat_sim` 0.2.5 容器缺 `libOpenGL.so.0`。  
+2. VLFM `data/*` 大量绝对软链指向 `/media/ubuntu/D/VLN_shared/...`，容器内原先未挂载同路径导致场景/权重解析失败；GroundingDINO 权重链还二次指向未挂载的 NBV 路径。  
+3. `docker compose --force-recreate` 会清掉此前装在可写层的 VLFM 运行时 pip 包。
+
+**操作**：
+
+- `Dockerfile.habitat025` 增加 `libopengl0` / `libglvnd0` / `libgles2`；`DOCKER_BUILDKIT=1 docker build --network=host`（空 proxy build-args）→ `vln-habitat025:build` 再 tag `latest`；recreate `msgnav`（及 sgnav/unigoal）。  
+- VLFM compose 增加 `- /media/ubuntu/D/VLN_shared:/media/ubuntu/D/VLN_shared`；GD 权重改挂 `/shared/weights/grounding_dino`。  
+- 本地克隆 git 依赖到 `D/.../cache/vlfm_src` 后容器内 `pip install -e`；离线补 `bert-base-uncased` / `blip2_pretrained.pth` / `eva_vit_g.pth`；四 VLM 后台进程日志落 `D/.../runs/VLFM/vlm_servers/`。  
+- `python -m vlfm.run habitat_baselines.test_episode_count=1`。
+
+**实测结果**：
+
+- habitat025 rebuild **EXIT:0**（`runs/_build/habitat025_rebuild.log`）；smoke：`habitat_sim 0.2.5` + `libOpenGL.so.0 OK`。  
+- VLFM 单 episode **EXIT:0**；SR=0（`false_positive`）；日志 `/media/ubuntu/D/VLN_shared/runs/VLFM/single_episode_20261031_234730.log`；摘要 `runs/VLFM/single_episode_20261031_234730_summary.md`。
+
+**结论**：025 OpenGL 与 VLFM 路径挂载问题已关闭；VLFM 升至 `SINGLE_EPISODE_OK`（任务成功与否另计）。运行时依赖需 bake 进镜像以免 recreate 丢失。
+
+**相关**：`shared/docker/Dockerfile.habitat025`、`baselines/VLFM/docker-compose.yml`、`runs/_build/habitat025_rebuild.log`、`runs/VLFM/`
+
+---
+
+## 2026-11-01 VLFM deps bake-in + ApexNav Dockerfile 对齐
+
+**模块**：Docker / VLFM / ApexNav
+
+**问题**：VLFM 运行时包在 recreate 后丢失；open3d 拉 dash 4.x 与 pydantic 1.x 冲突；ApexNav 仍为占位镜像。
+
+**操作**：
+
+- `docker commit` `vln-vlfm` → `vln-habitat024:latest`/`build`（含 runtime deps + `dash<3`）。
+- 确认 VLM 12181–12184；重跑单 episode；摘要 `runs/VLFM/single_episode_status.md`。
+- `Dockerfile.apexnav` 对齐 024/025（空 proxy、Aliyun apt/pip、libopengl0/libglvnd0、跳过 lavis）；后台 `docker build -t vln-apexnav:build`。
+
+**实测结果**：
+
+- 镜像 ID `fe6b1ca643fd`；单 ep 再确认 EXIT:0 / SR=0 false_positive（`single_episode_20261101_001121.log`）。
+- ApexNav build 拉取 CUDA base 中（见 `runs/_build/apexnav_build.log`）。
+
+**结论**：VLFM 依赖已固化进 habitat024；ApexNav 正式构建进行中。
+
+**相关**：`shared/docker/Dockerfile.apexnav`、`runs/VLFM/single_episode_status.md`
+
+---
+
+## 2026-11-01 MSGNav deps + API + 单 episode 阻塞于 open_clip
+
+**模块**：MSGNav / Docker / API
+
+**问题**：MSGNav 需 HiPart/pytorch3d/CLIP、HM3D 路径、LLM API；上游 `const.py` / `explore_utils_concept.py` 含占位或硬编码密钥；ObjectNav 官方为 `.json.gz` 而评测用 `json.load`；单 ep 还需 open_clip DFN5B 权重。
+
+**操作**：
+
+- 容器内装 deps 后 `docker commit` → `vln-habitat025:msgnav-deps`；compose 钉该 tag，并挂载 `/media/ubuntu/D/VLN_shared` + `env_file: .env`。
+- 密钥改为环境变量；删除源码中硬编码 key；`.env.example` 入库；冒烟确认 `gpt-5.6-sol`（`gpt-5.5` 404）。
+- 修正 `cfg/eval_hm3d.yaml` 场景/episode/SAM 路径；新增 `cfg/eval_hm3d_single_ep.yaml`；gunzip ObjectNav content → D 盘 `content_json`。
+- 跑 `run_hm3d_evaluation.py -cf cfg/eval_hm3d_single_ep.yaml --specific 0`。
+
+**实测结果**：
+
+- deps/API：`runs/MSGNav/deps_status.md`（hipart/pytorch3d/clip OK；API OK）。
+- 单 ep：YOLO/SAM 加载成功；`open_clip` 拉 `apple/DFN5B-CLIP-ViT-H-14` 时 `huggingface.co` `Network is unreachable` → EXIT:1（`runs/MSGNav/single_episode_status.md`）。
+- 缓解：容器内 `HF_ENDPOINT=https://hf-mirror.com` 预拉至 `/shared/cache/huggingface`（下载进行中，未完成前不得宣称 MODEL_LOADED）。
+
+**结论**：MSGNav=`DEPENDENCIES_READY`；单 ep 阻塞在离线/镜像可达的 open_clip 权重，而非 Habitat 场景或 API。
+
+**相关**：`baselines/MSGNav/`、`runs/MSGNav/deps_status.md`、`runs/MSGNav/single_episode_status.md`

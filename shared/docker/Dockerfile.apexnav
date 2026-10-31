@@ -1,4 +1,6 @@
-# ApexNav stack: Habitat 0.3.1 + PyTorch 2.5 (ROS host tools optional; sim path first).
+# ApexNav: Habitat-sim 0.3.1 (headless) + habitat-lab v0.3.1 + torch 2.5.0+cu121
+# Same mirror/proxy pattern as habitat024/025. Skip salesforce-lavis in base
+# (py39 / spaCy conflicts); ApexNav can install LAVIS later in-container.
 FROM nvidia/cuda:12.1.1-cudnn8-devel-ubuntu22.04
 
 ENV DEBIAN_FRONTEND=noninteractive \
@@ -6,21 +8,62 @@ ENV DEBIAN_FRONTEND=noninteractive \
     PYTHONUNBUFFERED=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
     TORCH_HOME=/shared/cache/torch \
-    HF_HOME=/shared/cache/huggingface
+    HF_HOME=/shared/cache/huggingface \
+    TRANSFORMERS_CACHE=/shared/cache/huggingface \
+    CONDA_DIR=/opt/conda \
+    PATH=/opt/conda/bin:$PATH \
+    http_proxy= \
+    https_proxy= \
+    HTTP_PROXY= \
+    HTTPS_PROXY= \
+    ALL_PROXY= \
+    all_proxy=
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    git curl wget ca-certificates build-essential cmake ninja-build \
-    libgl1-mesa-dev libglib2.0-0 libsm6 libxext6 libxrender1 libegl1 \
-    libarmadillo-dev libompl-dev \
-    python3.10 python3.10-dev python3-pip python-is-python3 \
-    tmux vim unzip \
-    && rm -rf /var/lib/apt/lists/*
+RUN set -eux; \
+    if [ -f /etc/apt/sources.list ]; then \
+      sed -i 's|http://archive.ubuntu.com/ubuntu|http://mirrors.aliyun.com/ubuntu|g; s|http://security.ubuntu.com/ubuntu|http://mirrors.aliyun.com/ubuntu|g' /etc/apt/sources.list; \
+    fi; \
+    if [ -d /etc/apt/sources.list.d ]; then \
+      find /etc/apt/sources.list.d -type f -name '*.list' -exec sed -i 's|http://archive.ubuntu.com/ubuntu|http://mirrors.aliyun.com/ubuntu|g; s|http://security.ubuntu.com/ubuntu|http://mirrors.aliyun.com/ubuntu|g' {} +; \
+    fi; \
+    printf 'Acquire::Retries "5";\nAcquire::http::Pipeline-Depth "0";\nAcquire::https::Verify-Peer "true";\n' > /etc/apt/apt.conf.d/80retries; \
+    apt-get clean; rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/partial/*; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends \
+      git curl wget ca-certificates build-essential cmake ninja-build \
+      libgl1 libopengl0 libglvnd0 libgl1-mesa-dev \
+      libglib2.0-0 libsm6 libxext6 libxrender1 libegl1 \
+      libarmadillo-dev libompl-dev \
+      tmux vim unzip; \
+    rm -rf /var/lib/apt/lists/*
 
+RUN curl -fsSL https://repo.anaconda.com/miniconda/Miniconda3-py39_24.7.1-0-Linux-x86_64.sh -o /tmp/miniconda.sh \
+ && bash /tmp/miniconda.sh -b -p ${CONDA_DIR} \
+ && rm /tmp/miniconda.sh \
+ && conda config --set always_yes yes \
+ && conda clean -afy
+
+# Torch from official CUDA wheel index; other packages via Aliyun PyPI.
+# Do NOT install salesforce-lavis here (py39 / modern spaCy issues).
 RUN pip install --upgrade pip setuptools wheel \
+      -i https://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com \
  && pip install torch==2.5.0 torchvision==0.20.0 torchaudio==2.5.0 \
       --index-url https://download.pytorch.org/whl/cu121 \
  && pip install numpy==1.23.5 numba==0.60.0 flask open3d opencv-python \
-      salesforce-lavis==1.0.2 omegaconf hydra-core
+      omegaconf hydra-core \
+      -i https://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com
+
+RUN conda install -y -c conda-forge -c aihabitat "habitat-sim=0.3.1" headless \
+ && conda clean -afy
+
+# habitat-lab 0.3.1 from source
+RUN git clone --depth 1 --branch v0.3.1 https://github.com/facebookresearch/habitat-lab.git /opt/habitat-lab \
+ && pip install -e /opt/habitat-lab/habitat-lab \
+      -i https://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com \
+ && pip install -e /opt/habitat-lab/habitat-baselines \
+      -i https://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com
+
+RUN python -c "import habitat_sim, habitat, torch; print('habitat_sim', habitat_sim.__version__); print('torch', torch.__version__)"
 
 WORKDIR /workspace
 CMD ["bash"]

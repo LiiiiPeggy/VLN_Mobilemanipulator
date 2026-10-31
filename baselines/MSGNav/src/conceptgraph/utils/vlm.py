@@ -99,12 +99,15 @@ Do not include any additional information in your response.
 
 system_prompt = system_prompt_only_top
 
-# gpt_model = "gpt-4-vision-preview"
-gpt_model = "gpt-4o-2024-05-13"
+# Prefer env / const (MSGNav .env); never hardcode secrets or official-only defaults here.
+gpt_model = os.getenv("GPT_MODEL", "gpt-5.6-sol")
 
 
 def get_openai_client():
-    client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+    client = OpenAI(
+        base_url=os.getenv("GPT_END_POINT", os.getenv("OPENAI_BASE_URL", "https://model8.run/v1")),
+        api_key=os.getenv("OPENAI_API_KEY", os.getenv("GPT_OPENAI_KEY", "")),
+    )
     return client
 
 
