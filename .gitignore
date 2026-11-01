@@ -36,6 +36,28 @@ env/
 .conda/
 conda-env/
 
+# Docker build caches (large release tarballs, etc.)
+shared/docker/_cache/
+
+# Local HF / transformer caches accidentally dropped into baseline trees
+**/bert-base-uncased/
+baselines/*/bert-base-uncased
+
+# VLFM runtime artifacts (do not push)
+baselines/VLFM/outputs/
+baselines/VLFM/tb/
+baselines/VLFM/video_dir/
+
+# Machine-local absolute symlinks into /media/ubuntu/D (recreate on host)
+baselines/MSGNav/data/hm3d_scenes
+baselines/MSGNav/data/objectnav_shared
+baselines/MSGNav/data/objectnav_hm3d_v2_val_content
+baselines/MSGNav/data/sam_shared
+baselines/SG-Nav/data_models_sam_vit_h_link
+
+# Heavy optional in-tree clones (re-clone per README if needed)
+baselines/VLFM/yolov7/
+
 # IDE / OS
 .idea/
 .vscode/

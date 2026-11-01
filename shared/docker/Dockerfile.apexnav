@@ -56,14 +56,28 @@ RUN pip install --upgrade pip setuptools wheel \
 RUN conda install -y -c conda-forge -c aihabitat "habitat-sim=0.3.1" headless \
  && conda clean -afy
 
-# habitat-lab 0.3.1 from source
-RUN git clone --depth 1 --branch v0.3.1 https://github.com/facebookresearch/habitat-lab.git /opt/habitat-lab \
+# habitat-lab 0.3.1 from local release tarball (avoids flaky GitHub git TLS in build).
+# Pre-stage: shared/docker/_cache/habitat-lab-v0.3.1.tar.gz
+# habitat-baselines may pull numpy>=2; force pin back to 1.23.5
+# (habitat-sim 0.3.1 requires numpy<1.24).
+COPY _cache/habitat-lab-v0.3.1.tar.gz /tmp/habitat-lab-v0.3.1.tar.gz
+RUN tar -xzf /tmp/habitat-lab-v0.3.1.tar.gz -C /opt \
+ && mv /opt/habitat-lab-0.3.1 /opt/habitat-lab \
+ && rm -f /tmp/habitat-lab-v0.3.1.tar.gz \
  && pip install -e /opt/habitat-lab/habitat-lab \
       -i https://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com \
- && pip install -e /opt/habitat-lab/habitat-baselines \
-      -i https://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com
+ && pip install -e /opt/habitat-lab/habitat-baselines --no-deps \
+      -i https://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com \
+ && pip install \
+      "lmdb>=0.98" "webdataset==0.1.40" "moviepy==1.0.3" \
+      "protobuf==3.20.1" "tensorboard==2.8.0" ifcfg \
+      "faster_fifo>=1.4.2" "threadpoolctl>=3.1.0" \
+      -i https://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com \
+ && pip install --force-reinstall --no-deps "numpy==1.23.5" "numba==0.60.0" \
+      -i https://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com \
+ && python -c "import numpy; assert numpy.__version__=='1.23.5', numpy.__version__"
 
-RUN python -c "import habitat_sim, habitat, torch; print('habitat_sim', habitat_sim.__version__); print('torch', torch.__version__)"
+RUN python -c "import numpy, habitat_sim, habitat, torch; print('numpy', numpy.__version__); print('habitat_sim', habitat_sim.__version__); print('torch', torch.__version__)"
 
 WORKDIR /workspace
 CMD ["bash"]

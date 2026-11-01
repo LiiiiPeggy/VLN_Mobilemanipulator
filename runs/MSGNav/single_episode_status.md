@@ -1,32 +1,58 @@
-# MSGNav single episode status
+# MSGNav single-episode status
 
-**Result: FAIL / BLOCKED** (pipeline started; weights load partial; exit 1 before Habitat steps)
+Updated: 2026-11-01  
+Result: **OK** (pipeline `EXIT:0`; task success=false / miss)
 
-| Item | Value |
-|------|-------|
-| Time | 2026-11-01 01:07–01:08 CST |
-| Container | `vln-msgnav` → `vln-habitat025:msgnav-deps` (`24b7c26315a3`) |
-| Command | `python run_hm3d_evaluation.py -cf cfg/eval_hm3d_single_ep.yaml --specific 0` |
-| Log | `/media/ubuntu/D/VLN_shared/runs/MSGNav/single_episode_20261101_010711.log`（仓库内 `runs/MSGNav/single_episode_latest.log` 软链） |
-| Prior attempt | `..._010653.log`（更早失败） |
+## Command
 
-## What succeeded
+```bash
+# Prep (once): 1-episode content from smallest scene zt1RVoi7PcG (22 eps → 1)
+# cfg/eval_hm3d_single_ep.yaml → test_data_dir=data/objectnav_hm3d_single_ep, output=/workspace/runs
+docker exec -w /workspace/MSGNav \
+  -e HF_HOME=/shared/cache/huggingface \
+  -e HUGGINGFACE_HUB_CACHE=/shared/cache/huggingface/hub \
+  -e HF_ENDPOINT=https://hf-mirror.com \
+  -e PYTHONUNBUFFERED=1 \
+  vln-msgnav \
+  python -u run_hm3d_evaluation.py -cf cfg/eval_hm3d_single_ep.yaml --specific 0
+```
 
-- Episode selection: scene 0 → **1 episode**
-- `yolov8x-world.pt` load OK
-- `sam_l.pt` load OK
-- API env: `GPT_MODEL=gpt-5.6-sol` / `API_MODE=gpt`
+Container: `vln-msgnav` → `vln-habitat025:msgnav-deps`  
+`GPT_MODEL=gpt-5.6-sol` / `API_MODE=gpt`
 
-## Blocker
+## Evidence
 
-`open_clip.create_model_and_transforms("ViT-H-14-quickgelu", pretrained="dfn5b")` 尝试从 HuggingFace 拉取：
+| Item | Path / value |
+|------|----------------|
+| Primary log | `/media/ubuntu/D/VLN_shared/runs/MSGNav/single_episode_20261101_012834.log` |
+| Repo pointer | `runs/MSGNav/single_episode_latest.log` → same |
+| Scene | `00839-zt1RVoi7PcG` |
+| Episode | 1/1 (ID 0), goal=`chair` |
+| Steps | 20 logged (~19 navigation steps) |
+| Wall time | ~15 min eval (+ CLIP weight prep earlier) |
+| Exit | `EXIT:0` |
 
-`apple/DFN5B-CLIP-ViT-H-14` → `open_clip_pytorch_model.bin`
+## Metrics
 
-容器内直连 `huggingface.co` → `Network is unreachable`，随后 `RuntimeError: Cannot send a request, as the client has been closed.` → **EXIT:1**。
+| Metric | Value |
+|--------|-------|
+| success_by_distance | **0.00** |
+| SPL_by_distance | **0.00** |
+| success (object) | **0.00** |
+| SPL (object) | **0.00** |
+| Final distance to viewpoint | 5.329 m (threshold 1.0 m) |
+| Path length | 16.724 |
+| Filtered/total frames | 7/134 |
 
-缓解（进行中 / 待验证）：`HF_ENDPOINT=https://hf-mirror.com` + `HF_HOME=/shared/cache/huggingface` 预拉权重到 D 盘缓存。
+Verdict: **SINGLE_EPISODE_OK** — Habitat + YOLO/SAM/CLIP + GPT VLM loop completed without crash; episode was a navigation miss (same class of outcome as VLFM false_positive).
 
-## Status mapping
+## Runtime fixes applied for this run
 
-仍为 `DEPENDENCIES_READY`（deps/API 已验）；**未**达 `MODEL_LOADED` / `SINGLE_EPISODE_OK`。
+1. Stopped VLFM VLM servers in `vln-vlfm` (`pkill -f vlfm.vlm`); GPU ~17.6GB → ~5.1GB; container left Up.
+2. Installed missing `ollama` Python package in container (import required even when `use_ollama: false`).
+3. Prefetched open_clip `ViT-H-14-quickgelu`/`dfn5b` via `HF_ENDPOINT=https://hf-mirror.com` into `/shared/cache/huggingface`.
+4. Symlinked `yolov8x-world.pt` → shared checkpoints; UltraLytics also fetched `ViT-B-32.pt` into `/root/.cache/clip/`.
+
+## GPU after run
+
+~5079 MiB used (Isaac Lab / desktop leftovers); MSGNav process released.

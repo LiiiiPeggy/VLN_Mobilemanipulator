@@ -23,12 +23,12 @@
 | GPU | NVIDIA RTX A6000，49140 MiB，Driver **550.163.01** |
 | CUDA（驱动侧） | 12.4 |
 | Docker | **27.3.1**，Compose **v2.29.7**，nvidia runtime 可用 |
-| 磁盘 | `/` 约 281 GiB 可用（~92%，紧张）；`/media/ubuntu/D` 约 1.9 TiB 可用（大数据优先） |
+| 磁盘 | `/` 约 245 GiB 可用（~93%，紧张）；`/media/ubuntu/D` 约 1.9 TiB 可用（大数据优先） |
 | 项目根 | `/home/ubuntu/locomani/VLN_Mobilemanipulator` |
 
-宿主机已有长期容器（**禁止动**）：`nbv_fkie`、`nbv_ssmi`、以及 `lxy`/`zxg`/`zfy`/`hkp`/`chn`/`cjf`/`gly`/`yly` 等。存在镜像 `scene_graph:latest`（19.9GB），**尚未**验证是否可用于任一 VLN baseline。
+宿主机已有长期容器（**禁止动**）：`nbv_fkie`、`nbv_ssmi`、以及 `lxy`/`zxg`/`zfy`/`hkp`/`chn`/`cjf`/`gly`/`yly` 等。`scene_graph:latest` **无** habitat_sim，不可当 VLN 基座。
 
-本机 conda 中**无** `vlfm` / `apexnav` / `msgnav` / `SG_Nav` / `unigoal` / `home-robot` 环境（2026-10-29 `conda env list`）。
+本机 conda 中**无** baseline 专用环境；评测一律走 `vln-*` 容器。
 
 ## 3. 仓库布局与共享数据
 
@@ -53,8 +53,8 @@ VLN_Mobilemanipulator/
 | 镜像名 | Dockerfile | 服务 | 说明 |
 |--------|------------|------|------|
 | `vln-habitat024` | `Dockerfile.habitat024` | `vln-vlfm` | **正式 + VLFM deps commit**（2026-11-01）：`fe6b1ca643fd`，19GB；sim 0.2.4 + lab 0.2.420230405 + torch 1.12.1+cu113；Aliyun apt/pip；LAVIS/spacy/MobileSAM/GD 在容器内装后 `docker commit`；open3d 需 `dash<3`（pydantic v1） |
-| `vln-habitat025` | `Dockerfile.habitat025` | `vln-msgnav`（及暂挂的 sgnav/unigoal） | **正式**（2026-10-31）：`ff049f5c4eed`，22.6GB；CUDA 11.8 + torch 2.0.1 + habitat-sim 0.2.5；须 Aliyun apt。MSGNav 运行时 extras 另 tag：`vln-habitat025:msgnav-deps`=`24b7c26315a3`（HiPart/pytorch3d/clip；勿 recreate 冲掉未 commit 层） |
-| `vln-apexnav` | `Dockerfile.apexnav` | `vln-apexnav` | CUDA 12.1 + torch 2.5.0 + habitat-sim/lab 0.3.1；空代理 + Aliyun apt/pip；**跳过** salesforce-lavis（py39）；正式 `vln-apexnav:build` 构建中见 `runs/_build/apexnav_build.log` |
+| `vln-habitat025` | `Dockerfile.habitat025` | `vln-msgnav`（及暂挂的 sgnav/unigoal） | **正式**（2026-10-31）：`ff049f5c4eed`，22.6GB；CUDA 11.8 + torch 2.0.1 + habitat-sim 0.2.5；须 Aliyun apt。MSGNav 运行时 extras：`vln-habitat025:msgnav-deps`=`1b1bdc94f963`（HiPart/pytorch3d/clip/`ollama`；勿 recreate 冲掉未 commit 层） |
+| `vln-apexnav` | `Dockerfile.apexnav` | `vln-apexnav` | **正式 + 单 ep 运行时 commit**（2026-11-01）：`50e76a268b26`（`:single-ep-deps`/`:latest`，28.2GB；build 底 `118284656358`）；CUDA 12.1 + torch 2.5.0+cu121 + habitat-sim/lab **0.3.1**；**numpy 钉死 1.23.5**；运行时含 LAVIS/GD/MobileSAM、ROS Noetic（自 `nbv-fkie:noetic` **镜像**拷贝）+ catkin `exploration_node`；compose 挂 `/media/ubuntu/D/VLN_shared` 同路径；证据 `runs/ApexNav/single_episode_status.md` |
 | `vln-lite` | `Dockerfile.lite` | `vln-aprr` | 基于 `pytorch/pytorch:2.3.1-cuda12.1` 的轻量审计镜像 |
 
 容器名固定为 `vln-{vlfm,apexnav,msgnav,aprr,sgnav,unigoal}`，与 `nbv_*` / 他人容器隔离。  
@@ -62,7 +62,7 @@ VLN_Mobilemanipulator/
 
 ## 4. 六个 baseline：架构与依赖差异
 
-上游 SHA 权威表：`reports/source_versions.md`。下列依赖来自各仓库 README / 环境文件（**安装本身尚未在本机验证通过**）。
+上游 SHA 权威表：`reports/source_versions.md`。下表为文档宣称栈；**VLFM / MSGNav / ApexNav 已在本机容器验证到 `SINGLE_EPISODE_OK`**（其余仍偏文档级）。
 
 | Baseline | 任务形态 | 关键栈（文档宣称） | Habitat | 官方 Docker / 环境入口 | 额外注意 |
 |----------|----------|-------------------|---------|------------------------|----------|
@@ -82,8 +82,8 @@ VLN_Mobilemanipulator/
 路径均相对于各 `baselines/<Name>/`。带证据的标「已验证」。
 
 - **VLFM**（已验证单 ep）：容器内先起 VLM 12181–12184，再 `python -m vlfm.run habitat_baselines.test_episode_count=1`；证据 `runs/VLFM/single_episode_status.md`
-- **ApexNav**：先起 VLM 服务，再 `python habitat_evaluation.py --dataset hm3dv2`（正式镜像构建中）
-- **MSGNav**（deps 已验证；单 ep 待 open_clip 权重）：`python run_hm3d_evaluation.py -cf cfg/eval_hm3d_single_ep.yaml --specific 0`；批量用 `cfg/eval_hm3d.yaml`；密钥仅 `baselines/MSGNav/.env`（见 `.env.example`）
+- **ApexNav**（已验证单 ep）：`source devel/setup.bash` 后起 VLM `12181–12184` + `roslaunch exploration_manager exploration.launch`，再 `python habitat_evaluation.py --dataset hm3dv2 test_epi_num=0`；镜像 `vln-apexnav:latest`=`50e76a268b26`；`habitat_publisher` 免 cv_bridge；证据 `runs/ApexNav/single_episode_status.md`
+- **MSGNav**（已验证单 ep）：`HF_ENDPOINT=https://hf-mirror.com HF_HOME=/shared/cache/huggingface python run_hm3d_evaluation.py -cf cfg/eval_hm3d_single_ep.yaml --specific 0`；批量用 `cfg/eval_hm3d.yaml`；密钥仅 `baselines/MSGNav/.env`（见 `.env.example`）；证据 `runs/MSGNav/single_episode_status.md`
 - **APRR**：`bash runb.sh` / `bash run_rl.sh`
 - **SG-Nav**：`SG_Nav.py` + `configs/challenge_objectnav2021.local.rgbd.yaml`（需 MP3D）
 - **UniGoal**：`python main.py`（需 HM3D + instance-image-goal）
@@ -107,7 +107,10 @@ VLN_Mobilemanipulator/
 | 大数据走 `/media/ubuntu/D/VLN_shared`；compose 对 VLFM/MSGNav 挂载同路径以解析绝对软链 | `shared/*_large`；各 `docker-compose.yml` |
 | `vln-habitat024/025` 正式镜像可用；六 `vln-*` 容器 Up | `docker images` / `docker ps` |
 | VLFM=`SINGLE_EPISODE_OK`（任务 SR=0 false_positive） | `runs/VLFM/single_episode_status.md` |
-| MSGNav deps/API 就绪；单 ep 卡在 open_clip HF 权重 | `runs/MSGNav/deps_status.md`、`single_episode_status.md` |
+| MSGNav=`SINGLE_EPISODE_OK`（任务 SR=0 miss；管道 EXIT:0） | `runs/MSGNav/single_episode_status.md`；log `.../single_episode_20261101_012834.log` |
+| ApexNav=`SINGLE_EPISODE_OK`（bed / SR=100% / SPL=70.06%） | `runs/ApexNav/single_episode_status.md`；log `.../single_episode_20261101_retry4.log`；镜像 `50e76a268b26` |
+| ApexNav 需 ROS1 Noetic + catkin planner；Jammy 上可用 Focal Noetic 文件树 + focal `.so`，但 `cv_bridge`/py3.8 boost 与 conda py3.9 不兼容 → 适配层手写 Image | 同 status；`habitat2ros/habitat_publisher.py` |
+| MSGNav 需 `ollama` 包（即使 `use_ollama:false` 也会 import） | 已 bake 进 `:msgnav-deps` |
 | MSGNav 可用 API 模型为 `gpt-5.6-sol`（`gpt-5.5` 404） | 容器内冒烟；密钥仅本地 `.env` |
 | ObjectNav HM3D v2 的 `.json.gz` 需解压为 plain JSON 才可被 MSGNav `json.load` | `.../objectnav/hm3d/v2/val/content_json` |
 | open3d 与 pydantic v1：需 `dash<3` | VLFM habitat024 commit 镜像 |

@@ -154,6 +154,68 @@
 - 单 ep：YOLO/SAM 加载成功；`open_clip` 拉 `apple/DFN5B-CLIP-ViT-H-14` 时 `huggingface.co` `Network is unreachable` → EXIT:1（`runs/MSGNav/single_episode_status.md`）。
 - 缓解：容器内 `HF_ENDPOINT=https://hf-mirror.com` 预拉至 `/shared/cache/huggingface`（下载进行中，未完成前不得宣称 MODEL_LOADED）。
 
-**结论**：MSGNav=`DEPENDENCIES_READY`；单 ep 阻塞在离线/镜像可达的 open_clip 权重，而非 Habitat 场景或 API。
+**结论（当时）**：MSGNav=`DEPENDENCIES_READY`；单 ep 一度阻塞在 open_clip 权重拉取。后续用 HF 镜像预拉后已跑通（见下条）。
 
 **相关**：`baselines/MSGNav/`、`runs/MSGNav/deps_status.md`、`runs/MSGNav/single_episode_status.md`
+
+---
+
+## 2026-11-01 MSGNav 单 episode 跑通
+
+**模块**：MSGNav  
+
+**问题**：上一轮 open_clip DFN5B 直连 HuggingFace 失败。  
+
+**操作**：`HF_ENDPOINT=https://hf-mirror.com` + `HF_HOME=/shared/cache/huggingface` 预拉；停 VLFM VLM 腾 GPU；`run_hm3d_evaluation.py -cf cfg/eval_hm3d_single_ep.yaml --specific 0`。  
+
+**实测结果**：EXIT:0；场景 `zt1RVoi7PcG` / chair；SR/SPL=0（miss，非崩溃）；日志 `.../single_episode_20261101_012834.log`。  
+
+**结论**：MSGNav → `SINGLE_EPISODE_OK`。API 用 `gpt-5.6-sol`（本地 `.env`）。  
+
+**相关**：`runs/MSGNav/single_episode_status.md`
+
+---
+
+## 2026-11-01 ApexNav 正式镜像 rebuild（numpy pin）
+
+**模块**：ApexNav / Docker
+
+**问题**：`habitat-baselines` 把 numpy 升到 2.0.2/1.26.4，habitat-sim 0.3.1 import 崩；另 GitHub `git clone` TLS 失败。
+
+**操作**：
+
+- `Dockerfile.apexnav`：本地 tarball `COPY` habitat-lab v0.3.1；`pip install -e habitat-baselines --no-deps` + 手工 deps（`moviepy==1.0.3`）；`--force-reinstall --no-deps numpy==1.23.5 numba==0.60.0`。
+- build → tag `:latest` → `compose up -d --force-recreate` → smoke。
+
+**实测结果**：
+
+- EXIT:0；镜像 `118284656358`（24.2GB）；smoke `1.23.5 0.3.1 2.5.0+cu121 True`。
+- 状态 → `DEPENDENCIES_READY`。
+
+**结论**：正式 ApexNav 镜像可用；应用权重/VLM/单 ep 仍待做。
+
+**相关**：`shared/docker/Dockerfile.apexnav`、`runs/_build/apexnav_status.md`、`runs/_build/apexnav_rebuild.log`
+
+---
+
+## 2026-11-01 ApexNav 单 episode（ROS + VLM）
+
+**模块**：ApexNav
+
+**问题**：评测硬依赖 ROS1 Noetic + catkin `exploration_manager`；正式镜像为 Jammy、无 ROS；绝对软链需挂 `/media/ubuntu/D/VLN_shared`；Noetic `cv_bridge` 需 py3.8 boost，与 conda py3.9 冲突。
+
+**操作**：
+
+- compose 增加同路径挂载；补 mp3d `v1` 软链；装 LAVIS/GD/MobileSAM（`transformers==4.26.1`，numpy 钉死）。
+- 从 **`nbv-fkie:noetic` 镜像**（非运行中容器）拷 `/opt/ros/noetic` + focal `.so`；`catkin_make` 出 `exploration_node`。
+- VLM 12181–84 离线 HF bert；`habitat_publisher` 改为手写 `sensor_msgs/Image`（免 cv_bridge）。
+- `habitat_evaluation.py --dataset hm3dv2 test_epi_num=0`；`docker commit` → `:single-ep-deps`。
+
+**实测结果**：
+
+- bed episode **Result: success**；SR=100%、SPL=70.06%、SoftSPL=69.35%、dtg=0.0556。
+- 镜像 `50e76a268b26`；日志 `runs/ApexNav/single_episode_20261101_retry4.log`；`nbv_*` 未动。
+
+**结论**：ApexNav → `SINGLE_EPISODE_OK`。Jammy+Focal Noetic 叠法可跑通但脆弱，长期宜专用 ROS/Noetic 基座 Dockerfile。
+
+**相关**：`runs/ApexNav/single_episode_status.md`、`baselines/ApexNav/habitat2ros/habitat_publisher.py`、`baselines/ApexNav/docker-compose.yml`

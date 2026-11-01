@@ -23,6 +23,8 @@ services:
       - /media/ubuntu/D/VLN_shared/checkpoints:/shared/checkpoints_large
       - /media/ubuntu/D/VLN_shared/cache:/shared/cache
       - /media/ubuntu/D/VLN_shared/runs/ApexNav:/workspace/runs
+      # Absolute path so host-side symlinks under ApexNav/data resolve inside container
+      - /media/ubuntu/D/VLN_shared:/media/ubuntu/D/VLN_shared
       - /home/ubuntu/locomani/NBV_Mobilemanipulator/checkpoints/grounding_dino:/shared/weights/grounding_dino:ro
     working_dir: /workspace/ApexNav
     shm_size: "16gb"
