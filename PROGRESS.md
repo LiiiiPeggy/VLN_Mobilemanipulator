@@ -1,13 +1,13 @@
 # PROGRESS.md — 当前状态
 
-更新时间：2026-11-01（三套主线 `BATCH_OK`）  
+更新时间：2026-11-02（Habitat Ranger+CR10 运动学 Demo）  
 证据优先于本文；冲突时以代码、`reports/`、`runs/`、容器实测为准。
 
 ## 研究目标与阶段
 
 **目标**：六套 VLN/ObjectNav baseline 可复现评测 → 再适配 RangerBox-CR10 移动机械臂。
 
-**当前阶段**：正式 Habitat 三族镜像就位；**VLFM / MSGNav / ApexNav = `BATCH_OK`**（固定 8-ep 小批量，日志在 D 盘 `batch_20261101`）。
+**当前阶段**：三套主线 `BATCH_OK` 保持；本轮交付 **Habitat 混合运动学 Demo**（MuJoCo 机器人网格 + Habitat EE RGB-D）与 **MuJoCo Teleop PPO 短测**。ApexNav 闭环因 Bullet EGL 延期。
 
 ## Baseline 状态
 
@@ -15,39 +15,46 @@
 
 | Baseline | 状态 | 证据摘要 |
 |----------|------|----------|
-| VLFM | `BATCH_OK` | `vln-habitat024:latest`=`fe6b1ca643fd`；8/8 无崩溃；SR=25% SPL=0.1164；峰显存 19356 MiB；`runs/VLFM/batch_8ep_status.md`；CSV `.../batch_20261101/VLFM/` |
-| ApexNav | `BATCH_OK` | `vln-apexnav:single-ep-deps`=`50e76a268b26`；8/8 无崩溃；任务成功 6/8（SR=75%）；峰显存 12912 MiB；VLM=`python -m vlm.*`；`runs/ApexNav/batch_8ep_status.md`；CSV `.../batch_20261101/ApexNav/metrics.csv` |
-| MSGNav | `BATCH_OK` | `vln-habitat025:msgnav-deps`；8/8 无崩溃；任务成功 3/8（SR_dist=37.5% SPL≈20.7%）；峰显存 16507 MiB；API=`gpt-5.6-sol`（有 502/timeout 重试）；`runs/MSGNav/batch_8ep_status.md` |
-| APRR | `CONTAINER_READY`（轻量） | `vln-aprr` Up；百度权重已就位 |
-| SG-Nav | `CONTAINER_READY`（轻量） | `vln-sgnav` 在 habitat025；需 MP3D+GLIP；Habitat 应对齐 0.2.4 |
-| UniGoal | `CONTAINER_READY`（轻量） | `vln-unigoal` 在 habitat025；需 HM3D+目标数据集 |
+| VLFM | `BATCH_OK` | 未改；`vln-habitat024` 仍 Up |
+| ApexNav | `BATCH_OK` | 未改默认配置；借其容器 EGL 渲 EE RGB-D |
+| MSGNav | `BATCH_OK` | 未改 |
+| APRR | `CONTAINER_READY` | 未改 |
+| SG-Nav | `CONTAINER_READY` | 数据齐；版本映射待对齐 |
+| UniGoal | `CONTAINER_READY` | 数据齐；版本映射待对齐 |
+
+## 机械臂适配（本轮）
+
+| 项 | 状态 | 证据 |
+|----|------|------|
+| 独立适配目录 | 有 | `adapters/habitat_rangercr10/` |
+| 混合运动学 Demo | **通过** | `.../runs/habitat_rangercr10/hybrid_kinematic_demo/summary.json`；`reports/habitat_rangercr10_integration.md` |
+| 控制模式 | `kinematic_state_set` | **不是**全身动力学 |
+| Teleop PPO MuJoCo 短测 | **通过** | 117/8/3hist；`model_5999.pt`；`.../mujoco_teleop_smoke/` |
+| URDF 进 Habitat | 阻塞 | `vln-rangercr10:bullet` EGL 失败 |
+| ApexNav 闭环 | 延期 | `.../apexnav_stub/summary.json` |
+
+钉扎：LocoManip `rangercr10-teleop` @ `1973cb4`；权重 `stage45j_ppo/model_5999.pt`。
 
 ## 已完成（有证据）
 
 | 项 | 证据 |
 |----|------|
-| 六套源码 + SHA | `reports/source_versions.*` |
-| 正式 habitat024 / 025 / apexnav | `fe6b1ca643fd` / `ff049f5c4eed`(+msgnav-deps=`1b1bdc94f963`) / apexnav `50e76a268b26` |
-| 共享权重/数据 | `verify_shared_assets.sh` → ok=11 miss=0 |
-| 三套单 episode | `runs/{VLFM,ApexNav,MSGNav}/single_episode_status.md` |
-| 三套 8-ep 小批量 | `runs/*/batch_8ep_status.md`；D 盘 `/media/ubuntu/D/VLN_shared/runs/batch_20261101/{ApexNav,VLFM,MSGNav}/` |
-| ApexNav VLM | 项目内 `vlm.detector/itm/segmentor`（**不是** `vlfm.vlm`） |
-| MSGNav API | 本地 `.env`（gitignored）；`gpt-5.6-sol` |
+| 六套源码 + 三套 BATCH_OK | `reports/source_versions.*`；`runs/*/batch_8ep_status.md` |
+| 共享数据齐 | `reports/manual_downloads.md` |
+| 混合 Demo + PPO smoke + 报告 | `reports/habitat_rangercr10_integration.md`；`runs/habitat_rangercr10/INDEX.md` |
 
 ## 阻塞 / 风险
 
 | 项 | 说明 |
 |----|------|
-| 磁盘 | 根分区紧张；大文件必须落 D 盘 |
-| VLFM/MSGNav 任务 SR | 批量仍偏低（false_positive / miss）；管道无崩溃 |
-| MSGNav API | `model8.run` 间歇 502/timeout；靠客户端重试 |
-| ApexNav 镜像栈 | Jammy 叠 Focal Noetic；长期应改 `ros:noetic` 基座 |
-| SG-Nav/UniGoal | 版本/数据未对齐正式评测 |
+| `headless_bullet` EGL | 无法 Windowless 创建上下文；URDF 可视化卡在 Habitat 内 |
+| 磁盘 | 根分区紧张；大输出已落 D 盘 |
+| MSGNav API | 间歇 502/timeout（与本轮无关） |
 
 ## 下一步（最多 5 项）
 
-1. SG-Nav 对齐 habitat024 + MP3D；UniGoal 数据核对。  
-2. 按 `reports/mobile_arm_adaptation_analysis.md` 选路径：优先 ApexNav topic 替换 → VLFM adapter → MSGNav 连续执行器（**尚未实现**）。  
-3. 可选：把 ApexNav/MSGNav/VLFM 运行时层写回 Dockerfile，减少 recreate 丢依赖。  
-4. 可选：更大 batch / 官方全 val（注意 GPU 与 API 配额）。  
-5. 停用后确认各 baseline VLM/ROS 已退出腾 GPU。
+1. 修复 Bullet 容器 EGL（或验证非 headless bullet），跑 URDF-in-Habitat 纯运动学 Demo。  
+2. 接通 `apexnav_bridge` 有界寻物闭环（不改 baseline 默认）。  
+3. Habitat 侧试挂 Teleop PPO（失败则只记差异）。  
+4. SG-Nav/UniGoal 版本对齐（可选）。  
+5. 停用后确认 VLM/ROS/适配容器腾 GPU。

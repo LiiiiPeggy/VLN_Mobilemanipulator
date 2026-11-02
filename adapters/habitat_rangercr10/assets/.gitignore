@@ -1,0 +1,4 @@
+# Local symlink to LocoManip meshes (not vendored)
+meshes
+*.STL
+*.stl

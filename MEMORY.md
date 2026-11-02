@@ -85,8 +85,8 @@ VLN_Mobilemanipulator/
 - **ApexNav**（BATCH_OK）：`scripts/run_apexnav_batch8.sh` → ROS + `python -m vlm.detector/itm/segmentor.*`（**不是** `vlfm.vlm`）+ `habitat_evaluation.py --dataset hm3dv2 test_epi_num=0..7`；镜像 `:single-ep-deps`=`50e76a268b26`
 - **MSGNav**（BATCH_OK）：`scripts/run_msgnav_batch8.sh` → `run_hm3d_evaluation.py -cf cfg/eval_hm3d_batch8.yaml --specific 0..7`；密钥仅 `baselines/MSGNav/.env`；`--specific` 时场景列表排序且跳过 shuffle
 - **APRR**：`bash runb.sh` / `bash run_rl.sh`
-- **SG-Nav**：`SG_Nav.py` + `configs/challenge_objectnav2021.local.rgbd.yaml`（需 MP3D）
-- **UniGoal**：`python main.py`（需 HM3D + instance-image-goal）
+- **SG-Nav**：`SG_Nav.py` + `configs/challenge_objectnav2021.local.rgbd.yaml`；MP3D **val 11 景**已够用（不扩全库；不考虑跨楼层集）
+- **UniGoal**：`python main.py --goal_type {ins-image|text}`；数据：HM3D + IIN v3 + text-goal（见下）
 
 ## 6. 移动机械臂 VLN 适配——接口约束（预先遵守）
 
@@ -116,8 +116,19 @@ VLN_Mobilemanipulator/
 | MSGNav 可用 API 模型为 `gpt-5.6-sol`（`gpt-5.5` 404） | 容器内冒烟；密钥仅本地 `.env` |
 | ObjectNav HM3D v2 的 `.json.gz` 需解压为 plain JSON 才可被 MSGNav `json.load` | `.../objectnav/hm3d/v2/val/content_json` |
 | open3d 与 pydantic v1：需 `dash<3` | VLFM habitat024 commit 镜像 |
+| UniGoal `val_text.json.gz` 的 `episodes=[]` 为设计；文本在 `attribute_data`，episode 来自 IIN；`goal_key`=`{scene}_{goal_object_id}` 与 attrs **1000/1000** 对齐 | `datasets/textnav/` + `instance_imagenav/`；代码 `instanceimagegoal_env.py` |
+| IIN 磁盘目录名 `instance_imagenav_hm3d_v3`；UniGoal 期望 `hm3d/v3/` → 接线时软链 | `reports/manual_downloads.md` |
+| 共享公开大数据无强制待下载项；MP3D 维持 val 11 景 | `reports/manual_downloads.md`（2026-11-02） |
+| Ranger+CR10 适配落在 `adapters/habitat_rangercr10/`，不改 baseline 默认配置 | 目录 + compose `vln-rangercr10:bullet` |
+| LocoManip 钉扎 `rangercr10-teleop` @ `1973cb4`；Teleop PPO `stage45j_ppo/model_5999.pt`；obs=117 act=8 hist=3 @10Hz | `constants.py`；MuJoCo smoke |
+| 现网 VLN 镜像均 `built_with_bullet=False`；URDF 需专用 bullet 构建 | `habitat_sim.built_with_bullet` |
+| `headless_bullet` 在本机 Windowless EGL 失败；HM3D EE 渲染暂借 `vln-apexnav` nobullet | `reports/habitat_rangercr10_integration.md` |
+| 混合 Demo：MuJoCo 出机器人网格 + FK 相机位姿；Habitat 出 EE RGB-D；模式=`kinematic_state_set` | `scripts/run_hybrid_kinematic_demo.sh` |
+| MuJoCo home 底盘高度 `z_up=0.4071` | `hybrid_kinematic_demo.py` |
 
 ## 8. 常见兼容性风险
+
+
 
 | 风险 | 说明 | 应对方向 |
 |------|------|----------|
@@ -129,3 +140,5 @@ VLN_Mobilemanipulator/
 | SG-Nav agent 热补丁 | 必须覆盖 habitat-sim `agent.py` | Dockerfile/启动脚本 |
 | LLM/API 密钥 | MSGNav 等需在线 LLM | 只用 `.env`（gitignore），勿写入记忆正文 |
 | 显存争用 | A6000 ~49GB；他人进程可能占用 | 跑前 `nvidia-smi`；错峰 |
+| habitat-sim headless_bullet EGL | `unable to find CUDA device 0 among 1 EGL devices` | 专用容器排查；Demo 暂用 apexnav nobullet+MuJoCo 混合 |
+| 运动学 vs 动力学 | 当前 Demo 为状态写入/FK | 报告必须标 `kinematic_state_set`，禁止写成全身动力学 |

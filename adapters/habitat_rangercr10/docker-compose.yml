@@ -1,0 +1,19 @@
+# Dedicated Ranger+CR10 Habitat adapter — does NOT replace baseline compose files.
+# Image: commit of vln-apexnav:single-ep-deps after installing habitat-sim headless_bullet.
+services:
+  rangercr10:
+    image: vln-rangercr10:bullet
+    container_name: vln-rangercr10
+    runtime: nvidia
+    network_mode: host
+    working_dir: /workspace/VLN_Mobilemanipulator
+    volumes:
+      - /home/ubuntu/locomani/VLN_Mobilemanipulator:/workspace/VLN_Mobilemanipulator
+      - /home/ubuntu/locomani/LocoManip_Lab:/workspace/LocoManip_Lab:ro
+      - /media/ubuntu/D/VLN_shared:/media/ubuntu/D/VLN_shared
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=0
+      - PYTHONPATH=/workspace/VLN_Mobilemanipulator/adapters/habitat_rangercr10
+    command: sleep infinity
+    stdin_open: true
+    tty: true

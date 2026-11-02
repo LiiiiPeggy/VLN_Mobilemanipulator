@@ -269,3 +269,41 @@
 **结论**：三套均 `BATCH_OK`（≥5/8 无崩溃）。任务 SR 偏低属算法/API 质量，非基础设施失败。
 
 **相关**：`scripts/run_*_batch8.sh`、`baselines/*/run_batch8_inner.sh`、`reports/baseline_validation.md` §1–4
+
+---
+
+## 2026-11-02 共享数据缺口关闭（UniGoal / SG-Nav）
+
+**模块**：`/media/ubuntu/D/VLN_shared` 数据集盘点
+
+**问题**：清单曾把 UniGoal text-goal、instance 权限、全量 MP3D 标为待办；需按用户决策收敛。
+
+**操作 / 核实**：
+
+- 用户重下并替换 `datasets/textnav/val/val_text.json.gz`（mtime 2026-11-02）；`episodes=[]` 但 `attribute_data`=795。对照 UniGoal 代码：text 模式仍跑 IIN episode，按 `goal_key` 取文本 → **空 episodes 正常**；与 IIN val 1000 ep 的 `goal_key` 全对齐。
+- instance_imagenav：用户已 `chmod`；宿主机可读；content=36。
+- MP3D：维持现有 11 个 val `.glb`（对齐 objectnav mp3d val）；**不下载全库**；**不考虑跨楼层数据集**。
+
+**结论**：公开大数据强制下载项清空；SG-Nav/UniGoal 下一阶段是 Habitat 版本对齐与挂载/软链，不是缺文件。
+
+**相关**：`reports/manual_downloads.md`、`PROGRESS.md`、`MEMORY.md` §7
+
+---
+
+## 2026-11-02 Habitat Ranger+CR10 运动学 Demo（混合路径）
+
+**模块**：`adapters/habitat_rangercr10/`
+
+**问题**：要在现有 Habitat HM3D 中做 Ranger+CR10 可视化/运动/末端 RGB-D，且不破坏已通过 baseline。现网镜像均无 Bullet；URDF 需要 Bullet。
+
+**操作**：
+
+1. 自 `vln-apexnav:single-ep-deps` 克隆 `vln-rangercr10`，conda 安装 `habitat-sim=0.3.1=*headless_bullet*` → `built_with_bullet=True`，commit 为 `vln-rangercr10:bullet`（不覆盖 baseline tag）。
+2. Bullet 容器 Windowless EGL 失败；`vln-apexnav` nobullet 仍可渲场景。
+3. 交付混合 Demo：宿主机 MuJoCo（`env_isaaclab5`）FK+机器人网格；`vln-apexnav` 读 `fk_poses.json` 渲 EE RGB-D；拼图落 D 盘。
+4. MuJoCo Teleop PPO smoke：117/8/3hist，`model_5999.pt` @ `1973cb4`。
+5. ApexNav 闭环代码骨架保留，本轮 `deferred`。
+
+**结论**：最低验收（入场/运动/动态相机）以**运动学混合 Demo**达成；不得写成全身动力学。URDF-in-Habitat 与 ApexNav 闭环待 EGL 修复。
+
+**相关**：`reports/habitat_rangercr10_integration.md`、`runs/habitat_rangercr10/INDEX.md`
