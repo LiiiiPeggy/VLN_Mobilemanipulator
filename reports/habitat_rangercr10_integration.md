@@ -1,111 +1,125 @@
 # Habitat ↔ RangerBox-CR10 集成报告
 
-更新：2026-11-02  
-范围：独立适配层 `adapters/habitat_rangercr10/`；**不修改**六套 baseline 默认配置与已通过评测容器。  
-最低验收优先：**机器人入场 / 运动 / 动态相机**。PPO 与 ApexNav **独立验收**。
+更新：2026-11-03  
+范围：`adapters/habitat_rangercr10/`；**不修改**六套 baseline 默认配置与验证镜像。  
+HEAD 基线：`3733ca8`（混合 Demo）→ 本轮叠加 EGL 修复与原生 URDF。
 
 ---
 
-## 0. 版本钉扎
+## 总表（本轮真实状态）
 
-| 项 | 值 | 证据 |
-|----|----|------|
-| LocoManip 分支 | `rangercr10-teleop` | `git -C LocoManip_Lab rev-parse --abbrev-ref HEAD` |
-| LocoManip commit | `1973cb4f0d418af6bbf9c92156d55423b98a4963` | 同上 `rev-parse HEAD` |
-| Teleop PPO 权重 | `.../2026-10-29_19-12-08_stage45j_ppo/model_5999.pt` | MuJoCo smoke |
-| URDF | `rangerboxcr10lidar_description/urdf/rangercr10lidar.urdf`（Habitat 版改写 mesh 绝对路径） | `.../robots/rangercr10/rangercr10lidar_habitat.urdf` |
-| Habitat-Sim（baseline ApexNav） | **0.3.1 nobullet**（EGL 正常） | `vln-apexnav` |
-| Habitat-Sim（专用适配容器） | **0.3.1 headless_bullet**（`built_with_bullet=True`） | `vln-rangercr10:bullet` |
-| 观测 / 动作 | **117-D / 8-D**，历史 **3**，**10 Hz** | `ranger_policy.py`；smoke `summary.json` |
+| 项 | 状态 | 证据 |
+|----|------|------|
+| EGL（Bullet 容器） | **已修复** | 根因：`/usr/share/glvnd/egl_vendor.d/10_nvidia.json` 被清空；恢复后最小 RGB-D OK |
+| Habitat 原生 URDF | **通过** | `.../kinematic_demo/summary.json`：`robot_mesh_in_habitat=true`，52 links |
+| 动态 RGB-D | **通过** | `rgb_ee/` `depth_ee/`；depth0 mean≈0.79 |
+| 关节限位 | **通过** | `arm_within_limits_final=true` |
+| 碰撞查询 | **有诊断** | `contact_count`（运动学传送下仅作诊断，非动力学接触） |
+| ApexNav 最小闭环 | **有界脚本闭环通过** | `.../apexnav_loop/`：ApexNav 动作 ID + EE 反馈；**非** ROS 全 planner |
+| PPO→Habitat | **未集成** | `.../ppo_habitat_probe/`：`probe_only_not_integrated`；钉扎仍 `model_5999.pt` |
+| 控制模式 | `kinematic_state_set` | **不是**全身动力学 / PPO 执行 |
 
----
-
-## 1. Habitat 机器人接入 — 状态
-
-| 检查项 | 状态 | 说明 |
-|--------|------|------|
-| 现有三族镜像 Bullet | **无** | `vln-{vlfm,msgnav,apexnav}` 均为 `built_with_bullet=False` |
-| 专用容器 Bullet | **有** | 自 `vln-apexnav:single-ep-deps` 克隆 → conda 换 `*headless_bullet*` → tag `vln-rangercr10:bullet` |
-| URDF 加载 API | 可用（需 Bullet+物理） | `ArticulatedObjectManager.add_articulated_object_from_urdf` |
-| Bullet 容器 EGL | **失败** | `unable to find CUDA device 0 among 1 EGL devices`；同机 `vln-apexnav` nobullet 正常 |
-| 结论 | **混合路径交付** | 机器人网格：MuJoCo；HM3D EE RGB-D：ApexNav Habitat + MuJoCo FK |
-
-**控制模式（强制区分）**
-
-| 模式 | 本轮是否使用 |
-|------|----------------|
-| `kinematic_state_set` | **是**（底盘 SE(2)+臂关节直接写入 / FK） |
-| `bullet_physics_step` / 四轮动力学 | **否** — 不得报告为全身动力学控制 |
-| `contact_query_only` | 未在 Habitat 内对 URDF 完成（EGL 阻塞） |
+钉扎：LocoManip `rangercr10-teleop` @ `1973cb4`；权重 `stage45j_ppo/model_5999.pt`（未改 4.8）。
 
 ---
 
-## 2. 运动与相机 Demo（最低验收）— **通过（混合）**
+## 1. EGL 修复
 
-入口：`bash adapters/habitat_rangercr10/scripts/run_hybrid_kinematic_demo.sh`  
-输出：`/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/hybrid_kinematic_demo/`
+### 对比
 
-| 验收项 | 结果 |
-|--------|------|
-| Ranger+CR10 完整模型显示 | **是**（MuJoCo offscreen，`robot_mujoco/frame_*.png`） |
-| 底盘按预设路径运动 | **是**（方环 SE(2) 轨迹，`fk_poses.json`） |
-| 机械臂关节目标 | **是**（默认 ↔ 抬升插值） |
-| 末端 RGB-D 随位姿变化 | **是**（Habitat `rgb_ee/` + `depth_ee/`；相机=`d455_depth_optical_frame` FK） |
-| 外参 / 高度 | base `z_up=0.4071`（MuJoCo home）；cam0 Habitat y≈**0.497 m** |
-| 深度非空 | frame0 可能贴墙全 0；frame12 `max≈11.0 m mean≈1.79 m` |
-| 拼图 | `collage/frame_*.png`（EE RGB \| Depth \| Robot）×24 |
-| 关节限位 / 碰撞 | MuJoCo 侧默认臂在 URDF 限位内；Habitat-URDF 接触查询本轮未跑 |
+| | `vln-apexnav` | `vln-rangercr10`（修复前） |
+|--|---------------|---------------------------|
+| `habitat_sim.built_with_bullet` | False | True |
+| `10_nvidia.json` | 107 B，指向 `libEGL_nvidia.so.0` | **0 B（空文件）** |
+| Windowless EGL | OK | `unable to find CUDA device 0 among 1 EGL devices` |
 
-`summary.json` 明确：`control_mode=kinematic_state_set`，`robot_mesh_in_habitat=false`。
+其它：`NVIDIA_DRIVER_CAPABILITIES`、`NVIDIA_VISIBLE_DEVICES`、GPU 设备节点两边一致；bindings `.so` 体积差来自 bullet 构建本身。
 
----
+### 修复
 
-## 3. Teleop PPO — **短测通过（MuJoCo）**
+- 恢复 ICD JSON（与 apexnav 相同内容）。
+- 脚本：`adapters/habitat_rangercr10/scripts/ensure_egl_icd.sh`（跑 Demo 前自动检查）。
+- 镜像：`docker commit` → `vln-rangercr10:bullet`（**不覆盖** `vln-apexnav:*`）。
 
-入口：`bash adapters/habitat_rangercr10/scripts/run_mujoco_teleop_smoke.sh`  
-Python：`env_isaaclab5`；输出：`.../mujoco_teleop_smoke/summary.json`
+### 验收
 
-| 项 | 结果 |
-|----|------|
-| 权重加载 | `model_5999.pt` ok |
-| obs 维 | **117**（3 帧历史） |
-| action 维 | **8** = `[vx,wz,j1..j6]` |
-| 底盘短测 | `act_vx≈0.25`（cmd 0.2） |
-| 臂短测 | EE 误差 `ee_pos≈0.037 m` |
-| 联合 | `act_vx≈0.18 act_wz≈0.19` |
-| Habitat 内 PPO | **未接入**（等 URDF-in-Habitat EGL 修复后再接；不为此重训） |
+Bullet 容器内 `enable_physics=False` 最小 RGB-D：`EGL_OK` shape `(120,160)`。
 
 ---
 
-## 4. ApexNav 最小闭环 — **本轮延期**
+## 2. 原生 Habitat 机器人 Demo
 
-| 项 | 状态 |
-|----|------|
-| 动作 ID→运动学映射代码 | 已写 `adapters/.../src/apexnav_bridge.py` |
-| 语言目标→planner→地图 | **未接**（不改 baseline compose/配置） |
-| 阻塞 | Bullet 容器无法创建 Windowless EGL；nobullet 无法加载 URDF |
-| 记录 | `.../apexnav_stub/summary.json` → `status=deferred` |
-
----
-
-## 5. 目录与复现
-
-```
-adapters/habitat_rangercr10/
-  README.md
-  docker-compose.yml          # 专用 vln-rangercr10:bullet
-  assets/rangercr10lidar_habitat.urdf
-  src/{constants,traj_utils,kinematic_demo,hybrid_kinematic_demo,apexnav_bridge,fk_camera_demo}.py
-  scripts/{run_hybrid_kinematic_demo,run_mujoco_teleop_smoke,run_kinematic_demo,habitat_ee_render}.sh/.py
-runs/habitat_rangercr10/INDEX.md
+```bash
+bash adapters/habitat_rangercr10/scripts/run_kinematic_demo.sh
 ```
 
-大文件仅在 D 盘 `runs/habitat_rangercr10/`。
+输出：`/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/kinematic_demo/`
+
+| 检查 | 结果 |
+|------|------|
+| URDF 加载 | 51 links + base；`d455_depth_optical_frame` 存在 |
+| 底盘 / 臂运动 | 预设方环 SE(2) + 臂插值（状态写入） |
+| EE RGB-D | 随 FK 位姿更新；`frame_*.png` ×24 |
+| 外参高度 | `base_y=0.4071`（对齐 MuJoCo home） |
+| 限位 | 最终全部 `within` |
+| 接触点数 | 有记录（诊断）；运动学传送下不可当作真实碰撞仿真 |
+| 退出码 | 容器 `close()` 常 134；**以 `summary.status=ok` 为准**（脚本已区分） |
 
 ---
 
-## 6. 下一步（有证据再宣称）
+## 3. ApexNav 最小闭环
 
-1. 修复 `headless_bullet` EGL（或改用非 headless `py3.9_bullet_linux` 且验证 GPU），再跑 **URDF 在 Habitat 内** 的 `kinematic_demo`。  
-2. 通过后接 `apexnav_bridge` → 有界多步寻物（保留高层策略，不计零成本环视）。  
-3. Habitat 侧 PPO：保持 117/8/10Hz/关节映射；失败则保留 Demo+差异记录，不重训。
+```bash
+bash adapters/habitat_rangercr10/scripts/run_apexnav_loop.sh
+```
+
+- 动作空间对齐 `baselines/ApexNav/params.py`：STOP/FWD/TURN/LOOK。
+- 本轮 planner=`scripted_actions`（深度近障比驱动转向）；**未**挂 ROS `/habitat/plan_action`。
+- 每步：运动 → 新 EE RGB-D → 日志（位姿/接触/限位/深度统计）。
+- 证据：`.../apexnav_loop/summary.json`，`n_steps=16`，`status=ok`。
+
+---
+
+## 4. PPO
+
+| 路径 | 状态 |
+|------|------|
+| MuJoCo smoke（上轮） | 仍有效：117/8/3hist @10Hz |
+| Habitat 迁移 | **probe_only**：观测向量无法从运动学 Habitat 对齐 Isaac 117-D；动作需 ChassisAction 轮组映射 |
+| 权重 | **保持** `model_5999.pt`；未换 4.8 |
+
+```bash
+bash adapters/habitat_rangercr10/scripts/run_ppo_habitat_probe.sh
+```
+
+---
+
+## 5. 复现命令（仓库内）
+
+```bash
+# EGL ICD 检查/修复
+bash adapters/habitat_rangercr10/scripts/ensure_egl_icd.sh
+
+# 原生 URDF 运动学 Demo（优先）
+bash adapters/habitat_rangercr10/scripts/run_kinematic_demo.sh
+
+# ApexNav 动作闭环（运动学）
+bash adapters/habitat_rangercr10/scripts/run_apexnav_loop.sh
+
+# PPO 接口探针（预期 summary=probe_only，脚本 exit 0）
+bash adapters/habitat_rangercr10/scripts/run_ppo_habitat_probe.sh
+
+# 上轮混合 Demo（后备）
+bash adapters/habitat_rangercr10/scripts/run_hybrid_kinematic_demo.sh
+```
+
+索引：`runs/habitat_rangercr10/INDEX.md`
+
+---
+
+## 6. 已知问题
+
+1. `Simulator.close()` 在 0.3.1 bullet 上偶发 `corrupted size` / rc=134 — 不否决已写完的 summary。  
+2. conda 安装 `headless_bullet` 可能再次清空 `10_nvidia.json` — 务必跑 `ensure_egl_icd.sh`。  
+3. ApexNav **全量** ROS planner 闭环仍待接线；本轮是动作 ID + 传感器闭环。  
+4. 不得把运动学 Demo 报告为 PPO 全身动力学。

@@ -122,9 +122,9 @@ VLN_Mobilemanipulator/
 | Ranger+CR10 适配落在 `adapters/habitat_rangercr10/`，不改 baseline 默认配置 | 目录 + compose `vln-rangercr10:bullet` |
 | LocoManip 钉扎 `rangercr10-teleop` @ `1973cb4`；Teleop PPO `stage45j_ppo/model_5999.pt`；obs=117 act=8 hist=3 @10Hz | `constants.py`；MuJoCo smoke |
 | 现网 VLN 镜像均 `built_with_bullet=False`；URDF 需专用 bullet 构建 | `habitat_sim.built_with_bullet` |
-| `headless_bullet` 在本机 Windowless EGL 失败；HM3D EE 渲染暂借 `vln-apexnav` nobullet | `reports/habitat_rangercr10_integration.md` |
-| 混合 Demo：MuJoCo 出机器人网格 + FK 相机位姿；Habitat 出 EE RGB-D；模式=`kinematic_state_set` | `scripts/run_hybrid_kinematic_demo.sh` |
-| MuJoCo home 底盘高度 `z_up=0.4071` | `hybrid_kinematic_demo.py` |
+| EGL 修复后原生 URDF-in-Habitat 可用；混合 Demo 仍作后备 | `run_kinematic_demo.sh`；`reports/habitat_rangercr10_integration.md` |
+| 底盘高度 `y=0.4071`（对齐 MuJoCo home） | `kinematic_demo.py` / `hybrid_kinematic_demo.py` |
+
 
 ## 8. 常见兼容性风险
 
@@ -140,5 +140,8 @@ VLN_Mobilemanipulator/
 | SG-Nav agent 热补丁 | 必须覆盖 habitat-sim `agent.py` | Dockerfile/启动脚本 |
 | LLM/API 密钥 | MSGNav 等需在线 LLM | 只用 `.env`（gitignore），勿写入记忆正文 |
 | 显存争用 | A6000 ~49GB；他人进程可能占用 | 跑前 `nvidia-smi`；错峰 |
-| habitat-sim headless_bullet EGL | `unable to find CUDA device 0 among 1 EGL devices` | 专用容器排查；Demo 暂用 apexnav nobullet+MuJoCo 混合 |
-| 运动学 vs 动力学 | 当前 Demo 为状态写入/FK | 报告必须标 `kinematic_state_set`，禁止写成全身动力学 |
+| habitat-sim headless_bullet EGL | 根因常为 `10_nvidia.json` 被清空（0B） | `ensure_egl_icd.sh` 恢复 ICD；勿动宿主机驱动 |
+| 原生 URDF 入场 | `vln-rangercr10:bullet` + 物理开启可加载 51+1 links | `run_kinematic_demo.sh` |
+| 运动学 vs 动力学 | Demo 为状态写入 | 必须标 `kinematic_state_set`，禁止写成全身动力学 |
+| habitat-sim close | 0.3.1 常 rc=134 / heap 噪声 | 以 `summary.status` 判定；脚本接受 0/134 |
+| PPO→Habitat | 117-D 观测与 ChassisAction 未对齐 | 保持 MuJoCo 验证路径；钉扎 `model_5999.pt` |

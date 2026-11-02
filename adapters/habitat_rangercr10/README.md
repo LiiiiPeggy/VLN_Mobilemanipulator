@@ -19,16 +19,22 @@
 ## 运行
 
 ```bash
-# 1) 最低验收（推荐）：混合运动学 Demo
-#    MuJoCo 机器人网格 + Habitat EE RGB-D（借 vln-apexnav EGL）
-bash adapters/habitat_rangercr10/scripts/run_hybrid_kinematic_demo.sh
+# 0) EGL ICD（conda bullet 后可能被清空）
+bash adapters/habitat_rangercr10/scripts/ensure_egl_icd.sh
 
-# 2) MuJoCo Teleop PPO 短测（117/8/10Hz）
-bash adapters/habitat_rangercr10/scripts/run_mujoco_teleop_smoke.sh
-
-# 3) 纯 Habitat URDF Demo（需 vln-rangercr10:bullet 且 EGL 可用）
+# 1) 原生 Habitat URDF 运动学 Demo（推荐）
 bash adapters/habitat_rangercr10/scripts/run_kinematic_demo.sh
+
+# 2) ApexNav 动作 ID 有界闭环（运动学）
+bash adapters/habitat_rangercr10/scripts/run_apexnav_loop.sh
+
+# 3) PPO Habitat 探针（会写 probe_only，不宣称集成成功）
+bash adapters/habitat_rangercr10/scripts/run_ppo_habitat_probe.sh
+
+# 后备：混合 Demo / MuJoCo PPO smoke
+bash adapters/habitat_rangercr10/scripts/run_hybrid_kinematic_demo.sh
+bash adapters/habitat_rangercr10/scripts/run_mujoco_teleop_smoke.sh
 ```
 
-证据输出：`/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/`  
+证据：`/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/`  
 报告：`reports/habitat_rangercr10_integration.md`

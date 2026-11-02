@@ -307,3 +307,25 @@
 **结论**：最低验收（入场/运动/动态相机）以**运动学混合 Demo**达成；不得写成全身动力学。URDF-in-Habitat 与 ApexNav 闭环待 EGL 修复。
 
 **相关**：`reports/habitat_rangercr10_integration.md`、`runs/habitat_rangercr10/INDEX.md`
+
+---
+
+## 2026-11-03 EGL ICD 修复与原生 Habitat URDF
+
+**模块**：`vln-rangercr10:bullet` + `adapters/habitat_rangercr10`
+
+**问题**：Bullet 容器 Windowless EGL 失败，URDF 无法在 Habitat 内可视化。
+
+**根因**：对比 `vln-apexnav` 后发现 `/usr/share/glvnd/egl_vendor.d/10_nvidia.json` 在 rangercr10 中为 **0 字节**（疑似 conda 换 headless_bullet 副作用）；GPU/capabilities 本身正常。
+
+**操作**：
+
+1. 恢复 ICD JSON；加入 `ensure_egl_icd.sh`；`docker commit` 更新 `vln-rangercr10:bullet`（不碰 baseline 镜像）。
+2. 最小 RGB-D 通过后加载 URDF（52 links），跑 `kinematic_demo`（运动学）。
+3. `apexnav_bridge` 有界脚本闭环（ApexNav 动作 ID + EE 反馈）。
+4. PPO Habitat 探针明确 `probe_only_not_integrated`；权重仍 `model_5999.pt`。
+5. 脚本以 `summary.status` 验收，容忍 close() rc=134。
+
+**结论**：EGL→原生机器人/相机→ApexNav 运动学闭环 已独立达成；PPO 迁移另案。
+
+**相关**：`reports/habitat_rangercr10_integration.md`

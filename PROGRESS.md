@@ -1,60 +1,38 @@
 # PROGRESS.md — 当前状态
 
-更新时间：2026-11-02（Habitat Ranger+CR10 运动学 Demo）  
+更新时间：2026-11-03（EGL 修复 + 原生 Habitat URDF）  
 证据优先于本文；冲突时以代码、`reports/`、`runs/`、容器实测为准。
 
 ## 研究目标与阶段
 
-**目标**：六套 VLN/ObjectNav baseline 可复现评测 → 再适配 RangerBox-CR10 移动机械臂。
+**目标**：六套 VLN/ObjectNav baseline 可复现评测 → 再适配 RangerBox-CR10。
 
-**当前阶段**：三套主线 `BATCH_OK` 保持；本轮交付 **Habitat 混合运动学 Demo**（MuJoCo 机器人网格 + Habitat EE RGB-D）与 **MuJoCo Teleop PPO 短测**。ApexNav 闭环因 Bullet EGL 延期。
+**当前阶段**：三套主线 `BATCH_OK` 保持；**Bullet EGL 已修**；**原生 Habitat URDF 运动学 Demo 通过**；ApexNav 动作闭环（脚本策略）通过；PPO→Habitat 未集成（探针已记差异）。
 
 ## Baseline 状态
 
-状态枚举：`NOT_STARTED / CLONED / CONTAINER_READY / DEPENDENCIES_READY / MODEL_LOADED / SINGLE_EPISODE_OK / BATCH_OK / BLOCKED`
+| Baseline | 状态 | 备注 |
+|----------|------|------|
+| VLFM / ApexNav / MSGNav | `BATCH_OK` | 镜像未改；apexnav 仍 nobullet |
+| APRR / SG-Nav / UniGoal | `CONTAINER_READY` | 未改 |
 
-| Baseline | 状态 | 证据摘要 |
-|----------|------|----------|
-| VLFM | `BATCH_OK` | 未改；`vln-habitat024` 仍 Up |
-| ApexNav | `BATCH_OK` | 未改默认配置；借其容器 EGL 渲 EE RGB-D |
-| MSGNav | `BATCH_OK` | 未改 |
-| APRR | `CONTAINER_READY` | 未改 |
-| SG-Nav | `CONTAINER_READY` | 数据齐；版本映射待对齐 |
-| UniGoal | `CONTAINER_READY` | 数据齐；版本映射待对齐 |
-
-## 机械臂适配（本轮）
+## 机械臂适配
 
 | 项 | 状态 | 证据 |
 |----|------|------|
-| 独立适配目录 | 有 | `adapters/habitat_rangercr10/` |
-| 混合运动学 Demo | **通过** | `.../runs/habitat_rangercr10/hybrid_kinematic_demo/summary.json`；`reports/habitat_rangercr10_integration.md` |
-| 控制模式 | `kinematic_state_set` | **不是**全身动力学 |
-| Teleop PPO MuJoCo 短测 | **通过** | 117/8/3hist；`model_5999.pt`；`.../mujoco_teleop_smoke/` |
-| URDF 进 Habitat | 阻塞 | `vln-rangercr10:bullet` EGL 失败 |
-| ApexNav 闭环 | 延期 | `.../apexnav_stub/summary.json` |
+| EGL ICD | **已修复** | 空 `10_nvidia.json` → 恢复；`ensure_egl_icd.sh` |
+| 原生 URDF Demo | **通过** | `.../kinematic_demo/summary.json` |
+| 动态 RGB-D / 限位 | **通过** | traj + frames |
+| ApexNav 闭环 | **脚本闭环通过** | `.../apexnav_loop/`（非 ROS 全 planner） |
+| PPO Habitat | **未集成** | `.../ppo_habitat_probe/` |
+| 控制模式 | `kinematic_state_set` | 非全身动力学 |
 
-钉扎：LocoManip `rangercr10-teleop` @ `1973cb4`；权重 `stage45j_ppo/model_5999.pt`。
+专用镜像：`vln-rangercr10:bullet`（不覆盖 baseline tags）。
 
-## 已完成（有证据）
+## 下一步（最多 5）
 
-| 项 | 证据 |
-|----|------|
-| 六套源码 + 三套 BATCH_OK | `reports/source_versions.*`；`runs/*/batch_8ep_status.md` |
-| 共享数据齐 | `reports/manual_downloads.md` |
-| 混合 Demo + PPO smoke + 报告 | `reports/habitat_rangercr10_integration.md`；`runs/habitat_rangercr10/INDEX.md` |
-
-## 阻塞 / 风险
-
-| 项 | 说明 |
-|----|------|
-| `headless_bullet` EGL | 无法 Windowless 创建上下文；URDF 可视化卡在 Habitat 内 |
-| 磁盘 | 根分区紧张；大输出已落 D 盘 |
-| MSGNav API | 间歇 502/timeout（与本轮无关） |
-
-## 下一步（最多 5 项）
-
-1. 修复 Bullet 容器 EGL（或验证非 headless bullet），跑 URDF-in-Habitat 纯运动学 Demo。  
-2. 接通 `apexnav_bridge` 有界寻物闭环（不改 baseline 默认）。  
-3. Habitat 侧试挂 Teleop PPO（失败则只记差异）。  
+1. 可选：把 ApexNav ROS `/habitat/plan_action` 接到 `apexnav_bridge`（仍不改 baseline 默认）。  
+2. 若要坚持 PPO-in-Habitat：补齐 117-D 观测装配与 ChassisAction（失败则继续 MuJoCo）。  
+3. 缓解 `Simulator.close()` 134（次要）。  
 4. SG-Nav/UniGoal 版本对齐（可选）。  
-5. 停用后确认 VLM/ROS/适配容器腾 GPU。
+5. 停用后腾 GPU。
