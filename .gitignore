@@ -149,3 +149,4 @@ node_modules/
 # Local VLFM offline tokenizer/model copy
 baselines/VLFM/bert-base-uncased/
 baselines/VLFM/data/bert-base-uncased/
+runs/ApexNav/batch_20261101/
