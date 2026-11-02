@@ -219,3 +219,53 @@
 **结论**：ApexNav → `SINGLE_EPISODE_OK`。Jammy+Focal Noetic 叠法可跑通但脆弱，长期宜专用 ROS/Noetic 基座 Dockerfile。
 
 **相关**：`runs/ApexNav/single_episode_status.md`、`baselines/ApexNav/habitat2ros/habitat_publisher.py`、`baselines/ApexNav/docker-compose.yml`
+
+---
+
+## 2026-11-01 移动机械臂适配只读分析（VLFM/ApexNav/MSGNav）
+
+**模块**：适配规划 / reports
+
+**问题**：三套 `SINGLE_EPISODE_OK` 后需明确接 RangerBox-CR10（EE-D455 + REMANI）的代码锚点与最小改动面，避免误改上游评测协议。
+
+**操作**：只读追踪三套 camera→state→action→stop；对照 `NBV_Mobilemanipulator` REMANI 接口与 `LocoManip_Lab` TCP（未改相邻仓）。
+
+**实测结果（分析结论）**：
+
+- VLFM：0.88 m/0°；12 步环视计费；STOP ρ&lt;0.9 vs Habitat success 0.1。
+- ApexNav：0.88 m 硬编码；26 步 init 计费；habitat2ros topic 为最低成本实机钩子；success 0.2。
+- MSGNav：1.5 m/−30°；连续 `set_state`；7 视角环视不计步；success 1.0 m。
+- REMANI：`/ee_goal` + align FK/TF≈0.42 m Z；无 collision bool。
+
+**结论**：优先 ApexNav topic 替换 → VLFM adapter → MSGNav 执行器；详见报告（**未实现**）。
+
+**相关**：`reports/mobile_arm_adaptation_analysis.md`、`reports/baseline_validation.md` §7
+
+---
+
+## 2026-11-01 三套主线固定 8-ep 小批量（BATCH_OK）
+
+**模块**：VLFM / ApexNav / MSGNav 评测 harness
+
+**问题**：单 ep 通过后需可复现小批量；ApexNav 脚本误用 `vlfm.vlm`；MSGNav `NN_<scene>.json` 与 `listdir`+`shuffle` 导致 `--specific` 错位/崩溃；沙箱写 D 盘需容器内 runner。
+
+**操作**：
+
+- 容器确认：`vln-apexnav:single-ep-deps`、`vln-habitat024:latest`=`fe6b1ca643fd`、`vln-habitat025:msgnav-deps`。
+- ApexNav：改用 `python -m vlm.{detector,itm,segmentor}.*`；`run_batch8_inner.sh`；ep0 校验后跑 0..7。
+- VLFM / MSGNav：同模式容器内 runner；MSGNav 修 sorted/`--specific` 跳过 shuffle、剥离数字前缀；成功判定对齐 `Success rate by distance: 100.00`。
+- 顺序独占 GPU：ApexNav → VLFM → MSGNav。
+
+**实测结果**：
+
+| Baseline | 完成/崩溃 | 任务成功 | SR / SPL | 峰显存 |
+|----------|-----------|----------|----------|--------|
+| ApexNav | 8/0 | 6/8 | 75% / ~58% mean | 12912 |
+| VLFM | 8/0 | 2/8 | 25% / 0.1164 | 19356 |
+| MSGNav | 8/0 | 3/8 | 37.5% / ~20.7 | 16507 |
+
+证据：`runs/*/batch_8ep_status.md`；D `.../runs/batch_20261101/`。
+
+**结论**：三套均 `BATCH_OK`（≥5/8 无崩溃）。任务 SR 偏低属算法/API 质量，非基础设施失败。
+
+**相关**：`scripts/run_*_batch8.sh`、`baselines/*/run_batch8_inner.sh`、`reports/baseline_validation.md` §1–4

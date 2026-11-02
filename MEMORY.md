@@ -62,13 +62,13 @@ VLN_Mobilemanipulator/
 
 ## 4. 六个 baseline：架构与依赖差异
 
-上游 SHA 权威表：`reports/source_versions.md`。下表为文档宣称栈；**VLFM / MSGNav / ApexNav 已在本机容器验证到 `SINGLE_EPISODE_OK`**（其余仍偏文档级）。
+上游 SHA 权威表：`reports/source_versions.md`。下表为文档宣称栈；**VLFM / MSGNav / ApexNav 已在本机容器验证到 `BATCH_OK`**（其余仍偏文档级）。
 
 | Baseline | 任务形态 | 关键栈（文档宣称） | Habitat | 官方 Docker / 环境入口 | 额外注意 |
 |----------|----------|-------------------|---------|------------------------|----------|
-| **VLFM** | ObjectNav；frontier + VLM value map | Python 3.9；torch 1.12.1+cu113；GroundingDINO；LAVIS；可选 Spot | sim `v0.2.4`；lab `0.2.420230405`（`pyproject.toml`） | compose → `vln-habitat024`；上游另有 `docker/Dockerfile` | 需另克隆 `yolov7`；自带 `data/pointnav_weights.pth` |
-| **ApexNav** | ObjectNav；target-centric fusion + 自适应探索 | conda `apexnav_environment.yaml`；torch 2.5.0（cu118/121/124） | **sim/lab 0.3.1** | compose → `vln-apexnav` | 需 yolov7、GroundingDINO、若干权重；VLM 多进程端口服务 |
-| **MSGNav** | ObjectNav / GOAT-Bench；多模态 3D scene graph | Python 3.9；torch 2.0.1+cu118；open-clip；ultralytics | **sim 0.2.5**；vendored `habitat-lab/` | compose → `vln-habitat025` | 需 LLM API（Qwen/GPT，`src/const.py`） |
+| **VLFM** | ObjectNav；frontier + VLM value map | Python 3.9；torch 1.12.1+cu113；GroundingDINO；LAVIS；可选 Spot | sim `v0.2.4`；lab `0.2.420230405`（`pyproject.toml`） | compose → `vln-habitat024`；上游另有 `docker/Dockerfile` | **BATCH_OK**；需 yolov7；`data/pointnav_weights.pth` |
+| **ApexNav** | ObjectNav；target-centric fusion + 自适应探索 | conda `apexnav_environment.yaml`；torch 2.5.0（cu118/121/124） | **sim/lab 0.3.1** | compose → `vln-apexnav` | **BATCH_OK**；VLM=`vlm.*` 多端口；ROS Noetic planner |
+| **MSGNav** | ObjectNav / GOAT-Bench；多模态 3D scene graph | Python 3.9；torch 2.0.1+cu118；open-clip；ultralytics | **sim 0.2.5**；vendored `habitat-lab/` | compose → `vln-habitat025:msgnav-deps` | **BATCH_OK**；需 LLM API（`gpt-5.6-sol`） |
 | **APRR** | OVMM / Home-Robot 系 | 依赖 Facebook `home-robot` + Habitat challenge 镜像文档 | 随 home-robot / habitat-lab 子树 | compose → `vln-lite`（审计用）；完整栈仍参考官方 challenge 镜像 | 子模块未完全初始化；评测脚本 `runb.sh` / `run_rl.sh` |
 | **SG-Nav** | ObjectNav；在线 3D scene graph → LLM | Python 3.9；habitat-sim 0.2.4；GLIP / GroundingDINO / SAM | **sim 0.2.4**；vendored `habitat-lab/` | compose 暂挂 `vln-habitat025`（**版本待改**） | **必须**用 `tools/agent.py` 覆盖 habitat-sim 的 `agent/agent.py` |
 | **UniGoal** | 统一 goal（image/text；object 仍在完善） | Python 3.8；sim/lab 0.2.3；Grounded-SAM；detectron2；pytorch3d | **sim/lab 0.2.3**；`third_party/habitat-lab` | compose 暂挂 `vln-habitat025`（**版本待改**） | 与 SG-Nav 同组作者；接口相近但版本更旧 |
@@ -81,22 +81,24 @@ VLN_Mobilemanipulator/
 
 路径均相对于各 `baselines/<Name>/`。带证据的标「已验证」。
 
-- **VLFM**（已验证单 ep）：容器内先起 VLM 12181–12184，再 `python -m vlfm.run habitat_baselines.test_episode_count=1`；证据 `runs/VLFM/single_episode_status.md`
-- **ApexNav**（已验证单 ep）：`source devel/setup.bash` 后起 VLM `12181–12184` + `roslaunch exploration_manager exploration.launch`，再 `python habitat_evaluation.py --dataset hm3dv2 test_epi_num=0`；镜像 `vln-apexnav:latest`=`50e76a268b26`；`habitat_publisher` 免 cv_bridge；证据 `runs/ApexNav/single_episode_status.md`
-- **MSGNav**（已验证单 ep）：`HF_ENDPOINT=https://hf-mirror.com HF_HOME=/shared/cache/huggingface python run_hm3d_evaluation.py -cf cfg/eval_hm3d_single_ep.yaml --specific 0`；批量用 `cfg/eval_hm3d.yaml`；密钥仅 `baselines/MSGNav/.env`（见 `.env.example`）；证据 `runs/MSGNav/single_episode_status.md`
+- **VLFM**（BATCH_OK）：`scripts/run_vlfm_batch8.sh` → 容器内 `python -m vlfm.vlm.*` 12181–84 + `python -m vlfm.run habitat_baselines.test_episode_count=8`
+- **ApexNav**（BATCH_OK）：`scripts/run_apexnav_batch8.sh` → ROS + `python -m vlm.detector/itm/segmentor.*`（**不是** `vlfm.vlm`）+ `habitat_evaluation.py --dataset hm3dv2 test_epi_num=0..7`；镜像 `:single-ep-deps`=`50e76a268b26`
+- **MSGNav**（BATCH_OK）：`scripts/run_msgnav_batch8.sh` → `run_hm3d_evaluation.py -cf cfg/eval_hm3d_batch8.yaml --specific 0..7`；密钥仅 `baselines/MSGNav/.env`；`--specific` 时场景列表排序且跳过 shuffle
 - **APRR**：`bash runb.sh` / `bash run_rl.sh`
 - **SG-Nav**：`SG_Nav.py` + `configs/challenge_objectnav2021.local.rgbd.yaml`（需 MP3D）
 - **UniGoal**：`python main.py`（需 HM3D + instance-image-goal）
 
 ## 6. 移动机械臂 VLN 适配——接口约束（预先遵守）
 
-在未完成 discrete ObjectNav 基线前，不做平台耦合重构。后续适配须遵守：
+完整锚点分析（只读）：`reports/mobile_arm_adaptation_analysis.md`；摘要见 `reports/baseline_validation.md` §7。  
+在未明确要求前，不做平台耦合重构。适配须遵守：
 
 1. **保留上游评测入口**：Habitat episode、动作空间、成功判定与 SPL 等指标不被静默改写；平台相关改动放在适配层或配置开关后。
-2. **观测对齐**：明确 RGB-D 分辨率、相机外参、深度单位与坐标系（光学系 vs link 系）；参考 NBV 工程中 D455 坐标教训（见 NBV `MEMORY.md`，勿在未验证时照搬）。
-3. **动作接口**：baseline 多为离散 Habitat 动作（move/turn/stop）；底盘连续速度 / 臂自由度需经显式封装，禁止在算法核心里写死 CR10 关节。
-4. **地图与坐标系**：frontier / scene graph 假设的 2D 导航网格与 Ranger 四轮转向运动学不同；适配时单独验证足迹与碰撞。
-5. **资源隔离**：推理权重与 HM3D/MP3D 场景只放 D 盘共享目录；容器只挂载需要的子集。
+2. **观测对齐**：明确 RGB-D 分辨率、相机外参、深度单位与坐标系（光学系 vs link 系）；参考 NBV 工程中 D455 坐标教训（见 NBV `MEMORY.md`，勿在未验证时照搬）。三套仿真相机假设不同：VLFM/ApexNav **0.88 m/≈0°/79°**；MSGNav **1.5 m/−30°/120°**。
+3. **动作接口**：VLFM/ApexNav 为离散 Habitat 动作（ApexNav 另有 look± 与 `/cmd_vel`）；MSGNav 为连续 `set_state` 传送。底盘/臂需经显式封装，禁止在算法核心写死 CR10 关节。执行面优先 REMANI：`/ee_goal`、`/ee_current_pose`、`/planning/finish`（`NBV_Mobilemanipulator/scripts/nbv_to_remani_ee_goal.py`）。
+4. **地图与坐标系**：frontier / scene graph 假设的 2D 导航网格与 Ranger 四轮转向运动学不同；适配时单独验证足迹与碰撞。Camera→EE：`T_world_ee = T_world_cam · inv(T_ee_cam)` + `--align-remani-ee`（FK vs TF≈0.42 m Z）。
+5. **环视计费**：VLFM 12 步、ApexNav 26 步计入 episode；MSGNav 7 视角**不计步**——实机对比须显式计费。
+6. **资源隔离**：推理权重与 HM3D/MP3D 场景只放 D 盘共享目录；容器只挂载需要的子集。
 
 ## 7. 已验证的工程结论（本仓库）
 
@@ -106,9 +108,9 @@ VLN_Mobilemanipulator/
 | 嵌套 `.git` 已剥离，umbrella 为唯一 Git | `find baselines -name .git` 为空 |
 | 大数据走 `/media/ubuntu/D/VLN_shared`；compose 对 VLFM/MSGNav 挂载同路径以解析绝对软链 | `shared/*_large`；各 `docker-compose.yml` |
 | `vln-habitat024/025` 正式镜像可用；六 `vln-*` 容器 Up | `docker images` / `docker ps` |
-| VLFM=`SINGLE_EPISODE_OK`（任务 SR=0 false_positive） | `runs/VLFM/single_episode_status.md` |
-| MSGNav=`SINGLE_EPISODE_OK`（任务 SR=0 miss；管道 EXIT:0） | `runs/MSGNav/single_episode_status.md`；log `.../single_episode_20261101_012834.log` |
-| ApexNav=`SINGLE_EPISODE_OK`（bed / SR=100% / SPL=70.06%） | `runs/ApexNav/single_episode_status.md`；log `.../single_episode_20261101_retry4.log`；镜像 `50e76a268b26` |
+| VLFM=`BATCH_OK`（8/8 无崩溃；SR=25% SPL=0.1164；峰显存 19356 MiB） | `runs/VLFM/batch_8ep_status.md`；D `.../batch_20261101/VLFM/` |
+| MSGNav=`BATCH_OK`（8/8 无崩溃；SR_dist=37.5% SPL≈20.7%；峰显存 16507 MiB） | `runs/MSGNav/batch_8ep_status.md`；D `.../batch_20261101/MSGNav/` |
+| ApexNav=`BATCH_OK`（8/8 无崩溃；任务成功 6/8；峰显存 12912 MiB） | `runs/ApexNav/batch_8ep_status.md`；D `.../batch_20261101/ApexNav/metrics.csv`；VLM=`vlm.*` 非 `vlfm.vlm` |
 | ApexNav 需 ROS1 Noetic + catkin planner；Jammy 上可用 Focal Noetic 文件树 + focal `.so`，但 `cv_bridge`/py3.8 boost 与 conda py3.9 不兼容 → 适配层手写 Image | 同 status；`habitat2ros/habitat_publisher.py` |
 | MSGNav 需 `ollama` 包（即使 `use_ollama:false` 也会 import） | 已 bake 进 `:msgnav-deps` |
 | MSGNav 可用 API 模型为 `gpt-5.6-sol`（`gpt-5.5` 404） | 容器内冒烟；密钥仅本地 `.env` |

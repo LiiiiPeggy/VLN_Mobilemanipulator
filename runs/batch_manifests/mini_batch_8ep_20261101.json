@@ -1,0 +1,163 @@
+{
+  "created_utc": "2026-11-01T08:50:15.790451+00:00",
+  "purpose": "stability mini-batch (not paper results)",
+  "notes": [
+    "VLFM uses ObjectNav HM3D v1; ApexNav/MSGNav use v2 \u2014 do NOT cross-rank across protocols.",
+    "ApexNav uses global Habitat episode indices 0..7 in default hm3dv2 val iterator (test_epi_num).",
+    "MSGNav uses a constructed 8-episode subset under data/objectnav_hm3d_batch8.",
+    "VLFM uses habitat_baselines.test_episode_count=8 with fixed hydra seed from config."
+  ],
+  "shared_scenes_alphabetical_first8": [
+    "4ok3usBNeis",
+    "5cdEh9F2hJL",
+    "6s7QHgap2fW",
+    "DYehNKdT76V",
+    "Dd4bFSTQ8gi",
+    "Nfvxx8J5NCo",
+    "QaLdnwvtxbs",
+    "TEEsavR23oF"
+  ],
+  "v2_first_episode_per_scene": [
+    {
+      "scene_id": "4ok3usBNeis",
+      "episode_id": "5",
+      "object_category": "bed",
+      "content_file": "/media/ubuntu/D/VLN_shared/datasets/objectnav/hm3d/v2/val/content/4ok3usBNeis.json.gz",
+      "protocol": "objectnav_hm3d_v2"
+    },
+    {
+      "scene_id": "5cdEh9F2hJL",
+      "episode_id": "3",
+      "object_category": "tv_monitor",
+      "content_file": "/media/ubuntu/D/VLN_shared/datasets/objectnav/hm3d/v2/val/content/5cdEh9F2hJL.json.gz",
+      "protocol": "objectnav_hm3d_v2"
+    },
+    {
+      "scene_id": "6s7QHgap2fW",
+      "episode_id": "0",
+      "object_category": "sofa",
+      "content_file": "/media/ubuntu/D/VLN_shared/datasets/objectnav/hm3d/v2/val/content/6s7QHgap2fW.json.gz",
+      "protocol": "objectnav_hm3d_v2"
+    },
+    {
+      "scene_id": "DYehNKdT76V",
+      "episode_id": "4",
+      "object_category": "plant",
+      "content_file": "/media/ubuntu/D/VLN_shared/datasets/objectnav/hm3d/v2/val/content/DYehNKdT76V.json.gz",
+      "protocol": "objectnav_hm3d_v2"
+    },
+    {
+      "scene_id": "Dd4bFSTQ8gi",
+      "episode_id": "3",
+      "object_category": "chair",
+      "content_file": "/media/ubuntu/D/VLN_shared/datasets/objectnav/hm3d/v2/val/content/Dd4bFSTQ8gi.json.gz",
+      "protocol": "objectnav_hm3d_v2"
+    },
+    {
+      "scene_id": "Nfvxx8J5NCo",
+      "episode_id": "0",
+      "object_category": "sofa",
+      "content_file": "/media/ubuntu/D/VLN_shared/datasets/objectnav/hm3d/v2/val/content/Nfvxx8J5NCo.json.gz",
+      "protocol": "objectnav_hm3d_v2"
+    },
+    {
+      "scene_id": "QaLdnwvtxbs",
+      "episode_id": "1",
+      "object_category": "bed",
+      "content_file": "/media/ubuntu/D/VLN_shared/datasets/objectnav/hm3d/v2/val/content/QaLdnwvtxbs.json.gz",
+      "protocol": "objectnav_hm3d_v2"
+    },
+    {
+      "scene_id": "TEEsavR23oF",
+      "episode_id": "0",
+      "object_category": "toilet",
+      "content_file": "/media/ubuntu/D/VLN_shared/datasets/objectnav/hm3d/v2/val/content/TEEsavR23oF.json.gz",
+      "protocol": "objectnav_hm3d_v2"
+    }
+  ],
+  "v1_first_episode_per_scene": [
+    {
+      "scene_id": "4ok3usBNeis",
+      "episode_id": "0",
+      "object_category": "bed",
+      "content_file": "/media/ubuntu/D/VLN_shared/datasets/objectnav/hm3d/v1/val/content/4ok3usBNeis.json.gz",
+      "protocol": "objectnav_hm3d_v1"
+    },
+    {
+      "scene_id": "5cdEh9F2hJL",
+      "episode_id": "0",
+      "object_category": "tv_monitor",
+      "content_file": "/media/ubuntu/D/VLN_shared/datasets/objectnav/hm3d/v1/val/content/5cdEh9F2hJL.json.gz",
+      "protocol": "objectnav_hm3d_v1"
+    },
+    {
+      "scene_id": "6s7QHgap2fW",
+      "episode_id": "0",
+      "object_category": "chair",
+      "content_file": "/media/ubuntu/D/VLN_shared/datasets/objectnav/hm3d/v1/val/content/6s7QHgap2fW.json.gz",
+      "protocol": "objectnav_hm3d_v1"
+    },
+    {
+      "scene_id": "DYehNKdT76V",
+      "episode_id": "0",
+      "object_category": "toilet",
+      "content_file": "/media/ubuntu/D/VLN_shared/datasets/objectnav/hm3d/v1/val/content/DYehNKdT76V.json.gz",
+      "protocol": "objectnav_hm3d_v1"
+    },
+    {
+      "scene_id": "Dd4bFSTQ8gi",
+      "episode_id": "0",
+      "object_category": "chair",
+      "content_file": "/media/ubuntu/D/VLN_shared/datasets/objectnav/hm3d/v1/val/content/Dd4bFSTQ8gi.json.gz",
+      "protocol": "objectnav_hm3d_v1"
+    },
+    {
+      "scene_id": "Nfvxx8J5NCo",
+      "episode_id": "0",
+      "object_category": "toilet",
+      "content_file": "/media/ubuntu/D/VLN_shared/datasets/objectnav/hm3d/v1/val/content/Nfvxx8J5NCo.json.gz",
+      "protocol": "objectnav_hm3d_v1"
+    },
+    {
+      "scene_id": "QaLdnwvtxbs",
+      "episode_id": "0",
+      "object_category": "chair",
+      "content_file": "/media/ubuntu/D/VLN_shared/datasets/objectnav/hm3d/v1/val/content/QaLdnwvtxbs.json.gz",
+      "protocol": "objectnav_hm3d_v1"
+    },
+    {
+      "scene_id": "TEEsavR23oF",
+      "episode_id": "0",
+      "object_category": "toilet",
+      "content_file": "/media/ubuntu/D/VLN_shared/datasets/objectnav/hm3d/v1/val/content/TEEsavR23oF.json.gz",
+      "protocol": "objectnav_hm3d_v1"
+    }
+  ],
+  "apexnav": {
+    "dataset": "hm3dv2",
+    "seed": "upstream_default",
+    "global_episode_indices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "command_template": "python habitat_evaluation.py --dataset hm3dv2 test_epi_num={i} need_video=false"
+  },
+  "msgnav": {
+    "dataset": "objectnav_hm3d_v2_subset",
+    "seed": 77,
+    "model": "gpt-5.6-sol",
+    "endpoint": "https://model8.run/v1",
+    "command": "HF_ENDPOINT=https://hf-mirror.com HF_HOME=/shared/cache/huggingface python -u run_hm3d_evaluation.py -cf cfg/eval_hm3d_batch8.yaml --specific 0"
+  },
+  "vlfm": {
+    "dataset": "objectnav_hm3d_v1",
+    "test_episode_count": 8,
+    "command": "python -m vlfm.run habitat_baselines.test_episode_count=8"
+  }
+}

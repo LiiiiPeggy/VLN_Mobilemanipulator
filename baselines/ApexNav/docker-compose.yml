@@ -2,7 +2,8 @@ name: vln-apexnav
 
 services:
   apexnav:
-    image: vln-apexnav:latest
+    # Pin verified single-ep runtime (do not silently fall back to :build without ROS/VLM)
+    image: vln-apexnav:single-ep-deps
     build:
       context: ../../shared/docker
       dockerfile: Dockerfile.apexnav

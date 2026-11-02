@@ -101,16 +101,18 @@ def main(cfg, start_ratio=0.0, end_ratio=1.0, specific = None):
     
     # Load dataset
     scene_data_list = ['4ok3usBNeis.json', '5cdEh9F2hJL.json', '6s7QHgap2fW.json', '7MXmsvcQjpJ.json', 'BAbdmeyTvMZ.json', 'CrMo8WxCyVb.json', 'DYehNKdT76V.json', 'Dd4bFSTQ8gi.json', 'GLAQ4DNUx5U.json', 'HY1NcmCgn3n.json', 'LT9Jq6dN3Ea.json', 'MHPLjHsuG27.json', 'Nfvxx8J5NCo.json', 'QaLdnwvtxbs.json', 'TEEsavR23oF.json', 'VBzV5z6i1WS.json', 'XB4GS9ShBRE.json', 'a8BtkwhxdRV.json', 'bCPU9suPUw9.json', 'bxsVRursffK.json', 'cvZr5TUy5C5.json', 'eF36g7L6Z9M.json', 'h1zeeAwLh9Z.json', 'k1cupFYWXJ6.json', 'mL8ThkuaVTM.json', 'mv2HUxq3B53.json', 'p53SfW6mjZe.json', 'q3zU7Yy5E5s.json', 'q5QZSEeHe5g.json', 'qyAac8rV8Zk.json', 'svBbv1Pavdk.json', 'wcojb4TFT35.json', 'y9hTuugGdiq.json', 'yr17PDCnDDW.json', 'ziup5kvtCCR.json', 'zt1RVoi7PcG.json']
-    scene_data_list = os.listdir(cfg.test_data_dir)
+    # Sorted for stable --specific indexing (listdir order is filesystem-dependent).
+    scene_data_list = sorted(os.listdir(cfg.test_data_dir))
     num_scene = len(scene_data_list)
-    random.shuffle(scene_data_list)
     num_episode = 0
     
     # split the test data by scene
     if specific is not None:
+        # Keep lexical order when selecting a single scene index.
         scene_data_list = scene_data_list[specific:specific + 1]
         logging.info(f"Specific scene {specific} selected for evaluation.")
     else:
+        random.shuffle(scene_data_list)
         scene_data_list = scene_data_list[
             int(start_ratio * num_scene) : int(end_ratio * num_scene)
         ]
@@ -150,7 +152,16 @@ def main(cfg, start_ratio=0.0, end_ratio=1.0, specific = None):
         scene_idx += 1
         # load goatbench data
         scene_name = scene_data_file.split(".")[0]
-        scene_id = [scene_id for scene_id in all_scene_ids if scene_name in scene_id][0]
+        # Mini-batch subsets may use NN_<scene>.json; strip numeric prefix for Habitat match.
+        if "_" in scene_name and scene_name.split("_", 1)[0].isdigit():
+            scene_name = scene_name.split("_", 1)[1]
+        matched = [sid for sid in all_scene_ids if scene_name in sid]
+        if not matched:
+            raise RuntimeError(
+                f"No Habitat scene id contains '{scene_name}' "
+                f"(from file {scene_data_file}); check test_data_dir naming."
+            )
+        scene_id = matched[0]
         scene_data = json.load(
             open(os.path.join(cfg.test_data_dir, scene_data_file), "r")
         )

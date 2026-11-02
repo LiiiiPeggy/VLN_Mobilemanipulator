@@ -58,6 +58,11 @@ baselines/SG-Nav/data_models_sam_vit_h_link
 # Heavy optional in-tree clones (re-clone per README if needed)
 baselines/VLFM/yolov7/
 
+# Mini-batch episode subsets & local driver scratch (regenerate via scripts; full logs on D)
+baselines/MSGNav/data/objectnav_hm3d_batch8/
+baselines/MSGNav/data/objectnav_hm3d_single_ep/
+runs/*/batch_20261101/
+
 # IDE / OS
 .idea/
 .vscode/
