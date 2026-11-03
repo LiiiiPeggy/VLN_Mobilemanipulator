@@ -37,7 +37,24 @@ STEERING_JOINT_NAMES = [
     "rr_steering_wheel_joint",
 ]
 WHEEL_JOINT_NAMES = ["fr_wheel_joint", "fl_wheel_joint", "rl_wheel_joint", "rr_wheel_joint"]
+# Teleop / MuJoCo home (NOT ApexNav camera height)
 ARM_DEFAULT = (0.6, 1.0, -2.4, 0.0, 1.4, 0.0)
+# ################################
+# ApexNav-compatible init: D455 optical ~0.88 m, horizontal forward (URDF FK).
+# Found by bounded joint search in adapter (2026-11-03); verified height≈0.870 m
+# (|Δ|<2 cm), |pitch/yaw/roll|<5°. Do NOT forge by moving Habitat Agent alone.
+# ################################
+ARM_APEXNAV_INIT = (
+    -1.1083997865013002,
+    0.5880577707428342,
+    0.49768828577247276,
+    -2.747758697711032,
+    -1.5721524977409986,
+    -0.49725820313247665,
+)
+APEXNAV_CAM_HEIGHT_M = 0.88
+APEXNAV_CAM_HEIGHT_TOL_M = 0.02
+APEXNAV_CAM_ANGLE_TOL_DEG = 5.0
 
 # Camera / TCP frames
 CAMERA_LINK = "d455_depth_optical_frame"

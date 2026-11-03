@@ -1,13 +1,13 @@
 # PROGRESS.md — 当前状态
 
-更新时间：2026-11-03（EGL 修复 + 原生 Habitat URDF）  
+更新时间：2026-11-03（真实 ApexNav→Ranger+CR10 多步寻物尝试）  
 证据优先于本文；冲突时以代码、`reports/`、`runs/`、容器实测为准。
 
 ## 研究目标与阶段
 
 **目标**：六套 VLN/ObjectNav baseline 可复现评测 → 再适配 RangerBox-CR10。
 
-**当前阶段**：三套主线 `BATCH_OK` 保持；**Bullet EGL 已修**；**原生 Habitat URDF 运动学 Demo 通过**；ApexNav 动作闭环（脚本策略）通过；PPO→Habitat 未集成（探针已记差异）。
+**当前阶段**：三套主线 `BATCH_OK` 保持；原生 URDF + **真实 ApexNav ROS planner 多步闭环**已有可复现证据；控制仍为 `kinematic_state_set`。
 
 ## Baseline 状态
 
@@ -20,19 +20,19 @@
 
 | 项 | 状态 | 证据 |
 |----|------|------|
-| EGL ICD | **已修复** | 空 `10_nvidia.json` → 恢复；`ensure_egl_icd.sh` |
-| 原生 URDF Demo | **通过** | `.../kinematic_demo/summary.json` |
-| 动态 RGB-D / 限位 | **通过** | traj + frames |
-| ApexNav 闭环 | **脚本闭环通过** | `.../apexnav_loop/`（非 ROS 全 planner） |
-| PPO Habitat | **未集成** | `.../ppo_habitat_probe/` |
+| EGL ICD | 已修复 | `ensure_egl_icd.sh` |
+| 原生 URDF Demo | 通过 | `.../kinematic_demo/` |
+| 初始相机 ≈0.88 m FK | **通过** | `ARM_APEXNAV_INIT`；AGL≈0.870 m |
+| 真实 ApexNav 闭环 | **多步尝试 OK** | `.../apexnav_real/real_20261103_120649/`（非 scripted） |
+| PPO Habitat | 未集成 | probe_only；权重仍 `model_5999.pt` |
 | 控制模式 | `kinematic_state_set` | 非全身动力学 |
 
 专用镜像：`vln-rangercr10:bullet`（不覆盖 baseline tags）。
 
 ## 下一步（最多 5）
 
-1. 可选：把 ApexNav ROS `/habitat/plan_action` 接到 `apexnav_bridge`（仍不改 baseline 默认）。  
-2. 若要坚持 PPO-in-Habitat：补齐 117-D 观测装配与 ChassisAction（失败则继续 MuJoCo）。  
-3. 缓解 `Simulator.close()` 134（次要）。  
-4. SG-Nav/UniGoal 版本对齐（可选）。  
-5. 停用后腾 GPU。
+1. 拉长步数/选同层可见目标，观察 planner 出 STOP 或视觉确认。  
+2. 点云一致性报告完善（中心 patch 诊断已有脚本）。  
+3. 若要坚持 PPO-in-Habitat：117-D 观测装配（可选）。  
+4. 缓解 `Simulator.close()` 134（次要）。  
+5. 停用后腾 GPU（VLM/roscore:11312）。

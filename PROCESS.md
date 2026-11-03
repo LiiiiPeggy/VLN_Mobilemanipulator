@@ -329,3 +329,28 @@
 **结论**：EGL→原生机器人/相机→ApexNav 运动学闭环 已独立达成；PPO 迁移另案。
 
 **相关**：`reports/habitat_rangercr10_integration.md`
+
+---
+
+## 2026-11-03 真实 ApexNav planner → Ranger+CR10 多步闭环
+
+**模块**：`adapters/habitat_rangercr10`
+
+**问题**：需用真实 ApexNav 感知/地图/规划驱动 Habitat 中 Ranger+CR10，且初始 D455≈0.88 m 水平朝前（URDF FK）。
+
+**操作**：
+
+- 适配层：`ros_dynamic_publisher`（分开发布 base/EE）、`pointcloud_dynamic`、`apexnav_real_episode`、`initial_camera_pose`；`ARM_APEXNAV_INIT` 关节搜索钉扎。
+- 孤立 ROS master `:11312`（不碰主机 NBV `:11311`）；rangercr10 内 `ln -sfn` `/workspace/ApexNav`；VLM 用本地 HF/TORCH cache + bert 目录软链；groundingdino 权重改为 D 盘实文件。
+- 跑有界 Episode：HM3D TEEsavR23oF / chair，max_steps=12。
+
+**实测结果**：
+
+- 运行 `real_20261103_120649`：`scripted_policy_used=false`，12 个 `/habitat/plan_action`，ITM 有值，终止 `step_budget_exhausted`，未宣称成功。
+- 初始相机 AGL≈0.870 m，角误差&lt;5°；LOOK 标明臂适配。
+- `Simulator.close()` 仍可能 abort；任务以 summary 为准。
+- 中心 patch 点云“一致性”随运动漂移≈步长，仅作代理诊断，非正式静态路标跟踪。
+
+**结论**：最低验收（真实 planner 多步寻物尝试 + 可复现证据）达成；非 PPO、非批量 benchmark。
+
+**相关**：`reports/habitat_rangercr10_integration.md`、`.../apexnav_real/real_20261103_120649/`

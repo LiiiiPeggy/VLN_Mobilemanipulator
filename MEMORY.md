@@ -124,6 +124,11 @@ VLN_Mobilemanipulator/
 | 现网 VLN 镜像均 `built_with_bullet=False`；URDF 需专用 bullet 构建 | `habitat_sim.built_with_bullet` |
 | EGL 修复后原生 URDF-in-Habitat 可用；混合 Demo 仍作后备 | `run_kinematic_demo.sh`；`reports/habitat_rangercr10_integration.md` |
 | 底盘高度 `y=0.4071`（对齐 MuJoCo home） | `kinematic_demo.py` / `hybrid_kinematic_demo.py` |
+| ApexNav 相机 0.88 m：`ARM_DEFAULT` 不满足；用 `ARM_APEXNAV_INIT`（FK AGL≈0.870 m） | `constants.py`；`initial_camera_pose.py` |
+| 真实 ApexNav ROS 闭环：孤立 master `:11312` + rangercr10 内 exploration/VLM；勿占用主机 NBV `:11311` | `run_apexnav_real_episode.sh`；证据 `.../apexnav_real/real_20261103_120649/` |
+| catkin 前缀需容器内 `/workspace/ApexNav` → `baselines/ApexNav` | devel 构建路径 |
+| HM3D-v2 goals 在 `goals_by_category`；评估宜滤同层 | `apexnav_real_episode._goals_for_episode` |
+| LOOK_UP/DOWN 为 CR10 腕关节适配，≠ Habitat look ±30° | `steps.jsonl` `look_equivalence` |
 
 
 ## 8. 常见兼容性风险
@@ -145,3 +150,5 @@ VLN_Mobilemanipulator/
 | 运动学 vs 动力学 | Demo 为状态写入 | 必须标 `kinematic_state_set`，禁止写成全身动力学 |
 | habitat-sim close | 0.3.1 常 rc=134 / heap 噪声 | 以 `summary.status` 判定；脚本接受 0/134 |
 | PPO→Habitat | 117-D 观测与 ChassisAction 未对齐 | 保持 MuJoCo 验证路径；钉扎 `model_5999.pt` |
+| ApexNav VLM 离线 | bert/blip2/dino 勿直连 HF | `HF_HOME`/`TORCH_HOME` + `/workspace/ApexNav/bert-base-uncased`；dino 权重用 D 盘实文件 |
+| 动态相机 | 不可再用固定 +0.88 m | 适配层发真实 EE SE3；第三人称渲染勿覆盖 EE 观测 |

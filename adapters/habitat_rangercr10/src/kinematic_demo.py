@@ -203,21 +203,37 @@ class RangerCr10KinematicEnv:
         target = base + mn.Vector3(0.0, 0.6, 0.0)
         self._third_T = mn.Matrix4.look_at(eye, target, mn.Vector3(0.0, 1.0, 0.0))
 
-    def observe(self) -> Dict[str, np.ndarray]:
+    def observe_ee_only(self) -> Dict[str, np.ndarray]:
+        """Capture EE RGB-D only (no third-person agent move). Use for planner inputs."""
         self.sync_agent_sensors()
-        # Capture EE first
         self._set_agent_pose(self._ee_T)
-        obs_ee = self.sim.get_sensor_observations()
-        rgb = obs_ee["ee_rgb"]
-        depth = obs_ee["ee_depth"]
-        # Then third (same agent sensors; we only keep third_rgb channel after reposition)
+        obs = self.sim.get_sensor_observations()
+        return {"ee_rgb": obs["ee_rgb"], "ee_depth": obs["ee_depth"], "ee_T": self._ee_T}
+
+    def observe_third_only(self) -> np.ndarray:
+        """Third-person snapshot for demo; call AFTER planner publish to avoid pose pollution."""
+        self.sync_agent_sensors()
         self._set_agent_pose(self._third_T)
-        obs_third = self.sim.get_sensor_observations()
+        return self.sim.get_sensor_observations()["third_rgb"]
+
+    def observe(self) -> Dict[str, np.ndarray]:
+        ee = self.observe_ee_only()
+        third = self.observe_third_only()
         return {
-            "ee_rgb": rgb,
-            "ee_depth": depth,
-            "third_rgb": obs_third["third_rgb"],
+            "ee_rgb": ee["ee_rgb"],
+            "ee_depth": ee["ee_depth"],
+            "third_rgb": third,
+            "ee_T": ee["ee_T"],
         }
+
+    def camera_forward_hab(self) -> np.ndarray:
+        """Habitat camera forward (-Z axis of EE camera frame after optical fix)."""
+        T = self.camera_world_matrix()
+        fix = mn.Matrix4.rotation_x(mn.Rad(math.pi))
+        ee_T = T @ fix
+        # column 2 of rotation is camera +Z; Habitat camera looks -Z → forward = -col2
+        R = np.array(ee_T.rotation(), dtype=np.float64).reshape(3, 3)
+        return (-R[:, 2]).astype(np.float64)
 
     def contact_count(self) -> int:
         return len(self.sim.get_physics_contact_points())
