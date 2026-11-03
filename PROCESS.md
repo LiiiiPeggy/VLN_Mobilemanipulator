@@ -354,3 +354,27 @@
 **结论**：最低验收（真实 planner 多步寻物尝试 + 可复现证据）达成；非 PPO、非批量 benchmark。
 
 **相关**：`reports/habitat_rangercr10_integration.md`、`.../apexnav_real/real_20261103_120649/`
+
+---
+
+## 2026-11-03 姿态修复 + 论文风 Demo + 正式规划阶段
+
+**模块**：`adapters/habitat_rangercr10`
+
+**问题**：Demo 中机器人倾倒/穿模；第三人称易被挡；布局缺在线占据图；先前 12 步仅 FSM 初始化环视。
+
+**操作**：
+
+1. 根因：缺 Z-up→Y-up 根旋转 → 加 `Ry(-90)*Rx(-90)`；轮贴地 `snap_wheels_to_floor`；`find_adapted_start` 避开床柜（标 adapted）。
+2. 第三人称后上方跟随 + 距离/高度回退避墙；`demo_compose` 16:9；`map_listener` 订阅 `/grid_map/*`。
+3. `max_steps≥36`；phase 区分 `init_lookaround` / `explore_planner`；重标定 `ARM_APEXNAV_INIT`。
+
+**实测结果**（`real_20261103_124521`）：
+
+- 直立：`up_dot_hab_y=1.0`，轮高差≈1.6 mm；出生偏移≈1.8 m，`adapted_episode=true`。
+- 26 步 init + 1 步 explore：`callActionPlanner` 返回 `NO_COVERABLE_FRONTIER`→STOP；地图有 occupied/free/unknown 消息。
+- Demo：`demo/apexnav_ranger_paper_demo.mp4`；未宣称寻物成功。
+
+**结论**：姿态与 Demo 验收达标；正式规划已进入但本场景 frontier 不足早停——后续换开阔 Episode 验证多步 FWD。
+
+**相关**：`reports/habitat_rangercr10_integration.md`、`.../apexnav_real/real_20261103_124521/`、`.../pose_fix_20261103/`

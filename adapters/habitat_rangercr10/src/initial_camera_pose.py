@@ -50,7 +50,8 @@ def optical_metrics(env, base_yaw: float) -> Dict[str, Any]:
     # RealSense optical: +Z forward, +X right, +Y down
     fwd = R[:, 2]
     right = R[:, 0]
-    floor_y = float(env.base_xyz[1]) - float(DEFAULT_BASE_Y)
+    # Prefer env.floor_y (navmesh); fall back to base_y - DEFAULT_BASE_Y only as legacy
+    floor_y = float(getattr(env, "floor_y", float(env.base_xyz[1]) - float(DEFAULT_BASE_Y)))
     height_agl = float(p[1]) - floor_y
     pitch = math.asin(float(np.clip(fwd[1], -1.0, 1.0)))
     fxz = np.array([fwd[0], 0.0, fwd[2]], dtype=np.float64)

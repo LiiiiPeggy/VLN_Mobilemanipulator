@@ -1,13 +1,13 @@
 # PROGRESS.md — 当前状态
 
-更新时间：2026-11-03（真实 ApexNav→Ranger+CR10 多步寻物尝试）  
+更新时间：2026-11-03（姿态修复 + 论文风 Demo + 正式规划阶段验证）  
 证据优先于本文；冲突时以代码、`reports/`、`runs/`、容器实测为准。
 
 ## 研究目标与阶段
 
 **目标**：六套 VLN/ObjectNav baseline 可复现评测 → 再适配 RangerBox-CR10。
 
-**当前阶段**：三套主线 `BATCH_OK` 保持；原生 URDF + **真实 ApexNav ROS planner 多步闭环**已有可复现证据；控制仍为 `kinematic_state_set`。
+**当前阶段**：三套主线 `BATCH_OK` 保持；原生 URDF + **真实 ApexNav ROS** 闭环已验证至 **初始化环视结束并进入 `callActionPlanner()`**；控制仍为 `kinematic_state_set`；Demo 为 16:9 主视角+语义+在线占据图。
 
 ## Baseline 状态
 
@@ -21,18 +21,20 @@
 | 项 | 状态 | 证据 |
 |----|------|------|
 | EGL ICD | 已修复 | `ensure_egl_icd.sh` |
-| 原生 URDF Demo | 通过 | `.../kinematic_demo/` |
-| 初始相机 ≈0.88 m FK | **通过** | `ARM_APEXNAV_INIT`；AGL≈0.870 m |
-| 真实 ApexNav 闭环 | **多步尝试 OK** | `.../apexnav_real/real_20261103_120649/`（非 scripted） |
-| PPO Habitat | 未集成 | probe_only；权重仍 `model_5999.pt` |
+| URDF 直立 / 贴地 | **通过** | `Ry(-90)*Rx(-90)`；`pose_diag/upright.json` |
+| 适配出生点 | **已用** | offset≈1.8 m；`adapted_episode=true` |
+| 初始相机 ≈0.88 m FK | **通过** | AGL≈0.881 m |
+| 真实 ApexNav 闭环 | **27 步** | `.../real_20261103_124521/`：26 init + 1 explore(STOP) |
+| 在线 `/grid_map` Demo | **有数据** | `demo/apexnav_ranger_paper_demo.mp4` |
+| PPO Habitat | 未集成 | probe_only |
 | 控制模式 | `kinematic_state_set` | 非全身动力学 |
 
 专用镜像：`vln-rangercr10:bullet`（不覆盖 baseline tags）。
 
 ## 下一步（最多 5）
 
-1. 拉长步数/选同层可见目标，观察 planner 出 STOP 或视觉确认。  
-2. 点云一致性报告完善（中心 patch 诊断已有脚本）。  
-3. 若要坚持 PPO-in-Habitat：117-D 观测装配（可选）。  
+1. 选更开阔 / 同层可见目标 Episode，验证 `callActionPlanner` 产出多步 FWD/TURN（非仅 NO_COVERABLE_FRONTIER→STOP）。  
+2. 继续压低贴柜接触；必要时扩大 spawn 半径或换场景。  
+3. 点云一致性报告完善。  
 4. 缓解 `Simulator.close()` 134（次要）。  
 5. 停用后腾 GPU（VLM/roscore:11312）。

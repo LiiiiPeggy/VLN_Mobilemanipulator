@@ -7,7 +7,7 @@ ROOT="$(cd "$(dirname "$0")/../../.." && pwd)"
 OUT_ROOT="${OUT_DIR:-/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real}"
 RUN_ID="${RUN_ID:-$(date +%Y%m%d_%H%M%S)}"
 OUT="$OUT_ROOT/$RUN_ID"
-MAX_STEPS="${MAX_STEPS:-20}"
+MAX_STEPS="${MAX_STEPS:-40}"
 GPU="${GPU:-0}"
 ROS_PORT="${ROS_PORT:-11312}"
 LOGDIR="$OUT/launch_logs"
@@ -90,6 +90,15 @@ set -e
 # stop ONLY our isolated ROS tree (do not touch host :11311 / vln-apexnav)
 docker exec vln-rangercr10 bash -lc "$SRC_ROS; rosnode kill -a 2>/dev/null || true; kill \$(pgrep -f 'roscore -p ${ROS_PORT}') 2>/dev/null || true" || true
 
+# Encode 16:9 paper-style demo if frames exist (inside container: owns root-written files)
+if docker exec vln-rangercr10 bash -lc "compgen -G '$OUT/demo/frame_*.png' >/dev/null"; then
+  echo "[demo] encode apexnav_ranger_paper_demo.mp4"
+  docker exec vln-rangercr10 bash -lc \
+    "ffmpeg -y -framerate 2 -i '$OUT/demo/frame_%04d.png' -c:v libx264 -pix_fmt yuv420p -crf 23 \
+     '$OUT/demo/apexnav_ranger_paper_demo.mp4' >/dev/null 2>&1; chown -R 1000:1000 '$OUT' || true" \
+    || true
+fi
+
 SUM="$OUT/summary.json"
 if [[ ! -f "$SUM" ]]; then
   echo "ERROR: missing summary (rc=$rc)" >&2
@@ -104,7 +113,11 @@ task_ok = s.get("status")=="ok" and s.get("scripted_policy_used") is False
 proc_note = "cleanup_abort_ok" if rc in (0,134) else f"rc={rc}"
 print("task_status=", s.get("status"), "termination=", s.get("termination"),
       "n_steps=", s.get("n_steps"), "container_rc=", rc, "proc=", proc_note,
-      "planner=", s.get("apexnav_planner"), "scripted=", s.get("scripted_policy_used"))
+      "planner=", s.get("apexnav_planner"), "scripted=", s.get("scripted_policy_used"),
+      "init=", s.get("n_init_lookaround_actions"), "explore=", s.get("n_explore_planner_actions"),
+      "entered_explore=", s.get("entered_callActionPlanner"),
+      "map=", (s.get("online_grid_map") or {}).get("has_data"),
+      "adapted=", s.get("adapted_episode"))
 # Minimum acceptance: real planner drove ≥2 steps OR planner_stop after ≥1
 n=int(s.get("n_steps") or 0)
 accept = task_ok and n >= 1 and s.get("seen_plan_actions", n) >= 1

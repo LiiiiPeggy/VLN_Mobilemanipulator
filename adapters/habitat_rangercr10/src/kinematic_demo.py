@@ -46,8 +46,16 @@ from .constants import (
 )
 from .traj_utils import preset_trajectory, save_depth_mm
 
-# MuJoCo home base height (wheel contact); Habitat y-up uses same magnitude for base_link.
-DEFAULT_BASE_Y = 0.4071
+# ################################
+# URDF is ROS Z-up; Habitat is Y-up. Root must apply Ry(-90)*Rx(-90) so that
+# ROS +X(fwd)->Hab +Z, ROS +Z(up)->Hab +Y. Without this the chassis appears tipped.
+# Base height: wheel centers ≈ base_y - 0.26 m; Ranger wheel radius ≈ 0.125 m →
+# base_y ≈ 0.26+0.125 = 0.385 (snap via snap_wheels_to_floor).
+# ################################
+DEFAULT_BASE_Y = 0.4419  # after wheel snap with r=0.125 on flat floor
+WHEEL_RADIUS = 0.125
+URDF_TO_HABITAT_RX = -math.pi / 2.0
+URDF_TO_HABITAT_RY = -math.pi / 2.0
 
 
 def _ensure_dir(p: Path) -> Path:
@@ -146,11 +154,25 @@ class RangerCr10KinematicEnv:
         self.arm_q = np.array(ARM_DEFAULT, dtype=np.float64)
         self.base_xyz = np.array([1.0, DEFAULT_BASE_Y, 1.0], dtype=np.float64)
         self.base_yaw = 0.0
+        self.floor_y = 0.0  # navigable floor height (Habitat Y); used for AGL metrics
         self._apply_state()
 
+    def _urdf_to_habitat(self) -> mn.Matrix4:
+        """Fixed Z-up (URDF) → Y-up (Habitat) axes, before yaw about Hab Y."""
+        return mn.Matrix4.rotation_y(mn.Rad(URDF_TO_HABITAT_RY)) @ mn.Matrix4.rotation_x(
+            mn.Rad(URDF_TO_HABITAT_RX)
+        )
+
     def _base_matrix(self) -> mn.Matrix4:
-        rot = mn.Quaternion.rotation(mn.Rad(self.base_yaw), mn.Vector3(0.0, 1.0, 0.0))
-        return mn.Matrix4.from_(rot.to_matrix(), mn.Vector3(*self.base_xyz))
+        # ################################
+        # T = Trans * R_yaw(Hab Y) * R_urdf→hab
+        # ################################
+        yaw_r = mn.Matrix4.rotation_y(mn.Rad(self.base_yaw))
+        return (
+            mn.Matrix4.from_(mn.Matrix3x3(), mn.Vector3(*self.base_xyz))
+            @ yaw_r
+            @ self._urdf_to_habitat()
+        )
 
     def _apply_state(self) -> None:
         jp = np.array(self.ao.joint_positions, dtype=np.float64)
@@ -161,10 +183,96 @@ class RangerCr10KinematicEnv:
         # kinematic write does not auto-step; nudge collision world
         self.sim.perform_discrete_collision_detection()
 
-    def set_base_pose(self, x: float, z: float, yaw: float, y: float = DEFAULT_BASE_Y) -> None:
+    def wheel_link_heights(self) -> Dict[str, float]:
+        out = {}
+        for name in (
+            "fr_wheel_link",
+            "fl_wheel_link",
+            "rl_wheel_link",
+            "rr_wheel_link",
+        ):
+            if name not in self.link_ids:
+                continue
+            p = self.ao.get_link_scene_node(self.link_ids[name]).absolute_transformation().translation
+            out[name] = float(p.y)
+        return out
+
+    def upright_diagnostics(self) -> Dict[str, float]:
+        """Check base +Z_urdf maps near Hab +Y (robot upright)."""
+        T = self.ao.transformation
+        # column 1 of rotation after full T is Hab image of robot local +Y... use axes of R_urdf only
+        R = self._urdf_to_habitat().rotation()
+        # After yaw*urdf: local ROS +Z (up) → Hab +Y
+        up = T.transform_vector(mn.Vector3(0.0, 0.0, 1.0))
+        fwd = T.transform_vector(mn.Vector3(1.0, 0.0, 0.0))
+        return {
+            "up_dot_hab_y": float(up.y),
+            "fwd_xz_norm": float(math.hypot(fwd.x, fwd.z)),
+            "wheel_y_min": min(self.wheel_link_heights().values()) if self.wheel_link_heights() else None,
+            "wheel_y_max": max(self.wheel_link_heights().values()) if self.wheel_link_heights() else None,
+            "wheel_y_spread": (
+                max(self.wheel_link_heights().values()) - min(self.wheel_link_heights().values())
+                if self.wheel_link_heights()
+                else None
+            ),
+        }
+
+    def estimate_visual_floor_y(self, hint_y: float, x: Optional[float] = None, z: Optional[float] = None) -> float:
+        """Raycast down to visual mesh; HM3D navmesh floor is often below carpet."""
+        # ################################
+        # Prefer geometry hit over episode_start_y so wheels meet the rendered floor.
+        # ################################
+        px = float(self.base_xyz[0] if x is None else x)
+        pz = float(self.base_xyz[2] if z is None else z)
+        origin = mn.Vector3(px, float(hint_y) + 2.5, pz)
+        try:
+            hit = self.sim.cast_ray(
+                habitat_sim.geo.Ray(origin, mn.Vector3(0.0, -1.0, 0.0)),
+                max_distance=5.0,
+            )
+            if getattr(hit, "has_hit", False):
+                # habitat RayHitInfo: point / ray.hit_point depending on version
+                pt = getattr(hit, "point", None)
+                if pt is None and hasattr(hit, "ray"):
+                    pt = origin + hit.ray.direction * float(hit.ray.distance)
+                if pt is not None:
+                    fy = float(pt.y if hasattr(pt, "y") else pt[1])
+                    if abs(fy - float(hint_y)) < 0.6:
+                        return fy
+        except Exception:
+            pass
+        return float(hint_y)
+
+    def snap_wheels_to_floor(self, floor_y: float, wheel_radius: float = 0.125) -> float:
+        """Shift base_y so mean wheel center ≈ floor_y + wheel_radius."""
+        hs = self.wheel_link_heights()
+        if not hs:
+            return float(self.base_xyz[1])
+        mean_w = float(np.mean(list(hs.values())))
+        target = float(floor_y) + float(wheel_radius)
+        delta = target - mean_w
+        self.base_xyz[1] = float(self.base_xyz[1] + delta)
+        self._apply_state()
+        return float(self.base_xyz[1])
+
+    def set_base_pose(
+        self,
+        x: float,
+        z: float,
+        yaw: float,
+        y: float = DEFAULT_BASE_Y,
+        floor_y: Optional[float] = None,
+        snap_wheels: bool = False,
+    ) -> None:
         self.base_xyz[:] = (x, y, z)
         self.base_yaw = float(yaw)
+        if floor_y is not None:
+            self.floor_y = float(floor_y)
         self._apply_state()
+        if snap_wheels:
+            # Refine with visual mesh when possible (navmesh can sit below carpet).
+            self.floor_y = self.estimate_visual_floor_y(self.floor_y, x=x, z=z)
+            self.snap_wheels_to_floor(self.floor_y, WHEEL_RADIUS)
 
     def set_arm_joints(self, q: Sequence[float]) -> None:
         q = np.asarray(q, dtype=np.float64)
@@ -196,12 +304,66 @@ class RangerCr10KinematicEnv:
         # OpenCV optical (+Z fwd, Y down) -> Habitat camera (-Z fwd, Y up): 180° about X
         fix = mn.Matrix4.rotation_x(mn.Rad(math.pi))
         self._ee_T = cam_T @ fix
+        self._third_T = self.compute_third_person_T()
 
+    def compute_third_person_T(
+        self,
+        dist: float = 3.5,
+        height: float = 2.2,
+        look_height: float = 0.65,
+        min_dist: float = 1.4,
+        max_dist: float = 5.0,
+    ) -> mn.Matrix4:
+        """Follow cam behind-above robot; pull in / raise if eye would be in geometry."""
         fwd = mn.Vector3(math.sin(self.base_yaw), 0.0, math.cos(self.base_yaw))
         base = mn.Vector3(*self.base_xyz)
-        eye = base - fwd * 2.8 + mn.Vector3(0.0, 1.6, 0.0)
-        target = base + mn.Vector3(0.0, 0.6, 0.0)
-        self._third_T = mn.Matrix4.look_at(eye, target, mn.Vector3(0.0, 1.0, 0.0))
+        target = base + mn.Vector3(0.0, look_height, 0.0)
+        # ################################
+        # Prefer clear navmesh under eye; also try higher mounts to clear furniture.
+        # Demo-only; never used for ApexNav EE / planner inputs.
+        # ################################
+        pf = None
+        try:
+            pf = self.sim.pathfinder
+        except Exception:
+            pf = None
+
+        def _clear(cand: mn.Vector3) -> bool:
+            if pf is None or not pf.is_loaded:
+                return True
+            # Reject if xz far from navigable (inside wall / outside mesh)
+            snapped = pf.snap_point(
+                np.array([cand.x, float(self.floor_y) + 0.15, cand.z], dtype=np.float32)
+            )
+            if snapped is None:
+                return False
+            if math.hypot(float(snapped[0] - cand.x), float(snapped[2] - cand.z)) > 0.55:
+                return False
+            # Reject eye below local ceiling proxy via short cast if available
+            try:
+                hit = self.sim.cast_ray(
+                    habitat_sim.geo.Ray(cand, mn.Vector3(0.0, 1.0, 0.0)), max_distance=0.35
+                )
+                if hit.has_hit and hit.ray.direction.y > 0 and hit.distance < 0.3:
+                    return False
+            except Exception:
+                pass
+            return True
+
+        eye = None
+        for h_off in (height, height + 0.5, height + 0.9, 1.6):
+            for trial in (dist, 2.8, 2.2, 1.8, min_dist):
+                if trial < min_dist or trial > max_dist:
+                    continue
+                cand = base - fwd * float(trial) + mn.Vector3(0.0, float(h_off), 0.0)
+                if _clear(cand):
+                    eye = cand
+                    break
+            if eye is not None:
+                break
+        if eye is None:
+            eye = base - fwd * min_dist + mn.Vector3(0.0, height + 0.6, 0.0)
+        return mn.Matrix4.look_at(eye, target, mn.Vector3(0.0, 1.0, 0.0))
 
     def observe_ee_only(self) -> Dict[str, np.ndarray]:
         """Capture EE RGB-D only (no third-person agent move). Use for planner inputs."""

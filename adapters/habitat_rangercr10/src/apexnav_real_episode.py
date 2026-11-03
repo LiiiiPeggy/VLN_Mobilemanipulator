@@ -36,11 +36,18 @@ from .constants import (
     MODE_KINEMATIC,
     URDF_HABITAT,
 )
+from .coord_habitat_ros import hab_pos_to_ros
+from .demo_compose import compose_frame
 from .initial_camera_pose import apply_and_record_initial_camera
 from .kinematic_demo import DEFAULT_BASE_Y, RangerCr10KinematicEnv
+from .map_listener import ApexNavMapListener
 from .pointcloud_dynamic import object_clouds_from_masks
 from .ros_dynamic_publisher import DynamicROSPublisher
+from .spawn_utils import find_adapted_start
 from .traj_utils import save_depth_mm
+
+# ApexNav exploration_fsm.cpp: 1 TURN_DOWN + 12 TURN_LEFT + 1 TURN_UP + 12 TURN_LEFT
+APEXNAV_INIT_LOOKAROUND_ACTIONS = 26
 
 # Mirror params.py without importing habitat_evaluation side effects
 class HABITAT_STATE:
@@ -239,7 +246,7 @@ class ApexNavRangerBridge:
         self.run_id = args.run_id or time.strftime("%Y%m%d_%H%M%S")
         self.out = Path(args.out_dir) / self.run_id
         self.out.mkdir(parents=True, exist_ok=True)
-        for sub in ("rgb_ee", "depth_ee", "third", "detections", "maps"):
+        for sub in ("rgb_ee", "depth_ee", "third", "detections", "maps", "demo"):
             (self.out / sub).mkdir(exist_ok=True)
 
         self.global_action: Optional[int] = None
@@ -251,6 +258,11 @@ class ApexNavRangerBridge:
 
         self.env: Optional[RangerCr10KinematicEnv] = None
         self.ros_pub: Optional[DynamicROSPublisher] = None
+        self.map_listener: Optional[ApexNavMapListener] = None
+        self.traj_ros: List[Tuple[float, float]] = []
+        self.n_init_actions = 0
+        self.n_explore_actions = 0
+        self.spawn_info: Optional[dict] = None
         self.log: List[dict] = []
         self.termination = "not_finished"
         self.planner_alive = False
@@ -352,6 +364,12 @@ class ApexNavRangerBridge:
         }
         x, y, z = self.env.base_xyz
         yaw = self.env.base_yaw
+        floor_y = float(getattr(self.env, "floor_y", y - DEFAULT_BASE_Y))
+
+        def _place(nx, nz, nyaw):
+            self.env.set_base_pose(
+                float(nx), float(nz), float(nyaw), y=float(y), floor_y=floor_y
+            )
 
         if action == ACTION.STOP:
             info["executed"] = True
@@ -360,29 +378,32 @@ class ApexNavRangerBridge:
             # intermediate check: half step then full
             nx = x + 0.5 * FORWARD_M * math.sin(yaw)
             nz = z + 0.5 * FORWARD_M * math.cos(yaw)
-            self.env.set_base_pose(float(nx), float(nz), yaw, y=float(y))
+            _place(nx, nz, yaw)
             mid_c = self.env.contact_count()
             nx2 = x + FORWARD_M * math.sin(yaw)
             nz2 = z + FORWARD_M * math.cos(yaw)
-            self.env.set_base_pose(float(nx2), float(nz2), yaw, y=float(y))
+            _place(nx2, nz2, yaw)
             after_c = self.env.contact_count()
             # heuristic: large contact jump + tiny motion → blocked (diagnostic)
             moved = math.hypot(self.env.base_xyz[0] - x, self.env.base_xyz[2] - z)
             if after_c > before["contacts"] + 15 and moved < 0.05:
                 # revert
-                self.env.set_base_pose(float(x), float(z), yaw, y=float(y))
+                _place(x, z, yaw)
                 info["blocked"] = True
                 info["block_reason"] = "contact_spike_little_motion"
             else:
                 info["executed"] = True
             info["mid_contacts"] = mid_c
             info["moved_m"] = moved
+            info["upright"] = self.env.upright_diagnostics()
         elif action == ACTION.TURN_LEFT:
-            self.env.set_base_pose(float(x), float(z), yaw + TURN_RAD, y=float(y))
+            _place(x, z, yaw + TURN_RAD)
             info["executed"] = True
+            info["upright"] = self.env.upright_diagnostics()
         elif action == ACTION.TURN_RIGHT:
-            self.env.set_base_pose(float(x), float(z), yaw - TURN_RAD, y=float(y))
+            _place(x, z, yaw - TURN_RAD)
             info["executed"] = True
+            info["upright"] = self.env.upright_diagnostics()
         elif action in (ACTION.TURN_UP, ACTION.TURN_DOWN):
             # Adapted CR10 wrist pitch — NOT identical to Habitat look_up/down agent pitch
             q = self.env.arm_q.copy()
@@ -414,6 +435,7 @@ class ApexNavRangerBridge:
         try:
             rospy.init_node("apexnav_ranger_bridge", anonymous=True)
             self._callbacks()
+            self.map_listener = ApexNavMapListener()
             self._require_planner()
 
             ep = load_episode(
@@ -428,21 +450,58 @@ class ApexNavRangerBridge:
             # place at episode start (habitat y-up)
             sp = ep["start_position"]
             yaw = hab_quat_yaw(ep["start_rotation"])
-            # Habitat ObjectNav start_position y ≈ navmesh floor; Ranger base_link ≈ floor+0.407
-            base_y = float(sp[1]) + DEFAULT_BASE_Y
-            self.env.set_base_pose(float(sp[0]), float(sp[2]), yaw, y=base_y)
+            # Habitat ObjectNav start_position y ≈ navmesh floor
+            floor_y = float(sp[1])
+            spawn = find_adapted_start(
+                self.env, (float(sp[0]), float(sp[2])), yaw, floor_y=floor_y
+            )
+            self.spawn_info = spawn
             (self.out / "start_pose.json").write_text(
                 json.dumps(
                     {
                         "episode_start_position": sp,
                         "episode_start_rotation": ep["start_rotation"],
-                        "base_xyz": [float(sp[0]), base_y, float(sp[2])],
-                        "base_yaw": yaw,
-                        "note": "base_y = episode_start_y + DEFAULT_BASE_Y for floor+wheel height",
+                        "spawn": spawn,
+                        "urdf_to_habitat": "Ry(-90)*Rx(-90) Z-up→Y-up",
+                        "note": "adapted_episode if start offset >5cm; not raw benchmark",
                     },
                     indent=2,
                 )
             )
+            # seed trajectory for map panel
+            br0 = hab_pos_to_ros(self.env.base_xyz)
+            self.traj_ros = [(float(br0[0]), float(br0[1]))]
+            # diagnostic views (top/side/third) after upright place
+            diag = self.out / "pose_diag"
+            diag.mkdir(exist_ok=True)
+            try:
+                import magnum as mn
+
+                Image.fromarray(self.env.observe_third_only()[..., :3]).save(
+                    diag / "third.png"
+                )
+                b = self.env.base_xyz
+                eye = mn.Vector3(b[0] + 3.2, b[1] + 1.3, b[2])
+                tgt = mn.Vector3(b[0], b[1] + 0.5, b[2])
+                self.env._set_agent_pose(
+                    mn.Matrix4.look_at(eye, tgt, mn.Vector3(0, 1, 0))
+                )
+                Image.fromarray(
+                    self.env.sim.get_sensor_observations()["third_rgb"][..., :3]
+                ).save(diag / "side.png")
+                eye = mn.Vector3(b[0], b[1] + 4.8, b[2] + 0.05)
+                tgt = mn.Vector3(b[0], b[1], b[2])
+                self.env._set_agent_pose(
+                    mn.Matrix4.look_at(eye, tgt, mn.Vector3(0, 0, -1))
+                )
+                Image.fromarray(
+                    self.env.sim.get_sensor_observations()["third_rgb"][..., :3]
+                ).save(diag / "top.png")
+                (diag / "upright.json").write_text(
+                    json.dumps(self.env.upright_diagnostics(), indent=2)
+                )
+            except Exception as e:
+                (diag / "diag_error.txt").write_text(str(e))
             # ################################
             # ApexNav-like init camera via URDF FK (not ARM_DEFAULT / not forged agent pose)
             # ################################
@@ -582,12 +641,26 @@ class ApexNavRangerBridge:
 
                 action = int(self.global_action)
                 self.global_action = None
+                # ################################
+                # ApexNav exploration_fsm: first 26 plan actions = init lookaround;
+                # subsequent actions come from callActionPlanner() (real explore).
+                # ################################
+                phase = (
+                    "init_lookaround"
+                    if step < APEXNAV_INIT_LOOKAROUND_ACTIONS
+                    else "explore_planner"
+                )
+                if phase == "init_lookaround":
+                    self.n_init_actions += 1
+                else:
+                    self.n_explore_actions += 1
                 (self.out / "actions.jsonl").open("a").write(
                     json.dumps(
                         {
                             "step": step,
                             "action": action,
                             "name": ACTION_NAME.get(action, str(action)),
+                            "phase": phase,
                             "ros_state": self.ros_state,
                             "t": time.time(),
                         }
@@ -602,10 +675,13 @@ class ApexNavRangerBridge:
                 ee = self.env.observe_ee_only()
                 rgb, depth = ee["ee_rgb"], ee["ee_depth"]
                 meta = self._publish_obs_bundle(rgb, depth, step)
+                br = hab_pos_to_ros(self.env.base_xyz)
+                self.traj_ros.append((float(br[0]), float(br[1])))
 
                 # ITM + detection (real VLM servers)
                 cosine = -1.0
                 score_list, masks, label_list = [], [], []
+                rgb_vis = rgb[..., :3].copy()
                 try:
                     from vlm.utils.get_itm_message import get_itm_message_cosine  # type: ignore
                     from vlm.utils.get_object_utils import get_object  # type: ignore
@@ -634,19 +710,74 @@ class ApexNavRangerBridge:
                 cld_pub.publish(msg)
 
                 # third-person AFTER publish (must not affect planner stream)
+                third = None
                 try:
                     third = self.env.observe_third_only()
                     Image.fromarray(third[..., :3]).save(
                         self.out / "third" / f"frame_{step:04d}.png"
                     )
                 except Exception:
-                    pass
+                    third = np.zeros((720, 1280, 3), dtype=np.uint8)
+
+                # ################################
+                # Online ApexNav /grid_map panel + 16:9 paper-style compose
+                # ################################
+                map_stats = {}
+                try:
+                    assert self.map_listener is not None
+                    map_rgb = self.map_listener.render_panel(
+                        size=(320, 240),
+                        robot_xy=(float(br[0]), float(br[1])),
+                        robot_yaw=float(self.env.base_yaw),
+                        traj_xy=list(self.traj_ros),
+                    )
+                    map_stats = self.map_listener.stats()
+                    Image.fromarray(map_rgb).save(
+                        self.out / "maps" / f"frame_{step:04d}.png"
+                    )
+                    (self.out / "maps" / "latest_stats.json").write_text(
+                        json.dumps(
+                            {
+                                "step": step,
+                                "phase": phase,
+                                "has_map": self.map_listener.has_map(),
+                                "stats": map_stats,
+                            },
+                            indent=2,
+                        )
+                    )
+                except Exception:
+                    map_rgb = np.full((240, 320, 3), 40, dtype=np.uint8)
+                    (self.out / f"map_step_{step}_error.txt").write_text(
+                        traceback.format_exc()
+                    )
+
+                try:
+                    demo = compose_frame(
+                        third[..., :3] if third is not None else np.zeros((720, 1280, 3), dtype=np.uint8),
+                        np.asarray(rgb_vis)[..., :3],
+                        map_rgb,
+                        goal=str(ep.get("object_category", label)),
+                        step=step,
+                        action=ACTION_NAME.get(action, str(action)),
+                        phase=phase,
+                        control_mode=MODE_KINEMATIC,
+                        status=self.termination if self.termination != "not_finished" else "running",
+                    )
+                    Image.fromarray(demo).save(
+                        self.out / "demo" / f"frame_{step:04d}.png"
+                    )
+                except Exception:
+                    (self.out / f"demo_step_{step}_error.txt").write_text(
+                        traceback.format_exc()
+                    )
 
                 dtg = goal_distance(self.env.base_xyz, ep["goals"])
                 rec = {
                     "step": step,
                     "planner_action": action,
                     "planner_action_name": ACTION_NAME.get(action, str(action)),
+                    "phase": phase,
                     "action_source": "apexnav_/habitat/plan_action",
                     "ros_state": self.ros_state,
                     "final_state": self.final_state,
@@ -656,6 +787,7 @@ class ApexNavRangerBridge:
                     "itm_cosine": cosine,
                     "n_detections": len(score_list),
                     "distance_to_goal_eval_only": dtg,
+                    "map_stats": map_stats,
                     "base": {
                         "x": float(self.env.base_xyz[0]),
                         "y": float(self.env.base_xyz[1]),
@@ -709,6 +841,12 @@ class ApexNavRangerBridge:
         final_dtg = None
         if self.log:
             final_dtg = self.log[-1].get("distance_to_goal_eval_only")
+        map_ok = False
+        map_final = {}
+        if self.map_listener is not None:
+            map_ok = bool(self.map_listener.has_map())
+            map_final = self.map_listener.stats()
+        entered_explore = self.n_explore_actions > 0
         summary = {
             "status": status,
             "run_id": self.run_id,
@@ -720,6 +858,15 @@ class ApexNavRangerBridge:
             "elapsed_sec": elapsed,
             "n_steps": len(self.log),
             "seen_plan_actions": self.seen_action_ids,
+            "n_init_lookaround_actions": self.n_init_actions,
+            "n_explore_planner_actions": self.n_explore_actions,
+            "entered_callActionPlanner": entered_explore,
+            "apexnav_init_lookaround_budget": APEXNAV_INIT_LOOKAROUND_ACTIONS,
+            "spawn": self.spawn_info,
+            "adapted_episode": bool(
+                self.spawn_info.get("adapted_episode") if self.spawn_info else False
+            ),
+            "online_grid_map": {"has_data": map_ok, "stats": map_final},
             "final_distance_to_goal_eval_only": final_dtg,
             "success_claimed": False,  # never claim ObjectNav success without official evaluator
             "near_goal": bool(final_dtg is not None and final_dtg <= args.success_distance),
@@ -729,10 +876,17 @@ class ApexNavRangerBridge:
                 "LOOK_UP/DOWN are arm-joint adapted (±pitch via FK), not Habitat agent look.",
                 "Initial EE uses ARM_APEXNAV_INIT FK (~0.88m horizontal); runtime sensor_pose is full SE3.",
                 "Goal distance is eval-only and not fed to planner.",
+                "URDF Z-up→Habitat Y-up via Ry(-90)*Rx(-90); wheels snapped to floor_y.",
+                "Init lookaround ≠ adaptive explore; explore starts after 26 FSM init actions.",
+                "Demo map panel uses ApexNav /grid_map/* (not Habitat GT).",
             ],
             "initial_camera": {
                 "config": "ARM_APEXNAV_INIT",
                 "record_dir": str(self.out / "camera_init"),
+            },
+            "demo": {
+                "layout": "16:9 third + EE semantic + /grid_map",
+                "frames_dir": str(self.out / "demo"),
             },
         }
         (self.out / "summary.json").write_text(json.dumps(summary, indent=2))
@@ -755,7 +909,7 @@ def main(argv=None) -> int:
     p.add_argument("--run_id", default="")
     p.add_argument("--urdf", default=URDF_HABITAT)
     p.add_argument("--gpu", type=int, default=0)
-    p.add_argument("--max_steps", type=int, default=25)
+    p.add_argument("--max_steps", type=int, default=40)
     p.add_argument("--success_distance", type=float, default=1.0)
     p.add_argument("--handshake_timeout_s", type=float, default=120.0)
     p.add_argument("--action_timeout_s", type=float, default=90.0)

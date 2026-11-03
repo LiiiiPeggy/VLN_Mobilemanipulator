@@ -123,9 +123,13 @@ VLN_Mobilemanipulator/
 | LocoManip 钉扎 `rangercr10-teleop` @ `1973cb4`；Teleop PPO `stage45j_ppo/model_5999.pt`；obs=117 act=8 hist=3 @10Hz | `constants.py`；MuJoCo smoke |
 | 现网 VLN 镜像均 `built_with_bullet=False`；URDF 需专用 bullet 构建 | `habitat_sim.built_with_bullet` |
 | EGL 修复后原生 URDF-in-Habitat 可用；混合 Demo 仍作后备 | `run_kinematic_demo.sh`；`reports/habitat_rangercr10_integration.md` |
-| 底盘高度 `y=0.4071`（对齐 MuJoCo home） | `kinematic_demo.py` / `hybrid_kinematic_demo.py` |
-| ApexNav 相机 0.88 m：`ARM_DEFAULT` 不满足；用 `ARM_APEXNAV_INIT`（FK AGL≈0.870 m） | `constants.py`；`initial_camera_pose.py` |
-| 真实 ApexNav ROS 闭环：孤立 master `:11312` + rangercr10 内 exploration/VLM；勿占用主机 NBV `:11311` | `run_apexnav_real_episode.sh`；证据 `.../apexnav_real/real_20261103_120649/` |
+| URDF Z-up→Habitat Y-up 根旋转必须 `Ry(-π/2)*Rx(-π/2)`，否则底盘倾倒 | `kinematic_demo._urdf_to_habitat`；`up_dot_hab_y≈1` |
+| 底盘高度经轮贴地后 `DEFAULT_BASE_Y≈0.4419`（轮半径 0.125；旧 0.4071 已弃作默认） | `kinematic_demo.py`；`snap_wheels_to_floor` |
+| ObjectNav 原始起点常不适配完整 Ranger+CR10 → `find_adapted_start`，须标 `adapted_episode` | `spawn_utils.py` |
+| ApexNav 相机 0.88 m：`ARM_DEFAULT` 不满足；用 `ARM_APEXNAV_INIT`（轴修正后重标定，AGL≈0.88–0.89 m） | `constants.py`；`initial_camera_pose.py` |
+| 真实 ApexNav ROS 闭环：孤立 master `:11312` + rangercr10 内 exploration/VLM；勿占用主机 NBV `:11311` | `run_apexnav_real_episode.sh`；证据 `.../real_20261103_124521/` |
+| FSM 前 26 动作为 init lookaround；其后才 `callActionPlanner`（勿把环视当探索成功） | `exploration_fsm.cpp`；`APEXNAV_INIT_LOOKAROUND_ACTIONS` |
+| Demo 占据图必须订阅 `/grid_map/*`，禁止 Habitat GT / 空白 / EE RGB 冒充 | `map_listener.py`；`demo_compose.py` |
 | catkin 前缀需容器内 `/workspace/ApexNav` → `baselines/ApexNav` | devel 构建路径 |
 | HM3D-v2 goals 在 `goals_by_category`；评估宜滤同层 | `apexnav_real_episode._goals_for_episode` |
 | LOOK_UP/DOWN 为 CR10 腕关节适配，≠ Habitat look ±30° | `steps.jsonl` `look_equivalence` |

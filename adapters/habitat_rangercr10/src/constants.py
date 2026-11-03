@@ -40,17 +40,17 @@ WHEEL_JOINT_NAMES = ["fr_wheel_joint", "fl_wheel_joint", "rl_wheel_joint", "rr_w
 # Teleop / MuJoCo home (NOT ApexNav camera height)
 ARM_DEFAULT = (0.6, 1.0, -2.4, 0.0, 1.4, 0.0)
 # ################################
-# ApexNav-compatible init: D455 optical ~0.88 m, horizontal forward (URDF FK).
-# Found by bounded joint search in adapter (2026-11-03); verified height≈0.870 m
-# (|Δ|<2 cm), |pitch/yaw/roll|<5°. Do NOT forge by moving Habitat Agent alone.
+# ApexNav-compatible init: D455 optical ~0.88 m AGL, horizontal forward (URDF FK).
+# Re-derived 2026-11-03 AFTER Z-up→Y-up root fix (Ry(-90)*Rx(-90)).
+# Verified AGL≈0.894 m, |pitch/yaw/roll|<5°. Do NOT forge Habitat Agent pose.
 # ################################
 ARM_APEXNAV_INIT = (
-    -1.1083997865013002,
-    0.5880577707428342,
-    0.49768828577247276,
-    -2.747758697711032,
-    -1.5721524977409986,
-    -0.49725820313247665,
+    -1.6281021987682385,
+    0.9056818874307258,
+    0.47897782244727727,
+    2.0442570619462734,
+    -3.140000104904175,
+    0.21061755241064453,
 )
 APEXNAV_CAM_HEIGHT_M = 0.88
 APEXNAV_CAM_HEIGHT_TOL_M = 0.02
@@ -65,7 +65,10 @@ BASE_LINK = "base_link"
 # We place the Agent sensor at the optical link and apply a Magnum rotation if needed.
 EE_RGB_HFOV_DEG = 79.0
 EE_RGB_RES = (480, 640)  # H, W
-THIRD_RGB_RES = (480, 640)
+# ################################
+# Higher third-person res for 16:9 paper-style demo upscale (does not affect EE/planner).
+# ################################
+THIRD_RGB_RES = (720, 1280)
 
 # Policy interface (MuJoCo / Isaac teleop)
 NUM_OBS = 117
