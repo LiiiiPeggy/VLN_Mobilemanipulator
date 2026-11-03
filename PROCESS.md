@@ -378,3 +378,27 @@
 **结论**：姿态与 Demo 验收达标；正式规划已进入但本场景 frontier 不足早停——后续换开阔 Episode 验证多步 FWD。
 
 **相关**：`reports/habitat_rangercr10_integration.md`、`.../apexnav_real/real_20261103_124521/`、`.../pose_fix_20261103/`
+
+---
+
+## 2026-11-03 相机 FK / LOOK / free-space（不接新 PPO）
+
+**模块**：`adapters/habitat_rangercr10`
+
+**问题**：需区分初始视角错误 vs LOOK 遮挡；核对 LocoManip 新默认臂；解释 ApexNav free≈0。
+
+**操作**：
+
+- 只读 LocoManip HEAD `b0a536f` 的 `ARM_DEFAULT`（stage 4.10）；**不改**其训练、**不换** stage45j 权重。
+- Habitat 诊断 `camera_view_diag.py`：对比 legacy / 4.10 / 旧搜索构型；INIT vs TURN_DOWN/UP。
+- LOOK 改为 joint3（j5 在 L410 俯仰增益≈0）；符号按实测标定。
+- 适配层 `ARM_DEFAULT`/`ARM_APEXNAV_INIT` 同步为 4.10 默认；光学高度容差放宽（TCP 0.88 vs D455≈0.78）。
+
+**实测**：
+
+- 4.10：光学水平，AGL≈0.78 m，near≈1.9%；DOWN near≈56%（执行诱发）；UP near≈1.9%。
+- 先验闭环 free≈6 → NO_COVERABLE_FRONTIER：近场遮挡 + 狭窄出生 + frontier 空。
+
+**结论**：初始视角以 4.10 默认为准；不因凑 0.88 光学高度改回搜索怪姿。新 PPO 另案钉扎。
+
+**相关**：`.../camera_view_diag_20261103_132939/`、`reports/habitat_rangercr10_integration.md`

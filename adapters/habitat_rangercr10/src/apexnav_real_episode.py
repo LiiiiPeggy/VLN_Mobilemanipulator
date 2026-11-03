@@ -405,16 +405,22 @@ class ApexNavRangerBridge:
             info["executed"] = True
             info["upright"] = self.env.upright_diagnostics()
         elif action in (ACTION.TURN_UP, ACTION.TURN_DOWN):
-            # Adapted CR10 wrist pitch — NOT identical to Habitat look_up/down agent pitch
+            # ################################
+            # LOOK pitch via joint3 (not joint5): at LocoManip 4.10 default FK,
+            # joint5 optical-pitch gain ≈ 0; joint3 ≈ 50 deg/rad. ±0.6 rad ≈ ±30°.
+            # Still arm-adapted — NOT Habitat agent look_up/down.
+            # ################################
             q = self.env.arm_q.copy()
-            delta = -0.35 if action == ACTION.TURN_UP else 0.35  # rad joint5 heuristic
-            q[4] = float(np.clip(q[4] + delta, -2.0, 2.0))
+            # Empirical @ L410: joint3 +δ → optical pitch up (Habitat fwd.y>0)
+            delta = 0.60 if action == ACTION.TURN_UP else -0.60
+            q[2] = float(np.clip(q[2] + delta, -2.86, 2.86))
             self.env.set_arm_joints(q)
             after_f = self.env.camera_forward_hab()
             # pitch change approx: angle between forward vectors projected
             cosang = float(np.clip(np.dot(before["forward"], after_f), -1, 1))
             info["pitch_delta_rad"] = float(math.acos(cosang))
-            info["look_equivalence"] = "arm_joint5_adapted_not_habitat_look"
+            info["look_equivalence"] = "arm_joint3_adapted_not_habitat_look"
+            info["look_joint"] = "cr10_joint3"
             info["executed"] = True
             if info["pitch_delta_rad"] < math.radians(5):
                 info["pitch_verify"] = "weak_change"

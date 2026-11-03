@@ -8,9 +8,10 @@ Target (ApexNav fixed-camera convention):
 Pose MUST come from URDF joint state + FK (``camera_world_matrix``), never by
 forging Habitat Agent sensor pose independently of the articulated robot.
 
-``ARM_DEFAULT`` (teleop home) does NOT meet this target (FK height ~0.42 m,
-optical axis roughly rear-facing). ``ARM_APEXNAV_INIT`` was obtained by a
-bounded joint-space search + local refine (no new IK solver).
+``ARM_DEFAULT`` / ``ARM_APEXNAV_INIT`` follow LocoManip stage-4.10 home
+(TCP ~0.88 m forward). D455 optical sits ~7–8 cm below Link6 → optical AGL
+≈0.78 m with near-zero pitch/yaw; do not chase 0.88 with unnatural joints.
+``ARM_APEXNAV_INIT_SEARCH`` is the older height-chasing pose (diagnostics only).
 """
 
 from __future__ import annotations

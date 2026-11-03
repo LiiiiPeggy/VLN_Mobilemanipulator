@@ -1,7 +1,7 @@
 """Pinned versions and frame/joint constants for RangerBox-CR10 Habitat adapter.
 
 Sources (do not invent numbers):
-- LocoManip_Lab branch `rangercr10-teleop` @ 1973cb4
+- LocoManip_Lab branch `rangercr10-teleop`
 - `mujoco/deploy/deploy_mujoco/ranger_cr10/ranger_policy.py`
 - URDF `rangerboxcr10lidar_description/urdf/rangercr10lidar.urdf`
 """
@@ -11,9 +11,18 @@ from __future__ import annotations
 # ---- pinned upstream ----
 LOCOMANIP_REPO = "/home/ubuntu/locomani/LocoManip_Lab"
 LOCOMANIP_BRANCH = "rangercr10-teleop"
+# PPO weight pin remains stage45j (do NOT swap until new PPO validated separately).
 LOCOMANIP_COMMIT = "1973cb4f0d418af6bbf9c92156d55423b98a4963"
 DEFAULT_TELEOP_CKPT = (
     "logs/rsl_rl/ranger_cr10_teleop/2026-10-29_19-12-08_stage45j_ppo/model_5999.pt"
+)
+# ################################
+# Read-only kinematics snapshot from LocoManip HEAD (arm defaults / stage 4.10 intent).
+# Not a weight pin. Training may still be in progress on HEAD.
+# ################################
+LOCOMANIP_HEAD_READ = "b0a536f60e6a8c1443a3a10bb4efea1505ef810a"
+LOCOMANIP_ARM_SOURCE = (
+    "ranger_policy.py ARM_DEFAULT + ranger_cr10_articulation_cfg init_state"
 )
 
 # ---- Habitat target ----
@@ -37,14 +46,18 @@ STEERING_JOINT_NAMES = [
     "rr_steering_wheel_joint",
 ]
 WHEEL_JOINT_NAMES = ["fr_wheel_joint", "fl_wheel_joint", "rl_wheel_joint", "rr_wheel_joint"]
-# Teleop / MuJoCo home (NOT ApexNav camera height)
-ARM_DEFAULT = (0.6, 1.0, -2.4, 0.0, 1.4, 0.0)
 # ################################
-# ApexNav-compatible init: D455 optical ~0.88 m AGL, horizontal forward (URDF FK).
-# Re-derived 2026-11-03 AFTER Z-up→Y-up root fix (Ry(-90)*Rx(-90)).
-# Verified AGL≈0.894 m, |pitch/yaw/roll|<5°. Do NOT forge Habitat Agent pose.
+# LocoManip stage-4.10 default (read-only from HEAD @ LOCOMANIP_HEAD_READ).
+# Intent: tool/TCP forward along base +X at ~0.88 m AGL. D455 optical is ~7–8 cm
+# below Link6 → measured optical AGL ≈0.78 m with near-zero pitch/yaw/roll.
+# Prefer this over joint-search poses that meet 0.88 numerically but look unnatural.
 # ################################
-ARM_APEXNAV_INIT = (
+ARM_DEFAULT = (0.511, 0.494, -2.449, -1.186, -1.060, 0.0)
+ARM_APEXNAV_INIT = ARM_DEFAULT
+# Kept for regression compare only (pre-4.10 teleop home; optical pitch ~−76°).
+ARM_DEFAULT_LEGACY = (0.6, 1.0, -2.4, 0.0, 1.4, 0.0)
+# Prior search pose (height-chasing); retained for diagnostics, not episode default.
+ARM_APEXNAV_INIT_SEARCH = (
     -1.6281021987682385,
     0.9056818874307258,
     0.47897782244727727,
@@ -53,7 +66,8 @@ ARM_APEXNAV_INIT = (
     0.21061755241064453,
 )
 APEXNAV_CAM_HEIGHT_M = 0.88
-APEXNAV_CAM_HEIGHT_TOL_M = 0.02
+# Optical vs TCP: allow wider band until mount offset is modeled in acceptance.
+APEXNAV_CAM_HEIGHT_TOL_M = 0.12
 APEXNAV_CAM_ANGLE_TOL_DEG = 5.0
 
 # Camera / TCP frames

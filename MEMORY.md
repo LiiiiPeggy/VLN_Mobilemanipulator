@@ -124,15 +124,17 @@ VLN_Mobilemanipulator/
 | 现网 VLN 镜像均 `built_with_bullet=False`；URDF 需专用 bullet 构建 | `habitat_sim.built_with_bullet` |
 | EGL 修复后原生 URDF-in-Habitat 可用；混合 Demo 仍作后备 | `run_kinematic_demo.sh`；`reports/habitat_rangercr10_integration.md` |
 | URDF Z-up→Habitat Y-up 根旋转必须 `Ry(-π/2)*Rx(-π/2)`，否则底盘倾倒 | `kinematic_demo._urdf_to_habitat`；`up_dot_hab_y≈1` |
-| 底盘高度经轮贴地后 `DEFAULT_BASE_Y≈0.4419`（轮半径 0.125；旧 0.4071 已弃作默认） | `kinematic_demo.py`；`snap_wheels_to_floor` |
+| 底盘高度经轮贴地后 `DEFAULT_BASE_Y≈0.4419`（轮半径 0.125） | `kinematic_demo.py`；`snap_wheels_to_floor` |
 | ObjectNav 原始起点常不适配完整 Ranger+CR10 → `find_adapted_start`，须标 `adapted_episode` | `spawn_utils.py` |
-| ApexNav 相机 0.88 m：`ARM_DEFAULT` 不满足；用 `ARM_APEXNAV_INIT`（轴修正后重标定，AGL≈0.88–0.89 m） | `constants.py`；`initial_camera_pose.py` |
-| 真实 ApexNav ROS 闭环：孤立 master `:11312` + rangercr10 内 exploration/VLM；勿占用主机 NBV `:11311` | `run_apexnav_real_episode.sh`；证据 `.../real_20261103_124521/` |
-| FSM 前 26 动作为 init lookaround；其后才 `callActionPlanner`（勿把环视当探索成功） | `exploration_fsm.cpp`；`APEXNAV_INIT_LOOKAROUND_ACTIONS` |
-| Demo 占据图必须订阅 `/grid_map/*`，禁止 Habitat GT / 空白 / EE RGB 冒充 | `map_listener.py`；`demo_compose.py` |
-| catkin 前缀需容器内 `/workspace/ApexNav` → `baselines/ApexNav` | devel 构建路径 |
-| HM3D-v2 goals 在 `goals_by_category`；评估宜滤同层 | `apexnav_real_episode._goals_for_episode` |
-| LOOK_UP/DOWN 为 CR10 腕关节适配，≠ Habitat look ±30° | `steps.jsonl` `look_equivalence` |
+| LocoManip 4.10 默认臂 `(0.511,0.494,-2.449,-1.186,-1.060,0)`：TCP≈0.88 m 朝前；D455 光学 AGL≈0.78 m、水平 | 只读 HEAD `b0a536f`；`constants.ARM_DEFAULT` |
+| PPO 权重钉扎仍为 stage45j @ `1973cb4` / `model_5999.pt`，与臂默认 HEAD 读取解耦 | `LOCOMANIP_COMMIT` vs `LOCOMANIP_HEAD_READ` |
+| LOOK：L410 下 joint5 俯仰增益≈0，用 **joint3 ±0.6 rad**；TURN_DOWN 可诱发自遮挡 | `camera_view_diag.py`；`apexnav_real_episode` |
+| 真实 ApexNav ROS 闭环：孤立 master `:11312`；勿占 NBV `:11311` | `run_apexnav_real_episode.sh` |
+| FSM 前 26 步 init lookaround；其后 `callActionPlanner` | `exploration_fsm.cpp` |
+| free≈0 / NO_COVERABLE 常因近场遮挡+狭窄出生+膨胀，而非单纯深度编码坏 | `real_20261103_124521` + map_ros 高度窗 |
+| Demo 占据图必须订阅 `/grid_map/*` | `map_listener.py`；`demo_compose.py` |
+| catkin 前缀：`/workspace/ApexNav` → `baselines/ApexNav` | devel 路径 |
+| HM3D-v2 goals 在 `goals_by_category`；宜滤同层 | `_goals_for_episode` |
 
 
 ## 8. 常见兼容性风险

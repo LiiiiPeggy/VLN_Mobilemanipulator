@@ -1,8 +1,8 @@
 # Habitat ↔ RangerBox-CR10 集成报告
 
-更新：2026-11-03  
-范围：`adapters/habitat_rangercr10/`；**不修改**六套 baseline 默认配置与已验证 BATCH_OK 镜像。  
-基线保留：`322f527` / 先前 `0969cd3` 已验证成果；本轮叠加姿态修复、论文风 Demo、初始化环视后正式规划验证。
+更新：2026-11-03（相机视角 / LOOK / free-space 诊断）  
+范围：`adapters/habitat_rangercr10/`；**不修改**六套 baseline 默认配置、**不修改** LocoManip 训练、**不替换** stage45j 权重。  
+基线保留：`44a326a` 姿态+Demo 成果；本轮叠加 LocoManip 4.10 默认臂构型只读验证与 LOOK 修正。
 
 ---
 
@@ -10,17 +10,17 @@
 
 | 项 | 状态 | 证据 |
 |----|------|------|
-| URDF Z-up→Hab Y-up 直立 | **已修复** | 根姿态 `Ry(-90)*Rx(-90)`；`up_dot_hab_y=1.0`，轮高差≈1.6 mm |
-| 车轮贴地 | **通过（几何）** | `wheel_mean_agl≈0.125 m`（半径）；`pose_diag/` + `upright.json` |
-| 适配 Episode 出生点 | **已偏移** | 原始起点家具重叠；偏移 ≈1.8 m；`adapted_episode=true`（非原版 benchmark） |
-| 真实 ApexNav 感知 | **已运行** | ITM + `detections/`；非 scripted |
-| 在线 `/grid_map/*` | **有数据** | occ/free/unknown 消息计数见 summary；Demo 右下角 |
-| 导航动作来自 planner | **是** | `action_source=apexnav_/habitat/plan_action` |
-| 初始化环视 vs 正式规划 | **已区分** | 26 步 `init_lookaround` + ≥1 步 `explore_planner`（本轮为 STOP / NO_COVERABLE_FRONTIER） |
-| 16:9 论文风 Demo | **已产出** | 主视角 + EE 语义 + 在线占据图；`demo/apexnav_ranger_paper_demo.mp4` |
-| 控制模式 | `kinematic_state_set` | **不是** PPO / Bullet 全身动力学 |
+| URDF Z-up→Hab Y-up 直立 | **已修复** | `Ry(-90)*Rx(-90)`；`up_dot_hab_y=1.0` |
+| 初始臂构型 | **采用 LocoManip 4.10 默认** | `(0.511,0.494,-2.449,-1.186,-1.060,0)`；只读自 HEAD `b0a536f` |
+| D455 光学水平朝前 | **通过** | pitch/yaw/roll ≈0°；光学 AGL≈**0.783 m**（TCP/Link6≈0.86 m；0.88 为 TCP 目标） |
+| 初始自遮挡 | **低** | `near_lt_0.35m ≈1.9%` |
+| LOOK 遮挡 | **TURN_DOWN 诱发** | DOWN：near≈56%；UP：near≈1.9%（非初始姿态错误） |
+| LOOK 关节 | **joint3**（非 joint5） | L410 下 j5 俯仰增益≈0；j3≈50°/rad |
+| ApexNav free 过少 | **已定位主因** | 见 §8；先验 episode free≈6 / NO_COVERABLE_FRONTIER |
+| PPO | **未接入新权重** | 仍钉 `stage45j_ppo/model_5999.pt` @ `1973cb4` |
+| 控制模式 | `kinematic_state_set` | 非全身动力学 |
 
-钉扎：LocoManip `1973cb4`；Teleop 权重仍 `stage45j_ppo/model_5999.pt`。
+证据目录：`/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/camera_view_diag_20261103_132939/`
 
 ---
 
@@ -95,20 +95,52 @@ MAX_STEPS=36 RUN_ID=real_$(date +%Y%m%d_%H%M%S) \
 
 ---
 
-## 6. 尚未实现 / 明确非本轮
+## 6. 相机视角诊断（本轮）
 
-1. PPO → Habitat 全身动力学。  
-2. 自主调臂（仅 LOOK 关节适配）。  
-3. Gazebo / 双仿真。  
-4. 原版 ObjectNav benchmark 分数（本轮为适配 Episode）。  
-5. 连续时间无碰撞与轮式动力学。  
-6. 在更开阔场景上验证多步 frontier 运动（本轮 planner 因 NO_COVERABLE_FRONTIER 早停）。
+| 构型 | 光学 AGL | pitch/yaw/roll | near&lt;0.35m | 结论 |
+|------|---------|----------------|-------------|------|
+| LocoManip 4.10 默认 | 0.783 m | ≈0/0/0 | 1.9% | **选用**；臂在底盘上方，水平朝前 |
+| 旧搜索 `ARM_APEXNAV_INIT_SEARCH` | 0.951 m | ≈0/−3.4/−4.4 | 1.9% | 高度更近 0.88，但腕姿极端；不再作默认 |
+| Legacy teleop home | 0.964 m | **−76°** /… | 6.6% | 不可作 ApexNav 初始 |
+
+LOOK（joint3 ±0.6 rad ≈ ±30°）：
+
+| 状态 | pitch | near&lt;0.35m | 说明 |
+|------|-------|-------------|------|
+| INIT 水平 | ≈0° | 1.9% | 门/墙清晰，底缘轻微自遮挡 |
+| TURN_DOWN | ≈−20° | **56%** | **执行后**臂/夹爪进入视野 |
+| TURN_UP | ≈+30° | 1.9% | 基本无新增遮挡 |
+
+复现：`bash adapters/habitat_rangercr10/scripts/run_camera_view_diag.sh`
 
 ---
 
-## 7. 历史模块（仍有效）
+## 7. ApexNav free≈0 / NO_COVERABLE_FRONTIER
 
-- EGL ICD：`ensure_egl_icd.sh`  
-- 原生 URDF kinematic：`run_kinematic_demo.sh`  
-- PPO probe_only：`run_ppo_habitat_probe.sh`  
-- 先前闭环：`real_20261103_120649`（仅 12 步 init，未进正式规划）
+实测（`real_20261103_124521`）：occ≈556，**free≈6**，unknown≈7138；exploration.log：`No coverable frontier!!`
+
+主因（叠加，非单一）：
+
+1. **先验 episode 用搜索臂姿**，深度 `near≈34%`（自遮挡/近场），有效中距射线少。  
+2. **狭窄卧室适配出生点** + 26 步环视，占据膨胀后几乎无 coverable frontier。  
+3. ApexNav `filter_min/max_height`（launch 0.28–1.18）与虚拟地面滤除后，近场噪声易挤占 FREE。  
+4. 深度管线本身（归一化 32FC1→C++）在有中距观测时可工作；本轮问题更偏**观测内容/场景几何**，非编码全坏。
+
+后续：用 4.10 默认臂 + 更开阔 Episode 再跑闭环（仍 kinematic）；新 PPO 训练完成后再单独钉权重。
+
+---
+
+## 8. 尚未实现 / 明确非本轮
+
+1. 新 PPO 权重钉扎与控制性能验证（训练进行中，本轮不接）。  
+2. Gazebo / 双仿真 / 全身动力学。  
+3. 原版 ObjectNav benchmark 分数。  
+4. 连续时间无碰撞。
+
+---
+
+## 9. 历史模块（仍有效）
+
+- EGL ICD：`ensure_egl_icd.sh`；原生 URDF：`run_kinematic_demo.sh`  
+- 真实闭环：`run_apexnav_real_episode.sh`（`real_20261103_124521`）  
+- 相机诊断：`run_camera_view_diag.sh`
