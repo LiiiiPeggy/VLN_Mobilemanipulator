@@ -474,3 +474,26 @@
 **结论**：转向刷屏主因是航向约定错误；膨胀 0.18 对实机不安全但不是左转主因。
 
 **相关**：`reports/apexnav_rangercr10_frontier_inflation.md`、`frontier_inflation_diag/`、`real_yawfix_legacy018_*`
+
+---
+
+## 2026-11-04 狭窄验证与中档膨胀对照
+
+**模块**：`adapters/habitat_rangercr10`
+
+**问题**：验收要求开阔+狭窄完整短 Episode，并检验是否可在安全约束下找到折中膨胀。
+
+**操作**：
+
+1. 窄场景 `TEEsavR23oF` chair/4 + yaw 修 + `legacy018`。  
+2. 开阔场景 + `mid030`（0.30 m，标不安全）在线对照。  
+3. 离线扫 0.25–0.435 并生成 raw/0.18/0.30/0.485 面板图。  
+4. 更新 `episode_compare.json` 与报告。
+
+**实测**：
+
+- 窄：仍 `expl_result=4` / STOP×1；与修复前一致 → NO_PASSABLE 非航向问题。  
+- 中档 0.30：free→1、inflate 2864，探索约 11 步后 STOP（行为接近 0.485）。  
+- 结论：无法靠各向同性加大膨胀同时满足 Ranger 足迹与可达 Frontier。
+
+**相关**：`real_yawfix_narrow_legacy018_*`、`real_yawfix_open_mid030_*`、`map_panel_raw_018_030_0485.png`

@@ -137,7 +137,8 @@ VLN_Mobilemanipulator/
 | Ranger 底盘碰撞半长/半宽 ≈0.651/0.435 m；外接 R≈0.783 m；ApexNav 默认膨胀 0.18 m **小于** 足迹 | MuJoCo `base_link_col`；`apexnav_rangercr10_frontier_inflation.md` |
 | Habitat→ROS odom 航向须 `hab_yaw+π`（与 `(-z,-x)` 位移一致）；否则恒差 180° 导致 TURN_LEFT 空转 | `hab_yaw_to_ros`；`ros_dynamic_publisher.py` |
 | ApexNav `optimistic=false` 时未知格进 ESDF 障碍；膨胀↑会进一步吃掉 free | `sdf_map2d.cpp`；足迹对照实验 |
-| 适配膨胀档：`INFLATION_PROFILE=legacy018`（默认演示）/ `ranger_safe`（0.485 m） | `config/apexnav_rangercr10_overlay*.yaml` |
+| 适配膨胀档：`INFLATION_PROFILE=legacy018`（默认演示）/ `mid030`（灵敏度）/ `ranger_safe`（0.485 m） | `config/apexnav_rangercr10_overlay*.yaml` |
+| 在线 ≥0.30 m 半径即可把开阔图 free 压到 ≈0–1；窄场景 yaw 修复后仍 `NO_PASSABLE` | `real_yawfix_open_mid030_*`；`real_yawfix_narrow_legacy018_*` |
 | catkin 前缀：`/workspace/ApexNav` → `baselines/ApexNav` | devel 路径 |
 | HM3D-v2 goals 在 `goals_by_category`；宜滤同层 | `_goals_for_episode` |
 

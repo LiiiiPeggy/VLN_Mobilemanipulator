@@ -115,42 +115,66 @@ def render_compare(
 
 
 def yaw_motion_audit(steps: List[dict]) -> Dict[str, Any]:
+    # ################################
+    # Prefer publish_meta.base_yaw_ros (post-fix). Fall back to Habitat yaw for old runs.
+    # ################################
     rows = []
-    pi_err = []
-    zero_err = []
+    published_err = []
+    hab_err = []
+    hab_plus_pi_err = []
     for i, s in enumerate(steps):
         if s.get("planner_action_name") != "MOVE_FORWARD" or i == 0:
             continue
-        p0 = steps[i - 1]["publish_meta"]["base_ros"]
-        p1 = s["publish_meta"]["base_ros"]
+        meta = s.get("publish_meta") or {}
+        prev_meta = steps[i - 1].get("publish_meta") or {}
+        if "base_ros" not in meta or "base_ros" not in prev_meta:
+            continue
+        p0 = prev_meta["base_ros"]
+        p1 = meta["base_ros"]
         dx, dy = p1[0] - p0[0], p1[1] - p0[1]
         if abs(dx) + abs(dy) < 1e-6:
             continue
         move_yaw = math.atan2(dy, dx)
-        odom_yaw = float(s["base"]["yaw"])  # was published as hab yaw
-        e0 = abs(_wrap(move_yaw - odom_yaw))
-        epi = abs(_wrap(move_yaw - (odom_yaw + math.pi)))
-        zero_err.append(e0)
-        pi_err.append(epi)
+        hab_yaw = float(meta.get("base_yaw_hab", s["base"]["yaw"]))
+        ros_yaw = meta.get("base_yaw_ros")
+        e_hab = abs(_wrap(move_yaw - hab_yaw))
+        e_pi = abs(_wrap(move_yaw - (hab_yaw + math.pi)))
+        hab_err.append(e_hab)
+        hab_plus_pi_err.append(e_pi)
+        if ros_yaw is not None:
+            e_pub = abs(_wrap(move_yaw - float(ros_yaw)))
+            published_err.append(e_pub)
+            pub_deg = math.degrees(e_pub)
+        else:
+            pub_deg = math.degrees(e_hab)
+            published_err.append(e_hab)
         rows.append(
             {
                 "step": s["step"],
                 "move_yaw_deg": math.degrees(move_yaw),
-                "odom_hab_yaw_deg": math.degrees(odom_yaw),
-                "err_deg": math.degrees(e0),
-                "err_if_hab_plus_pi_deg": math.degrees(epi),
+                "odom_hab_yaw_deg": math.degrees(hab_yaw),
+                "odom_ros_yaw_deg": None if ros_yaw is None else math.degrees(float(ros_yaw)),
+                "err_published_deg": pub_deg,
+                "err_if_hab_deg": math.degrees(e_hab),
+                "err_if_hab_plus_pi_deg": math.degrees(e_pi),
             }
         )
+    mean_pub = float(np.mean(published_err) * 180 / math.pi) if published_err else None
+    mean_hab = float(np.mean(hab_err) * 180 / math.pi) if hab_err else None
+    mean_pi = float(np.mean(hab_plus_pi_err) * 180 / math.pi) if hab_plus_pi_err else None
+    if published_err and mean_pub is not None and mean_pub < 5.0:
+        conclusion = "aligned_ros_yaw"
+    elif hab_err and mean_hab is not None and mean_hab > 150.0 and mean_pi is not None and mean_pi < 30.0:
+        conclusion = "odom_yaw_lagged_motion_by_pi"
+    else:
+        conclusion = "aligned" if (mean_pub is not None and mean_pub < 30.0) else "check_manually"
     return {
         "n_forward": len(rows),
-        "mean_abs_err_deg": float(np.mean(zero_err) * 180 / math.pi) if zero_err else None,
-        "mean_abs_err_with_plus_pi_deg": float(np.mean(pi_err) * 180 / math.pi) if pi_err else None,
+        "mean_abs_err_published_deg": mean_pub,
+        "mean_abs_err_hab_deg": mean_hab,
+        "mean_abs_err_with_plus_pi_deg": mean_pi,
         "samples": rows,
-        "conclusion": (
-            "odom_yaw_lagged_motion_by_pi"
-            if zero_err and float(np.mean(zero_err)) > 2.5
-            else "aligned"
-        ),
+        "conclusion": conclusion,
     }
 
 
@@ -222,11 +246,45 @@ def run_episode_diag(run_dir: Path, out_dir: Path) -> Dict[str, Any]:
         "B_oriented_safe_0.485": SAFE_ORIENTED_R,
         "B2_circum_safe_0.83": SAFE_CIRCUM_R,
         "C_diag_under_0.05": 0.05,
+        # Mid sweep: offline-only; values < half_width remain UNSAFE for real chassis.
+        "M_mid_0.25": 0.25,
+        "M_mid_0.30": 0.30,
+        "M_mid_0.35": 0.35,
+        "M_mid_0.40": 0.40,
+        "M_halfwidth_0.435": CHASSIS_HALF_W,
     }
     infl_table = {}
     for name, rad in variants.items():
         infl_table[name] = analyze_map_png(map_path, rad)
         render_compare(map_path, out_dir / f"map_{name}.png", rad)
+
+    # ################################
+    # Side-by-side panel: raw / 0.18 / 0.30 / 0.485 (+ unknown overlay hint)
+    # ################################
+    panel_keys = [
+        ("raw", None),
+        ("A_0.18", BASELINE_INFLATION),
+        ("M_0.30", 0.30),
+        ("B_0.485", SAFE_ORIENTED_R),
+    ]
+    tiles = []
+    raw = Image.open(map_path).convert("RGB")
+    for label, rad in panel_keys:
+        if rad is None:
+            tile = raw.copy()
+            ImageDraw.Draw(tile).text((6, 6), "raw occupied/free", fill=(0, 0, 0))
+        else:
+            tmp = out_dir / f"_panel_{label}.png"
+            render_compare(map_path, tmp, rad)
+            tile = Image.open(tmp).convert("RGB")
+            tmp.unlink(missing_ok=True)
+        tiles.append(tile)
+    tw, th = tiles[0].size
+    panel = Image.new("RGB", (tw * 2, th * 2), PAPER_BG)
+    for i, tile in enumerate(tiles):
+        panel.paste(tile, ((i % 2) * tw, (i // 2) * th))
+    panel_path = out_dir / "map_panel_raw_018_030_0485.png"
+    panel.save(panel_path)
 
     # optimistic proxy on baseline inflation
     c_opt = {
@@ -244,6 +302,7 @@ def run_episode_diag(run_dir: Path, out_dir: Path) -> Dict[str, Any]:
     rep = {
         "run_dir": str(run_dir),
         "map_frame": str(map_path),
+        "panel": str(panel_path),
         "footprint": footprint_report(),
         "action_stats": action_stats(steps, acts),
         "yaw_motion_audit": yaw_motion_audit(steps),

@@ -160,12 +160,13 @@ ROS：隔离 master `:11312`（保留 NBV `:11311`）。
 详见 `reports/apexnav_rangercr10_frontier_inflation.md`。
 
 - **主因**：odom 航向曾与 ROS 位移差 π → 已修。  
-- **足迹**：0.18 m << Ranger 半宽 0.435 m；`ranger_safe=0.485` 可选。  
+- **足迹**：0.18 m << Ranger 半宽 0.435 m；`ranger_safe=0.485` / `mid030=0.30` 可选（在线 ≥0.30 即近乎吃光 free）。  
+- 窄场景 yaw 修后仍 `NO_PASSABLE`（与膨胀主因无关）。  
 - Habitat 演示默认 `INFLATION_PROFILE=legacy018`（标不安全）。
 
 ## 9. 未解决问题
 
 1. Habitat↔MuJoCo 光学 AGL 仍差 ≈2.3 cm（可接受；勿用乱搜关节凑 0.88）。  
-2. 安全足迹膨胀与稀疏 free/Frontier 的折中；窄场景 `NO_PASSABLE` 仍可能。  
+2. 安全足迹与可达 Frontier：需非圆足迹/未知区策略，不能只调各向同性半径。  
 3. PPO 未进 Habitat 动力学闭环。  
 4. `env.close()` 偶发 `malloc_consolidate` abort（任务摘要已落盘；rc 134 可接受）。

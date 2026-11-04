@@ -1,0 +1,13 @@
+# ################################
+# Mid inflation 0.30 m — OFFLINE / Habitat sensitivity only.
+# Still UNSAFE vs Ranger half-width≈0.435 m. Do NOT use for real-robot clearance.
+# Evidence: free cells drop vs 0.18 but remain above ranger_safe starvation on open maps.
+# ################################
+habitat:
+  simulator:
+    agents:
+      main_agent:
+        radius: 0.30
+sdf_map:
+  obstacles_inflation: 0.30
+  optimistic: false

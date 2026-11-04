@@ -39,13 +39,20 @@ LAUNCH_FILE="/workspace/VLN_Mobilemanipulator/adapters/habitat_rangercr10/launch
 # INFLATION_PROFILE:
 #   legacy018 (default for Habitat kinematic demos): 0.18 m — matches ApexNav HM3D agent;
 #     UNSAFE vs Ranger chassis half-width≈0.435 m (see reports).
+#   mid030: 0.30 m sensitivity — still UNSAFE vs half-width; offline/online A/B only.
 #   ranger_safe: 0.485 m oriented footprint — correct clearance, may starve free on sparse maps.
 PROFILE="${INFLATION_PROFILE:-legacy018}"
-if [[ "$PROFILE" == "ranger_safe" ]]; then
-  OVERLAY="/workspace/VLN_Mobilemanipulator/adapters/habitat_rangercr10/config/apexnav_rangercr10_overlay.yaml"
-else
-  OVERLAY="/workspace/VLN_Mobilemanipulator/adapters/habitat_rangercr10/config/apexnav_rangercr10_overlay_legacy018.yaml"
-fi
+case "$PROFILE" in
+  ranger_safe)
+    OVERLAY="/workspace/VLN_Mobilemanipulator/adapters/habitat_rangercr10/config/apexnav_rangercr10_overlay.yaml"
+    ;;
+  mid030)
+    OVERLAY="/workspace/VLN_Mobilemanipulator/adapters/habitat_rangercr10/config/apexnav_rangercr10_overlay_mid030.yaml"
+    ;;
+  *)
+    OVERLAY="/workspace/VLN_Mobilemanipulator/adapters/habitat_rangercr10/config/apexnav_rangercr10_overlay_legacy018.yaml"
+    ;;
+esac
 echo "[2/4] start exploration_rangercr10.launch (profile=$PROFILE overlay=$(basename "$OVERLAY"))"
 docker exec -d vln-rangercr10 bash -lc \
   "$SRC_ROS; roslaunch $LAUNCH_FILE ranger_overlay:=$OVERLAY >$LOGDIR/exploration.log 2>&1"
