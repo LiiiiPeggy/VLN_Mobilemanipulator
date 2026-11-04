@@ -132,7 +132,8 @@ VLN_Mobilemanipulator/
 | 真实 ApexNav ROS 闭环：孤立 master `:11312`；勿占 NBV `:11311` | `run_apexnav_real_episode.sh` |
 | FSM 前 26 步 init lookaround；其后 `callActionPlanner` | `exploration_fsm.cpp` |
 | free 过少/NO_PASSABLE：近场遮挡+狭窄出生+膨胀；开阔 ep + 4.10d 可达 free≈180 与多步 FWD | `20261104_114652` vs `real_20261103_124521` |
-| Demo 占据图必须订阅 `/grid_map/*` | `map_listener.py`；`demo_compose.py` |
+| Demo 占据图必须订阅 `/grid_map/*`；论文风白底配色 | `map_listener.py`；`map_style.py`；`demo_compose.py` |
+| Demo 7 Hz：按真实时间戳插值重渲染，检测/地图内容 hold；勿用 ffmpeg 加速 2 FPS 冒充 | `demo_7fps_from_run.py`；`run_demo_7fps.sh`；`demo_7fps_rates.json` |
 | catkin 前缀：`/workspace/ApexNav` → `baselines/ApexNav` | devel 路径 |
 | HM3D-v2 goals 在 `goals_by_category`；宜滤同层 | `_goals_for_episode` |
 

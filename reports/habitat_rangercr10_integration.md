@@ -119,12 +119,28 @@ ROS：隔离 master `:11312`（保留 NBV `:11311`）。
 
 ---
 
-## 6. Demo 布局（保留）
+## 6. Demo 布局与 7 Hz 视频
+
+布局（1280×720）不变：
 
 - 主画面：第三人称跟随  
 - 左下：D455 RGB + 检测  
 - 右下：ApexNav `/grid_map/*`（非 Habitat GT）  
 - 标注：策略 pin / control_mode / phase / action  
+
+### 7 FPS 同步版（本轮）
+
+| 项 | 值 |
+|----|-----|
+| 输出 | `.../20261104_114652/demo/apexnav_ranger_paper_demo_7fps.mp4` |
+| ffprobe | **7/1 FPS**，1280×720，300 帧，时长 ≈42.86 s（≈真实 episode） |
+| 原 2 FPS | **保留** `apexnav_ranger_paper_demo.mp4`（非用 ffmpeg 加速冒充 7 FPS） |
+| 主画面/EE 渲染 | 按 `actions.jsonl` 时间戳 7 Hz 插值底盘+臂，Habitat FK 重渲染 |
+| 检测内容 | 真实 VLM 结果；显示 7 Hz，内容 hold；实测 ≈**1.17 Hz** |
+| 地图内容 | 真实 `/grid_map` PNG；显示 7 Hz；内容更新 ≈**0.30 Hz**；白底纸质配色 |
+| 地图配色 | 白底/未知白、自由浅灰、障碍深灰黑、机器人蓝箭头、轨迹橙 |
+| 复现 | `bash adapters/habitat_rangercr10/scripts/run_demo_7fps.sh` |
+| 频率记录 | `demo/demo_7fps_rates.json` |
 
 ---
 

@@ -430,3 +430,23 @@
 **结论**：P0/P1 达成；P2 在开阔 ep 达成真实多步规划与前进；P3 不阻塞。勿混 stage45j URDF/偏置。
 
 **相关**：`reports/habitat_rangercr10_integration.md`、`.../apexnav_real/20261104_114652/`、`.../camera_view_diag_stage410d_20261104_114102/`
+
+---
+
+## 2026-11-04 Demo 统一 7 Hz + 白底占据图
+
+**模块**：`adapters/habitat_rangercr10` Demo 采集/合成
+
+**问题**：原论文风视频为每 planner 步 1 帧（ffmpeg 2 FPS），运动跳变；右下角地图为深色底，不适合论文图。
+
+**操作**：
+
+- `map_style.py` + `map_listener`：白底/浅灰自由/深色障碍/蓝机器人/橙轨迹。
+- `demo_7fps_from_run.py`：按 `actions.jsonl` 时间戳 7 Hz 时间线；Habitat 插值重渲染第三人称与 EE；检测与地图内容 hold 最近真实更新；白底 remap + 轨迹叠加。
+- 保留原 `apexnav_ranger_paper_demo.mp4`；新输出 `apexnav_ranger_paper_demo_7fps.mp4`。
+
+**实测**（`20261104_114652`）：ffprobe **7/1**，300 帧，≈42.86 s；det≈1.17 Hz，map 内容≈0.30 Hz，显示 7 Hz；`not_ffmpeg_speedup_of_2fps=true`。
+
+**结论**：三画面同步 7 FPS 达标；未改 PPO/规划器。
+
+**相关**：`scripts/run_demo_7fps.sh`、`demo/demo_7fps_rates.json`、`reports/habitat_rangercr10_integration.md`

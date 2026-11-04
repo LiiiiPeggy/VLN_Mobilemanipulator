@@ -7,6 +7,16 @@ from typing import Dict, List, Optional, Tuple
 
 import numpy as np
 
+from .map_style import (
+    PAPER_BG,
+    PAPER_FREE,
+    PAPER_OCCUPIED,
+    PAPER_ROBOT,
+    PAPER_TEXT,
+    PAPER_TRAJ,
+    PAPER_UNKNOWN,
+)
+
 try:
     import rospy
     from sensor_msgs.msg import PointCloud2
@@ -75,13 +85,19 @@ class ApexNavMapListener:
         traj_xy: Optional[List[Tuple[float, float]]] = None,
         meters_span: float = 12.0,
     ) -> np.ndarray:
-        """Rasterize cached clouds to RGB panel (ROS planar x-y)."""
+        """Rasterize cached clouds to RGB panel (ROS planar x-y).
+
+        ################################
+        Paper style: white bg/unknown, light-gray free, dark occupied,
+        blue robot arrow, orange trajectory. Real /grid_map only.
+        ################################
+        """
         h, w = size[1], size[0]
-        canvas = np.full((h, w, 3), 30, dtype=np.uint8)
+        canvas = np.full((h, w, 3), PAPER_BG, dtype=np.uint8)
         if not self.has_map():
-            canvas[:] = (40, 40, 40)
-            self._put_text(canvas, "NO ApexNav /grid_map", (10, 30), (0, 80, 255))
-            self._put_text(canvas, "occupied/free/unknown empty", (10, 55), (180, 180, 180))
+            canvas[:] = PAPER_BG
+            self._put_text(canvas, "NO ApexNav /grid_map", (10, 30), (200, 40, 40))
+            self._put_text(canvas, "occupied/free/unknown empty", (10, 55), PAPER_TEXT)
             return canvas
 
         cx, cy = 0.0, 0.0
@@ -94,10 +110,13 @@ class ApexNavMapListener:
             py = int(-(xy[1] - cy) * scale + h / 2)
             return px, py
 
+        # ################################
+        # Draw unknown then free then occupied (obstacles on top).
+        # ################################
         layers = [
-            ("unknown", (70, 70, 70), _cloud_xy(self.clouds["unknown"])),
-            ("free", (210, 190, 150), _cloud_xy(self.clouds["free"])),
-            ("occupied", (40, 40, 220), _cloud_xy(self.clouds["occupied"])),
+            ("unknown", PAPER_UNKNOWN, _cloud_xy(self.clouds["unknown"])),
+            ("free", PAPER_FREE, _cloud_xy(self.clouds["free"])),
+            ("occupied", PAPER_OCCUPIED, _cloud_xy(self.clouds["occupied"])),
         ]
         for _name, color, pts in layers:
             if pts.shape[0] == 0:
@@ -112,18 +131,18 @@ class ApexNavMapListener:
 
         if traj_xy:
             for i in range(1, len(traj_xy)):
-                self._line(canvas, to_pix(traj_xy[i - 1]), to_pix(traj_xy[i]), (255, 180, 40))
+                self._line(canvas, to_pix(traj_xy[i - 1]), to_pix(traj_xy[i]), PAPER_TRAJ)
 
         if robot_xy is not None:
             px, py = to_pix((cx, cy))
-            self._draw_robot(canvas, px, py, robot_yaw, (50, 220, 255))
+            self._draw_robot(canvas, px, py, robot_yaw, PAPER_ROBOT)
 
         st = self.stats()
         self._put_text(
             canvas,
             f"occ={st.get('occupied',0)} free={st.get('free',0)}",
             (6, h - 12),
-            (220, 220, 220),
+            PAPER_TEXT,
         )
         return canvas
 

@@ -1,13 +1,13 @@
 # PROGRESS.md — 当前状态
 
-更新时间：2026-11-04（Stage 4.10d 集成：URDF/D455/PPO + Habitat 相机 + ApexNav 多步探索）  
+更新时间：2026-11-04（Demo 7 Hz 同步 + 白底占据图；Stage 4.10d 成果保留）  
 证据优先于本文；冲突时以代码、`reports/`、`runs/`、容器实测为准。
 
 ## 研究目标与阶段
 
 **目标**：六套 VLN/ObjectNav baseline 可复现评测 → 再适配 RangerBox-CR10。
 
-**当前阶段**：Stage **4.10d** 机器人/相机/PPO 已共钉扎；MuJoCo PPO 短测通过；Habitat FK 水平近无遮挡；开阔 Episode 上 ApexNav **真实多步探索（含 MOVE_FORWARD）** 已有证据。PPO-in-Habitat 仍为观测缺口探针。
+**当前阶段**：Stage 4.10d + ApexNav 多步探索保留；论文风 Demo 已出 **7 FPS / 1280×720** 同步版（白底地图），原 2 FPS 保留。
 
 ## Baseline 状态
 
@@ -27,6 +27,7 @@
 | 狭窄 ep | free↑ 但仍可能 NO_PASSABLE | `20261104_114357/` |
 | PPO→Habitat | 探针 only | `ppo_habitat_probe_stage410d/` |
 | 控制（ApexNav） | `kinematic_state_set` | 与 PPO MuJoCo 分列 |
+| Demo 7 Hz | **通过** | `apexnav_ranger_paper_demo_7fps.mp4`；`demo_7fps_rates.json` |
 
 报告：`reports/habitat_rangercr10_integration.md`
 

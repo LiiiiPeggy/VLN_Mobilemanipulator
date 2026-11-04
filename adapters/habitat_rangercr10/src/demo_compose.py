@@ -25,6 +25,7 @@ def compose_frame(
     control_mode: str,
     status: str,
     out_size: Tuple[int, int] = (1280, 720),
+    extra_banner: str = "",
 ) -> np.ndarray:
     """
     Layout (16:9):
@@ -48,6 +49,8 @@ def compose_frame(
         f"Object Goal: {goal}   |   Step: {step}   |   Action: {action}   |   "
         f"Phase: {phase}   |   {control_mode}   |   {status}"
     )
+    if extra_banner:
+        banner = banner + "   |   " + extra_banner
     draw.text((16, 14), banner, fill=(255, 255, 255, 255), font=font_s)
 
     inset_w, inset_h = 320, 240
