@@ -1,0 +1,27 @@
+# ################################
+# Ranger+CR10 ApexNav parameter overlay (adapter-only; does NOT edit baselines/ApexNav).
+# Loaded before exploration_node so sdf_map picks habitat agent radius as inflation.
+#
+# Footprint (MuJoCo collision, Stage 4.10d home):
+#   base_link_col half-extents ≈ (0.651, 0.435, 0.218) m
+#   chassis circumscribed R ≈ 0.783 m
+#   recommended planning radius = half_width + margin = 0.435 + 0.05 = 0.485 m
+#     (oriented driving; full circumscribed 0.83 m is safer but often kills free space)
+# Baseline Habitat agent radius / inflation = 0.18 m (UNSAFE vs Ranger chassis).
+# ################################
+
+habitat:
+  simulator:
+    agents:
+      main_agent:
+        radius: 0.485
+
+# Explicit mirrors (C++ may override inflation from habitat radius above)
+sdf_map:
+  obstacles_inflation: 0.485
+  optimistic: false
+
+# Documented diagnostics-only alternatives (do not enable here without evidence):
+#   radius 0.05  → unsafe under-size diagnostic
+#   radius 0.83  → full circumscribed + margin
+#   optimistic true → unknown not treated as ESDF obstacle (more paths, less safety)

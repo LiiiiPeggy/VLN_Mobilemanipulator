@@ -17,6 +17,18 @@ def hab_pos_to_ros(p: Sequence[float]) -> np.ndarray:
     return np.array([-z, -x, y], dtype=np.float64)
 
 
+def hab_yaw_to_ros(yaw_hab: float) -> float:
+    """Habitat base yaw (about +Y) → ROS yaw (about +Z) for Ranger kinematic SE(2).
+
+    ################################
+    With MOVE_FORWARD = (sin(yaw), cos(yaw)) in Habitat xz and pos ROS=(-z,-x),
+    the ROS motion heading is yaw_hab + π. Keep odom orientation aligned with motion.
+    ################################
+    """
+    y = float(yaw_hab) + float(np.pi)
+    return (y + np.pi) % (2.0 * np.pi) - np.pi
+
+
 def hab_rot_to_ros(R: np.ndarray) -> np.ndarray:
     """R maps habitat vectors; return R in ROS world axes."""
     C = np.array([[0, 0, -1], [-1, 0, 0], [0, 1, 0]], dtype=np.float64)

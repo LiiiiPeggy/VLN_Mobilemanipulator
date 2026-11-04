@@ -18,7 +18,12 @@ from geometry_msgs.msg import Point, Pose, Quaternion
 from nav_msgs.msg import Odometry
 from sensor_msgs.msg import Image
 
-from .coord_habitat_ros import depth_meters_to_normalized, hab_pos_to_ros, mat4_hab_to_ros_pose
+from .coord_habitat_ros import (
+    depth_meters_to_normalized,
+    hab_pos_to_ros,
+    hab_yaw_to_ros,
+    mat4_hab_to_ros_pose,
+)
 
 
 def numpy_to_imgmsg(image: np.ndarray, encoding: str) -> Image:
@@ -62,15 +67,18 @@ class DynamicROSPublisher:
 
         depth_norm = depth_meters_to_normalized(depth_m, self.depth_min, self.depth_max)
 
-        # Base odom: Habitat yaw about +Y → ROS yaw about +Z with axis remap.
-        # Using same convention as original: orientation yaw = compass only about Z in ROS.
-        # Original used quaternion_from_euler(0,0,compass) with ROS pose (-z,-x,y).
-        # Habitat yaw (about Y): rotating +yaw moves +X toward -Z in hab → ROS yaw ≈ -hab_yaw
-        # Empirically match original gps/compass path: compass was habitat rotation about Y.
+        # ################################
+        # Base odom pose in ApexNav ROS world: pos = (-hab_z, -hab_x, hab_y).
+        # Ranger kinematic MOVE_FORWARD steps (sin(yaw), cos(yaw)) in Habitat xz,
+        # which becomes ROS heading atan2(-sin, -cos) = hab_yaw + π.
+        # Publishing odom yaw = hab_yaw (old) caused a persistent 180° facing error →
+        # ApexNav decideNextAction kept commanding TURN_LEFT. Use hab_yaw + π.
+        # (Native ApexNav habitat_publisher uses Habitat compass+GPS; do not change baseline.)
+        # ################################
         base_ros = hab_pos_to_ros(base_pos_hab)
-        # Match habitat_publisher robot odom: yaw = compass (hab yaw) about ROS Z
-        cy, sy = np.cos(base_yaw_hab * 0.5), np.sin(base_yaw_hab * 0.5)
-        base_q = (0.0, 0.0, float(sy), float(cy))  # xyzw, yaw about Z
+        ros_yaw = float(hab_yaw_to_ros(base_yaw_hab))
+        cy, sy = np.cos(ros_yaw * 0.5), np.sin(ros_yaw * 0.5)
+        base_q = (0.0, 0.0, float(sy), float(cy))  # xyzw, yaw about ROS +Z
 
         odom = Odometry()
         odom.header.stamp = ros_time
@@ -108,6 +116,8 @@ class DynamicROSPublisher:
             "stamp": float(ros_time.to_sec()),
             "base_ros": base_ros.tolist(),
             "base_q_xyzw": list(base_q),
+            "base_yaw_hab": float(base_yaw_hab),
+            "base_yaw_ros": float(ros_yaw),
             "camera_ros": cam_p.tolist(),
             "camera_q_xyzw": cam_q.tolist(),
             "depth_norm_mean": float(np.mean(depth_norm)),

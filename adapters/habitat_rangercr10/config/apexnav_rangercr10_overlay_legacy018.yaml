@@ -1,0 +1,13 @@
+# ################################
+# Diagnostic / Habitat-kinematic profile: keep baseline 0.18 m inflation.
+# UNSAFE vs Ranger chassis (half-width≈0.435 m). Use only to isolate yaw-fix effects.
+# Preferred real footprint: apexnav_rangercr10_overlay.yaml (0.485 m).
+# ################################
+habitat:
+  simulator:
+    agents:
+      main_agent:
+        radius: 0.18
+sdf_map:
+  obstacles_inflation: 0.18
+  optimistic: false

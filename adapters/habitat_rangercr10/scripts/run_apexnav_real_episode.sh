@@ -31,9 +31,29 @@ echo "[1/4] start isolated roscore :${ROS_PORT}"
 docker exec -d vln-rangercr10 bash -lc "$SRC_ROS; roscore -p ${ROS_PORT} >$LOGDIR/roscore.log 2>&1"
 sleep 2
 
-echo "[2/4] start exploration.launch (real planner)"
-docker exec -d vln-rangercr10 bash -lc "$SRC_ROS; roslaunch exploration_manager exploration.launch >$LOGDIR/exploration.log 2>&1"
+# ################################
+# Adapter launch: upstream algorithm + Ranger footprint overlay (radius→inflation).
+# Does not modify baselines/ApexNav launch files.
+# ################################
+LAUNCH_FILE="/workspace/VLN_Mobilemanipulator/adapters/habitat_rangercr10/launch/exploration_rangercr10.launch"
+# INFLATION_PROFILE:
+#   legacy018 (default for Habitat kinematic demos): 0.18 m — matches ApexNav HM3D agent;
+#     UNSAFE vs Ranger chassis half-width≈0.435 m (see reports).
+#   ranger_safe: 0.485 m oriented footprint — correct clearance, may starve free on sparse maps.
+PROFILE="${INFLATION_PROFILE:-legacy018}"
+if [[ "$PROFILE" == "ranger_safe" ]]; then
+  OVERLAY="/workspace/VLN_Mobilemanipulator/adapters/habitat_rangercr10/config/apexnav_rangercr10_overlay.yaml"
+else
+  OVERLAY="/workspace/VLN_Mobilemanipulator/adapters/habitat_rangercr10/config/apexnav_rangercr10_overlay_legacy018.yaml"
+fi
+echo "[2/4] start exploration_rangercr10.launch (profile=$PROFILE overlay=$(basename "$OVERLAY"))"
+docker exec -d vln-rangercr10 bash -lc \
+  "$SRC_ROS; roslaunch $LAUNCH_FILE ranger_overlay:=$OVERLAY >$LOGDIR/exploration.log 2>&1"
 sleep 4
+# Record effective params
+docker exec vln-rangercr10 bash -lc \
+  "$SRC_ROS; rosparam get /habitat/simulator/agents/main_agent/radius; rosparam get /exploration_node/sdf_map/obstacles_inflation; rosparam get /exploration_node/sdf_map/optimistic" \
+  >"$LOGDIR/effective_params.txt" 2>&1 || true
 
 echo "[3/4] start VLM servers (yolo/dino/blip2/sam) if not up"
 docker exec vln-rangercr10 bash -lc 'ln -sfn /media/ubuntu/D/VLN_shared/cache/huggingface/bert-base-uncased /workspace/ApexNav/bert-base-uncased'

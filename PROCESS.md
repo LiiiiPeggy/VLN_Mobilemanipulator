@@ -450,3 +450,27 @@
 **结论**：三画面同步 7 FPS 达标；未改 PPO/规划器。
 
 **相关**：`scripts/run_demo_7fps.sh`、`demo/demo_7fps_rates.json`、`reports/habitat_rangercr10_integration.md`
+
+---
+
+## 2026-11-04 ApexNav 频繁转向与膨胀/足迹诊断
+
+**模块**：`adapters/habitat_rangercr10`（ROS 发布 / 启动 overlay）
+
+**问题**：开阔 ep 上 MOVE_FORWARD 少、TURN_LEFT 连击；窄 ep `NO_PASSABLE_FRONTIER`；需核对 0.18 m 膨胀与 Ranger 尺寸。
+
+**操作**：
+
+1. 实测 MOVE_FORWARD 的 ROS 位移航向 vs odom：恒差 **180°** → 适配层 `hab_yaw_to_ros(+π)`。
+2. MuJoCo 量底盘半长/半宽 0.651/0.435；对照 A/B/C 膨胀与 optimistic。
+3. 独立 overlay + `exploration_rangercr10.launch`；验证 `legacy018` 与 `ranger_safe`。
+
+**实测**：
+
+- 修复后 yaw 误差≈0°；左转连击消失；legacy018 下 FWD 1.25 m（原 1.0 m）。
+- ranger_safe(0.485) 生效 inflation≈0.48，但 free→0 早停。
+- 未改 baseline 规划源码 / PPO。
+
+**结论**：转向刷屏主因是航向约定错误；膨胀 0.18 对实机不安全但不是左转主因。
+
+**相关**：`reports/apexnav_rangercr10_frontier_inflation.md`、`frontier_inflation_diag/`、`real_yawfix_legacy018_*`

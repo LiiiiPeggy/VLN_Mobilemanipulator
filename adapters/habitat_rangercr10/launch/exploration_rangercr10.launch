@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!-- ################################
+  Adapter-only ApexNav launch for Ranger+CR10.
+  Same wiring as baselines/.../exploration.launch, plus footprint overlay.
+  Does NOT modify files under baselines/ApexNav.
+################################ -->
+<launch>
+  <arg name="map_size_x" value="80.0"/>
+  <arg name="map_size_y" value="80.0"/>
+  <arg name="is_real_world" default="false"/>
+  <arg name="odom_topic" value="/habitat/odom"/>
+  <arg name="sensor_pose_topic" value="/habitat/sensor_pose"/>
+  <arg name="depth_topic" value="/habitat/camera_depth"/>
+  <arg name="ranger_overlay"
+       default="/workspace/VLN_Mobilemanipulator/adapters/habitat_rangercr10/config/apexnav_rangercr10_overlay.yaml"/>
+
+  <group unless="$(arg is_real_world)">
+    <rosparam file="$(find exploration_manager)/../../../config/habitat_eval_hm3dv2.yaml" command="load"/>
+    <!-- Override Habitat agent radius → sdf_map inflation at node init -->
+    <rosparam file="$(arg ranger_overlay)" command="load"/>
+  </group>
+
+  <include file="$(find exploration_manager)/launch/algorithm.xml">
+    <arg name="is_real_world_" value="$(arg is_real_world)"/>
+    <arg name="map_size_x_" value="$(arg map_size_x)"/>
+    <arg name="map_size_y_" value="$(arg map_size_y)"/>
+    <arg name="odometry_topic_" value="$(arg odom_topic)"/>
+    <arg name="sensor_pose_topic_" value="$(arg sensor_pose_topic)"/>
+    <arg name="depth_topic_" value="$(arg depth_topic)"/>
+    <arg name="cx_" value="320"/>
+    <arg name="cy_" value="240"/>
+    <arg name="fx_" value="388.1910413097385"/>
+    <arg name="fy_" value="422.0475153598262"/>
+  </include>
+</launch>
