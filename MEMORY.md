@@ -120,18 +120,18 @@ VLN_Mobilemanipulator/
 | IIN 磁盘目录名 `instance_imagenav_hm3d_v3`；UniGoal 期望 `hm3d/v3/` → 接线时软链 | `reports/manual_downloads.md` |
 | 共享公开大数据无强制待下载项；MP3D 维持 val 11 景 | `reports/manual_downloads.md`（2026-11-02） |
 | Ranger+CR10 适配落在 `adapters/habitat_rangercr10/`，不改 baseline 默认配置 | 目录 + compose `vln-rangercr10:bullet` |
-| LocoManip 钉扎 `rangercr10-teleop` @ `1973cb4`；Teleop PPO `stage45j_ppo/model_5999.pt`；obs=117 act=8 hist=3 @10Hz | `constants.py`；MuJoCo smoke |
+| LocoManip 钉扎 `rangercr10-teleop` @ **`ec5fd65`（stage 4.10d）**；PPO `stage410d_ppo/model_5999.pt`；obs=117 act=8 hist=3 @10Hz；stage45j 仅历史对照 | `constants.py`；`VERSION_stage410d.json`；MuJoCo `teleop_eval` |
 | 现网 VLN 镜像均 `built_with_bullet=False`；URDF 需专用 bullet 构建 | `habitat_sim.built_with_bullet` |
 | EGL 修复后原生 URDF-in-Habitat 可用；混合 Demo 仍作后备 | `run_kinematic_demo.sh`；`reports/habitat_rangercr10_integration.md` |
 | URDF Z-up→Habitat Y-up 根旋转必须 `Ry(-π/2)*Rx(-π/2)`，否则底盘倾倒 | `kinematic_demo._urdf_to_habitat`；`up_dot_hab_y≈1` |
 | 底盘高度经轮贴地后 `DEFAULT_BASE_Y≈0.4419`（轮半径 0.125） | `kinematic_demo.py`；`snap_wheels_to_floor` |
 | ObjectNav 原始起点常不适配完整 Ranger+CR10 → `find_adapted_start`，须标 `adapted_episode` | `spawn_utils.py` |
-| LocoManip 4.10 默认臂 `(0.511,0.494,-2.449,-1.186,-1.060,0)`：TCP≈0.88 m 朝前；D455 光学 AGL≈0.78 m、水平 | 只读 HEAD `b0a536f`；`constants.ARM_DEFAULT` |
-| PPO 权重钉扎仍为 stage45j @ `1973cb4` / `model_5999.pt`，与臂默认 HEAD 读取解耦 | `LOCOMANIP_COMMIT` vs `LOCOMANIP_HEAD_READ` |
-| LOOK：L410 下 joint5 俯仰增益≈0，用 **joint3 ±0.6 rad**；TURN_DOWN 可诱发自遮挡 | `camera_view_diag.py`；`apexnav_real_episode` |
+| Stage **4.10d** 默认臂 `[0.236,0.086,-2.398,-0.830,-1.335,0]`；D455 **顶装** AG95；MuJoCo 光学≈0.88 m，Habitat FK≈0.857 m、水平、near=0 | `ARM_DEFAULT`；`fk_compare_stage410d_*` |
+| URDF/D455/PPO **必须共钉扎**；禁止旧侧装 URDF + 新 PPO | `URDF_HABITAT` pin `stage410d_ec5fd65` |
+| LOOK：joint3 ±0.6 rad（臂适配）；4.10d 下 INIT/DOWN/UP near≈0 | `camera_view_diag.py` |
 | 真实 ApexNav ROS 闭环：孤立 master `:11312`；勿占 NBV `:11311` | `run_apexnav_real_episode.sh` |
 | FSM 前 26 步 init lookaround；其后 `callActionPlanner` | `exploration_fsm.cpp` |
-| free≈0 / NO_COVERABLE 常因近场遮挡+狭窄出生+膨胀，而非单纯深度编码坏 | `real_20261103_124521` + map_ros 高度窗 |
+| free 过少/NO_PASSABLE：近场遮挡+狭窄出生+膨胀；开阔 ep + 4.10d 可达 free≈180 与多步 FWD | `20261104_114652` vs `real_20261103_124521` |
 | Demo 占据图必须订阅 `/grid_map/*` | `map_listener.py`；`demo_compose.py` |
 | catkin 前缀：`/workspace/ApexNav` → `baselines/ApexNav` | devel 路径 |
 | HM3D-v2 goals 在 `goals_by_category`；宜滤同层 | `_goals_for_episode` |
@@ -155,6 +155,6 @@ VLN_Mobilemanipulator/
 | 原生 URDF 入场 | `vln-rangercr10:bullet` + 物理开启可加载 51+1 links | `run_kinematic_demo.sh` |
 | 运动学 vs 动力学 | Demo 为状态写入 | 必须标 `kinematic_state_set`，禁止写成全身动力学 |
 | habitat-sim close | 0.3.1 常 rc=134 / heap 噪声 | 以 `summary.status` 判定；脚本接受 0/134 |
-| PPO→Habitat | 117-D 观测与 ChassisAction 未对齐 | 保持 MuJoCo 验证路径；钉扎 `model_5999.pt` |
+| PPO→Habitat | 117-D 观测与 ChassisAction 未对齐 | 保持 MuJoCo stage410d 验证；Habitat 探针勿当成功 |
 | ApexNav VLM 离线 | bert/blip2/dino 勿直连 HF | `HF_HOME`/`TORCH_HOME` + `/workspace/ApexNav/bert-base-uncased`；dino 权重用 D 盘实文件 |
 | 动态相机 | 不可再用固定 +0.88 m | 适配层发真实 EE SE3；第三人称渲染勿覆盖 EE 观测 |

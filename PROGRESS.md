@@ -1,13 +1,13 @@
 # PROGRESS.md — 当前状态
 
-更新时间：2026-11-03（相机 FK / LOOK / free-space 诊断；不接新 PPO）  
+更新时间：2026-11-04（Stage 4.10d 集成：URDF/D455/PPO + Habitat 相机 + ApexNav 多步探索）  
 证据优先于本文；冲突时以代码、`reports/`、`runs/`、容器实测为准。
 
 ## 研究目标与阶段
 
 **目标**：六套 VLN/ObjectNav baseline 可复现评测 → 再适配 RangerBox-CR10。
 
-**当前阶段**：真实 ApexNav ROS 闭环与论文风 Demo 已保留；本轮完成 **Habitat 运动学相机/臂构型验证**，默认臂改为只读自 LocoManip 4.10；**不**等待/替换新 PPO 训练。
+**当前阶段**：Stage **4.10d** 机器人/相机/PPO 已共钉扎；MuJoCo PPO 短测通过；Habitat FK 水平近无遮挡；开阔 Episode 上 ApexNav **真实多步探索（含 MOVE_FORWARD）** 已有证据。PPO-in-Habitat 仍为观测缺口探针。
 
 ## Baseline 状态
 
@@ -16,22 +16,24 @@
 | VLFM / ApexNav / MSGNav | `BATCH_OK` | 镜像未改 |
 | APRR / SG-Nav / UniGoal | `CONTAINER_READY` | 未改 |
 
-## 机械臂适配
+## 机械臂适配（Stage 4.10d）
 
 | 项 | 状态 | 证据 |
 |----|------|------|
-| 直立 / 贴地 | 通过 | `Ry(-90)*Rx(-90)` |
-| 初始臂 | **LocoManip 4.10 默认** | HEAD `b0a536f` 只读；光学 AGL≈0.78 m，水平 |
-| LOOK | joint3 ±0.6 rad | DOWN 诱发近场遮挡；UP 干净 |
-| ApexNav 闭环 | 保留 | `real_20261103_124521` |
-| free/NO_COVERABLE | 原因已记 | 近场遮挡 + 狭窄出生 + frontier 空 |
-| PPO 权重 | **仍 stage45j** | `model_5999.pt`；新训未接 |
-| 控制 | `kinematic_state_set` | |
+| 钉扎 | `ec5fd65` + `stage410d_ppo/model_5999.pt` | `VERSION_stage410d.json` |
+| MuJoCo PPO | **通过** | `ppo_stage410d_mujoco_20261104_113929/` |
+| Habitat 直立/相机 | Hab AGL≈0.857；角≈0；near=0 | `camera_view_diag_stage410d_20261104_114102/` |
+| ApexNav 探索 | **24 explore / FWD×4** | `apexnav_real/20261104_114652/` |
+| 狭窄 ep | free↑ 但仍可能 NO_PASSABLE | `20261104_114357/` |
+| PPO→Habitat | 探针 only | `ppo_habitat_probe_stage410d/` |
+| 控制（ApexNav） | `kinematic_state_set` | 与 PPO MuJoCo 分列 |
+
+报告：`reports/habitat_rangercr10_integration.md`
 
 ## 下一步（最多 5）
 
-1. 用 4.10 臂 + 更开阔 Episode 重跑有界 ApexNav，验证 free/frontier 与多步 FWD。  
-2. LocoManip 新 PPO 训练完成后：**单独**做权重钉扎与控制验证（本轮不做）。  
-3. TURN_DOWN 遮挡：评估更小俯仰或组合关节。  
+1. 记录/可视化 NO_PASSABLE 时的 frontier 候选与膨胀（仍不改规划算法）。  
+2. 可选：更多开阔 ObjectNav ep 有界复现。  
+3. PPO→Habitat：仅在能装配真实 117-D 观测时再推进（禁止零观测冒充）。  
 4. 点云一致性报告完善。  
 5. 停用后腾 GPU。

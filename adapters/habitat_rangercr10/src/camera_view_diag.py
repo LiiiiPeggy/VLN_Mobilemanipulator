@@ -19,6 +19,7 @@ from .constants import (
     ARM_APEXNAV_INIT,
     ARM_APEXNAV_INIT_SEARCH,
     ARM_DEFAULT,
+    ARM_DEFAULT_410_INTERMEDIATE,
     ARM_DEFAULT_LEGACY,
     DEFAULT_OUT_DIR,
     DEFAULT_SCENE,
@@ -31,7 +32,7 @@ from .demo_compose import compose_frame
 from .initial_camera_pose import optical_metrics, within_tolerances
 from .kinematic_demo import DEFAULT_BASE_Y, RangerCr10KinematicEnv
 
-# Alias for report clarity (same as ARM_DEFAULT / ARM_APEXNAV_INIT after 4.10 sync)
+# Stage 4.10d deployed default (== ARM_DEFAULT)
 LOCOMANIP_ARM_DEFAULT_410 = ARM_DEFAULT
 
 # ################################
@@ -162,7 +163,8 @@ def run(out_dir: Path, scene: str, gpu: int) -> dict:
 
     configs: List[Tuple[str, Sequence[float]]] = [
         ("ARM_DEFAULT_legacy", ARM_DEFAULT_LEGACY),
-        ("LOCOMANIP_ARM_DEFAULT_410", LOCOMANIP_ARM_DEFAULT_410),
+        ("ARM_DEFAULT_410_intermediate", ARM_DEFAULT_410_INTERMEDIATE),
+        ("LOCOMANIP_ARM_DEFAULT_410d", LOCOMANIP_ARM_DEFAULT_410),
         ("ARM_APEXNAV_INIT_search", ARM_APEXNAV_INIT_SEARCH),
         ("ARM_APEXNAV_INIT_current", ARM_APEXNAV_INIT),
     ]
@@ -215,12 +217,12 @@ def run(out_dir: Path, scene: str, gpu: int) -> dict:
     # ################################
     # Look comparison on best reasonable config (prefer LocoManip 4.10 if competitive)
     # ################################
-    prefer = "LOCOMANIP_ARM_DEFAULT_410"
+    prefer = "LOCOMANIP_ARM_DEFAULT_410d"
     prefer_row = next(r for r in compare_rows if r["label"] == prefer)
     search_row = next(r for r in compare_rows if r["label"] == "ARM_APEXNAV_INIT_search")
     use_name = prefer
     use_q = list(LOCOMANIP_ARM_DEFAULT_410)
-    reason = "prefer_locomanip_410_default"
+    reason = "prefer_locomanip_410d_default"
     if prefer_row["depth"]["near_lt_0p35_frac"] > 0.45 and search_row["tolerances"]["all_ok"]:
         if search_row["depth"]["near_lt_0p35_frac"] + 0.15 < prefer_row["depth"]["near_lt_0p35_frac"]:
             use_name = "ARM_APEXNAV_INIT_search"
@@ -279,12 +281,16 @@ def run(out_dir: Path, scene: str, gpu: int) -> dict:
         "control_mode": MODE_KINEMATIC,
         "locomanip_weight_pin_commit": LOCOMANIP_COMMIT,
         "locomanip_head_read_for_arm": LOCOMANIP_HEAD_READ,
+        # ################################
+        # Stage 4.10d: URDF + ARM_DEFAULT + PPO model_5999 are co-pinned.
+        # ################################
         "locomanip_head_note": (
-            "ARM defaults read from LocoManip HEAD (stage 4.10). "
-            "PPO ckpt remains stage45j @ LOCOMANIP_COMMIT; weights NOT swapped."
+            "ARM defaults + D455 top-mount URDF + PPO stage410d co-pinned @ ec5fd65. "
+            "Do not mix with stage45j side-mount URDF or its joint bias."
         ),
         "look_joint": {"index": LOOK_JOINT_INDEX, "name": "cr10_joint3", "delta_rad": LOOK_DELTA_RAD},
-        "pinned_teleop_ckpt_unchanged": True,
+        "pinned_teleop_ckpt": "2026-11-03_16-30-44_stage410d_ppo/model_5999.pt",
+        "urdf_pin": "rangercr10lidar_habitat_stage410d_ec5fd65.urdf",
         "configs": compare_rows,
         "selected_for_look": {"name": use_name, "q": use_q, "reason": reason},
         "look_compare": panels,

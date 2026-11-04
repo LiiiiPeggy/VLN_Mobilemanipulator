@@ -129,6 +129,7 @@ def load_episode(
     dataset_root: Path,
     scene_filter: Optional[str] = None,
     category_filter: Optional[str] = None,
+    episode_id: Optional[str] = None,
 ) -> dict:
     """Load one ObjectNav-HM3D-v2 val episode (content json)."""
     content = dataset_root / "val" / "content"
@@ -147,6 +148,11 @@ def load_episode(
                 continue
             if category_filter and ep.get("object_category") != category_filter:
                 continue
+            # ################################
+            # Optional explicit episode_id (string compare) for open-floor starts.
+            # ################################
+            if episode_id is not None and str(ep.get("episode_id")) != str(episode_id):
+                continue
             goals = _goals_for_episode(data, ep)
             if not goals:
                 continue
@@ -160,7 +166,8 @@ def load_episode(
                 "goals": goals,
             }
     raise FileNotFoundError(
-        f"no episode matched scene_filter={scene_filter!r} category={category_filter!r}"
+        f"no episode matched scene_filter={scene_filter!r} "
+        f"category={category_filter!r} episode_id={episode_id!r}"
     )
 
 
@@ -448,6 +455,7 @@ class ApexNavRangerBridge:
                 Path(args.objectnav_root),
                 scene_filter=args.scene_filter or None,
                 category_filter=args.category_filter or None,
+                episode_id=args.episode_id or None,
             )
             scene = scene_glb_from_episode(ep["scene_id"], Path(args.hm3d_root))
             (self.out / "episode.json").write_text(json.dumps(ep, indent=2))
@@ -929,6 +937,10 @@ def main(argv=None) -> int:
     )
     p.add_argument("--scene_filter", default="TEEsavR23oF")
     p.add_argument("--category_filter", default="chair")
+    # ################################
+    # Default eid 4: more open TEEsav floor start vs eid 3 bedroom (prior free≈6).
+    # ################################
+    p.add_argument("--episode_id", default="4")
     p.add_argument("--detector_cfg", default="yolo")
     p.add_argument(
         "--llm_answer_path",

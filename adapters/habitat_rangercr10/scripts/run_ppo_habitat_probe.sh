@@ -1,23 +1,25 @@
 #!/usr/bin/env bash
 # Probe Teleop PPO interface against Habitat kinematic env (no false success).
-# Keeps stage45j model_5999.pt as pinned baseline; does not swap to 4.8.
+# Stage 4.10d pin; stage45j kept only as historical comparison path.
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/../../.." && pwd)"
 LOCO="${LOCOMANIP_ROOT:-/home/ubuntu/locomani/LocoManip_Lab}"
-OUT="${OUT_DIR:-/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/ppo_habitat_probe}"
-CKPT="${CKPT:-logs/rsl_rl/ranger_cr10_teleop/2026-10-29_19-12-08_stage45j_ppo/model_5999.pt}"
+OUT="${OUT_DIR:-/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/ppo_habitat_probe_stage410d}"
+CKPT="${CKPT:-logs/rsl_rl/ranger_cr10_teleop/2026-11-03_16-30-44_stage410d_ppo/model_5999.pt}"
+CKPT_LEGACY="${CKPT_LEGACY:-logs/rsl_rl/ranger_cr10_teleop/2026-10-29_19-12-08_stage45j_ppo/model_5999.pt}"
 PYBIN="${PYBIN:-/home/ubuntu/miniconda3/envs/env_isaaclab5/bin/python}"
 mkdir -p "$OUT"
 
 set +e
-"$PYBIN" - <<'PY' >"$OUT/probe.log" 2>&1
-import json, sys
+OUT="$OUT" CKPT="$CKPT" CKPT_LEGACY="$CKPT_LEGACY" LOCO="$LOCO" "$PYBIN" - <<'PY' >"$OUT/probe.log" 2>&1
+import json, os, sys
 from pathlib import Path
 import numpy as np
 
-ROOT = Path("/home/ubuntu/locomani/LocoManip_Lab")
-CKPT = Path("logs/rsl_rl/ranger_cr10_teleop/2026-10-29_19-12-08_stage45j_ppo/model_5999.pt")
-OUT = Path("/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/ppo_habitat_probe")
+ROOT = Path(os.environ["LOCO"])
+CKPT = Path(os.environ["CKPT"])
+CKPT_LEGACY = Path(os.environ["CKPT_LEGACY"])
+OUT = Path(os.environ["OUT"])
 sys.path.insert(0, str(ROOT / "mujoco/deploy"))
 sys.path.insert(0, str(ROOT / "mujoco/deploy/deploy_mujoco"))
 from ranger_cr10.ranger_policy import (  # type: ignore
@@ -27,6 +29,9 @@ from ranger_cr10.ranger_policy import (  # type: ignore
 ckpt = ROOT / CKPT
 assert ckpt.exists(), ckpt
 actor, kind = load_actor(str(ckpt))
+# ################################
+# Zero-obs action is interface smoke ONLY — not PPO control evidence.
+# ################################
 obs = np.zeros((NUM_OBS,), dtype=np.float32)
 raw = act(actor, obs)
 assert raw.shape == (NUM_ACTIONS,), raw.shape
@@ -35,10 +40,13 @@ gaps = [
     "Habitat kinematic env does not expose Isaac/MuJoCo matching 117-D terms (base_ang_vel, joint_vel scales, projected gravity history).",
     "8-D action [vx,wz,j1..j6] needs ChassisAction wheel mapping; Habitat demo currently sets SE(2)+arm joints directly (kinematic_state_set).",
     "10 Hz decimation / base command filter not wired into Habitat step loop yet.",
+    "Zero-obs / fabricated obs actions must NOT be cited as PPO-in-Habitat success.",
 ]
 summary = {
     "status": "probe_only_not_integrated",
     "pinned_ckpt": str(ckpt),
+    "pinned_stage": "stage410d",
+    "legacy_ckpt_not_used": str(ROOT / CKPT_LEGACY),
     "ckpt_kind": kind,
     "num_obs": NUM_OBS,
     "num_actions": NUM_ACTIONS,
@@ -49,7 +57,10 @@ summary = {
     "action_scale": ACTION_SCALE,
     "habitat_integration": "blocked_by_observation_mismatch",
     "gaps": gaps,
-    "note": "Do not treat this as PPO-in-Habitat success. MuJoCo smoke remains the validated PPO path.",
+    "note": (
+        "Do not treat this as PPO-in-Habitat success. "
+        "MuJoCo teleop_eval stage410d remains the validated PPO path."
+    ),
 }
 OUT.mkdir(parents=True, exist_ok=True)
 (OUT / "summary.json").write_text(json.dumps(summary, indent=2))

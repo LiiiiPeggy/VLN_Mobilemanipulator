@@ -1,0 +1,26 @@
+{
+  "urdf": "rangercr10lidar_habitat_stage410d_ec5fd65.urdf",
+  "locomanip_branch": "rangercr10-teleop",
+  "locomanip_commit_feature": "ec5fd6584bd3d562812c12ef2d8e2f87fba98175",
+  "locomanip_head_at_sync": "2d6d1f526c32b0f2965fdf624840155cf96ad586",
+  "policy": "logs/rsl_rl/ranger_cr10_teleop/2026-11-03_16-30-44_stage410d_ppo/model_5999.pt",
+  "arm_default": [
+    0.236,
+    0.086,
+    -2.398,
+    -0.83,
+    -1.335,
+    0.0
+  ],
+  "d455_joint_origin_xyz": [
+    0.0,
+    0.1,
+    0.14
+  ],
+  "d455_joint_origin_rpy": [
+    0.785398,
+    -1.570796,
+    -2.356194
+  ],
+  "notes": "Synced from LocoManip rangerboxcr10lidar_description URDF; meshes remapped to D disk. Do not mix with stage45j side-mount URDF."
+}

@@ -8,10 +8,9 @@ Target (ApexNav fixed-camera convention):
 Pose MUST come from URDF joint state + FK (``camera_world_matrix``), never by
 forging Habitat Agent sensor pose independently of the articulated robot.
 
-``ARM_DEFAULT`` / ``ARM_APEXNAV_INIT`` follow LocoManip stage-4.10 home
-(TCP ~0.88 m forward). D455 optical sits ~7–8 cm below Link6 → optical AGL
-≈0.78 m with near-zero pitch/yaw; do not chase 0.88 with unnatural joints.
-``ARM_APEXNAV_INIT_SEARCH`` is the older height-chasing pose (diagnostics only).
+``ARM_DEFAULT`` / ``ARM_APEXNAV_INIT`` follow LocoManip stage-4.10d home
+(D455 top-mounted on AG95; MuJoCo optical/link AGL ≈0.88 m, Habitat FK ≈0.857 m).
+Do not height-chase with unnatural joints; ``ARM_APEXNAV_INIT_SEARCH`` is diagnostics only.
 """
 
 from __future__ import annotations
@@ -137,6 +136,26 @@ def choose_initial_arm(env) -> Tuple[np.ndarray, Dict[str, Any]]:
     if rep_pin["tolerances"]["all_ok"]:
         report["selected"] = "ARM_APEXNAV_INIT"
         env.set_arm_joints(ARM_APEXNAV_INIT)
+        report["final"] = rep_pin
+        return np.array(ARM_APEXNAV_INIT, dtype=np.float64), report
+
+    # ################################
+    # Stage 4.10d: if angles are level and height only slightly off MuJoCo 0.88 m,
+    # keep co-pinned ARM_DEFAULT — do NOT height-chase into a self-occluding pose.
+    # ################################
+    ang_ok = (
+        rep_pin["tolerances"]["pitch_ok"]
+        and rep_pin["tolerances"]["yaw_ok"]
+        and rep_pin["tolerances"]["roll_ok"]
+    )
+    h = float(rep_pin["metrics"]["height_agl_m"])
+    if ang_ok and abs(h - APEXNAV_CAM_HEIGHT_M) <= 0.04:
+        report["selected"] = "ARM_APEXNAV_INIT_angle_priority"
+        report["angle_priority_note"] = (
+            f"height_agl={h:.3f}m vs target 0.88; angles OK; keep stage410d default"
+        )
+        env.set_arm_joints(ARM_APEXNAV_INIT)
+        report["final"] = verify_arm_config(env, ARM_APEXNAV_INIT, label=report["selected"])
         return np.array(ARM_APEXNAV_INIT, dtype=np.float64), report
 
     # Bounded local refine around pin (no new IK module)

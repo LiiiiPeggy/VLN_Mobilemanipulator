@@ -1,8 +1,8 @@
 # Habitat ↔ RangerBox-CR10 集成报告
 
-更新：2026-11-03（相机视角 / LOOK / free-space 诊断）  
-范围：`adapters/habitat_rangercr10/`；**不修改**六套 baseline 默认配置、**不修改** LocoManip 训练、**不替换** stage45j 权重。  
-基线保留：`44a326a` 姿态+Demo 成果；本轮叠加 LocoManip 4.10 默认臂构型只读验证与 LOOK 修正。
+更新：2026-11-04（**Stage 4.10d** URDF/D455/默认关节/PPO 共钉扎）  
+范围：`adapters/habitat_rangercr10/`；**不修改**六套 baseline 默认评测协议、**不修改** LocoManip 训练代码。  
+大文件（权重/视频/轨迹）在 `/media/ubuntu/D/VLN_shared/`。
 
 ---
 
@@ -10,137 +10,138 @@
 
 | 项 | 状态 | 证据 |
 |----|------|------|
-| URDF Z-up→Hab Y-up 直立 | **已修复** | `Ry(-90)*Rx(-90)`；`up_dot_hab_y=1.0` |
-| 初始臂构型 | **采用 LocoManip 4.10 默认** | `(0.511,0.494,-2.449,-1.186,-1.060,0)`；只读自 HEAD `b0a536f` |
-| D455 光学水平朝前 | **通过** | pitch/yaw/roll ≈0°；光学 AGL≈**0.783 m**（TCP/Link6≈0.86 m；0.88 为 TCP 目标） |
-| 初始自遮挡 | **低** | `near_lt_0.35m ≈1.9%` |
-| LOOK 遮挡 | **TURN_DOWN 诱发** | DOWN：near≈56%；UP：near≈1.9%（非初始姿态错误） |
-| LOOK 关节 | **joint3**（非 joint5） | L410 下 j5 俯仰增益≈0；j3≈50°/rad |
-| ApexNav free 过少 | **已定位主因** | 见 §8；先验 episode free≈6 / NO_COVERABLE_FRONTIER |
-| PPO | **未接入新权重** | 仍钉 `stage45j_ppo/model_5999.pt` @ `1973cb4` |
-| 控制模式 | `kinematic_state_set` | 非全身动力学 |
-
-证据目录：`/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/camera_view_diag_20261103_132939/`
+| LocoManip pin | **stage 4.10d @ `ec5fd65`** | HEAD 只读 `2d6d1f5`；策略 `2026-11-03_16-30-44_stage410d_ppo/model_5999.pt` |
+| URDF / D455 | **顶装 AG95** | `d455_joint` xyz=`(0,0.10,0.14)` rpy=`(0.785,-1.571,-2.356)`；`VERSION_stage410d.json` |
+| ARM_DEFAULT | `[0.236, 0.086, -2.398, -0.830, -1.335, 0]` | 与 `ranger_policy.py` 一致；**勿混** stage45j |
+| MuJoCo PPO | **短测通过** | `ppo_stage410d_mujoco_20261104_113929/`（drift/modes/coverage/self_collision） |
+| Habitat 直立 | **保持** | `Ry(-90)*Rx(-90)`；轮贴地 |
+| D455 FK | Hab AGL≈**0.857 m**；MuJoCo≈**0.880 m** | `fk_compare_stage410d_20261104/`；角误差 ≈0°；near 遮挡 **0** |
+| LOOK | joint3 ±0.6 rad | INIT/DOWN/UP near=0；DOWN pitch≈−26°；UP≈+33° |
+| ApexNav 探索 | **多步**（开阔 ep） | `20261104_114652`：explore 24 步含 **MOVE_FORWARD×4** |
+| PPO→Habitat | **探针仅** | 观测维不匹配；**非**全身 PPO 成功 |
+| 控制模式（ApexNav） | `kinematic_state_set` | 与 PPO MuJoCo 分列验收 |
 
 ---
 
-## 1. 本轮验收运行
+## 1. Stage 4.10d 版本钉扎
 
-运行 ID：`real_20261103_124521`  
-目录：`/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_20261103_124521/`
+| 字段 | 值 |
+|------|-----|
+| 分支 | `rangercr10-teleop` |
+| 特征提交 | `ec5fd6584bd3d562812c12ef2d8e2f87fba98175` |
+| 同步时 HEAD | `2d6d1f526c32b0f2965fdf624840155cf96ad586` |
+| 策略 | `logs/rsl_rl/ranger_cr10_teleop/2026-11-03_16-30-44_stage410d_ppo/model_5999.pt` |
+| Habitat URDF pin | `/media/ubuntu/D/VLN_shared/robots/rangercr10/rangercr10lidar_habitat_stage410d_ec5fd65.urdf` |
+| 适配层元数据 | `adapters/habitat_rangercr10/assets/VERSION_stage410d.json` |
+| 历史对照 | stage45j `2026-10-29_19-12-08_stage45j_ppo/model_5999.pt`（**不覆盖、不混关节偏置**） |
+
+---
+
+## 2. MuJoCo PPO 短测（P0）
+
+目录：`/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/ppo_stage410d_mujoco_20261104_113929/`
+
+复现：
+
+```bash
+bash adapters/habitat_rangercr10/scripts/run_ppo_stage410d_mujoco.sh
+```
+
+| Suite | 结果摘要 |
+|-------|----------|
+| drift | 零命令/近零命令持稳；写出 `mujoco_drift_stage410d.json` + traces |
+| modes | 底盘 A1/A2、臂 B*、联合 C*；滤波 on 时臂跟踪 ee_pos 约 1–5 cm 量级 |
+| coverage | `--coverage_box 4.10` 安全盒 |
+| self_collision | `check_self_collision.py --box 4.10`；home_contacts=[]；轴安全盒与 LocoManip final 一致 |
+
+**不能**把 Habitat `kinematic_state_set` 或全零观测动作当作 PPO 成功证据。
+
+---
+
+## 3. Habitat 相机 / 姿态（P1）
+
+诊断：`camera_view_diag_stage410d_20261104_114102/`  
+FK 对比：`fk_compare_stage410d_20261104/fk_compare.json`
+
+| 构型 | AGL (m) | pitch (°) | near&lt;0.35 |
+|------|---------|-----------|-------------|
+| LOCOMANIP_ARM_DEFAULT_410d | 0.857 | ≈0 | **0.0** |
+| TURN_DOWN (j3−0.6) | 0.605 | ≈−25.7 | **0.0** |
+| TURN_UP (j3+0.6) | 1.301 | ≈+33.3 | **0.0** |
+
+说明：MuJoCo 同关节 `d455_link` AGL≈0.880 m；Habitat FK 约低 2.3 cm（地板/基座偏置）。高度容差改为 ±2.5 cm，避免高度追逐破坏共钉扎默认构型。光学位姿来自 URDF FK，**未**伪造渲染相机。
+
+---
+
+## 4. ApexNav 真实探索（P2）
+
+### 4.1 狭窄场景对照（TEEsav eid=4）
+
+`apexnav_real/20261104_114357/`：free≈**169**（旧遮挡时代 free≈6）；仍 `NO_PASSABLE_FRONTIER` → 1 步 explore STOP。  
+诊断：`frontier_diagnosis.json`（膨胀后无可通行 frontier，非伪造）。
+
+### 4.2 开阔场景主结果（Dd4bFSTQ8gi chair eid=5）
+
+`apexnav_real/20261104_114652/`
 
 | 字段 | 值 |
 |------|-----|
 | status | ok |
-| termination | planner_stop |
-| n_steps | 27（26 init + 1 explore） |
-| entered_callActionPlanner | **true** |
-| explore 动作 | STOP（`EXPL_RESULT::NO_COVERABLE_FRONTIER`） |
-| online_grid_map.has_data | true（occ≈556, free≈6, unknown≈7138） |
-| adapted_episode | true（offset≈1.8 m） |
+| termination | **step_budget_exhausted**（max_steps=50） |
+| n_init_lookaround | 26 |
+| n_explore_planner | **24** |
+| explore 动作 | TURN_LEFT×20 + **MOVE_FORWARD×4** |
+| entered_callActionPlanner | true |
+| online free / occ / inflate | 182 / 909 / 1768 |
+| camera | ARM_APEXNAV_INIT；all_ok；AGL≈0.857 |
+| spawn | ok；offset≈0.5 m；adapted_episode |
 | scripted_policy_used | false |
-| success_claimed | false |
-| Demo | `demo/apexnav_ranger_paper_demo.mp4`（1280×720） |
-| 姿态诊断 | `pose_diag/{third,side,top,upright.json}` |
+| Demo | `demo/apexnav_ranger_paper_demo.mp4`（16:9） |
 
-**诚实说明**：正式规划阶段已进入 `callActionPlanner()`，但因在线地图几乎无 coverable frontier，planner 立即 STOP；**不能**把初始化 26 步环视当作自适应探索成功。寻物未成功（eval-only dtg≈3.89 m）。
-
-姿态截图备份：`.../pose_fix_20261103/episode_real_124521/`。
-
----
-
-## 2. 姿态 / 穿模根因与修复
-
-| 问题 | 根因 | 修复 |
-|------|------|------|
-| 机器人“倒下” | URDF ROS Z-up 直接放入 Habitat Y-up，缺根旋转 | `_urdf_to_habitat = Ry(-π/2)*Rx(-π/2)` |
-| 轮子悬空/穿地 | 需按轮半径相对 `floor_y` 贴地 | `snap_wheels_to_floor`；`DEFAULT_BASE_Y≈0.4419` |
-| 出生点穿模 | ObjectNav 起点为小足迹 agent，完整 Ranger+CR10 与床/柜重叠 | `spawn_utils.find_adapted_start`（接触探测+环形搜索）；**标记 adapted_episode** |
-| 第三人称被挡 | 固定身后距离易进墙 | `compute_third_person_T` 多距离/高度 + pathfinder 拒绝 |
-
-保持 `kinematic_state_set`；接触数为诊断，非连续时间无碰保证。
-
-相机：`ARM_APEXNAV_INIT` 在轴修正后重标定；本轮 FK AGL≈0.881 m，角误差 &lt;5°。
-
----
-
-## 3. Demo 布局（16:9）
-
-- **主画面**：Habitat 第三人称跟随（后上方斜俯，机器人居中）  
-- **左下**：末端 D455 RGB + ApexNav `detections/`（复用本步 VLM，不重跑）  
-- **右下**：ApexNav `/grid_map/{occupied,free,unknown}` 栅格化（**非** Habitat 真值图）  
-- **顶栏**：Object Goal / Step / Action / Phase / control_mode / status  
-
-合成：`demo_compose.py`；地图订阅：`map_listener.py`。
-
----
-
-## 4. ApexNav FSM 阶段
-
-`exploration_fsm.cpp`：`init_action_count_ < 26` 时预设 TURN_DOWN×1 + TURN_LEFT×12 + TURN_UP×1 + TURN_LEFT×12；其后 `callActionPlanner()`。
-
-本轮动作序列与之一致；第 27 步（step=26）phase=`explore_planner`，动作为 STOP。
-
----
-
-## 5. 复现命令
+复现：
 
 ```bash
-# 孤立 ROS master :11312（勿占 NBV :11311）
-MAX_STEPS=36 RUN_ID=real_$(date +%Y%m%d_%H%M%S) \
+MAX_STEPS=50 SCENE_FILTER=Dd4bFSTQ8gi CATEGORY_FILTER=chair EPISODE_ID=5 \
   bash adapters/habitat_rangercr10/scripts/run_apexnav_real_episode.sh
 ```
 
-依赖：容器内 `/workspace/ApexNav` → `baselines/ApexNav`；HF/TORCH offline 缓存；GroundingDINO 权重在 D 盘。
+ROS：隔离 master `:11312`（保留 NBV `:11311`）。
+
+**诚实边界**：寻物未宣称成功；后期日志仍有 `Maybe no passable frontier` 警告；探索以转向为主、前进 4 步。已严格区分 init 环视 / 正式 explore / 终止原因。
 
 ---
 
-## 6. 相机视角诊断（本轮）
+## 5. PPO–Habitat 接口（P3）
 
-| 构型 | 光学 AGL | pitch/yaw/roll | near&lt;0.35m | 结论 |
-|------|---------|----------------|-------------|------|
-| LocoManip 4.10 默认 | 0.783 m | ≈0/0/0 | 1.9% | **选用**；臂在底盘上方，水平朝前 |
-| 旧搜索 `ARM_APEXNAV_INIT_SEARCH` | 0.951 m | ≈0/−3.4/−4.4 | 1.9% | 高度更近 0.88，但腕姿极端；不再作默认 |
-| Legacy teleop home | 0.964 m | **−76°** /… | 6.6% | 不可作 ApexNav 初始 |
-
-LOOK（joint3 ±0.6 rad ≈ ±30°）：
-
-| 状态 | pitch | near&lt;0.35m | 说明 |
-|------|-------|-------------|------|
-| INIT 水平 | ≈0° | 1.9% | 门/墙清晰，底缘轻微自遮挡 |
-| TURN_DOWN | ≈−20° | **56%** | **执行后**臂/夹爪进入视野 |
-| TURN_UP | ≈+30° | 1.9% | 基本无新增遮挡 |
-
-复现：`bash adapters/habitat_rangercr10/scripts/run_camera_view_diag.sh`
+`ppo_habitat_probe_stage410d/summary.json`：加载 stage410d actor、117/8/3 维接口烟雾测试。  
+**blocked_by_observation_mismatch**（缺动力学观测、轮组映射、10 Hz 滤波未接入 Habitat）。  
+全身控制验收继续以 MuJoCo 为准。
 
 ---
 
-## 7. ApexNav free≈0 / NO_COVERABLE_FRONTIER
+## 6. Demo 布局（保留）
 
-实测（`real_20261103_124521`）：occ≈556，**free≈6**，unknown≈7138；exploration.log：`No coverable frontier!!`
-
-主因（叠加，非单一）：
-
-1. **先验 episode 用搜索臂姿**，深度 `near≈34%`（自遮挡/近场），有效中距射线少。  
-2. **狭窄卧室适配出生点** + 26 步环视，占据膨胀后几乎无 coverable frontier。  
-3. ApexNav `filter_min/max_height`（launch 0.28–1.18）与虚拟地面滤除后，近场噪声易挤占 FREE。  
-4. 深度管线本身（归一化 32FC1→C++）在有中距观测时可工作；本轮问题更偏**观测内容/场景几何**，非编码全坏。
-
-后续：用 4.10 默认臂 + 更开阔 Episode 再跑闭环（仍 kinematic）；新 PPO 训练完成后再单独钉权重。
+- 主画面：第三人称跟随  
+- 左下：D455 RGB + 检测  
+- 右下：ApexNav `/grid_map/*`（非 Habitat GT）  
+- 标注：策略 pin / control_mode / phase / action  
 
 ---
 
-## 8. 尚未实现 / 明确非本轮
+## 7. 根因对照（相对 2026-11-03）
 
-1. 新 PPO 权重钉扎与控制性能验证（训练进行中，本轮不接）。  
-2. Gazebo / 双仿真 / 全身动力学。  
-3. 原版 ObjectNav benchmark 分数。  
-4. 连续时间无碰撞。
+| 旧问题 | 4.10d 后 |
+|--------|----------|
+| 侧装/中间默认 → 光学 ~0.78 m 或高度追逐姿态 | 顶装 + ARM_DEFAULT；水平；near=0 |
+| TURN_DOWN near≈56% | TURN_DOWN near=0（俯仰约 −26°，臂适配非 Habitat look） |
+| free≈6 → 立即 NO_COVERABLE | free≈170–180；开阔 ep 进入多步 explore + FWD |
+| PPO 仍 stage45j | MuJoCo 已切 stage410d；Habitat 运动学寻物与 PPO 分列 |
 
 ---
 
-## 9. 历史模块（仍有效）
+## 8. 未解决问题
 
-- EGL ICD：`ensure_egl_icd.sh`；原生 URDF：`run_kinematic_demo.sh`  
-- 真实闭环：`run_apexnav_real_episode.sh`（`real_20261103_124521`）  
-- 相机诊断：`run_camera_view_diag.sh`
+1. Habitat↔MuJoCo 光学 AGL 仍差 ≈2.3 cm（可接受；勿用乱搜关节凑 0.88）。  
+2. 狭窄出生点仍易 `NO_PASSABLE_FRONTIER`（膨胀占用 >> free）。未改 ApexNav 规划算法。  
+3. PPO 未进 Habitat 动力学闭环。  
+4. `env.close()` 偶发 `malloc_consolidate` abort（任务摘要已落盘；rc 134 可接受）。

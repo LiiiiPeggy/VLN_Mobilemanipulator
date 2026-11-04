@@ -402,3 +402,31 @@
 **结论**：初始视角以 4.10 默认为准；不因凑 0.88 光学高度改回搜索怪姿。新 PPO 另案钉扎。
 
 **相关**：`.../camera_view_diag_20261103_132939/`、`reports/habitat_rangercr10_integration.md`
+
+---
+
+## 2026-11-04 Stage 4.10d 共钉扎 + MuJoCo PPO + ApexNav 多步探索
+
+**模块**：`adapters/habitat_rangercr10` / LocoManip 只读同步
+
+**问题**：需用 Stage 4.10d（顶装 D455 + 新默认关节 + `stage410d_ppo`）替换旧侧装/中间构型与 stage45j 混用；修复 LOOK/地图 free；争取真实多步探索。
+
+**操作**：
+
+1. 只读核对 LocoManip `rangercr10-teleop` @ `ec5fd65` / HEAD `2d6d1f5`；同步 URDF 到 D 盘 pin + `VERSION_stage410d.json`；`constants.ARM_DEFAULT` 对齐。
+2. MuJoCo：`teleop_eval` drift/modes/coverage(`4.10`) + `check_self_collision --box 4.10`（不改训练代码）。
+3. Habitat：`camera_view_diag`；FK 对比 Hab≈0.857 vs MuJoCo≈0.880；LOOK joint3；高度容差 2.5 cm；禁止高度追逐。
+4. ApexNav：spawn 接触阈值放宽；默认更开阔 `Dd4bFSTQ8gi` eid=5；ROS `:11312`。
+5. PPO–Habitat 探针改钉 stage410d，明确非成功。
+
+**实测结果**：
+
+- MuJoCo PPO 短测产物：`ppo_stage410d_mujoco_20261104_113929/`。
+- 相机：INIT/DOWN/UP near=0；mosaic/report 落盘。
+- TEEsav：free≈169 但仍 `NO_PASSABLE_FRONTIER`（1 explore STOP）。
+- Dd4bFSTQ8gi：50 步，explore 24（MOVE_FORWARD×4 + TURN_LEFT×20），`step_budget_exhausted`；Demo mp4 已生成。
+- PPO→Habitat：仍 blocked_by_observation_mismatch。
+
+**结论**：P0/P1 达成；P2 在开阔 ep 达成真实多步规划与前进；P3 不阻塞。勿混 stage45j URDF/偏置。
+
+**相关**：`reports/habitat_rangercr10_integration.md`、`.../apexnav_real/20261104_114652/`、`.../camera_view_diag_stage410d_20261104_114102/`

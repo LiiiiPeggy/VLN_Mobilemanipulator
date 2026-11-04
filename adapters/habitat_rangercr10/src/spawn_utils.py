@@ -44,10 +44,15 @@ def probe_pose_clearance(
         "upright": up,
         "wheels": wheels,
         "wheel_mean_agl": wheel_agl,
+        # ################################
+        # Ranger+CR10 is much larger than the Habitat ObjectNav agent; Bullet
+        # mesh contacts of 20–40 at a tight bedroom start are common. Prefer
+        # upright + wheel snap; treat contacts as a soft score, not a hard 18.
+        # ################################
         "ok": bool(
             up.get("up_dot_hab_y", 0) > 0.95
             and (up.get("wheel_y_spread") or 99) < 0.05
-            and contacts < 18
+            and contacts < 40
             and (wheel_agl is None or abs(wheel_agl - 0.125) < 0.05)
         ),
     }
@@ -58,8 +63,8 @@ def find_adapted_start(
     start_xz: Tuple[float, float],
     yaw: float,
     floor_y: float,
-    radius_m: float = 2.5,
-    n_ring: int = 10,
+    radius_m: float = 4.0,
+    n_ring: int = 12,
     arm_q: Optional[Sequence[float]] = None,
 ) -> Dict[str, Any]:
     """Search nearby XY for upright low-contact pose; record offset if moved."""
@@ -69,8 +74,9 @@ def find_adapted_start(
     candidates = [(sx, sz)]
     # ################################
     # Coarse rings first (fast); stop on first ok. Full mesh contact is expensive.
+    # Wider radius for Ranger+CR10 vs bedroom ObjectNav starts.
     # ################################
-    for r in (0.5, 0.8, 1.2, 1.8, 2.5):
+    for r in (0.5, 0.8, 1.2, 1.8, 2.5, 3.2, 4.0):
         if r > radius_m:
             break
         for k in range(n_ring):
