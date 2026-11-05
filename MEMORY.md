@@ -133,6 +133,9 @@ VLN_Mobilemanipulator/
 | FSM 前 26 步 init lookaround；其后 `callActionPlanner` | `exploration_fsm.cpp` |
 | free 过少/NO_PASSABLE：近场遮挡+狭窄出生+膨胀；开阔 ep + 4.10d 可达 free≈180 与多步 FWD | `20261104_114652` vs `real_20261103_124521` |
 | Demo 占据图必须订阅 `/grid_map/*`；论文风白底配色 | `map_listener.py`；`map_style.py`；`demo_compose.py` |
+| Demo 价值热力复用原生 `/grid_map/value_map`（ApexNav.rviz 黄→红）；仅叠 free；occ 不被覆盖 | `map_listener.render_panel`；`VALUE_*` in `map_style.py` |
+| ITM cosine 须在同帧 RGB-D 之前发布到 `/blip2/cosine_score`，否则 value_map 融旧分 | `apexnav_real_episode` 发布顺序；`value_map2d.cpp` |
+| 7fps 离线重渲染勿对已含价值热力的 paper map 做 legacy 重映射 | `demo_7fps_from_run._is_paper_or_value_map` |
 | Demo 7 Hz：按真实时间戳插值重渲染，检测/地图内容 hold；勿用 ffmpeg 加速 2 FPS 冒充 | `demo_7fps_from_run.py`；`run_demo_7fps.sh`；`demo_7fps_rates.json` |
 | Ranger 底盘碰撞半长/半宽 ≈0.651/0.435 m；外接 R≈0.783 m；ApexNav 默认膨胀 0.18 m **小于** 足迹 | MuJoCo `base_link_col`；`apexnav_rangercr10_frontier_inflation.md` |
 | Habitat→ROS odom 航向须 `hab_yaw+π`（与 `(-z,-x)` 位移一致）；否则恒差 180° 导致 TURN_LEFT 空转 | `hab_yaw_to_ros`；`ros_dynamic_publisher.py` |

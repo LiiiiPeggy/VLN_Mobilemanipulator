@@ -36,6 +36,12 @@ def _hab_to_ros_xy(base: dict) -> Tuple[float, float]:
     return (-float(base["z"]), -float(base["x"]))
 
 
+def _is_paper_or_value_map(rgb: np.ndarray) -> bool:
+    """True if map is already white-paper (+ optional yellow→red value heat)."""
+    # Legacy dark theme has dark mean; paper/value maps are bright.
+    return float(np.mean(rgb)) > 160.0
+
+
 def _paper_map_with_traj(
     run_dir: Path,
     steps: List[dict],
@@ -43,15 +49,30 @@ def _paper_map_with_traj(
     size: Tuple[int, int] = (320, 240),
     meters_span: float = 12.0,
 ) -> np.ndarray:
-    """White-bg remap of recorded map PNG + orange traj + blue robot from step poses."""
+    """White-bg map (+ value heat if present) + orange traj + blue robot."""
     from PIL import ImageDraw
+
+    from .coord_habitat_ros import hab_yaw_to_ros
 
     raw = np.asarray(
         Image.open(run_dir / "maps" / f"frame_{hold_i:04d}.png").convert("RGB")
     )
-    canvas = remap_legacy_map_to_paper(raw, dilate_px=2)
+    # ################################
+    # Do NOT remap_legacy on paper+value maps — that would destroy the heat colors.
+    # ################################
+    if _is_paper_or_value_map(raw):
+        canvas = raw.copy()
+    else:
+        canvas = remap_legacy_map_to_paper(raw, dilate_px=2)
     h, w = size[1], size[0]
-    cx_r, cy_r = _hab_to_ros_xy(steps[hold_i]["base"])
+    # Prefer recorded plan-proxy odom if present; else Habitat→ROS base XY.
+    pub = (steps[hold_i].get("publish_meta") or {})
+    if pub.get("odom_ros_plan_proxy"):
+        cx_r, cy_r = float(pub["odom_ros_plan_proxy"][0]), float(pub["odom_ros_plan_proxy"][1])
+    elif pub.get("base_ros"):
+        cx_r, cy_r = float(pub["base_ros"][0]), float(pub["base_ros"][1])
+    else:
+        cx_r, cy_r = _hab_to_ros_xy(steps[hold_i]["base"])
     scale = w / meters_span
 
     def to_pix(xy):
@@ -61,10 +82,20 @@ def _paper_map_with_traj(
 
     im = Image.fromarray(canvas)
     dr = ImageDraw.Draw(im)
-    traj = [_hab_to_ros_xy(steps[i]["base"]) for i in range(hold_i + 1)]
+    traj = []
+    for i in range(hold_i + 1):
+        pm = steps[i].get("publish_meta") or {}
+        if pm.get("odom_ros_plan_proxy"):
+            traj.append(
+                (float(pm["odom_ros_plan_proxy"][0]), float(pm["odom_ros_plan_proxy"][1]))
+            )
+        elif pm.get("base_ros"):
+            traj.append((float(pm["base_ros"][0]), float(pm["base_ros"][1])))
+        else:
+            traj.append(_hab_to_ros_xy(steps[i]["base"]))
     if len(traj) >= 2:
         dr.line([to_pix(p) for p in traj], fill=PAPER_TRAJ, width=2)
-    yaw = float(steps[hold_i]["base"]["yaw"])
+    yaw = float(pub.get("base_yaw_ros", hab_yaw_to_ros(steps[hold_i]["base"]["yaw"])))
     px, py = to_pix((cx_r, cy_r))
     tip = (int(px + 12 * math.cos(yaw)), int(py - 12 * math.sin(yaw)))
     dr.ellipse([px - 5, py - 5, px + 5, py + 5], fill=PAPER_ROBOT)

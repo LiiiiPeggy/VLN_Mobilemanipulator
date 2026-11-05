@@ -67,7 +67,12 @@ def compose_frame(
     rx, ry = W - inset_w - margin, H - inset_h - margin
     canvas.paste(mp, (rx, ry))
     draw.rectangle([rx, ry - 22, rx + inset_w, ry], fill=(0, 0, 0, 160))
-    draw.text((rx + 8, ry - 20), "ApexNav /grid_map (online)", fill=(255, 255, 255), font=font_s)
+    draw.text(
+        (rx + 8, ry - 20),
+        "ApexNav Occ + Value Map",
+        fill=(255, 255, 255),
+        font=font_s,
+    )
 
     # borders
     draw.rectangle([lx, ly, lx + inset_w, ly + inset_h], outline=(255, 255, 255, 200), width=2)

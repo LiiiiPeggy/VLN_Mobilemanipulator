@@ -628,3 +628,17 @@
 **结论**：无效深度不再生成虚假终点/射线；短程真实 ApexNav 规划恢复。Demo 稀疏扇形仍可能来自 PointCloud2 射线散点可视化，不等于 max-range 伪影。
 
 **相关**：`reports/habitat_rangercr10_depth_radial_fix.md`；`/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/depth_radial_fix/`
+
+---
+
+## 2026-11-05 Demo Occupancy + Value Map 叠加
+
+**模块**：`adapters/habitat_rangercr10` Demo 层（同分支）
+
+**问题**：右下角仅显示几何占据，缺少 ApexNav 原生价值热力。
+
+**操作**：订阅 `/grid_map/value_map`；按 `ApexNav.rviz` Intensity 黄→红叠加到 free；图例 Target/Value/occ；ITM cosine 与深度同帧对齐（先 `/blip2/cosine_score` 后 RGB-D）；7fps 保留热力色。
+
+**实测**：`real_s070_pporaise_yr17_valuemap_20261105_210015` — value_map 点数=free=1067；cosine 0.10–0.40；7fps 1280×720@7Hz。未改规划/PPO/检测后端。
+
+**相关**：`reports/habitat_rangercr10_valuemap_demo.md`

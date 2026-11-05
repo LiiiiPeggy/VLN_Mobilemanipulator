@@ -758,6 +758,17 @@ class ApexNavRangerBridge:
 
             # Initial observation + wait for planner handshake
             ee = self.env.observe_ee_only()
+            # ################################
+            # Seed ITM before first depth so value_map fuses from step 0.
+            # ################################
+            try:
+                from vlm.utils.get_itm_message import get_itm_message_cosine  # type: ignore
+
+                cos0 = float(get_itm_message_cosine(ee["ee_rgb"][..., :3], label, room))
+                _pub_f64(itm_score_pub, cos0)
+                rospy.sleep(0.02)
+            except Exception:
+                (self.out / "itm_seed_warn.txt").write_text(traceback.format_exc())
             meta = self._publish_obs_bundle(ee["ee_rgb"], ee["ee_depth"], 0)
             (self.out / "pre_plan_obs_meta.json").write_text(json.dumps(meta, indent=2))
             _pub_f64(confidence_threshold_pub, fusion_threshold)
@@ -851,16 +862,12 @@ class ApexNavRangerBridge:
                 # new observation after motion
                 ee = self.env.observe_ee_only()
                 rgb, depth = ee["ee_rgb"], ee["ee_depth"]
-                meta = self._publish_obs_bundle(rgb, depth, step)
-                # ################################
-                # Trajectory / map arrow follow plan-proxy odom (D455 XY), not chassis.
-                # ################################
-                br = meta.get("base_ros") or hab_pos_to_ros(
-                    self.env.base_xyz, floor_y=self.floor_y
-                ).tolist()
-                self.traj_ros.append((float(br[0]), float(br[1])))
 
-                # ITM + detection (real VLM servers)
+                # ################################
+                # Same-timestep ITM ↔ RGB-D: publish /blip2/cosine_score BEFORE depth
+                # so map_ros value_map update uses this frame's BLIP-2 cosine (not stale).
+                # Does not reimplement value_map; only fixes publish order.
+                # ################################
                 cosine = -1.0
                 score_list, masks, label_list = [], [], []
                 rgb_vis = rgb[..., :3].copy()
@@ -870,6 +877,7 @@ class ApexNavRangerBridge:
 
                     cosine = float(get_itm_message_cosine(rgb[..., :3], label, room))
                     _pub_f64(itm_score_pub, cosine)
+                    rospy.sleep(0.02)
                     rgb_vis, score_list, masks, label_list = get_object(
                         label, rgb[..., :3].copy(), detector_cfg, llm_answer
                     )
@@ -881,6 +889,17 @@ class ApexNavRangerBridge:
                     # Perception failure is a real failure mode for this episode goal
                     self.termination = "perception_error"
                     raise RuntimeError(f"VLM/perception failed at step {step}: {e}") from e
+
+                meta = self._publish_obs_bundle(rgb, depth, step)
+                # Allow map_ros depthPoseCallback + 0.25s vis_timer to publish value_map.
+                rospy.sleep(0.28)
+                # ################################
+                # Trajectory / map arrow follow plan-proxy odom (D455 XY), not chassis.
+                # ################################
+                br = meta.get("base_ros") or hab_pos_to_ros(
+                    self.env.base_xyz, floor_y=self.floor_y
+                ).tolist()
+                self.traj_ros.append((float(br[0]), float(br[1])))
 
                 clouds = object_clouds_from_masks(
                     depth,
@@ -944,11 +963,16 @@ class ApexNavRangerBridge:
                 map_stats = {}
                 try:
                     assert self.map_listener is not None
+                    # ROS yaw for map arrow (hab_yaw+π); matches /grid_map world frame.
+                    yaw_ros = float(meta.get("base_yaw_ros", self.env.base_yaw))
                     map_rgb = self.map_listener.render_panel(
                         size=(320, 240),
                         robot_xy=(float(br[0]), float(br[1])),
-                        robot_yaw=float(self.env.base_yaw),
+                        robot_yaw=yaw_ros,
                         traj_xy=list(self.traj_ros),
+                        target_label=str(label),
+                        value_score=float(cosine) if cosine >= 0.0 else None,
+                        show_legend=True,
                     )
                     map_stats = self.map_listener.stats()
                     Image.fromarray(map_rgb).save(
@@ -960,13 +984,16 @@ class ApexNavRangerBridge:
                                 "step": step,
                                 "phase": phase,
                                 "has_map": self.map_listener.has_map(),
+                                "has_value_map": self.map_listener.has_value_map(),
+                                "itm_cosine": float(cosine),
+                                "target_label": str(label),
                                 "stats": map_stats,
                             },
                             indent=2,
                         )
                     )
                 except Exception:
-                    map_rgb = np.full((240, 320, 3), 40, dtype=np.uint8)
+                    map_rgb = np.full((240, 320, 3), 255, dtype=np.uint8)
                     (self.out / f"map_step_{step}_error.txt").write_text(
                         traceback.format_exc()
                     )
@@ -1093,7 +1120,17 @@ class ApexNavRangerBridge:
                 "ApexNav overlay still legacy018 (0.18m) unless INFLATION_PROFILE overridden; "
                 "planner success ≠ scaled footprint safety."
             ),
-            "online_grid_map": {"has_data": map_ok, "stats": map_final},
+            "online_grid_map": {
+                "has_data": map_ok,
+                "has_value_map": bool(
+                    self.map_listener.has_value_map() if self.map_listener else False
+                ),
+                "last_cosine": (
+                    self.map_listener.last_cosine if self.map_listener else None
+                ),
+                "stats": map_final,
+                "note": "Demo overlays /grid_map/value_map (ApexNav.rviz yellow→red) on free cells",
+            },
             "floor_y_hab": float(self.floor_y),
             "ros_z_mode": "hab_y_minus_floor_y_agl",
             "first_plan_diag": self.first_plan_diag,

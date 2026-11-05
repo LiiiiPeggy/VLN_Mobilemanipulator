@@ -173,7 +173,16 @@ ROS：隔离 master `:11312`（保留 NBV `:11311`）。
 - **证据**：`.../depth_radial_fix/`；采用 run `real_s070_pporaise_yr17_depthfix4_20261105_201112`（occ/free=727/932，FWD 0.50 m）。  
 - Demo 稀疏扇形仍可能出现（`/grid_map` PointCloud2 散点可视化），但已无 r≈5 m 伪终点团簇。
 
-## 10. 未解决问题
+## 10. Demo Occupancy + Value Map（2026-11-05）
+
+详见 `reports/habitat_rangercr10_valuemap_demo.md`。
+
+- 右下角：白底 `/grid_map` 占据 + `/grid_map/value_map` 黄→红热力（ApexNav.rviz 配色）。  
+- ITM：现有 BLIP-2 `/blip2/cosine_score`；同帧先 cosine 后深度。  
+- 证据：`real_s070_pporaise_yr17_valuemap_20261105_210015`；7fps 1280×720。  
+- 仅 Demo 层；未改规划/PPO/检测后端。
+
+## 11. 未解决问题
 
 1. Habitat↔MuJoCo 光学 AGL 仍差 ≈2.3 cm（可接受；勿用乱搜关节凑 0.88）。  
 2. 安全足迹与可达 Frontier：需非圆足迹/未知区策略，不能只调各向同性半径。  

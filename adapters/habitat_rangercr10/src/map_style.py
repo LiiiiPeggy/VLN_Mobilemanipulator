@@ -28,6 +28,16 @@ PAPER_WAYPOINT = (200, 40, 40)
 PAPER_PATH = (120, 60, 200)
 PAPER_TEXT = (40, 40, 40)
 
+# ################################
+# ApexNav.rviz semantic_score_map (/grid_map/value_map) Intensity palette.
+# Min Color 250;255;203 @ 0.10 → Max Color 204;0;0 @ 0.35 (Use rainbow: false).
+# ################################
+VALUE_MIN_COLOR = (250, 255, 203)  # pale yellow
+VALUE_MAX_COLOR = (204, 0, 0)  # red
+VALUE_MIN_INTENSITY = 0.10
+VALUE_MAX_INTENSITY = 0.35
+VALUE_OVERLAY_ALPHA = 0.62  # keep free/occ base visible under heat
+
 # Legacy dark-theme colors written by older map_listener (for offline remap)
 LEGACY_COLORS: Dict[str, Tuple[int, int, int]] = {
     "bg": (30, 30, 30),
