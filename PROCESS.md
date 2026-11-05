@@ -516,3 +516,25 @@
 **实测**：`yr17PDCnDDW` chair/0 → Explore L3/R2/F6，前进 1.5 m；HY1 同策略仍早停。未改 ApexNav 规划/膨胀扫描。
 
 **相关**：`reports/apexnav_rangercr10_scene_screening.md`、`real_wide_yr17_openband_*`
+
+---
+
+## 2026-11-05 Top-5 短测、HY1 差异与足迹安全
+
+**模块**：`adapters/habitat_rangercr10`
+
+**问题**：需验证 Top-5 探索稳定性；解释 yr17 vs HY1；证明 legacy018 路径对 Ranger 是否安全。
+
+**操作**：
+
+1. 开放带短测 eF36/LT9/k1cup；修复 spawn 轮角累积导致的 NaN FK。  
+2. 离线对照 yr17/HY1 日志与 expl_result。  
+3. yr17 路径定向足迹扫掠（GT navmesh 仅评价）。
+
+**实测**：
+
+- Top-5 均进入正式探索；eF36 为 EXPLORATION×24；yr17 为 SEARCH_EXTREME×12。  
+- HY1/LT9：NO_PASSABLE；k1cup：NO_COVERABLE（建图弱）。  
+- yr17 足迹 safe_ratio=0 → 展示规划 ≠ 安全通行。
+
+**相关**：`reports/apexnav_rangercr10_top5_explore_safety.md`

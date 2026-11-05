@@ -23,8 +23,18 @@ def probe_pose_clearance(
     # ################################
     # Probe with ApexNav arm pose so EE/arm collisions are counted, not just chassis.
     # ################################
+    # ################################
+    # Disable wheel-joint integration during spawn probes: large teleports would
+    # accumulate nonsense roll and have occasionally correlated with NaN FK.
+    # ################################
     env.set_base_pose(
-        x, z, yaw, y=float(floor_y) + DEFAULT_BASE_Y, floor_y=floor_y, snap_wheels=True
+        x,
+        z,
+        yaw,
+        y=float(floor_y) + DEFAULT_BASE_Y,
+        floor_y=floor_y,
+        snap_wheels=True,
+        update_wheel_joints=False,
     )
     if arm_q is not None:
         env.set_arm_joints(arm_q)
@@ -130,9 +140,12 @@ def find_adapted_start(
                 "z": d["z"],
             }
         )
+        # Drop poses that later produce NaN root rotations (wrong floor / void).
+        up = d.get("upright") or {}
+        if not math.isfinite(float(up.get("up_dot_hab_y") or 0.0)):
+            d["ok"] = False
         if d["ok"]:
             ok_pool.append(d)
-            # Legacy fast-path: accept first ok if not optimizing openness
             if not prefer_open_clearance:
                 break
         if best_fallback is None or d["contacts"] < best_fallback["contacts"]:
@@ -140,21 +153,22 @@ def find_adapted_start(
 
     if ok_pool and prefer_open_clearance:
         # ################################
-        # Keep near the ObjectNav start (≤1.5 m): maximizing clearance alone can
-        # walk into empty atria where lookaround yields no coverable frontiers.
-        # Target clearance band ~[0.35, 0.90] m (above Habitat 0.18, below void).
+        # Keep near the ObjectNav start (≤1.5 m). Require clearance ≥0.20 m so we
+        # do not walk into voids / wrong-floor snaps (NaN FK). Prefer ~0.55 m.
         # ################################
-        near = [d for d in ok_pool if float(d["offset_from_episode_m"]) <= 1.5] or ok_pool
+        near = [
+            d
+            for d in ok_pool
+            if float(d["offset_from_episode_m"]) <= 1.5
+            and float(d.get("nav_clearance_m") or 0.0) >= 0.20
+        ]
+        if not near:
+            near = [d for d in ok_pool if float(d.get("nav_clearance_m") or 0.0) >= 0.20] or ok_pool
 
         def _score(d):
             clr = float(d.get("nav_clearance_m") or 0.0)
-            # triangular preference peaking at 0.55 m
             band = 1.0 - min(abs(clr - 0.55) / 0.55, 1.0)
-            return (
-                -band,
-                int(d["contacts"]),
-                float(d["offset_from_episode_m"]),
-            )
+            return (-band, int(d["contacts"]), float(d["offset_from_episode_m"]))
 
         near.sort(key=_score)
         best = near[0]
@@ -163,8 +177,20 @@ def find_adapted_start(
 
     assert best is not None
     env.set_base_pose(
-        best["x"], best["z"], yaw, y=best["base_y"], floor_y=floor_y, snap_wheels=True
+        best["x"],
+        best["z"],
+        yaw,
+        y=best["base_y"],
+        floor_y=floor_y,
+        snap_wheels=True,
+        update_wheel_joints=False,
     )
+    # Reset wheel viz state after teleport spawn so episode starts clean.
+    if hasattr(env, "steer_q"):
+        env.steer_q[:] = 0.0
+        env.wheel_q[:] = 0.0
+        env._prev_base_xz_yaw = (float(best["x"]), float(best["z"]), float(yaw))
+        env._apply_state()
     env.set_arm_joints(arm_q)
     best["contacts"] = int(env.contact_count())
     best["upright"] = env.upright_diagnostics()

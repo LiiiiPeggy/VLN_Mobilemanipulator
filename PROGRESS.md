@@ -1,13 +1,13 @@
 # PROGRESS.md — 当前状态
 
-更新时间：2026-11-05（场景筛选 + yr17 多步 ApexNav + 四轮可视化）  
+更新时间：2026-11-05（Top-5 短测 + yr17/HY1 诊断 + 足迹安全）  
 证据优先于本文；冲突时以代码、`reports/`、`runs/`、容器实测为准。
 
 ## 研究目标与阶段
 
 **目标**：六套 VLN/ObjectNav baseline 可复现评测 → 再适配 RangerBox-CR10。
 
-**当前阶段**：Stage 4.10d / yaw 修 / 7 FPS 保留；完成 HM3D×ObjectNav 场景通行性筛选；在 **yr17PDCnDDW** 上验证真实 ApexNav 多步探索（开放带 spawn）；四轮运动学可视化烟雾通过。
+**当前阶段**：Top-5 场景开放带短测完成；**五景均进入正式探索**；多步规划：yr17（SEARCH_EXTREME）、eF36（EXPLORATION）、Dd4b；yr17 路径足迹回放表明 legacy018 **不安全**。
 
 ## Baseline 状态
 
@@ -20,18 +20,18 @@
 
 | 项 | 状态 | 证据 |
 |----|------|------|
-| Stage 4.10d / yaw+π / legacy018 | 保持 | 既有报告 |
-| 场景清单 + Top-5 通行性 | 完成 | `scene_clearance/ranking.md` |
-| yr17 多步探索 | **OK** FWD×6 / 1.5 m | `real_wide_yr17_openband_*` |
-| HY1 同策略 | 仍早停 | `real_wide_hy1_openband_*` |
-| 开放带 spawn | 适配层 | `spawn_utils.prefer_open_clearance` |
-| 四轮滚动/转向可视化 | 烟雾 pass | `wheel_kinematics_smoke/` |
-| 场景筛选报告 | 完成 | `reports/apexnav_rangercr10_scene_screening.md` |
+| Top-5 entered_explore | **5/5** | `top5_openband_compare.json` |
+| yr17 多步 | EXTREME FWD 1.5 m | `real_wide_yr17_openband_*` |
+| eF36 多步 | EXPLORATION R16/L7/F1 | `real_wide_ef36_openband_*` |
+| HY1 / LT9 / k1cup | 早停 | NO_PASSABLE / NO_COVERABLE |
+| yr17 足迹安全回放 | **safe_ratio=0** | `footprint_path_safety/yr17_openband/` |
+| yr17 7 FPS | 保持 7/1×205 | `.../7fps.mp4` |
+| spawn 探针禁轮累积 | 已修 | `spawn_utils update_wheel_joints=False` |
 
 ## 下一步（最多 5）
 
-1. 对 Top-5 其余场景做开放带 spawn 短验证；必要时扩展出生点邻域观测/环视。  
-2. yr17（及成功 ep）7 FPS Demo 落盘确认。  
-3. 非圆足迹规划仍为中长期（本轮未改 ApexNav）。  
-4. PPO→Habitat 观测对齐（不阻塞）。  
-5. 停用后腾 GPU（勿杀他人训练）。
+1. 改善 LT9/k1cup 建图空/早停（出生观测与楼层）。  
+2. 在不改 baseline 的前提下评估定向足迹约束 vs 可达 Frontier。  
+3. eF36 代表性 7 FPS（可选）。  
+4. PPO→Habitat（不阻塞）。  
+5. 停用后腾 GPU。

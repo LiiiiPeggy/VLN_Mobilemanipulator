@@ -143,6 +143,10 @@ VLN_Mobilemanipulator/
 | Ranger 足迹筛选：重算 navmesh r=0.18/0.435/0.485/0.783；Top 几何场景 HY1、yr17、eF36、LT9、k1cup | `scene_clearance/`；`apexnav_rangercr10_scene_screening.md` |
 | 大场景原起点易 NO_PASSABLE；spawn 偏好 clearance≈0.55 m 且 offset≤1.5 m 后 yr17 多步 FWD×6/1.5 m | `spawn_utils.prefer_open_clearance`；`real_wide_yr17_openband_*` |
 | Habitat 四轮可视化：4WS+URDF 左右轴符号；臂静止时轮胎冻结；≠轮地动力学 | `kinematic_demo._update_wheels_from_base_delta`；`wheel_kinematics_smoke` |
+| spawn 探针须 `update_wheel_joints=False` 并复位轮角，否则大场景易 NaN FK | `spawn_utils.py` |
+| Top-5 均可 `entered_callActionPlanner`；多步规划：yr17=SEARCH_EXTREME，eF36=EXPLORATION；HY1/LT9/k1cup 早停 | `top5_openband_compare.json` |
+| yr17 legacy018 路径足迹回放 oriented_safe_ratio=0（中心 clearance 降至 <0.435） | `footprint_path_safety/yr17_openband/` |
+| 规划成功 ≠ 足迹安全 ≠ 寻物成功；须分三层记录 | `apexnav_rangercr10_top5_explore_safety.md` |
 | catkin 前缀：`/workspace/ApexNav` → `baselines/ApexNav` | devel 路径 |
 | HM3D-v2 goals 在 `goals_by_category`；宜滤同层 | `_goals_for_episode` |
 

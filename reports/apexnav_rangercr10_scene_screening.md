@@ -125,3 +125,5 @@ RUN_DIR=.../real_wide_yr17_openband_* bash adapters/habitat_rangercr10/scripts/r
 2. **几何上更宽的场景 ≠ 自动多步探索成功**；环视后的 Frontier/A* 仍依赖出生点附近观测结构。  
 3. 在 **yr17PDCnDDW** 上，用开放带 spawn + 既有 yaw 修，得到 **真实 ApexNav 多步探索（FWD×6，1.5 m）**，未缩小机器人、未关碰撞、未把 GT 喂给规划器。  
 4. 轮胎滚动/转向可视化已接入 `set_base_pose`，可供 7 FPS 重渲使用。
+
+后续短测与足迹安全见 `reports/apexnav_rangercr10_top5_explore_safety.md`（eF36 为经典 EXPLORATION；yr17 路径足迹回放不安全）。
