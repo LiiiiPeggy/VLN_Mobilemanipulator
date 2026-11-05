@@ -556,3 +556,29 @@
 **实测**：yr17 足迹 safe_ratio 0→1；探索距离未全面增加；HY1 仍 NO_PASSABLE。规划仍 legacy018。
 
 **相关**：`reports/apexnav_rangercr10_scale070.md`
+
+---
+
+## 2026-11-05 MuJoCo teleop-PPO 抬臂 → 0.7× ApexNav
+
+**模块**：`adapters/habitat_rangercr10`（同分支 `cursor/habitat-rangercr10-scale070`）
+
+**问题**：需用已训练 stage410d PPO（非 IK）在 0.7× 代理上抬臂至可用视高，再交接 ApexNav 探索。
+
+**操作**：
+
+1. 核对契约：obs=117、hist=3、act=8、ACTION_SCALE=0.25、10 Hz；条件输入 `vel_cmd`+`ee_cmd`。  
+2. `ppo_mujoco_raise.py`：MuJoCo `teleop_eval.Sim` 执行 Z+0.40（箱顶），底盘 cmd=0；写出 `arm_q`。  
+3. Habitat 加载 0.7×，FK 验收 TCP/D455 AGL；`--ppo_raise_json` 同步关节后 26 步环视再探索。  
+4. 批跑 yr17/eF36/HY1；生成 7 FPS Demo。
+
+**实测**：
+
+- MuJoCo EE 跟踪≈1.9 cm / 3.4°；底盘漂移≈0.023 m；近限位 false。  
+- Habitat 0.7×：TCP≈0.811 m（目标 0.88 **未达**）；D455≈0.881 m 水平 OK。  
+- 三场景均 `entered_explore` 后立即 STOP（NO_PASSABLE 类 planner_stop）；FWD=0。  
+- Demo：`real_s070_pporaise_{yr17,ef36,hy1}_*/demo/*_7fps.mp4`（1280×720）。
+
+**结论**：抬臂交接链路打通且未改权重/ApexNav/1.0×；TCP 高度与多步探索均未达核心验收的后半部分，已如实记录。
+
+**相关**：`reports/apexnav_rangercr10_ppo_raise_s070.md`；`ppo_raise_s070_batch_20261105_171118.jsonl`

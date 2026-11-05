@@ -38,10 +38,11 @@ from .constants import (
 )
 from .coord_habitat_ros import hab_pos_to_ros
 from .demo_compose import compose_frame
-from .initial_camera_pose import apply_and_record_initial_camera
+from .initial_camera_pose import apply_and_record_initial_camera, verify_arm_config
 from .kinematic_demo import DEFAULT_BASE_Y, RangerCr10KinematicEnv
 from .map_listener import ApexNavMapListener
 from .pointcloud_dynamic import object_clouds_from_masks
+from .ppo_mujoco_raise import apply_raise_to_habitat, replay_raise_on_habitat
 from .ros_dynamic_publisher import DynamicROSPublisher
 from .spawn_utils import find_adapted_start
 from .traj_utils import save_depth_mm
@@ -574,29 +575,89 @@ class ApexNavRangerBridge:
             except Exception as e:
                 (diag / "diag_error.txt").write_text(str(e))
             # ################################
-            # ApexNav-like init camera via URDF FK (not ARM_DEFAULT / not forged agent pose)
+            # Init camera / arm: optional MuJoCo teleop-PPO raise → Habitat joint sync.
+            # PPO owns arm until handover; ApexNav must not fight the same joints.
             # ################################
-            cam_init = apply_and_record_initial_camera(self.env, self.out / "camera_init")
-            (self.out / "camera_init_summary.json").write_text(
-                json.dumps(
-                    {
-                        "selected": cam_init.get("selected"),
-                        "final": cam_init.get("final"),
-                        "ARM_DEFAULT_ok": cam_init.get("ARM_DEFAULT", {})
-                        .get("tolerances", {})
-                        .get("all_ok"),
-                        "note": "ARM_DEFAULT kept for teleop; episode uses ARM_APEXNAV_INIT FK",
-                        "arm_default": list(ARM_DEFAULT),
-                        "arm_apexnav_init": list(ARM_APEXNAV_INIT),
+            ppo_raise_json = getattr(args, "ppo_raise_json", "") or ""
+            cam_init: Dict[str, Any]
+            if ppo_raise_json and Path(ppo_raise_json).is_file():
+                raise_rep = json.loads(Path(ppo_raise_json).read_text())
+                jsonl = Path(ppo_raise_json).with_suffix(".jsonl")
+                raise_dir = self.out / "ppo_raise"
+                raise_dir.mkdir(exist_ok=True)
+                # Start from ARM_DEFAULT on Habitat, then replay PPO trajectory.
+                self.env.set_arm_joints(ARM_DEFAULT)
+                if jsonl.is_file():
+                    replay = replay_raise_on_habitat(
+                        self.env, jsonl, stride=2, out_dir=raise_dir / "frames"
+                    )
+                else:
+                    replay = {
+                        "final": apply_raise_to_habitat(self.env, raise_rep["arm_q_final"]),
+                        "n_replay_frames": 0,
+                    }
+                final_met = replay["final"]
+                # Freeze raised joints for ApexNav lookaround / explore.
+                self.env.set_arm_joints(final_met["arm_q"])
+                # ################################
+                # After raise, ApexNav-facing height target is 0.88 m optical (not ×0.7).
+                # ################################
+                self.env.cam_height_target_m = 0.88
+                v = verify_arm_config(self.env, final_met["arm_q"], label="PPO_RAISE_HANDOVER")
+                cam_init = {
+                    "selected": "PPO_MUJOCO_TELEOP_RAISE",
+                    "ppo_raise_json": str(ppo_raise_json),
+                    "ppo_mujoco": {
+                        "tcp_agl_mujoco_m": raise_rep.get("tcp_agl_mujoco_m"),
+                        "ee_pos_err_final": raise_rep.get("ee_pos_err_final"),
+                        "ee_ori_err_deg_final": raise_rep.get("ee_ori_err_deg_final"),
+                        "base_drift_m": raise_rep.get("base_drift_m"),
+                        "control": raise_rep.get("control"),
+                        "n_policy_steps": raise_rep.get("n_policy_steps"),
+                        "elapsed_wall_s": raise_rep.get("elapsed_wall_s"),
                     },
-                    indent=2,
+                    "habitat_handover": final_met,
+                    "replay": {
+                        "n_replay_frames": replay.get("n_replay_frames"),
+                        "tcp_agl_max_m": replay.get("tcp_agl_max_m"),
+                        "d455_agl_max_m": replay.get("d455_agl_max_m"),
+                    },
+                    "final": v,
+                    "note": (
+                        "MuJoCo teleop-PPO raise (ee_cmd +Z); joints synced to Habitat. "
+                        "Not IK. scaled_robot_proxy_070."
+                    ),
+                }
+                (raise_dir / "handover.json").write_text(json.dumps(cam_init, indent=2))
+                (self.out / "camera_init_summary.json").write_text(
+                    json.dumps(cam_init, indent=2)
                 )
-            )
-            if not cam_init.get("final", {}).get("tolerances", {}).get("all_ok", False):
-                # Still proceed with best FK; mark for evaluation honesty
-                (self.out / "camera_init_OUT_OF_TOL.txt").write_text(
-                    cam_init.get("warning", "out of tolerance")
+                if not final_met.get("tcp_target_ok", False):
+                    (self.out / "ppo_raise_TCP_SHORT.txt").write_text(
+                        f"tcp_agl={final_met.get('tcp_agl_m')} "
+                        f"target=0.88±0.02; best-effort under teleop Z+ box; no IK fallback\n"
+                    )
+            else:
+                cam_init = apply_and_record_initial_camera(self.env, self.out / "camera_init")
+                (self.out / "camera_init_summary.json").write_text(
+                    json.dumps(
+                        {
+                            "selected": cam_init.get("selected"),
+                            "final": cam_init.get("final"),
+                            "ARM_DEFAULT_ok": cam_init.get("ARM_DEFAULT", {})
+                            .get("tolerances", {})
+                            .get("all_ok"),
+                            "note": "ARM_DEFAULT kept for teleop; episode uses ARM_APEXNAV_INIT FK",
+                            "arm_default": list(ARM_DEFAULT),
+                            "arm_apexnav_init": list(ARM_APEXNAV_INIT),
+                        },
+                        indent=2,
+                    )
                 )
+                if not cam_init.get("final", {}).get("tolerances", {}).get("all_ok", False):
+                    (self.out / "camera_init_OUT_OF_TOL.txt").write_text(
+                        cam_init.get("warning", "out of tolerance")
+                    )
 
             self.ros_pub = DynamicROSPublisher(DEPTH_MIN, DEPTH_MAX)
             state_pub = rospy.Publisher("/habitat/state", Int32, queue_size=10)
@@ -998,6 +1059,10 @@ def main(argv=None) -> int:
         default="",
         help="Reuse start_pose.json spawn for fair scale A/B (same episode start).",
     )
+    # ################################
+    # MuJoCo teleop-PPO raise result JSON (arm_q_final); Habitat only syncs joints.
+    # ################################
+    p.add_argument("--ppo_raise_json", default="")
     p.add_argument("--gpu", type=int, default=0)
     p.add_argument("--max_steps", type=int, default=40)
     p.add_argument("--success_distance", type=float, default=1.0)

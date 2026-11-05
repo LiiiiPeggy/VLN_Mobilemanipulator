@@ -109,9 +109,13 @@ done
 # ################################
 ROBOT_SCALE="${ROBOT_SCALE:-1.0}"
 FORCE_SPAWN_JSON="${FORCE_SPAWN_JSON:-}"
+PPO_RAISE_JSON="${PPO_RAISE_JSON:-}"
 SCALE_ARGS="--robot_scale $ROBOT_SCALE"
 if [[ -n "$FORCE_SPAWN_JSON" ]]; then
   SCALE_ARGS="$SCALE_ARGS --force_spawn_json '$FORCE_SPAWN_JSON'"
+fi
+if [[ -n "$PPO_RAISE_JSON" ]]; then
+  SCALE_ARGS="$SCALE_ARGS --ppo_raise_json '$PPO_RAISE_JSON'"
 fi
 
 echo "[4/4] run real ApexNav episode → $OUT (robot_scale=$ROBOT_SCALE)"

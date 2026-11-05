@@ -150,6 +150,9 @@ VLN_Mobilemanipulator/
 | 适配层整机均匀缩放：`robot_scale`→生成 URDF（xyz+mesh scale）+ 贴地/足迹/相机 AGL 目标；默认 1.0× 不变 | `robot_scale.py`；`scale_urdf.py`；`RangerCr10KinematicEnv` |
 | `scaled_robot_proxy_070`：半宽≈0.304 m，相机目标 0.616 m；yr17 足迹 safe_ratio 1.0；不可冒充实机成绩 | `apexnav_rangercr10_scale070.md` |
 | 缩尺改善足迹安全 ≠ 自动更长探索；HY1 早停在 0.7× 仍在 | `scale070_compare_batch_*.jsonl` |
+| 初始化抬臂：MuJoCo 原生 teleop-PPO（`ee_command_from_offset` Z+≤0.40），Habitat **只同步臂关节**；禁止 IK 替代 | `ppo_mujoco_raise.py`；`run_ppo_raise_then_apexnav_s070.sh` |
+| 0.7× FK：抬臂后 TCP AGL≈0.811 m（目标 0.88±0.02 未达）；D455 optical≈0.881 m 且水平（≠TCP） | `ppo_raise_habitat_fk_070.json`；`apexnav_rangercr10_ppo_raise_s070.md` |
+| PPO/ApexNav 交接：抬臂完成保持 `arm_q`，再 26 步环视；二者不同时控底盘/臂 | `--ppo_raise_json`；`handover.json` |
 | catkin 前缀：`/workspace/ApexNav` → `baselines/ApexNav` | devel 路径 |
 | HM3D-v2 goals 在 `goals_by_category`；宜滤同层 | `_goals_for_episode` |
 
@@ -172,6 +175,7 @@ VLN_Mobilemanipulator/
 | 原生 URDF 入场 | `vln-rangercr10:bullet` + 物理开启可加载 51+1 links | `run_kinematic_demo.sh` |
 | 运动学 vs 动力学 | Demo 为状态写入 | 必须标 `kinematic_state_set`，禁止写成全身动力学 |
 | habitat-sim close | 0.3.1 常 rc=134 / heap 噪声 | 以 `summary.status` 判定；脚本接受 0/134 |
-| PPO→Habitat | 117-D 观测与 ChassisAction 未对齐 | 保持 MuJoCo stage410d 验证；Habitat 探针勿当成功 |
+| PPO→Habitat 全身控制 | 117-D 观测与 ChassisAction 仍未对齐；勿把力矩/MuJoCo 动作当 Habitat 关节位 | 抬臂仅用 MuJoCo 推理+关节同步；Habitat 探针勿当全身策略成功 |
+| teleop Z+ 箱顶 | KEYBOARD_BOX_410 Z_OFFSET_MAX=0.40；再抬需训练侧改箱/策略 | 0.7× 上 TCP 0.88 当前不可达；诚实记录 shortfall |
 | ApexNav VLM 离线 | bert/blip2/dino 勿直连 HF | `HF_HOME`/`TORCH_HOME` + `/workspace/ApexNav/bert-base-uncased`；dino 权重用 D 盘实文件 |
 | 动态相机 | 不可再用固定 +0.88 m | 适配层发真实 EE SE3；第三人称渲染勿覆盖 EE 观测 |
