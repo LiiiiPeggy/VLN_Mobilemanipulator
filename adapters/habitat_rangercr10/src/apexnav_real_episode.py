@@ -41,6 +41,7 @@ from .demo_compose import compose_frame
 from .initial_camera_pose import apply_and_record_initial_camera, verify_arm_config
 from .kinematic_demo import DEFAULT_BASE_Y, RangerCr10KinematicEnv
 from .map_listener import ApexNavMapListener
+from .planner_first_call_diag import analyze_map_listener
 from .pointcloud_dynamic import object_clouds_from_masks
 from .ppo_mujoco_raise import apply_raise_to_habitat, replay_raise_on_habitat
 from .ros_dynamic_publisher import DynamicROSPublisher
@@ -274,6 +275,12 @@ class ApexNavRangerBridge:
         self.log: List[dict] = []
         self.termination = "not_finished"
         self.planner_alive = False
+        # ################################
+        # Habitat navigable floor Y → ROS Z = AGL for ApexNav height filter.
+        # ################################
+        self.floor_y = 0.0
+        self._first_plan_diag_done = False
+        self.first_plan_diag: Optional[dict] = None
 
     def _callbacks(self):
         def on_action(msg):
@@ -540,8 +547,15 @@ class ApexNavRangerBridge:
                     indent=2,
                 )
             )
+            # ################################
+            # Floor-relative ROS Z (AGL) for map_ros height filter alignment.
+            # ################################
+            # ################################
+            # Record floor_y now; DynamicROSPublisher is constructed after camera init.
+            # ################################
+            self.floor_y = float(spawn.get("floor_y", getattr(self.env, "floor_y", 0.0)))
             # seed trajectory for map panel
-            br0 = hab_pos_to_ros(self.env.base_xyz)
+            br0 = hab_pos_to_ros(self.env.base_xyz, floor_y=self.floor_y)
             self.traj_ros = [(float(br0[0]), float(br0[1]))]
             # diagnostic views (top/side/third) after upright place
             diag = self.out / "pose_diag"
@@ -659,7 +673,12 @@ class ApexNavRangerBridge:
                         cam_init.get("warning", "out of tolerance")
                     )
 
-            self.ros_pub = DynamicROSPublisher(DEPTH_MIN, DEPTH_MAX)
+            # ################################
+            # Pass episode floor_y so ROS Z = AGL for ApexNav map_ros height filter.
+            # ################################
+            self.ros_pub = DynamicROSPublisher(
+                DEPTH_MIN, DEPTH_MAX, floor_y=float(self.floor_y)
+            )
             state_pub = rospy.Publisher("/habitat/state", Int32, queue_size=10)
             trigger_pub = rospy.Publisher("/move_base_simple/goal", PoseStamped, queue_size=10)
             itm_score_pub = rospy.Publisher("/blip2/cosine_score", Float64, queue_size=10)
@@ -807,7 +826,12 @@ class ApexNavRangerBridge:
                 ee = self.env.observe_ee_only()
                 rgb, depth = ee["ee_rgb"], ee["ee_depth"]
                 meta = self._publish_obs_bundle(rgb, depth, step)
-                br = hab_pos_to_ros(self.env.base_xyz)
+                # ################################
+                # Trajectory / map arrow follow plan-proxy odom (D455 XY), not chassis.
+                # ################################
+                br = meta.get("base_ros") or hab_pos_to_ros(
+                    self.env.base_xyz, floor_y=self.floor_y
+                ).tolist()
                 self.traj_ros.append((float(br[0]), float(br[1])))
 
                 # ITM + detection (real VLM servers)
@@ -833,8 +857,45 @@ class ApexNavRangerBridge:
                     raise RuntimeError(f"VLM/perception failed at step {step}: {e}") from e
 
                 clouds = object_clouds_from_masks(
-                    depth, masks, ee["ee_T"], hfov_deg=79.0, min_depth=DEPTH_MIN, max_depth=DEPTH_MAX
+                    depth,
+                    masks,
+                    ee["ee_T"],
+                    hfov_deg=79.0,
+                    min_depth=DEPTH_MIN,
+                    max_depth=DEPTH_MAX,
+                    floor_y=self.floor_y,
                 )
+
+                # ################################
+                # First explore planner step: dump map / frontier / A* diagnostics.
+                # ################################
+                if phase == "explore_planner" and not self._first_plan_diag_done:
+                    try:
+                        assert self.map_listener is not None
+                        self.first_plan_diag = analyze_map_listener(
+                            self.map_listener,
+                            base_ros_xy=(float(br[0]), float(br[1])),
+                            base_yaw_ros=float(meta.get("base_yaw_ros", 0.0)),
+                            out_dir=self.out / "planner_first_call_diag",
+                        )
+                        self.first_plan_diag["publish_meta"] = meta
+                        self.first_plan_diag["expl_result"] = self.expl_result
+                        self.first_plan_diag["final_state"] = self.final_state
+                        self.first_plan_diag["planner_action"] = ACTION_NAME.get(
+                            action, str(action)
+                        )
+                        self.first_plan_diag["floor_y_hab"] = float(self.floor_y)
+                        self.first_plan_diag["camera_ros_z_agl"] = (
+                            float(meta["camera_ros"][2]) if meta.get("camera_ros") else None
+                        )
+                        (self.out / "planner_first_call_diag" / "first_plan_diag.json").write_text(
+                            json.dumps(self.first_plan_diag, indent=2)
+                        )
+                    except Exception:
+                        (self.out / "planner_first_call_diag_error.txt").write_text(
+                            traceback.format_exc()
+                        )
+                    self._first_plan_diag_done = True
                 msg = MultipleMasksWithConfidence()
                 msg.point_clouds = clouds
                 msg.confidence_scores = [float(s) for s in score_list]
@@ -1007,6 +1068,9 @@ class ApexNavRangerBridge:
                 "planner success ≠ scaled footprint safety."
             ),
             "online_grid_map": {"has_data": map_ok, "stats": map_final},
+            "floor_y_hab": float(self.floor_y),
+            "ros_z_mode": "hab_y_minus_floor_y_agl",
+            "first_plan_diag": self.first_plan_diag,
             "final_distance_to_goal_eval_only": final_dtg,
             "success_claimed": False,  # never claim ObjectNav success without official evaluator
             "near_goal": bool(final_dtg is not None and final_dtg <= args.success_distance),
@@ -1015,6 +1079,7 @@ class ApexNavRangerBridge:
             "notes": [
                 "LOOK_UP/DOWN are arm-joint adapted (±pitch via FK), not Habitat agent look.",
                 "Initial EE uses ARM_APEXNAV_INIT FK (height × robot_scale); runtime sensor_pose is full SE3.",
+                "ROS Z = Habitat AGL (hab_y - floor_y) so ApexNav map_ros height filter [0.28,1.18] matches furniture.",
                 "Goal distance is eval-only and not fed to planner.",
                 "URDF Z-up→Habitat Y-up via Ry(-90)*Rx(-90); wheels snapped to floor_y.",
                 "Init lookaround ≠ adaptive explore; explore starts after 26 FSM init actions.",

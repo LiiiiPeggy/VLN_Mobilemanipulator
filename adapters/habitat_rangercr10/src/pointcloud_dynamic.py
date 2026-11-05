@@ -63,6 +63,7 @@ def object_clouds_from_masks(
     hfov_deg: float = 79.0,
     min_depth: float = 0.0,
     max_depth: float = 5.0,
+    floor_y: float = 0.0,
 ) -> List[PointCloud2]:
     """Project masks with full camera pose (Habitat T → ROS world)."""
     if hasattr(camera_T_hab, "rotation"):
@@ -75,7 +76,10 @@ def object_clouds_from_masks(
         M = np.asarray(camera_T_hab, dtype=np.float64).reshape(4, 4)
         R_hab, p_hab = M[:3, :3], M[:3, 3]
     R_ros = hab_rot_to_ros(R_hab)
-    p_ros = hab_pos_to_ros(p_hab)
+    # ################################
+    # Match odom/sensor_pose: ROS Z = Habitat AGL (hab_y - floor_y).
+    # ################################
+    p_ros = hab_pos_to_ros(p_hab, floor_y=floor_y)
 
     depth = np.asarray(depth_m, dtype=np.float32)
     if depth.ndim == 3:

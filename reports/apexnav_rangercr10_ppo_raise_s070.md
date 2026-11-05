@@ -96,5 +96,6 @@ bash adapters/habitat_rangercr10/scripts/run_ppo_raise_then_apexnav_s070.sh
 
 1. **Teleop-PPO 抬臂链路已接通**：MuJoCo 原生推理 → Habitat 0.7× 关节同步，底盘稳定、无 IK。  
 2. **D455 ≈0.88 m 且水平**；**TCP ≈0.81 m**，未满足 0.88±0.02（策略在 Z+ 箱顶饱和）。  
-3. 该视高下 yr17/eF36/HY1 **均进入正式探索但立即 NO_PASSABLE**；多步寻物未完成。  
-4. 未改 1.0× 模型 / PPO 权重 / ApexNav 算法。
+3. 该视高下初版 yr17/eF36/HY1 **立即 NO_PASSABLE**（见同目录后续报告）。  
+4. **后续已修复多步探索**：`apexnav_rangercr10_nopassable_after_ppo_raise.md`（AGL Z + odom 相机 XY + self-hit）。  
+5. 未改 1.0× 模型 / PPO 权重 / ApexNav 算法源码默认。

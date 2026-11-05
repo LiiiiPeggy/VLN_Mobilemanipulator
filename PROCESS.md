@@ -582,3 +582,23 @@
 **结论**：抬臂交接链路打通且未改权重/ApexNav/1.0×；TCP 高度与多步探索均未达核心验收的后半部分，已如实记录。
 
 **相关**：`reports/apexnav_rangercr10_ppo_raise_s070.md`；`ppo_raise_s070_batch_20261105_171118.jsonl`
+
+---
+
+## 2026-11-05 抬臂后 NO_PASSABLE 根因与适配修复
+
+**模块**：`adapters/habitat_rangercr10`（同分支）
+
+**问题**：PPO 抬臂后 yr17/eF36/HY1 首次 `callActionPlanner` 均 `NO_PASSABLE_FRONTIER`。
+
+**根因**（诊断 dump）：
+
+1. ROS Z 用绝对 Habitat Y → map_ros 高度滤波错位。  
+2. 建图原点在 D455、规划起点在底盘（≈0.65 m）→ 起点 UNKNOWN。  
+3. AGL 对齐后机体近距点进 occupied；Habitat 覆盖 mindist 使 launch 近距滤波无效。
+
+**修复**：AGL Z；odom XY=相机；发布前 self-hit 深度屏蔽 0.65 m；首次规划诊断落盘。
+
+**实测**：yr17 EXPLORATION×8 + FWD 0.25 m；HY1 n_explore=54 + FWD；eF36 弱多步。未改 ApexNav 源码默认 / PPO / 1.0×。
+
+**相关**：`reports/apexnav_rangercr10_nopassable_after_ppo_raise.md`；`ppo_raise_s070_nopassable_fix_20261105_183429.jsonl`

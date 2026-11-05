@@ -20,7 +20,11 @@
     <rosparam file="$(arg ranger_overlay)" command="load"/>
   </group>
 
-  <include file="$(find exploration_manager)/launch/algorithm.xml">
+  <!-- ################################
+    Use adapter algorithm_rangercr10.xml (depth_filter_mindist=0.50 for
+    arm-camera self-hit rejection). Upstream algorithm.xml unchanged.
+  ################################ -->
+  <include file="/workspace/VLN_Mobilemanipulator/adapters/habitat_rangercr10/launch/algorithm_rangercr10.xml">
     <arg name="is_real_world_" value="$(arg is_real_world)"/>
     <arg name="map_size_x_" value="$(arg map_size_x)"/>
     <arg name="map_size_y_" value="$(arg map_size_y)"/>

@@ -59,7 +59,7 @@ docker exec -d vln-rangercr10 bash -lc \
 sleep 4
 # Record effective params
 docker exec vln-rangercr10 bash -lc \
-  "$SRC_ROS; rosparam get /habitat/simulator/agents/main_agent/radius; rosparam get /exploration_node/sdf_map/obstacles_inflation; rosparam get /exploration_node/sdf_map/optimistic" \
+  "$SRC_ROS; rosparam get /habitat/simulator/agents/main_agent/radius; rosparam get /exploration_node/sdf_map/obstacles_inflation; rosparam get /exploration_node/sdf_map/optimistic; rosparam get /exploration_node/map_ros/depth_filter_mindist; rosparam get /exploration_node/map_ros/filter_min_height; rosparam get /exploration_node/map_ros/filter_max_height" \
   >"$LOGDIR/effective_params.txt" 2>&1 || true
 
 echo "[3/4] start VLM servers (yolo/dino/blip2/sam) if not up"

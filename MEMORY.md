@@ -153,6 +153,9 @@ VLN_Mobilemanipulator/
 | 初始化抬臂：MuJoCo 原生 teleop-PPO（`ee_command_from_offset` Z+≤0.40），Habitat **只同步臂关节**；禁止 IK 替代 | `ppo_mujoco_raise.py`；`run_ppo_raise_then_apexnav_s070.sh` |
 | 0.7× FK：抬臂后 TCP AGL≈0.811 m（目标 0.88±0.02 未达）；D455 optical≈0.881 m 且水平（≠TCP） | `ppo_raise_habitat_fk_070.json`；`apexnav_rangercr10_ppo_raise_s070.md` |
 | PPO/ApexNav 交接：抬臂完成保持 `arm_q`，再 26 步环视；二者不同时控底盘/臂 | `--ppo_raise_json`；`handover.json` |
+| ROS Z 必须发 **AGL**（`hab_y - floor_y`）；绝对 Habitat Y 会使 map_ros 高度滤波错位 | `coord_habitat_ros.hab_pos_to_ros` |
+| 臂载 D455：规划 `/odom_world` 平面 XY 用相机投影，避免底盘落在 UNKNOWN | `ros_dynamic_publisher`（`odom_xy_source=d455_optical_xy_ground_proxy`） |
+| Habitat `depth_sensor.min_depth` 会覆盖 `map_ros/depth_filter_mindist`；近距自遮挡须在适配层屏蔽 | `self_hit_min_depth_m=0.65`；勿只改 launch mindist |
 | catkin 前缀：`/workspace/ApexNav` → `baselines/ApexNav` | devel 路径 |
 | HM3D-v2 goals 在 `goals_by_category`；宜滤同层 | `_goals_for_episode` |
 
@@ -177,5 +180,6 @@ VLN_Mobilemanipulator/
 | habitat-sim close | 0.3.1 常 rc=134 / heap 噪声 | 以 `summary.status` 判定；脚本接受 0/134 |
 | PPO→Habitat 全身控制 | 117-D 观测与 ChassisAction 仍未对齐；勿把力矩/MuJoCo 动作当 Habitat 关节位 | 抬臂仅用 MuJoCo 推理+关节同步；Habitat 探针勿当全身策略成功 |
 | teleop Z+ 箱顶 | KEYBOARD_BOX_410 Z_OFFSET_MAX=0.40；再抬需训练侧改箱/策略 | 0.7× 上 TCP 0.88 当前不可达；诚实记录 shortfall |
+| 抬臂后 NO_PASSABLE | 高度错位 + 相机/底盘起点分裂 + 自遮挡进 occupied | 见 `apexnav_rangercr10_nopassable_after_ppo_raise.md`；禁 optimistic=true 凑数 |
 | ApexNav VLM 离线 | bert/blip2/dino 勿直连 HF | `HF_HOME`/`TORCH_HOME` + `/workspace/ApexNav/bert-base-uncased`；dino 权重用 D 盘实文件 |
 | 动态相机 | 不可再用固定 +0.88 m | 适配层发真实 EE SE3；第三人称渲染勿覆盖 EE 观测 |

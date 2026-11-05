@@ -2,19 +2,32 @@
 
 ApexNav habitat_publisher uses:
   ROS_xyz = (-hab_z, -hab_x, hab_y)
-We keep that convention so C++ map_ros depth projection stays consistent.
+We keep that XY convention so C++ map_ros depth projection stays consistent.
+
+################################
+ApexNav map_ros height filter assumes floor at ROS z≈0
+(filter_min/max_height = 0.28/1.18 AGL; virtual_ground ≈ -0.34).
+HM3D episode floors are often Habitat y ≠ 0 (e.g. yr17 ≈ -0.95).
+Publishing absolute hab_y put furniture outside the filter band
+(AGL≈1.23–2.13 only), so 2D occupied maps were dominated by tall
+hits / poor free connectivity → Frontier A* NO_PASSABLE after raise.
+Adapter fix: ROS_z = hab_y - floor_y (AGL), with floor_y from spawn.
+################################
 """
 
 from __future__ import annotations
 
-from typing import Sequence, Tuple
+from typing import Optional, Sequence, Tuple
 
 import numpy as np
 
 
-def hab_pos_to_ros(p: Sequence[float]) -> np.ndarray:
+def hab_pos_to_ros(p: Sequence[float], floor_y: float = 0.0) -> np.ndarray:
     x, y, z = float(p[0]), float(p[1]), float(p[2])
-    return np.array([-z, -x, y], dtype=np.float64)
+    # ################################
+    # XY: ApexNav native (-z,-x). Z: height above local navigable floor.
+    # ################################
+    return np.array([-z, -x, y - float(floor_y)], dtype=np.float64)
 
 
 def hab_yaw_to_ros(yaw_hab: float) -> float:
@@ -35,7 +48,9 @@ def hab_rot_to_ros(R: np.ndarray) -> np.ndarray:
     return C @ R @ C.T
 
 
-def mat4_hab_to_ros_pose(T_flat16_or_mat) -> Tuple[np.ndarray, np.ndarray]:
+def mat4_hab_to_ros_pose(
+    T_flat16_or_mat, floor_y: float = 0.0
+) -> Tuple[np.ndarray, np.ndarray]:
     """Return (pos_ros xyz, quat_xyzw) from Habitat Matrix4 / 4x4."""
     if hasattr(T_flat16_or_mat, "rotation"):
         # magnum Matrix4
@@ -48,7 +63,7 @@ def mat4_hab_to_ros_pose(T_flat16_or_mat) -> Tuple[np.ndarray, np.ndarray]:
         R = M[:3, :3]
         p = M[:3, 3]
     R_ros = hab_rot_to_ros(R)
-    p_ros = hab_pos_to_ros(p)
+    p_ros = hab_pos_to_ros(p, floor_y=floor_y)
     # rotation matrix → xyzw
     q = _rot_to_xyzw(R_ros)
     return p_ros, q
