@@ -139,6 +139,10 @@ VLN_Mobilemanipulator/
 | ApexNav `optimistic=false` 时未知格进 ESDF 障碍；膨胀↑会进一步吃掉 free | `sdf_map2d.cpp`；足迹对照实验 |
 | 适配膨胀档：`INFLATION_PROFILE=legacy018`（默认演示）/ `mid030`（灵敏度）/ `ranger_safe`（0.485 m） | `config/apexnav_rangercr10_overlay*.yaml` |
 | 在线 ≥0.30 m 半径即可把开阔图 free 压到 ≈0–1；窄场景 yaw 修复后仍 `NO_PASSABLE` | `real_yawfix_open_mid030_*`；`real_yawfix_narrow_legacy018_*` |
+| HM3D val 100 景；ObjectNav-v2 val content 36 与场景对齐；MP3D 11 景可用但本轮未跑 | `scene_datasets/hm3d/val`；`objectnav/hm3d/v2/val/content` |
+| Ranger 足迹筛选：重算 navmesh r=0.18/0.435/0.485/0.783；Top 几何场景 HY1、yr17、eF36、LT9、k1cup | `scene_clearance/`；`apexnav_rangercr10_scene_screening.md` |
+| 大场景原起点易 NO_PASSABLE；spawn 偏好 clearance≈0.55 m 且 offset≤1.5 m 后 yr17 多步 FWD×6/1.5 m | `spawn_utils.prefer_open_clearance`；`real_wide_yr17_openband_*` |
+| Habitat 四轮可视化：4WS+URDF 左右轴符号；臂静止时轮胎冻结；≠轮地动力学 | `kinematic_demo._update_wheels_from_base_delta`；`wheel_kinematics_smoke` |
 | catkin 前缀：`/workspace/ApexNav` → `baselines/ApexNav` | devel 路径 |
 | HM3D-v2 goals 在 `goals_by_category`；宜滤同层 | `_goals_for_episode` |
 

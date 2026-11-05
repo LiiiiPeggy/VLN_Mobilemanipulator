@@ -1,13 +1,13 @@
 # PROGRESS.md — 当前状态
 
-更新时间：2026-11-04（ApexNav 转向修复后：狭窄验证 + 中档膨胀对照）  
+更新时间：2026-11-05（场景筛选 + yr17 多步 ApexNav + 四轮可视化）  
 证据优先于本文；冲突时以代码、`reports/`、`runs/`、容器实测为准。
 
 ## 研究目标与阶段
 
 **目标**：六套 VLN/ObjectNav baseline 可复现评测 → 再适配 RangerBox-CR10。
 
-**当前阶段**：Stage 4.10d + 7 FPS Demo 保留；odom 航向 π 已修；开阔/狭窄/中档膨胀对照完成。Habitat 演示默认 `legacy018`（标不安全）；实机安全档 `ranger_safe` 会吃光 free。
+**当前阶段**：Stage 4.10d / yaw 修 / 7 FPS 保留；完成 HM3D×ObjectNav 场景通行性筛选；在 **yr17PDCnDDW** 上验证真实 ApexNav 多步探索（开放带 spawn）；四轮运动学可视化烟雾通过。
 
 ## Baseline 状态
 
@@ -20,18 +20,18 @@
 
 | 项 | 状态 | 证据 |
 |----|------|------|
-| Stage 4.10d 钉扎 | 保持 | `VERSION_stage410d.json` |
-| Demo 7 Hz（原开场景） | 保持 | `20261104_114652/.../7fps.mp4` |
-| Demo 7 Hz（yaw 修复后） | 已重渲 | `real_yawfix_legacy018_*/.../7fps.mp4` |
-| odom 航向 | **已修** `hab_yaw+π` | yaw 误差≈0° |
-| 开阔 yaw+0.18 | 多步探索 FWD 1.25 m | `real_yawfix_legacy018_*` |
-| 开阔 yaw+0.30 / 0.485 | free≈0–1，早停 | `real_yawfix_open_mid030_*` / `*_footprint_*` |
-| 狭窄 yaw+0.18 | 仍 `NO_PASSABLE` STOP×1 | `real_yawfix_narrow_legacy018_*` |
-| 膨胀对照报告/面板 | 完成 | `reports/apexnav_rangercr10_frontier_inflation.md` |
+| Stage 4.10d / yaw+π / legacy018 | 保持 | 既有报告 |
+| 场景清单 + Top-5 通行性 | 完成 | `scene_clearance/ranking.md` |
+| yr17 多步探索 | **OK** FWD×6 / 1.5 m | `real_wide_yr17_openband_*` |
+| HY1 同策略 | 仍早停 | `real_wide_hy1_openband_*` |
+| 开放带 spawn | 适配层 | `spawn_utils.prefer_open_clearance` |
+| 四轮滚动/转向可视化 | 烟雾 pass | `wheel_kinematics_smoke/` |
+| 场景筛选报告 | 完成 | `reports/apexnav_rangercr10_scene_screening.md` |
 
 ## 下一步（最多 5）
 
-1. 非圆足迹或未知区策略，解决安全半径与可达 Frontier 冲突（窄场景优先）。  
-2. PPO→Habitat 观测对齐（不阻塞）。  
-3. 点云一致性报告完善。  
-4. 停用后腾 GPU（注意勿杀他人 Stage4.11 训练）。
+1. 对 Top-5 其余场景做开放带 spawn 短验证；必要时扩展出生点邻域观测/环视。  
+2. yr17（及成功 ep）7 FPS Demo 落盘确认。  
+3. 非圆足迹规划仍为中长期（本轮未改 ApexNav）。  
+4. PPO→Habitat 观测对齐（不阻塞）。  
+5. 停用后腾 GPU（勿杀他人训练）。

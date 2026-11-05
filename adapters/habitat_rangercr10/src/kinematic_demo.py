@@ -22,7 +22,7 @@ import sys
 import time
 import traceback
 from pathlib import Path
-from typing import Dict, List, Optional, Sequence
+from typing import Dict, List, Optional, Sequence, Tuple
 
 import magnum as mn
 import numpy as np
@@ -41,21 +41,33 @@ from .constants import (
     LOCOMANIP_COMMIT,
     MODE_COLLISION_QUERY,
     MODE_KINEMATIC,
+    STEERING_JOINT_NAMES,
     THIRD_RGB_RES,
     URDF_HABITAT,
+    WHEEL_JOINT_NAMES,
+)
+from .ranger_footprint import (
+    STEERING_SIGN,
+    WHEEL_RADIUS_MESH,
+    WHEEL_SIGN,
+    WHEEL_XY,
 )
 from .traj_utils import preset_trajectory, save_depth_mm
 
 # ################################
 # URDF is ROS Z-up; Habitat is Y-up. Root must apply Ry(-90)*Rx(-90) so that
 # ROS +X(fwd)->Hab +Z, ROS +Z(up)->Hab +Y. Without this the chassis appears tipped.
-# Base height: wheel centers ≈ base_y - 0.26 m; Ranger wheel radius ≈ 0.125 m →
-# base_y ≈ 0.26+0.125 = 0.385 (snap via snap_wheels_to_floor).
+# Floor snap still uses 0.125 m historical radius (DEFAULT_BASE_Y pin); rolling
+# visualization uses mesh radius 0.1531 m from LocoManip (kinematic viz only).
 # ################################
 DEFAULT_BASE_Y = 0.4419  # after wheel snap with r=0.125 on flat floor
 WHEEL_RADIUS = 0.125
 URDF_TO_HABITAT_RX = -math.pi / 2.0
 URDF_TO_HABITAT_RY = -math.pi / 2.0
+# LocoManip BaseVelocityAction: spinning when |vx|/|wz| < min_turn_radius or |vx|~0
+_MIN_TURN_RADIUS = 0.810330349
+_MAX_STEER = 0.6981
+_MAX_SPIN_STEER = 1.5708
 
 
 def _ensure_dir(p: Path) -> Path:
@@ -155,6 +167,13 @@ class RangerCr10KinematicEnv:
         self.base_xyz = np.array([1.0, DEFAULT_BASE_Y, 1.0], dtype=np.float64)
         self.base_yaw = 0.0
         self.floor_y = 0.0  # navigable floor height (Habitat Y); used for AGL metrics
+        # ################################
+        # Kinematic wheel viz (not wheel-ground dynamics). Steering + roll from
+        # base SE(2) deltas via LocoManip 4WS formulas + URDF axis signs.
+        # ################################
+        self.steer_q = np.zeros(4, dtype=np.float64)
+        self.wheel_q = np.zeros(4, dtype=np.float64)
+        self._prev_base_xz_yaw: Optional[Tuple[float, float, float]] = None
         self._apply_state()
 
     def _urdf_to_habitat(self) -> mn.Matrix4:
@@ -178,10 +197,59 @@ class RangerCr10KinematicEnv:
         jp = np.array(self.ao.joint_positions, dtype=np.float64)
         for i, jn in enumerate(ARM_JOINT_NAMES):
             jp[self.joint_pos_index[jn]] = float(self.arm_q[i])
+        # ################################
+        # Write steering + wheel roll when joints exist in the Habitat articulation.
+        # ################################
+        for i, jn in enumerate(STEERING_JOINT_NAMES):
+            if jn in self.joint_pos_index:
+                jp[self.joint_pos_index[jn]] = float(self.steer_q[i])
+        for i, jn in enumerate(WHEEL_JOINT_NAMES):
+            if jn in self.joint_pos_index:
+                jp[self.joint_pos_index[jn]] = float(self.wheel_q[i])
         self.ao.joint_positions = jp.tolist()
         self.ao.transformation = self._base_matrix()
         # kinematic write does not auto-step; nudge collision world
         self.sim.perform_discrete_collision_detection()
+
+    def _update_wheels_from_base_delta(self, x: float, z: float, yaw: float) -> None:
+        """Integrate 4WS steering/roll from Habitat base SE(2) change (viz only)."""
+        if self._prev_base_xz_yaw is None:
+            self._prev_base_xz_yaw = (float(x), float(z), float(yaw))
+            return
+        x0, z0, yaw0 = self._prev_base_xz_yaw
+        dx, dz = float(x) - x0, float(z) - z0
+        dyaw = (float(yaw) - yaw0 + math.pi) % (2.0 * math.pi) - math.pi
+        # Body-frame planar displacement at previous yaw (forward, left=ROS +Y)
+        c, s = math.cos(yaw0), math.sin(yaw0)
+        # Hab forward=(sin,cos); Hab right=(cos,-sin); ROS left = -right
+        body_vx = dx * s + dz * c
+        body_vy = -(dx * c - dz * s)  # left-positive
+        vx, vy, wz = body_vx, body_vy, dyaw
+        # Ignore tiny crab; ApexNav kinematic steps are fwd/turn only
+        if abs(vy) < 1e-4:
+            vy = 0.0
+        abs_wz = abs(wz)
+        radius = abs(vx) / max(abs_wz, 1e-6) if abs_wz > 1e-6 else 1e6
+        spinning = abs_wz > 1e-6 and (radius < _MIN_TURN_RADIUS or abs(vx) < 1e-4)
+        if spinning:
+            vx = 0.0
+        for i, (wx, wy) in enumerate(WHEEL_XY):
+            v_x = vx - wz * wy
+            v_y = wz * wx + vy  # include residual lateral if any
+            steer = math.atan2(v_y, v_x) if (abs(v_x) + abs(v_y)) > 1e-9 else 0.0
+            speed = math.hypot(v_x, v_y)
+            if abs(steer) > math.pi / 2:
+                steer -= math.copysign(math.pi, steer)
+                speed = -speed
+            lim = _MAX_SPIN_STEER if spinning else _MAX_STEER
+            steer = float(np.clip(steer, -lim, lim))
+            self.steer_q[i] = STEERING_SIGN * steer
+            # roll Δθ = signed arc / radius; per-wheel URDF axis sign
+            self.wheel_q[i] += WHEEL_SIGN[i] * (speed / WHEEL_RADIUS_MESH)
+        # zero steer when essentially stationary (arm-only / STOP)
+        if abs(vx) + abs(vy) + abs(wz) < 1e-6:
+            self.steer_q[:] = 0.0
+        self._prev_base_xz_yaw = (float(x), float(z), float(yaw))
 
     def wheel_link_heights(self) -> Dict[str, float]:
         out = {}
@@ -263,7 +331,12 @@ class RangerCr10KinematicEnv:
         y: float = DEFAULT_BASE_Y,
         floor_y: Optional[float] = None,
         snap_wheels: bool = False,
+        update_wheel_joints: bool = True,
     ) -> None:
+        if update_wheel_joints:
+            self._update_wheels_from_base_delta(float(x), float(z), float(yaw))
+        else:
+            self._prev_base_xz_yaw = (float(x), float(z), float(yaw))
         self.base_xyz[:] = (x, y, z)
         self.base_yaw = float(yaw)
         if floor_y is not None:

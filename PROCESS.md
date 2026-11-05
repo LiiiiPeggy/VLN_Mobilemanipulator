@@ -497,3 +497,22 @@
 - 结论：无法靠各向同性加大膨胀同时满足 Ranger 足迹与可达 Frontier。
 
 **相关**：`real_yawfix_narrow_legacy018_*`、`real_yawfix_open_mid030_*`、`map_panel_raw_018_030_0485.png`
+
+---
+
+## 2026-11-05 场景筛选与 yr17 多步探索
+
+**模块**：`adapters/habitat_rangercr10`（scene_clearance / spawn / wheel viz）
+
+**问题**：需在已下载 HM3D 中找适合 Ranger 足迹的场景，并验证 ApexNav 多步探索；轮胎不随底盘运动。
+
+**操作**：
+
+1. 对 36 个 ObjectNav-v2 场景重算多半径 navmesh，排出 Top-5。  
+2. 在 HY1/yr17 等场景跑真实 ApexNav；发现原起点易 NO_PASSABLE，过度外移易 NO_COVERABLE。  
+3. `prefer_open_clearance`：起点 1.5 m 内偏好 ~0.55 m clearance。  
+4. 接入 4WS 轮胎可视化并烟雾验证。
+
+**实测**：`yr17PDCnDDW` chair/0 → Explore L3/R2/F6，前进 1.5 m；HY1 同策略仍早停。未改 ApexNav 规划/膨胀扫描。
+
+**相关**：`reports/apexnav_rangercr10_scene_screening.md`、`real_wide_yr17_openband_*`
