@@ -50,8 +50,9 @@ def optical_metrics(env, base_yaw: float) -> Dict[str, Any]:
     # RealSense optical: +Z forward, +X right, +Y down
     fwd = R[:, 2]
     right = R[:, 0]
-    # Prefer env.floor_y (navmesh); fall back to base_y - DEFAULT_BASE_Y only as legacy
-    floor_y = float(getattr(env, "floor_y", float(env.base_xyz[1]) - float(DEFAULT_BASE_Y)))
+    # Prefer env.floor_y (navmesh); fall back to base_y - default_base_y only as legacy
+    base_y_pin = float(getattr(env, "default_base_y", DEFAULT_BASE_Y))
+    floor_y = float(getattr(env, "floor_y", float(env.base_xyz[1]) - base_y_pin))
     height_agl = float(p[1]) - floor_y
     pitch = math.asin(float(np.clip(fwd[1], -1.0, 1.0)))
     fxz = np.array([fwd[0], 0.0, fwd[2]], dtype=np.float64)
@@ -64,7 +65,7 @@ def optical_metrics(env, base_yaw: float) -> Dict[str, Any]:
         "pos_hab": p.tolist(),
         "floor_y_hab": floor_y,
         "height_abs_m": float(p[1]),
-        "height_m": height_agl,  # AGL — compared to ApexNav 0.88 m
+        "height_m": height_agl,  # AGL — compared to ApexNav 0.88 m (× robot_scale)
         "height_agl_m": height_agl,
         "optical_fwd_hab": fwd.tolist(),
         "pitch_rad": pitch,
@@ -74,11 +75,19 @@ def optical_metrics(env, base_yaw: float) -> Dict[str, Any]:
         "roll_rad": roll,
         "roll_deg": math.degrees(roll),
         "base_yaw_rad": float(base_yaw),
+        "robot_scale": float(getattr(env, "robot_scale", 1.0)),
     }
 
 
-def within_tolerances(m: Dict[str, Any]) -> Dict[str, bool]:
-    h_ok = abs(m["height_m"] - APEXNAV_CAM_HEIGHT_M) <= APEXNAV_CAM_HEIGHT_TOL_M
+def _height_target(env) -> float:
+    # ################################
+    # 0.7× proxy: expect ~0.616 m AGL; do NOT restore 0.88 m artificially.
+    # ################################
+    return float(getattr(env, "cam_height_target_m", APEXNAV_CAM_HEIGHT_M))
+
+
+def within_tolerances(m: Dict[str, Any], height_target_m: float = APEXNAV_CAM_HEIGHT_M) -> Dict[str, bool]:
+    h_ok = abs(m["height_m"] - float(height_target_m)) <= APEXNAV_CAM_HEIGHT_TOL_M
     ang = APEXNAV_CAM_ANGLE_TOL_DEG
     return {
         "height_ok": h_ok,
@@ -103,7 +112,8 @@ def verify_arm_config(
     """Set joints via articulated FK path and verify ApexNav-like camera pose."""
     env.set_arm_joints(arm_q)
     m = optical_metrics(env, env.base_yaw)
-    tol = within_tolerances(m)
+    h_tgt = _height_target(env)
+    tol = within_tolerances(m, height_target_m=h_tgt)
     limits = env.joint_limits_report()
     contacts = int(env.contact_count())
     return {
@@ -111,7 +121,7 @@ def verify_arm_config(
         "arm_q": [float(x) for x in np.asarray(arm_q, dtype=np.float64).tolist()],
         "metrics": m,
         "tolerances": {
-            "height_target_m": APEXNAV_CAM_HEIGHT_M,
+            "height_target_m": h_tgt,
             "height_tol_m": APEXNAV_CAM_HEIGHT_TOL_M,
             "angle_tol_deg": APEXNAV_CAM_ANGLE_TOL_DEG,
             **tol,
@@ -120,6 +130,7 @@ def verify_arm_config(
         "contacts_diagnostic": contacts,
         "pose_source": "urdf_fk_d455_depth_optical_frame",
         "forged_render_camera": False,
+        "robot_scale": float(getattr(env, "robot_scale", 1.0)),
     }
 
 
@@ -149,10 +160,11 @@ def choose_initial_arm(env) -> Tuple[np.ndarray, Dict[str, Any]]:
         and rep_pin["tolerances"]["roll_ok"]
     )
     h = float(rep_pin["metrics"]["height_agl_m"])
-    if ang_ok and abs(h - APEXNAV_CAM_HEIGHT_M) <= 0.04:
+    h_tgt = _height_target(env)
+    if ang_ok and abs(h - h_tgt) <= 0.04:
         report["selected"] = "ARM_APEXNAV_INIT_angle_priority"
         report["angle_priority_note"] = (
-            f"height_agl={h:.3f}m vs target 0.88; angles OK; keep stage410d default"
+            f"height_agl={h:.3f}m vs target {h_tgt:.3f}; angles OK; keep stage410d default"
         )
         env.set_arm_joints(ARM_APEXNAV_INIT)
         report["final"] = verify_arm_config(env, ARM_APEXNAV_INIT, label=report["selected"])

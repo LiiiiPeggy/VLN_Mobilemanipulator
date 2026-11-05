@@ -104,13 +104,23 @@ PY'; then
   sleep 2
 done
 
-echo "[4/4] run real ApexNav episode → $OUT"
+# ################################
+# ROBOT_SCALE=1.0 (real) or 0.7 (scaled_robot_proxy_070). Optional FORCE_SPAWN_JSON.
+# ################################
+ROBOT_SCALE="${ROBOT_SCALE:-1.0}"
+FORCE_SPAWN_JSON="${FORCE_SPAWN_JSON:-}"
+SCALE_ARGS="--robot_scale $ROBOT_SCALE"
+if [[ -n "$FORCE_SPAWN_JSON" ]]; then
+  SCALE_ARGS="$SCALE_ARGS --force_spawn_json '$FORCE_SPAWN_JSON'"
+fi
+
+echo "[4/4] run real ApexNav episode → $OUT (robot_scale=$ROBOT_SCALE)"
 set +e
 docker exec \
   -e ROS_MASTER_URI="http://127.0.0.1:${ROS_PORT}" \
   -e ROS_IP=127.0.0.1 \
   -e ROS_HOSTNAME=127.0.0.1 \
-  vln-rangercr10 bash -lc "$SRC_ROS; export PYTHONPATH=/workspace/VLN_Mobilemanipulator/adapters/habitat_rangercr10:\${PYTHONPATH}; python -m src.apexnav_real_episode --out_dir '$OUT_ROOT' --run_id '$RUN_ID' --max_steps $MAX_STEPS --gpu $GPU --scene_filter '${SCENE_FILTER:-TEEsavR23oF}' --category_filter '${CATEGORY_FILTER:-chair}' --episode_id '${EPISODE_ID:-4}' --llm_answer_path $APEX/llm/answers/llm_answer_hm3d.txt --llm_response_path $APEX/llm/answers/llm_response_list.txt"
+  vln-rangercr10 bash -lc "$SRC_ROS; export PYTHONPATH=/workspace/VLN_Mobilemanipulator/adapters/habitat_rangercr10:\${PYTHONPATH}; python -m src.apexnav_real_episode --out_dir '$OUT_ROOT' --run_id '$RUN_ID' --max_steps $MAX_STEPS --gpu $GPU --scene_filter '${SCENE_FILTER:-TEEsavR23oF}' --category_filter '${CATEGORY_FILTER:-chair}' --episode_id '${EPISODE_ID:-4}' --llm_answer_path $APEX/llm/answers/llm_answer_hm3d.txt --llm_response_path $APEX/llm/answers/llm_response_list.txt $SCALE_ARGS"
 rc=$?
 set -e
 

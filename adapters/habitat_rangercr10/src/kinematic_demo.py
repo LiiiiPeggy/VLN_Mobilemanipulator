@@ -52,6 +52,14 @@ from .ranger_footprint import (
     WHEEL_SIGN,
     WHEEL_XY,
 )
+from .robot_scale import (
+    BASE_Y_1X,
+    WHEEL_RADIUS_SNAP_1X,
+    footprint_at_scale,
+    resolve_urdf,
+    scale_tag,
+    wheel_xy_at_scale,
+)
 from .traj_utils import preset_trajectory, save_depth_mm
 
 # ################################
@@ -59,9 +67,10 @@ from .traj_utils import preset_trajectory, save_depth_mm
 # ROS +X(fwd)->Hab +Z, ROS +Z(up)->Hab +Y. Without this the chassis appears tipped.
 # Floor snap still uses 0.125 m historical radius (DEFAULT_BASE_Y pin); rolling
 # visualization uses mesh radius 0.1531 m from LocoManip (kinematic viz only).
+# With robot_scale!=1, DEFAULT_BASE_Y / wheel radii scale uniformly from tire plane.
 # ################################
-DEFAULT_BASE_Y = 0.4419  # after wheel snap with r=0.125 on flat floor
-WHEEL_RADIUS = 0.125
+DEFAULT_BASE_Y = BASE_Y_1X  # after wheel snap with r=0.125 on flat floor (1.0×)
+WHEEL_RADIUS = WHEEL_RADIUS_SNAP_1X
 URDF_TO_HABITAT_RX = -math.pi / 2.0
 URDF_TO_HABITAT_RY = -math.pi / 2.0
 # LocoManip BaseVelocityAction: spinning when |vx|/|wz| < min_turn_radius or |vx|~0
@@ -97,14 +106,38 @@ class RangerCr10KinematicEnv:
         urdf: str = URDF_HABITAT,
         enable_physics: bool = True,
         gpu_device_id: int = 0,
+        robot_scale: float = 1.0,
     ):
         if not habitat_sim.built_with_bullet and enable_physics:
             raise RuntimeError(
                 "habitat-sim built_with_bullet=False; need vln-rangercr10:bullet "
                 "(and restored /usr/share/glvnd/egl_vendor.d/10_nvidia.json)."
             )
+        # ################################
+        # robot_scale: uniform proxy resize (default 1.0 = real Ranger). When
+        # !=1, load adapter-generated scaled URDF and scale snap/viz constants.
+        # ################################
+        self.robot_scale = float(robot_scale)
+        self.scale_tag = scale_tag(self.robot_scale)
+        self.footprint = footprint_at_scale(self.robot_scale)
+        self.default_base_y = float(self.footprint["default_base_y_m"])
+        self.wheel_radius_snap = float(self.footprint["wheel_radius_snap_m"])
+        self.wheel_radius_mesh = float(self.footprint["wheel_radius_mesh_m"])
+        self.wheel_xy = wheel_xy_at_scale(self.robot_scale)
+        self.min_turn_radius = _MIN_TURN_RADIUS * self.robot_scale
+        self.cam_height_target_m = float(self.footprint["cam_height_target_m"])
+        # ################################
+        # Explicit --urdf wins; else 1.0× pin or adapter-generated scaled URDF.
+        # ################################
+        if urdf and urdf != URDF_HABITAT:
+            resolved_urdf = urdf
+        else:
+            resolved_urdf = resolve_urdf(
+                self.robot_scale, None if abs(self.robot_scale - 1.0) >= 1e-9 else URDF_HABITAT
+            )
+
         self.scene = scene
-        self.urdf = urdf
+        self.urdf = resolved_urdf
         self.mode = MODE_KINEMATIC
         self.collision_mode = MODE_COLLISION_QUERY
 
@@ -140,7 +173,7 @@ class RangerCr10KinematicEnv:
 
         aom = self.sim.get_articulated_object_manager()
         self.ao = aom.add_articulated_object_from_urdf(
-            urdf, fixed_base=False, maintain_link_order=True
+            self.urdf, fixed_base=False, maintain_link_order=True
         )
         self.ao.motion_type = habitat_sim.physics.MotionType.KINEMATIC
 
@@ -164,7 +197,7 @@ class RangerCr10KinematicEnv:
                 raise RuntimeError(f"missing arm joint mapping for {jn}")
 
         self.arm_q = np.array(ARM_DEFAULT, dtype=np.float64)
-        self.base_xyz = np.array([1.0, DEFAULT_BASE_Y, 1.0], dtype=np.float64)
+        self.base_xyz = np.array([1.0, self.default_base_y, 1.0], dtype=np.float64)
         self.base_yaw = 0.0
         self.floor_y = 0.0  # navigable floor height (Habitat Y); used for AGL metrics
         # ################################
@@ -230,10 +263,10 @@ class RangerCr10KinematicEnv:
             vy = 0.0
         abs_wz = abs(wz)
         radius = abs(vx) / max(abs_wz, 1e-6) if abs_wz > 1e-6 else 1e6
-        spinning = abs_wz > 1e-6 and (radius < _MIN_TURN_RADIUS or abs(vx) < 1e-4)
+        spinning = abs_wz > 1e-6 and (radius < self.min_turn_radius or abs(vx) < 1e-4)
         if spinning:
             vx = 0.0
-        for i, (wx, wy) in enumerate(WHEEL_XY):
+        for i, (wx, wy) in enumerate(self.wheel_xy):
             v_x = vx - wz * wy
             v_y = wz * wx + vy  # include residual lateral if any
             steer = math.atan2(v_y, v_x) if (abs(v_x) + abs(v_y)) > 1e-9 else 0.0
@@ -245,7 +278,7 @@ class RangerCr10KinematicEnv:
             steer = float(np.clip(steer, -lim, lim))
             self.steer_q[i] = STEERING_SIGN * steer
             # roll Δθ = signed arc / radius; per-wheel URDF axis sign
-            self.wheel_q[i] += WHEEL_SIGN[i] * (speed / WHEEL_RADIUS_MESH)
+            self.wheel_q[i] += WHEEL_SIGN[i] * (speed / self.wheel_radius_mesh)
         # zero steer when essentially stationary (arm-only / STOP)
         if abs(vx) + abs(vy) + abs(wz) < 1e-6:
             self.steer_q[:] = 0.0
@@ -328,11 +361,13 @@ class RangerCr10KinematicEnv:
         x: float,
         z: float,
         yaw: float,
-        y: float = DEFAULT_BASE_Y,
+        y: Optional[float] = None,
         floor_y: Optional[float] = None,
         snap_wheels: bool = False,
         update_wheel_joints: bool = True,
     ) -> None:
+        if y is None:
+            y = float(self.default_base_y)
         if update_wheel_joints:
             self._update_wheels_from_base_delta(float(x), float(z), float(yaw))
         else:
@@ -345,7 +380,7 @@ class RangerCr10KinematicEnv:
         if snap_wheels:
             # Refine with visual mesh when possible (navmesh can sit below carpet).
             self.floor_y = self.estimate_visual_floor_y(self.floor_y, x=x, z=z)
-            self.snap_wheels_to_floor(self.floor_y, WHEEL_RADIUS)
+            self.snap_wheels_to_floor(self.floor_y, self.wheel_radius_snap)
 
     def set_arm_joints(self, q: Sequence[float]) -> None:
         q = np.asarray(q, dtype=np.float64)
@@ -388,6 +423,10 @@ class RangerCr10KinematicEnv:
         max_dist: float = 5.0,
     ) -> mn.Matrix4:
         """Follow cam behind-above robot; pull in / raise if eye would be in geometry."""
+        # ################################
+        # Scale look target with robot_scale so 0.7× proxy remains framed.
+        # ################################
+        look_height = float(look_height) * float(self.robot_scale)
         fwd = mn.Vector3(math.sin(self.base_yaw), 0.0, math.cos(self.base_yaw))
         base = mn.Vector3(*self.base_xyz)
         target = base + mn.Vector3(0.0, look_height, 0.0)

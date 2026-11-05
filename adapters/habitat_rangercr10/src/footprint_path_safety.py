@@ -27,6 +27,7 @@ from .ranger_footprint import (
     footprint_report,
     oriented_rect_corners,
 )
+from .robot_scale import footprint_at_scale
 
 
 def _load_jsonl(path: Path) -> List[dict]:
@@ -46,14 +47,22 @@ def _interp_poses(p0: dict, p1: dict, n: int) -> List[Tuple[float, float, float]
     return out
 
 
-def _corner_clearances(pf, x: float, z: float, yaw: float, floor_y: float) -> Dict[str, Any]:
+def _corner_clearances(
+    pf,
+    x: float,
+    z: float,
+    yaw: float,
+    floor_y: float,
+    half_l: float = CHASSIS_HALF_L,
+    half_w: float = CHASSIS_HALF_W,
+) -> Dict[str, Any]:
     """Min distance_to_closest_obstacle at chassis corners + center (navmesh GT)."""
     y = float(floor_y) + 0.05
     pts = [(x, z, "center")]
-    for i, (cx, cz) in enumerate(oriented_rect_corners(x, z, yaw)):
+    for i, (cx, cz) in enumerate(oriented_rect_corners(x, z, yaw, half_l=half_l, half_w=half_w)):
         pts.append((float(cx), float(cz), f"c{i}"))
     # mid-edge samples
-    for sx, sz in ((CHASSIS_HALF_L, 0.0), (-CHASSIS_HALF_L, 0.0), (0.0, CHASSIS_HALF_W), (0.0, -CHASSIS_HALF_W)):
+    for sx, sz in ((half_l, 0.0), (-half_l, 0.0), (0.0, half_w), (0.0, -half_w)):
         fx, fz = math.sin(yaw), math.cos(yaw)
         rx, rz = math.cos(yaw), -math.sin(yaw)
         # ROS left = -right
@@ -85,14 +94,29 @@ def analyze_run(
     scene_glb: Optional[str] = None,
     gpu: int = 0,
     inter_samples: int = 4,
+    robot_scale: Optional[float] = None,
 ) -> Dict[str, Any]:
     import habitat_sim
 
     out_dir.mkdir(parents=True, exist_ok=True)
     steps = _load_jsonl(run_dir / "steps.jsonl")
     acts = _load_jsonl(run_dir / "actions.jsonl")
-    spawn = json.loads((run_dir / "start_pose.json").read_text())["spawn"]
+    start_pose = json.loads((run_dir / "start_pose.json").read_text())
+    spawn = start_pose["spawn"]
     floor_y = float(spawn["floor_y"])
+    # ################################
+    # Honor recorded robot_scale (0.7 proxy uses scaled half-width criterion).
+    # ################################
+    if robot_scale is None:
+        robot_scale = float(
+            start_pose.get("robot_scale")
+            or spawn.get("robot_scale")
+            or 1.0
+        )
+    fp = footprint_at_scale(float(robot_scale))
+    half_l = float(fp["chassis_half_length_m"])
+    half_w = float(fp["chassis_half_width_m"])
+    arm_reach = float(fp["arm_home_xy_reach_m"])
     if scene_glb is None:
         ep = json.loads((run_dir / "episode.json").read_text())
         sid = Path(ep["scene_id"]).name.replace(".basis.glb", "")
@@ -125,7 +149,7 @@ def analyze_run(
             samples = _interp_poses(p0, p1, inter_samples)
             sample_rows = []
             for x, z, yaw in samples:
-                c = _corner_clearances(pf, x, z, yaw, floor_y)
+                c = _corner_clearances(pf, x, z, yaw, floor_y, half_l=half_l, half_w=half_w)
                 sample_rows.append(c)
                 min_gap = min(min_gap, c["min_clearance_m"])
             worst = min(sample_rows, key=lambda r: r["min_clearance_m"])
@@ -167,13 +191,13 @@ def analyze_run(
             samples = _interp_poses(p0, p1, inter_samples)
             sample_rows = []
             for x, z, yaw in samples:
-                c = _corner_clearances(pf2, x, z, yaw, floor_y)
+                c = _corner_clearances(pf2, x, z, yaw, floor_y, half_l=half_l, half_w=half_w)
                 sample_rows.append(c)
                 min_gap2 = min(min_gap2, c["min_clearance_m"])
             worst = min(sample_rows, key=lambda r: r["min_clearance_m"])
             # Oriented footprint: need clearance ≥ 0 at corners on thin navmesh, AND
             # center clearance ≥ half_width for body disk proxy.
-            body_ok = worst["center_clearance_m"] >= CHASSIS_HALF_W
+            body_ok = worst["center_clearance_m"] >= half_w
             corner_ok = worst["min_clearance_m"] >= 0.02 and worst["all_corners_navigable"]
             ok = body_ok and corner_ok
             if not ok:
@@ -194,7 +218,9 @@ def analyze_run(
         rep = {
             "run_dir": str(run_dir),
             "scene_glb": scene_glb,
-            "footprint": footprint_report(),
+            "robot_scale": float(robot_scale),
+            "scale_tag": fp["scale_tag"],
+            "footprint": fp,
             "method": "GT navmesh clearance at chassis corners/edges along interpolated SE2; offline eval only",
             "baked_navmesh_proxy": {
                 "n_base_actions": len(rows),
@@ -209,11 +235,11 @@ def analyze_run(
                 "unsafe_count": unsafe2,
                 "safe_ratio": float((len(rows2) - unsafe2) / n),
                 "min_corner_clearance_m": float(min_gap2 if rows2 else float("nan")),
-                "criterion": "center_clearance>=half_width AND corners navigable on r=0.05 navmesh",
+                "criterion": f"center_clearance>=half_width({half_w:.4f}) AND corners navigable on r=0.05 navmesh",
                 "per_action": rows2,
             },
             "arm_note": (
-                f"Arm horizontal reach ~{ARM_HOME_XY_REACH_M} m not swept as polygon; "
+                f"Arm horizontal reach ~{arm_reach} m not swept as polygon; "
                 "LOOK poses may collide above chassis footprint — reported separately as TODO."
             ),
         }
@@ -227,9 +253,9 @@ def analyze_run(
             for i, v in enumerate(xs):
                 x = int(i / max(len(xs) - 1, 1) * (w - 40) + 20)
                 y = int(h - 20 - min(v, 1.5) / 1.5 * (h - 40))
-                color = (0, 160, 0) if v >= CHASSIS_HALF_W else (200, 0, 0)
+                color = (0, 160, 0) if v >= half_w else (200, 0, 0)
                 dr.ellipse([x - 3, y - 3, x + 3, y + 3], fill=color)
-            y_thr = int(h - 20 - CHASSIS_HALF_W / 1.5 * (h - 40))
+            y_thr = int(h - 20 - half_w / 1.5 * (h - 40))
             dr.line([20, y_thr, w - 20, y_thr], fill=(0, 0, 200))
             dr.text((10, 5), "center clearance along explore actions (blue=half_width)", fill=(0, 0, 0))
             im.save(out_dir / "center_clearance_trace.png")

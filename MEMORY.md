@@ -147,6 +147,9 @@ VLN_Mobilemanipulator/
 | Top-5 均可 `entered_callActionPlanner`；多步规划：yr17=SEARCH_EXTREME，eF36=EXPLORATION；HY1/LT9/k1cup 早停 | `top5_openband_compare.json` |
 | yr17 legacy018 路径足迹回放 oriented_safe_ratio=0（中心 clearance 降至 <0.435） | `footprint_path_safety/yr17_openband/` |
 | 规划成功 ≠ 足迹安全 ≠ 寻物成功；须分三层记录 | `apexnav_rangercr10_top5_explore_safety.md` |
+| 适配层整机均匀缩放：`robot_scale`→生成 URDF（xyz+mesh scale）+ 贴地/足迹/相机 AGL 目标；默认 1.0× 不变 | `robot_scale.py`；`scale_urdf.py`；`RangerCr10KinematicEnv` |
+| `scaled_robot_proxy_070`：半宽≈0.304 m，相机目标 0.616 m；yr17 足迹 safe_ratio 1.0；不可冒充实机成绩 | `apexnav_rangercr10_scale070.md` |
+| 缩尺改善足迹安全 ≠ 自动更长探索；HY1 早停在 0.7× 仍在 | `scale070_compare_batch_*.jsonl` |
 | catkin 前缀：`/workspace/ApexNav` → `baselines/ApexNav` | devel 路径 |
 | HM3D-v2 goals 在 `goals_by_category`；宜滤同层 | `_goals_for_episode` |
 

@@ -538,3 +538,21 @@
 - yr17 足迹 safe_ratio=0 → 展示规划 ≠ 安全通行。
 
 **相关**：`reports/apexnav_rangercr10_top5_explore_safety.md`
+
+---
+
+## 2026-11-05 Habitat 整机 0.7× 代理缩放
+
+**模块**：`adapters/habitat_rangercr10`（分支 `cursor/habitat-rangercr10-scale070`）
+
+**问题**：1.0× Ranger 在 HM3D 通道偏紧；需验证均匀缩尺对通行/探索/Demo 的影响，且不改动真机 URDF/PPO。
+
+**操作**：
+
+1. 适配层生成 `..._s070.urdf`（缩放 origin xyz + mesh/box）；`robot_scale=0.7` 同步贴地与足迹。  
+2. `scale070_verify`：高度比/轮距比≈0.70，相机≈0.60 m，贴地 OK。  
+3. 同 episode 强制 1.0× spawn，跑 yr17/eF36/Dd4b/HY1；离线足迹回放。
+
+**实测**：yr17 足迹 safe_ratio 0→1；探索距离未全面增加；HY1 仍 NO_PASSABLE。规划仍 legacy018。
+
+**相关**：`reports/apexnav_rangercr10_scale070.md`

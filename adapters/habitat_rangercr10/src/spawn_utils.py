@@ -11,6 +11,13 @@ from .constants import ARM_APEXNAV_INIT
 from .kinematic_demo import DEFAULT_BASE_Y
 
 
+def _base_y_pin(env) -> float:
+    # ################################
+    # Prefer env.default_base_y so 0.7× proxy keeps tire-plane snap consistent.
+    # ################################
+    return float(getattr(env, "default_base_y", DEFAULT_BASE_Y))
+
+
 def probe_pose_clearance(
     env,
     x: float,
@@ -31,7 +38,7 @@ def probe_pose_clearance(
         x,
         z,
         yaw,
-        y=float(floor_y) + DEFAULT_BASE_Y,
+        y=float(floor_y) + _base_y_pin(env),
         floor_y=floor_y,
         snap_wheels=True,
         update_wheel_joints=False,
@@ -59,11 +66,17 @@ def probe_pose_clearance(
         # mesh contacts of 20–40 at a tight bedroom start are common. Prefer
         # upright + wheel snap; treat contacts as a soft score, not a hard 18.
         # ################################
+        # ################################
+        # Wheel AGL target follows robot_scale (1.0× → 0.125 m snap radius).
+        # ################################
         "ok": bool(
             up.get("up_dot_hab_y", 0) > 0.95
             and (up.get("wheel_y_spread") or 99) < 0.05
             and contacts < 40
-            and (wheel_agl is None or abs(wheel_agl - 0.125) < 0.05)
+            and (
+                wheel_agl is None
+                or abs(wheel_agl - float(getattr(env, "wheel_radius_snap", 0.125))) < 0.05
+            )
         ),
     }
 

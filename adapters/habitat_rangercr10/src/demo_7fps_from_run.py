@@ -163,13 +163,24 @@ def run(run_dir: Path, *, gpu: int = 0, hm3d_root: str, max_frames: int = 0) -> 
         timeline = timeline[:max_frames]
 
     scene = _scene_glb_from_episode(ep["scene_id"], Path(hm3d_root))
-    env = RangerCr10KinematicEnv(scene=scene, urdf=URDF_HABITAT, gpu_device_id=gpu)
+    # ################################
+    # Honor recorded robot_scale (0.7 proxy demos must not reload 1.0× URDF).
+    # ################################
+    start_pose = json.loads((run_dir / "start_pose.json").read_text())
+    robot_scale = float(
+        start_pose.get("robot_scale")
+        or spawn.get("robot_scale")
+        or 1.0
+    )
+    env = RangerCr10KinematicEnv(
+        scene=scene, urdf=URDF_HABITAT, gpu_device_id=gpu, robot_scale=robot_scale
+    )
     floor_y = float(spawn["floor_y"])
     env.set_base_pose(
         float(spawn["x"]),
         float(spawn["z"]),
         float(spawn["yaw"]),
-        y=float(spawn["base_y"]),
+        y=float(spawn.get("base_y", floor_y + env.default_base_y)),
         floor_y=floor_y,
         snap_wheels=True,
     )

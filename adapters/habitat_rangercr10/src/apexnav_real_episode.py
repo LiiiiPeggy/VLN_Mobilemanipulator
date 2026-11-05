@@ -460,15 +460,67 @@ class ApexNavRangerBridge:
             scene = scene_glb_from_episode(ep["scene_id"], Path(args.hm3d_root))
             (self.out / "episode.json").write_text(json.dumps(ep, indent=2))
 
-            self.env = RangerCr10KinematicEnv(scene=scene, urdf=args.urdf, gpu_device_id=args.gpu)
+            # ################################
+            # robot_scale: 1.0 = real Ranger; 0.7 = scaled_robot_proxy_070 (adapter only).
+            # ################################
+            self.env = RangerCr10KinematicEnv(
+                scene=scene,
+                urdf=args.urdf,
+                gpu_device_id=args.gpu,
+                robot_scale=float(getattr(args, "robot_scale", 1.0)),
+            )
             # place at episode start (habitat y-up)
             sp = ep["start_position"]
             yaw = hab_quat_yaw(ep["start_rotation"])
             # Habitat ObjectNav start_position y ≈ navmesh floor
             floor_y = float(sp[1])
-            spawn = find_adapted_start(
-                self.env, (float(sp[0]), float(sp[2])), yaw, floor_y=floor_y
-            )
+            force_spawn = getattr(args, "force_spawn_json", "") or ""
+            if force_spawn and Path(force_spawn).is_file():
+                # ################################
+                # Fair 1.0× vs 0.7× compare: reuse recorded adapted start (same episode).
+                # ################################
+                prev = json.loads(Path(force_spawn).read_text())
+                prev_sp = prev.get("spawn") or prev
+                fy = float(prev_sp.get("floor_y", floor_y))
+                self.env.set_base_pose(
+                    float(prev_sp["x"]),
+                    float(prev_sp["z"]),
+                    float(prev_sp.get("yaw", yaw)),
+                    # ################################
+                    # Keep XY/yaw from 1.0× run; re-snap base_y for current scale.
+                    # ################################
+                    y=fy + float(self.env.default_base_y),
+                    floor_y=fy,
+                    snap_wheels=True,
+                    update_wheel_joints=False,
+                )
+                if hasattr(self.env, "steer_q"):
+                    self.env.steer_q[:] = 0.0
+                    self.env.wheel_q[:] = 0.0
+                    self.env._prev_base_xz_yaw = (
+                        float(prev_sp["x"]),
+                        float(prev_sp["z"]),
+                        float(prev_sp.get("yaw", yaw)),
+                    )
+                    self.env._apply_state()
+                spawn = dict(prev_sp)
+                spawn["x"] = float(self.env.base_xyz[0])
+                spawn["z"] = float(self.env.base_xyz[2])
+                spawn["base_y"] = float(self.env.base_xyz[1])
+                spawn["floor_y"] = fy
+                spawn["yaw"] = float(prev_sp.get("yaw", yaw))
+                spawn["forced_from"] = str(force_spawn)
+                spawn["adapted_episode"] = True
+                spawn["robot_scale"] = float(self.env.robot_scale)
+                spawn["scale_tag"] = self.env.scale_tag
+                spawn["upright"] = self.env.upright_diagnostics()
+                spawn["wheels"] = self.env.wheel_link_heights()
+            else:
+                spawn = find_adapted_start(
+                    self.env, (float(sp[0]), float(sp[2])), yaw, floor_y=floor_y
+                )
+                spawn["robot_scale"] = float(self.env.robot_scale)
+                spawn["scale_tag"] = self.env.scale_tag
             self.spawn_info = spawn
             (self.out / "start_pose.json").write_text(
                 json.dumps(
@@ -476,8 +528,13 @@ class ApexNavRangerBridge:
                         "episode_start_position": sp,
                         "episode_start_rotation": ep["start_rotation"],
                         "spawn": spawn,
+                        "robot_scale": float(self.env.robot_scale),
+                        "scale_tag": self.env.scale_tag,
+                        "urdf": self.env.urdf,
+                        "footprint": self.env.footprint,
                         "urdf_to_habitat": "Ry(-90)*Rx(-90) Z-up→Y-up",
-                        "note": "adapted_episode if start offset >5cm; not raw benchmark",
+                        "note": "adapted_episode if start offset >5cm; not raw benchmark; "
+                        "scaled_robot_proxy_* is NOT real Ranger safety",
                     },
                     indent=2,
                 )
@@ -880,6 +937,14 @@ class ApexNavRangerBridge:
             "adapted_episode": bool(
                 self.spawn_info.get("adapted_episode") if self.spawn_info else False
             ),
+            "robot_scale": float(getattr(self.env, "robot_scale", 1.0)) if self.env else float(getattr(args, "robot_scale", 1.0)),
+            "scale_tag": getattr(self.env, "scale_tag", "robot_scale_1x_real") if self.env else "robot_scale_1x_real",
+            "urdf": getattr(self.env, "urdf", args.urdf) if self.env else args.urdf,
+            "footprint": getattr(self.env, "footprint", None) if self.env else None,
+            "planner_inflation_note": (
+                "ApexNav overlay still legacy018 (0.18m) unless INFLATION_PROFILE overridden; "
+                "planner success ≠ scaled footprint safety."
+            ),
             "online_grid_map": {"has_data": map_ok, "stats": map_final},
             "final_distance_to_goal_eval_only": final_dtg,
             "success_claimed": False,  # never claim ObjectNav success without official evaluator
@@ -888,15 +953,17 @@ class ApexNavRangerBridge:
             "out_dir": str(self.out),
             "notes": [
                 "LOOK_UP/DOWN are arm-joint adapted (±pitch via FK), not Habitat agent look.",
-                "Initial EE uses ARM_APEXNAV_INIT FK (~0.88m horizontal); runtime sensor_pose is full SE3.",
+                "Initial EE uses ARM_APEXNAV_INIT FK (height × robot_scale); runtime sensor_pose is full SE3.",
                 "Goal distance is eval-only and not fed to planner.",
                 "URDF Z-up→Habitat Y-up via Ry(-90)*Rx(-90); wheels snapped to floor_y.",
                 "Init lookaround ≠ adaptive explore; explore starts after 26 FSM init actions.",
                 "Demo map panel uses ApexNav /grid_map/* (not Habitat GT).",
+                "scaled_robot_proxy_* results are Habitat adapter proxies — NOT real Ranger+CR10 scores.",
             ],
             "initial_camera": {
                 "config": "ARM_APEXNAV_INIT",
                 "record_dir": str(self.out / "camera_init"),
+                "cam_height_target_m": getattr(self.env, "cam_height_target_m", None) if self.env else None,
             },
             "demo": {
                 "layout": "16:9 third + EE semantic + /grid_map",
@@ -922,6 +989,15 @@ def main(argv=None) -> int:
     p.add_argument("--out_dir", default=os.path.join(DEFAULT_OUT_DIR, "apexnav_real"))
     p.add_argument("--run_id", default="")
     p.add_argument("--urdf", default=URDF_HABITAT)
+    # ################################
+    # 1.0 = real Ranger pin; 0.7 = scaled_robot_proxy_070 (adapter URDF only).
+    # ################################
+    p.add_argument("--robot_scale", type=float, default=1.0)
+    p.add_argument(
+        "--force_spawn_json",
+        default="",
+        help="Reuse start_pose.json spawn for fair scale A/B (same episode start).",
+    )
     p.add_argument("--gpu", type=int, default=0)
     p.add_argument("--max_steps", type=int, default=40)
     p.add_argument("--success_distance", type=float, default=1.0)

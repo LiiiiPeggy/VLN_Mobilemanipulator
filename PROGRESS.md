@@ -1,13 +1,13 @@
 # PROGRESS.md — 当前状态
 
-更新时间：2026-11-05（Top-5 短测 + yr17/HY1 诊断 + 足迹安全）  
+更新时间：2026-11-05（分支 `cursor/habitat-rangercr10-scale070`：整机 0.7× 代理）  
 证据优先于本文；冲突时以代码、`reports/`、`runs/`、容器实测为准。
 
 ## 研究目标与阶段
 
 **目标**：六套 VLN/ObjectNav baseline 可复现评测 → 再适配 RangerBox-CR10。
 
-**当前阶段**：Top-5 场景开放带短测完成；**五景均进入正式探索**；多步规划：yr17（SEARCH_EXTREME）、eF36（EXPLORATION）、Dd4b；yr17 路径足迹回放表明 legacy018 **不安全**。
+**当前阶段**：在独立分支实现 Habitat 适配层 **整机 0.7×**（`scaled_robot_proxy_070`）；几何/相机验证通过；yr17 足迹 safe_ratio 0→1；探索距离与 HY1 早停未因缩尺全面改善。`main` 上 1.0× 成果保留。
 
 ## Baseline 状态
 
@@ -20,18 +20,18 @@
 
 | 项 | 状态 | 证据 |
 |----|------|------|
-| Top-5 entered_explore | **5/5** | `top5_openband_compare.json` |
-| yr17 多步 | EXTREME FWD 1.5 m | `real_wide_yr17_openband_*` |
-| eF36 多步 | EXPLORATION R16/L7/F1 | `real_wide_ef36_openband_*` |
-| HY1 / LT9 / k1cup | 早停 | NO_PASSABLE / NO_COVERABLE |
-| yr17 足迹安全回放 | **safe_ratio=0** | `footprint_path_safety/yr17_openband/` |
-| yr17 7 FPS | 保持 7/1×205 | `.../7fps.mp4` |
-| spawn 探针禁轮累积 | 已修 | `spawn_utils update_wheel_joints=False` |
+| 1.0× Top-5 / yaw / Stage4.10d | 保留于 `main` | `2214550` |
+| 0.7× URDF + env 缩放 | **OK** | `assets/urdf/..._s070.urdf`；`scale070_verify` pass |
+| 相机 AGL≈0.60 m（目标 0.616） | **OK** | verify / camera_init |
+| ApexNav 同 ep 对照 | 完成 | `scale070_compare_batch_*.jsonl` |
+| yr17 足迹 0.7× | **safe_ratio=1.0** | `footprint_path_safety/yr17_openband_s070` |
+| yr17/eF36 7 FPS（0.7×） | 已生成 | `real_s070_* /demo/*_7fps.mp4` |
+| HY1 @0.7× | 仍 NO_PASSABLE | 非尺寸单因 |
 
 ## 下一步（最多 5）
 
-1. 改善 LT9/k1cup 建图空/早停（出生观测与楼层）。  
-2. 在不改 baseline 的前提下评估定向足迹约束 vs 可达 Frontier。  
-3. eF36 代表性 7 FPS（可选）。  
+1. 合并/评审本分支前确认不污染 1.0× 默认路径。  
+2. 评估 legacy018 与 0.7× 半宽 0.304 的膨胀匹配（记录差异，勿冒充安全）。  
+3. HY1 建图/Frontier 专项（不靠继续缩尺）。  
 4. PPO→Habitat（不阻塞）。  
 5. 停用后腾 GPU。
