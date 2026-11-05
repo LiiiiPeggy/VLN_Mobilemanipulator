@@ -164,9 +164,19 @@ ROS：隔离 master `:11312`（保留 NBV `:11311`）。
 - 窄场景 yaw 修后仍 `NO_PASSABLE`（与膨胀主因无关）。  
 - Habitat 演示默认 `INFLATION_PROFILE=legacy018`（标不安全）。
 
-## 9. 未解决问题
+## 9. 深度有效性 / 环视放射伪影（2026-11-05）
+
+详见 `reports/habitat_rangercr10_depth_radial_fix.md`。
+
+- **根因**：近距自遮挡曾改写为 max-range（≈5 m）→ 虚假终点参与占据/射线；Habitat mindist 覆盖使 launch 近距滤波无效。  
+- **修复**：无效/机体像素 → **NaN**（永不写 5 m/0）；`map_ros` 跳过 NaN；几何自遮挡（球+胶囊+AABB）。  
+- **证据**：`.../depth_radial_fix/`；采用 run `real_s070_pporaise_yr17_depthfix4_20261105_201112`（occ/free=727/932，FWD 0.50 m）。  
+- Demo 稀疏扇形仍可能出现（`/grid_map` PointCloud2 散点可视化），但已无 r≈5 m 伪终点团簇。
+
+## 10. 未解决问题
 
 1. Habitat↔MuJoCo 光学 AGL 仍差 ≈2.3 cm（可接受；勿用乱搜关节凑 0.88）。  
 2. 安全足迹与可达 Frontier：需非圆足迹/未知区策略，不能只调各向同性半径。  
 3. PPO 未进 Habitat 动力学闭环。  
-4. `env.close()` 偶发 `malloc_consolidate` abort（任务摘要已落盘；rc 134 可接受）。
+4. `env.close()` 偶发 `malloc_consolidate` abort（任务摘要已落盘；rc 134 可接受）。  
+5. 几何 AABB 在部分帧自遮挡比例偏高（~50%+）；若近距真家具被误掩，可收紧 pad 或仅用胶囊。

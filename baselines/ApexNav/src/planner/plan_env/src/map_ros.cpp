@@ -10,6 +10,7 @@
  */
 
 #include <plan_env/map_ros.h>
+#include <cmath>
 
 namespace apexnav_planner {
 
@@ -304,8 +305,24 @@ void MapROS::depthPoseCallback(
 
   // Convert depth image format (Habitat publishes Float32, some sensors use 8UC1)
   cv_bridge::CvImagePtr cv_ptr = cv_bridge::toCvCopy(img, img->encoding);
-  if (img->encoding == sensor_msgs::image_encodings::TYPE_32FC1)
+  // ################################
+  // Build validity mask BEFORE convertTo: NaN/Inf/out-of-[0,1] must not become
+  // uint16 0/65535 fake endpoints (radial OCCUPIED spokes). Adapter contract.
+  // ################################
+  depth_valid_mask_.reset();
+  if (img->encoding == sensor_msgs::image_encodings::TYPE_32FC1) {
+    const cv::Mat& fimg = cv_ptr->image;
+    depth_valid_mask_.reset(new cv::Mat(fimg.rows, fimg.cols, CV_8UC1));
+    for (int r = 0; r < fimg.rows; ++r) {
+      const float* row = fimg.ptr<float>(r);
+      uchar* mrow = depth_valid_mask_->ptr<uchar>(r);
+      for (int c = 0; c < fimg.cols; ++c) {
+        const float v = row[c];
+        mrow[c] = (std::isfinite(v) && v >= 0.f && v <= 1.0001f) ? 1 : 0;
+      }
+    }
     (cv_ptr->image).convertTo(cv_ptr->image, CV_16UC1, k_depth_scaling_factor_);
+  }
   if (img->encoding == sensor_msgs::image_encodings::TYPE_8UC1)
     (cv_ptr->image).convertTo(cv_ptr->image, CV_16UC1, 255.0);
   cv_ptr->image.copyTo(*depth_image_);
@@ -355,6 +372,16 @@ void MapROS::processDepthImage()
   for (int v = depth_filter_margin_; v < rows - depth_filter_margin_; v += skip_pixel_) {
     row_ptr = depth_image_->ptr<uint16_t>(v) + depth_filter_margin_;
     for (int u = depth_filter_margin_; u < cols - depth_filter_margin_; u += skip_pixel_) {
+      // ################################
+      // Skip adapter-marked invalid pixels (NaN self-hit / out-of-range).
+      // No 3D endpoint → no occupied update and no free-space ray.
+      // ################################
+      if (depth_valid_mask_ && depth_valid_mask_->data) {
+        if (!depth_valid_mask_->at<uchar>(v, u)) {
+          row_ptr = row_ptr + skip_pixel_;
+          continue;
+        }
+      }
       // Convert pixel depth value to metric distance
       depth = (*row_ptr) * inv_factor * (depth_filter_maxdist_ - depth_filter_mindist_) +
               depth_filter_mindist_;

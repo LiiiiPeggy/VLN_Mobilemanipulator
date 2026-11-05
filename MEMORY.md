@@ -155,7 +155,8 @@ VLN_Mobilemanipulator/
 | PPO/ApexNav 交接：抬臂完成保持 `arm_q`，再 26 步环视；二者不同时控底盘/臂 | `--ppo_raise_json`；`handover.json` |
 | ROS Z 必须发 **AGL**（`hab_y - floor_y`）；绝对 Habitat Y 会使 map_ros 高度滤波错位 | `coord_habitat_ros.hab_pos_to_ros` |
 | 臂载 D455：规划 `/odom_world` 平面 XY 用相机投影，避免底盘落在 UNKNOWN | `ros_dynamic_publisher`（`odom_xy_source=d455_optical_xy_ground_proxy`） |
-| Habitat `depth_sensor.min_depth` 会覆盖 `map_ros/depth_filter_mindist`；近距自遮挡须在适配层屏蔽 | `self_hit_min_depth_m=0.65`；勿只改 launch mindist |
+| Habitat `depth_sensor.min_depth` 会覆盖 `map_ros/depth_filter_mindist`；近距/无效深度须在适配层处理 | 无效→**NaN**（禁改写 5 m/0）；`depth_validity.py` 几何自遮挡；`map_ros` 跳过 NaN |
+| 近距改写为 max-range 会在环视中产生虚假占据终点/自由射线 | `habitat_rangercr10_depth_radial_fix.md`；采用 `..._depthfix4_*` |
 | catkin 前缀：`/workspace/ApexNav` → `baselines/ApexNav` | devel 路径 |
 | HM3D-v2 goals 在 `goals_by_category`；宜滤同层 | `_goals_for_episode` |
 

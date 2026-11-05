@@ -351,10 +351,31 @@ class ApexNavRangerBridge:
             base_pos_hab=self.env.base_xyz,
             base_yaw_hab=self.env.base_yaw,
             camera_T_hab=ee_T,
+            raw_camera_T_hab=cam_T,
         )
         # save artifacts
         Image.fromarray(rgb[..., :3]).save(self.out / "rgb_ee" / f"frame_{step_i:04d}.png")
         save_depth_mm(self.out / "depth_ee" / f"frame_{step_i:04d}.png", depth)
+        # ################################
+        # Depth validity dumps at lookaround checkpoints (radial-artifact audit).
+        # ################################
+        if step_i in (0, 8, 17, 25) or step_i in (1, 9, 18, 26):
+            try:
+                from .depth_validity import prepare_depth_for_apexnav
+
+                prep, st = prepare_depth_for_apexnav(
+                    depth,
+                    env=self.env,
+                    camera_T_hab=cam_T,
+                    robot_scale=float(self.env.robot_scale),
+                )
+                ddir = self.out / "depth_validity"
+                ddir.mkdir(exist_ok=True)
+                np.save(ddir / f"raw_m_{step_i:04d}.npy", np.asarray(depth, dtype=np.float32))
+                np.save(ddir / f"prep_m_{step_i:04d}.npy", prep)
+                (ddir / f"stats_{step_i:04d}.json").write_text(json.dumps(st, indent=2))
+            except Exception:
+                (self.out / "depth_validity_error.txt").write_text(traceback.format_exc())
         return meta
 
     def _execute_action(self, action: int) -> dict:
@@ -675,10 +696,15 @@ class ApexNavRangerBridge:
 
             # ################################
             # Pass episode floor_y so ROS Z = AGL for ApexNav map_ros height filter.
+            # Attach env for geometric self-hit masking (invalid→NaN, not max-range).
             # ################################
             self.ros_pub = DynamicROSPublisher(
-                DEPTH_MIN, DEPTH_MAX, floor_y=float(self.floor_y)
+                DEPTH_MIN,
+                DEPTH_MAX,
+                floor_y=float(self.floor_y),
+                robot_scale=float(self.env.robot_scale),
             )
+            self.ros_pub.set_env(self.env, robot_scale=float(self.env.robot_scale))
             state_pub = rospy.Publisher("/habitat/state", Int32, queue_size=10)
             trigger_pub = rospy.Publisher("/move_base_simple/goal", PoseStamped, queue_size=10)
             itm_score_pub = rospy.Publisher("/blip2/cosine_score", Float64, queue_size=10)

@@ -89,9 +89,18 @@ def _rot_to_xyzw(R: np.ndarray) -> np.ndarray:
 
 
 def depth_meters_to_normalized(depth_m: np.ndarray, min_d: float = 0.0, max_d: float = 5.0) -> np.ndarray:
-    """ApexNav C++ expects Habitat-normalized float32 depth in [0,1]."""
+    """ApexNav C++ expects Habitat-normalized float32 depth in [0,1].
+
+    ################################
+    Preserve NaN (invalid / self-hit). Do not clip NaN to 0 — map_ros must skip
+    those pixels so they never become max-range occupied spokes.
+    ################################
+    """
     d = np.asarray(depth_m, dtype=np.float32)
     if d.ndim == 3:
         d = d[..., 0]
     out = (d - min_d) / max(max_d - min_d, 1e-6)
-    return np.clip(out, 0.0, 1.0).astype(np.float32)
+    finite = np.isfinite(out)
+    out = out.copy()
+    out[finite] = np.clip(out[finite], 0.0, 1.0)
+    return out.astype(np.float32)

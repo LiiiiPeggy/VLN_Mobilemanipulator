@@ -602,3 +602,29 @@
 **实测**：yr17 EXPLORATION×8 + FWD 0.25 m；HY1 n_explore=54 + FWD；eF36 弱多步。未改 ApexNav 源码默认 / PPO / 1.0×。
 
 **相关**：`reports/apexnav_rangercr10_nopassable_after_ppo_raise.md`；`ppo_raise_s070_nopassable_fix_20261105_183429.jsonl`
+
+---
+
+## 2026-11-05 环视占据放射伪影 / 无效深度修复
+
+**模块**：`adapters/habitat_rangercr10` + ApexNav `map_ros` 局部补丁（同分支）
+
+**问题**：抬臂环视时 `/grid_map` 出现大量自原点外射线条；怀疑近距自遮挡被写成 5 m。
+
+**根因**：
+
+1. 适配层曾将机体近距深度改写为 `depth_max` → 虚假终点参与占据与自由射线。  
+2. `convertTo` uint16 会把 NaN/Inf 变成 0/极值，须在转换前建有效掩码并跳过。  
+3. 仅靠 blanket `<0.65 m` 会误伤近距家具；几何掩码初期因 Habitat **-Z** 光轴与薄球模型漏检。
+
+**修复**：`prepare_depth_for_apexnav` 无效→NaN；几何球/胶囊/AABB；`map_ros` NaN skip；归一化保 NaN。
+
+**实测**（yr17，不覆盖旧 Demo）：
+
+- before fix run：`..._yr17_fix_20261105_183316` occ/free 1026/675。  
+- after：`..._depthfix4_20261105_201112` occ/free 727/932；FWD 0.50 m；满 step budget。  
+- 占据相对相机 `r_med≈2 m`，无 r≈5 m 团簇。
+
+**结论**：无效深度不再生成虚假终点/射线；短程真实 ApexNav 规划恢复。Demo 稀疏扇形仍可能来自 PointCloud2 射线散点可视化，不等于 max-range 伪影。
+
+**相关**：`reports/habitat_rangercr10_depth_radial_fix.md`；`/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/depth_radial_fix/`

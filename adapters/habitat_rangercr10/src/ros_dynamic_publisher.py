@@ -5,12 +5,13 @@ this publishes:
   - /habitat/odom         : base_link pose (ROS world)
   - /habitat/sensor_pose  : d455 optical / Habitat camera pose (ROS world)
   - /habitat/camera_rgb
-  - /habitat/camera_depth : normalized float32 [0,1] as ApexNav C++ expects
+  - /habitat/camera_depth : normalized float32 [0,1] as ApexNav C++ expects;
+    invalid / self-hit pixels are NaN (must be skipped in map_ros).
 """
 
 from __future__ import annotations
 
-from typing import Optional, Sequence
+from typing import Any, Optional, Sequence
 
 import numpy as np
 import rospy
@@ -24,6 +25,7 @@ from .coord_habitat_ros import (
     hab_yaw_to_ros,
     mat4_hab_to_ros_pose,
 )
+from .depth_validity import prepare_depth_for_apexnav
 
 
 def numpy_to_imgmsg(image: np.ndarray, encoding: str) -> Image:
@@ -45,7 +47,7 @@ class DynamicROSPublisher:
         depth_min: float = 0.0,
         depth_max: float = 5.0,
         floor_y: float = 0.0,
-        self_hit_min_depth_m: float = 0.65,
+        robot_scale: float = 1.0,
     ):
         self.depth_min = depth_min
         self.depth_max = depth_max
@@ -53,20 +55,21 @@ class DynamicROSPublisher:
         # Navigable floor Habitat-Y; ROS Z published as AGL (hab_y - floor_y).
         # ################################
         self.floor_y = float(floor_y)
-        # ################################
-        # Arm-mounted D455 self-hit gate. ApexNav C++ overrides map_ros/mindist
-        # with habitat depth_sensor.min_depth (=0.0), so launch mindist≠0 is
-        # ineffective. Mask near metric depth here before normalize; keep
-        # decode range [0,5] unchanged. 0.65 m covers 0.7× chassis/arm in FOV.
-        # ################################
-        self.self_hit_min_depth_m = float(self_hit_min_depth_m)
+        self.robot_scale = float(robot_scale)
+        self.env = None  # optional RangerCr10KinematicEnv for geometric self-hit
         self.depth_pub = rospy.Publisher("/habitat/camera_depth", Image, queue_size=10)
         self.rgb_pub = rospy.Publisher("/habitat/camera_rgb", Image, queue_size=10)
         self.odom_pub = rospy.Publisher("/habitat/odom", Odometry, queue_size=10)
         self.pose_pub = rospy.Publisher("/habitat/sensor_pose", Odometry, queue_size=10)
+        self.last_depth_stats: dict = {}
 
     def set_floor_y(self, floor_y: float) -> None:
         self.floor_y = float(floor_y)
+
+    def set_env(self, env: Any, robot_scale: Optional[float] = None) -> None:
+        self.env = env
+        if robot_scale is not None:
+            self.robot_scale = float(robot_scale)
 
     def publish(
         self,
@@ -76,6 +79,7 @@ class DynamicROSPublisher:
         base_yaw_hab: float,
         camera_T_hab,
         stamp: Optional[rospy.Time] = None,
+        raw_camera_T_hab=None,
     ) -> dict:
         """Publish one synchronized observation bundle. Returns logged poses."""
         ros_time = stamp or rospy.Time.now()
@@ -85,20 +89,25 @@ class DynamicROSPublisher:
         if rgb.dtype != np.uint8:
             rgb = rgb.astype(np.uint8)
 
-        depth_m = np.asarray(depth_m, dtype=np.float32)
-        if depth_m.ndim == 3:
-            depth_m = depth_m[..., 0]
-        # ################################
-        # Replace self-hit / near-body pixels with max range so they do not
-        # become OCCUPIED beside the optical frame (keeps Habitat decode 0–5).
-        # ################################
-        near_mask = (depth_m > 0.0) & (depth_m < self.self_hit_min_depth_m)
-        n_near = int(np.count_nonzero(near_mask))
-        if n_near:
-            depth_m = depth_m.copy()
-            depth_m[near_mask] = float(self.depth_max)
+        depth_raw = np.asarray(depth_m, dtype=np.float32)
+        if depth_raw.ndim == 3:
+            depth_raw = depth_raw[..., 0]
 
-        depth_norm = depth_meters_to_normalized(depth_m, self.depth_min, self.depth_max)
+        # ################################
+        # Invalid / robot-body pixels → NaN (never rewrite as max-range 5 m).
+        # Geometric self-hit preferred; C++ map_ros skips NaN (adapter patch).
+        # ################################
+        depth_prep, dstats = prepare_depth_for_apexnav(
+            depth_raw,
+            env=self.env,
+            camera_T_hab=raw_camera_T_hab if raw_camera_T_hab is not None else camera_T_hab,
+            depth_min=self.depth_min,
+            depth_max=self.depth_max,
+            robot_scale=self.robot_scale,
+            use_geometric_self_hit=self.env is not None,
+        )
+        self.last_depth_stats = dstats
+        depth_norm = depth_meters_to_normalized(depth_prep, self.depth_min, self.depth_max)
 
         # ################################
         # Base / camera in ApexNav ROS: XY=(-hab_z,-hab_x), Z=hab_y-floor_y (AGL).
@@ -112,13 +121,7 @@ class DynamicROSPublisher:
         cam_p, cam_q = mat4_hab_to_ros_pose(camera_T_hab, floor_y=self.floor_y)
 
         # ################################
-        # Arm-mounted D455 is ~0.65 m ahead of base_link. ApexNav carves free
-        # space from /map_ros/pose (camera) but plans from /odom_world. Using
-        # chassis XY left the start cell UNKNOWN outside the 0.25 m A* bubble →
-        # all Frontier A* fail → NO_PASSABLE (extreme search only helped when
-        # object clouds existed). Publish odom planar XY = camera XY (ground
-        # proxy), Z = base AGL, yaw = chassis yaw. Depth/sensor_pose stay true
-        # optical SE3. Not optimistic=true; not inflation shrink; adapter only.
+        # Arm-mounted D455: plan odom XY = camera XY (ground proxy); yaw=chassis.
         # ################################
         odom_xy = (float(cam_p[0]), float(cam_p[1]))
         odom_z = float(base_ros[2])
@@ -136,7 +139,6 @@ class DynamicROSPublisher:
         sensor = Odometry()
         sensor.header.stamp = ros_time
         sensor.header.frame_id = "world"
-        # Keep child_frame_id as original string for planner compatibility, but pose is EE camera.
         sensor.child_frame_id = "d455_depth_optical_frame"
         sensor.pose.pose = Pose(
             position=Point(float(cam_p[0]), float(cam_p[1]), float(cam_p[2])),
@@ -154,6 +156,7 @@ class DynamicROSPublisher:
         rgb_msg.header.frame_id = "d455_depth_optical_frame"
         self.rgb_pub.publish(rgb_msg)
 
+        finite_norm = depth_norm[np.isfinite(depth_norm)]
         return {
             "stamp": float(ros_time.to_sec()),
             "floor_y_hab": float(self.floor_y),
@@ -165,10 +168,10 @@ class DynamicROSPublisher:
             "base_yaw_ros": float(ros_yaw),
             "camera_ros": cam_p.tolist(),
             "camera_q_xyzw": cam_q.tolist(),
-            "depth_norm_mean": float(np.mean(depth_norm)),
-            "depth_m_mean": float(np.mean(depth_m)),
-            "self_hit_min_depth_m": float(self.self_hit_min_depth_m),
-            "self_hit_pixels_masked": int(n_near),
+            "depth_norm_mean": float(np.mean(finite_norm)) if finite_norm.size else float("nan"),
+            "depth_m_mean": float(np.nanmean(depth_prep)),
+            "depth_validity": dstats,
+            "invalid_depth_policy": "nan_skip_not_max_range",
             # backward-compatible alias (plan proxy, not chassis)
             "base_ros": [odom_xy[0], odom_xy[1], odom_z],
         }

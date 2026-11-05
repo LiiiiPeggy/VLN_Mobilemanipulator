@@ -139,6 +139,11 @@ private:
   Eigen::Vector3d camera_pos_;                ///< Current camera position in world frame
   Eigen::Quaterniond camera_q_;               ///< Current camera orientation quaternion
   unique_ptr<cv::Mat> depth_image_;           ///< Current depth image data
+  // ################################
+  // Habitat adapter may publish NaN in 32FC1 for invalid / self-hit pixels.
+  // Mask is 1=valid normalized depth; those pixels alone enter raycasting.
+  // ################################
+  unique_ptr<cv::Mat> depth_valid_mask_;
   vector<Eigen::Vector3d> proj_points_;       ///< Projected 3D points from depth image
   int proj_points_cnt_;                       ///< Count of valid projected points
   PointCloud3D::Ptr depth_cloud_;             ///< Raw 3D point cloud from depth sensor
