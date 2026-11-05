@@ -642,3 +642,17 @@
 **实测**：`real_s070_pporaise_yr17_valuemap_20261105_210015` — value_map 点数=free=1067；cosine 0.10–0.40；7fps 1280×720@7Hz。未改规划/PPO/检测后端。
 
 **相关**：`reports/habitat_rangercr10_valuemap_demo.md`
+
+---
+
+## 2026-11-05 Demo 地图取消 cell 边框
+
+**模块**：`map_raster` / `map_listener`（Demo only）
+
+**问题**：Occ+Value 面板每个 cell 呈独立小方块；需区分放射状真数据 vs 可视化空隙。
+
+**操作**：按 0.05 m 分辨率填充 cell 足迹；离线 A/B 与 live 同时刻对照；证明 prior/after `/grid_map` cell 集合 Jaccard=1。
+
+**结论**：假边框为 1px 欠采样；放射扇区为环视稀疏观测。未改规划输入。
+
+**相关**：`reports/habitat_rangercr10_map_raster_fill.md`

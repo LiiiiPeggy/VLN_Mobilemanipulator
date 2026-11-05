@@ -134,6 +134,8 @@ VLN_Mobilemanipulator/
 | free 过少/NO_PASSABLE：近场遮挡+狭窄出生+膨胀；开阔 ep + 4.10d 可达 free≈180 与多步 FWD | `20261104_114652` vs `real_20261103_124521` |
 | Demo 占据图必须订阅 `/grid_map/*`；论文风白底配色 | `map_listener.py`；`map_style.py`；`demo_compose.py` |
 | Demo 价值热力复用原生 `/grid_map/value_map`（ApexNav.rviz 黄→红）；仅叠 free；occ 不被覆盖 | `map_listener.render_panel`；`VALUE_*` in `map_style.py` |
+| Demo 应按 `sdf_map/resolution`（0.05 m）填充 cell 足迹，避免 1px 散点假边框；不改规划输入 | `map_raster.py`；`habitat_rangercr10_map_raster_fill.md` |
+| 环视放射状在原始 `/grid_map` 点云中已存在（稀疏角向采样）；与 1px 可视化空隙需区分 | `compare_map_raster_styles.py` |
 | ITM cosine 须在同帧 RGB-D 之前发布到 `/blip2/cosine_score`，否则 value_map 融旧分 | `apexnav_real_episode` 发布顺序；`value_map2d.cpp` |
 | 7fps 离线重渲染勿对已含价值热力的 paper map 做 legacy 重映射 | `demo_7fps_from_run._is_paper_or_value_map` |
 | Demo 7 Hz：按真实时间戳插值重渲染，检测/地图内容 hold；勿用 ffmpeg 加速 2 FPS 冒充 | `demo_7fps_from_run.py`；`run_demo_7fps.sh`；`demo_7fps_rates.json` |

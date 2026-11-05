@@ -1,13 +1,13 @@
 # PROGRESS.md — 当前状态
 
-更新时间：2026-11-05（分支 `cursor/habitat-rangercr10-scale070`：Demo Occ+Value Map 叠加）  
+更新时间：2026-11-05（分支 `cursor/habitat-rangercr10-scale070`：Demo cell-fill 去边框）  
 证据优先于本文；冲突时以代码、`reports/`、`runs/`、容器实测为准。
 
 ## 研究目标与阶段
 
 **目标**：六套 VLN/ObjectNav baseline 可复现评测 → 再适配 RangerBox-CR10。
 
-**当前阶段**：0.7× + PPO 抬臂 + 深度 NaN 修复保留。本轮仅改 Demo：右下角叠加 ApexNav 原生 value_map 热力。标记 `scaled_robot_proxy_070`。
+**当前阶段**：深度 NaN + Value 叠加保留。本轮仅改 Demo 栅格化：按 0.05 m 足迹填充，去掉 1px 假边框；原始 `/grid_map` 不变。标记 `scaled_robot_proxy_070`。
 
 ## Baseline 状态
 
@@ -21,8 +21,9 @@
 | 项 | 状态 | 证据 |
 |----|------|------|
 | 0.7× + PPO 抬臂 / NO_PASSABLE / 深度 NaN | **OK** | 见前轮报告 |
-| Demo Occ + Value Map | **OK** | `/grid_map/value_map` 叠加；`..._valuemap_20261105_210015` |
-| 7fps Demo 1280×720 | **OK** | `apexnav_ranger_paper_demo_7fps.mp4`（346 帧，7/1） |
+| Demo Occ + Value Map | **OK** | `/grid_map/value_map` 叠加 |
+| Demo cell-fill 去边框 | **OK** | `map_raster.py`；`..._mapfill_20261105_212419`；原始 cloud Jaccard=1 |
+| 7fps Demo 1280×720 | **OK** | mapfill run 265 帧 @7/1 |
 
 ## 下一步（最多 5）
 

@@ -189,6 +189,16 @@ def analyze_map_listener(
         pts = _cloud_xy(map_listener.clouds.get(key))
         layers[key] = pts
         np.save(out_dir / f"{key}_xy.npy", pts)
+    # ################################
+    # Optional value_map dump for Demo raster A/B (x,y,intensity).
+    # ################################
+    try:
+        from .map_listener import _cloud_xyi
+
+        vxyi = _cloud_xyi(map_listener.clouds.get("value_map"))
+        np.save(out_dir / "value_xyi.npy", vxyi)
+    except Exception:
+        pass
 
     free = _voxelize(layers["free"], res)
     occ = _voxelize(layers["occupied"], res)

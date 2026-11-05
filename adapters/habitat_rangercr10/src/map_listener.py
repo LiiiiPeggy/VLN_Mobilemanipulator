@@ -7,6 +7,12 @@ from typing import Dict, List, Optional, Tuple
 
 import numpy as np
 
+from .map_raster import (
+    DEFAULT_MAP_RESOLUTION_M,
+    estimate_resolution_m,
+    fill_cells_rgb,
+    fill_value_cells,
+)
 from .map_style import (
     PAPER_BG,
     PAPER_FREE,
@@ -149,7 +155,8 @@ class ApexNavMapListener:
 
         ################################
         Paper occ base + ApexNav.rviz value heat (yellow→red) on free cells only.
-        Occupied / unknown are never covered by the heat overlay.
+        Each /grid_map cell is filled as a solid footprint at map resolution
+        (no 1-px speckles / fake cell borders). Occupied never covered by heat.
         ################################
         """
         h, w = size[1], size[0]
@@ -163,6 +170,7 @@ class ApexNavMapListener:
         cx, cy = 0.0, 0.0
         if robot_xy is not None:
             cx, cy = float(robot_xy[0]), float(robot_xy[1])
+        center_xy = (cx, cy)
         scale = w / meters_span
 
         def to_pix(xy):
@@ -172,53 +180,72 @@ class ApexNavMapListener:
 
         # ################################
         # Layer order: unknown → free → value heat → occupied → traj → robot.
+        # Fill cell footprints (resolution-matched); do NOT morphologically
+        # grow/smooth away radial structure present in /grid_map.
         # ################################
         free_mask = np.zeros((h, w), dtype=bool)
         occ_mask = np.zeros((h, w), dtype=bool)
 
-        def _paint_xy(pts: np.ndarray, color, mask=None, write_rgb: bool = True):
-            if pts.shape[0] == 0:
-                return
-            if pts.shape[0] > 20000:
-                pts = pts[np.linspace(0, pts.shape[0] - 1, 20000).astype(int)]
-            for p in pts:
-                px, py = to_pix(p)
-                if 0 <= px < w and 0 <= py < h:
-                    if write_rgb:
-                        canvas[py, px] = color
-                    if mask is not None:
-                        mask[py, px] = True
-
         unk = _cloud_xy(self.clouds["unknown"])
         free = _cloud_xy(self.clouds["free"])
         occ = _cloud_xy(self.clouds["occupied"])
-        _paint_xy(unk, PAPER_UNKNOWN)
-        _paint_xy(free, PAPER_FREE, free_mask)
-        _paint_xy(occ, PAPER_OCCUPIED, occ_mask, write_rgb=False)  # mask only; paint after heat
+        res_m = estimate_resolution_m(free, occ, unk, default=DEFAULT_MAP_RESOLUTION_M)
 
-        # Value heat: free / value_map cells only; never on occupied.
+        # Unknown can be huge — subsample points but still fill each kept cell.
+        if unk.shape[0] > 40000:
+            unk = unk[np.linspace(0, unk.shape[0] - 1, 40000).astype(int)]
+
+        fill_cells_rgb(
+            canvas,
+            unk,
+            PAPER_UNKNOWN,
+            center_xy=center_xy,
+            scale=scale,
+            resolution_m=res_m,
+        )
+        fill_cells_rgb(
+            canvas,
+            free,
+            PAPER_FREE,
+            center_xy=center_xy,
+            scale=scale,
+            resolution_m=res_m,
+            mask=free_mask,
+        )
+        fill_cells_rgb(
+            canvas,
+            occ,
+            PAPER_OCCUPIED,
+            center_xy=center_xy,
+            scale=scale,
+            resolution_m=res_m,
+            mask=occ_mask,
+            write_rgb=False,
+        )
+
         val = _cloud_xyi(self.clouds.get("value_map"))
         if val.shape[0] > 0:
-            if val.shape[0] > 25000:
-                val = val[np.linspace(0, val.shape[0] - 1, 25000).astype(int)]
-            a = float(VALUE_OVERLAY_ALPHA)
-            for x, y, inten in val:
-                px, py = to_pix((x, y))
-                if not (0 <= px < w and 0 <= py < h):
-                    continue
-                if occ_mask[py, px]:
-                    continue
-                if not free_mask[py, px]:
-                    base = canvas[py, px]
-                    is_freeish = int(base[0]) < 240 and abs(int(base[0]) - int(base[1])) < 25
-                    if not is_freeish:
-                        continue
-                heat = np.asarray(value_intensity_to_rgb(float(inten)), dtype=np.float64)
-                base = canvas[py, px].astype(np.float64)
-                canvas[py, px] = np.clip((1.0 - a) * base + a * heat, 0, 255).astype(np.uint8)
+            fill_value_cells(
+                canvas,
+                val,
+                center_xy=center_xy,
+                scale=scale,
+                resolution_m=res_m,
+                free_mask=free_mask,
+                occ_mask=occ_mask,
+                intensity_to_rgb=value_intensity_to_rgb,
+                alpha=float(VALUE_OVERLAY_ALPHA),
+            )
 
         # Occupied on top — never covered by value heat.
-        _paint_xy(occ, PAPER_OCCUPIED)
+        fill_cells_rgb(
+            canvas,
+            occ,
+            PAPER_OCCUPIED,
+            center_xy=center_xy,
+            scale=scale,
+            resolution_m=res_m,
+        )
         if traj_xy:
             for i in range(1, len(traj_xy)):
                 self._line(canvas, to_pix(traj_xy[i - 1]), to_pix(traj_xy[i]), PAPER_TRAJ)

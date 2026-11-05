@@ -182,7 +182,15 @@ ROS：隔离 master `:11312`（保留 NBV `:11311`）。
 - 证据：`real_s070_pporaise_yr17_valuemap_20261105_210015`；7fps 1280×720。  
 - 仅 Demo 层；未改规划/PPO/检测后端。
 
-## 11. 未解决问题
+## 11. Demo cell-fill 去边框（2026-11-05）
+
+详见 `reports/habitat_rangercr10_map_raster_fill.md`。
+
+- 1px 散点 → 按 0.05 m cell 实心足迹；Value 同步填充。  
+- 原始 occ/free 与 prior run **完全一致**；放射状来自环视稀疏采样，非删点/形态学掩盖。  
+- 证据：`map_raster_compare/`；`..._mapfill_20261105_212419` 7fps 1280×720。
+
+## 12. 未解决问题
 
 1. Habitat↔MuJoCo 光学 AGL 仍差 ≈2.3 cm（可接受；勿用乱搜关节凑 0.88）。  
 2. 安全足迹与可达 Frontier：需非圆足迹/未知区策略，不能只调各向同性半径。  
