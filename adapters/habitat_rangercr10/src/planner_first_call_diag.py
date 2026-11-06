@@ -2,8 +2,11 @@
 
 ################################
 Saves free/occupied/unknown/inflate clouds, robot cell occupancy, a coarse
-frontier proxy, and BFS/A* reachability from the base. Does not change ApexNav
-C++ planner logic — evidence only for NO_PASSABLE root-cause reports.
+frontier proxy, and BFS/A* reachability from the base.
+
+IMPORTANT: This is a PYTHON APPROXIMATION — not the native ApexNav C++
+frontier / TSP / A* result. Do NOT quote cluster/A* counts as formal
+planner outcomes. Does not change C++ planner logic.
 ################################
 """
 
@@ -108,10 +111,13 @@ def _astar_reachable(
         return {"ok": False, "reason": "goal_blocked", "start_ij": list(s), "goal_ij": list(g)}
 
     def passable(ij):
+        # ################################
+        # Unknown is NOT traversable. Do not treat start cell as always
+        # passable — that skipped the nearby-free snap when start∈unknown.
+        # ################################
         if ij in blocked:
             return False
-        # Allow start bubble / free cells only (unknown unsafe in NORMAL)
-        return ij in free or ij == s
+        return ij in free
 
     if not passable(s):
         # try nearby free within 0.25 m (matches Astar2D near-start skip)
@@ -131,10 +137,9 @@ def _astar_reachable(
                 "reason": "start_not_free_no_nearby_free",
                 "start_ij": list(s),
                 "goal_ij": list(g),
-                "start_state_hint": "not_in_free",
+                "start_state_hint": "blocked_or_unknown",
             }
         s = found
-
     open_q = [(0.0 + math.hypot(s[0] - g[0], s[1] - g[1]), 0.0, s)]
     came = {s: None}
     gscore = {s: 0.0}

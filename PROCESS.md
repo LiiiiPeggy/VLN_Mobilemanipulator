@@ -681,3 +681,17 @@
 **结论**：当前不可通行压力主要来自 unknown+膨胀连通，而非 30° FOV 漏扫。若改环视步长须单独开实验。
 
 **相关**：`reports/habitat_rangercr10_lookaround_fov_passability.md`；`reports/lookaround_yawstep_compare_20261106/`
+
+---
+
+## 2026-11-06 相机 optical 投影 / 内参 / 底盘 odom 修复
+
+**模块**：`coord_habitat_ros` / `camera_model` / `ros_dynamic_publisher` / `depth_validity` / `pointcloud_dynamic`
+
+**问题**：审查指出（并经独立解析验证）：(1) `C@R@C.T` 误用于 optical 位姿；(2) 曾向 map_ros 发 render 而非 optical；(3) 自遮挡 optical+`z=-d`；(4) fy 用 HFOV×H/W；(5) odom XY 相机代理。
+
+**操作**：新增 optical 专用转换与方像素 K；默认 chassis odom；统一 self-hit/语义点云；修正 Python A* 起点 passable；更正 GT 探针命名；离线 `validate_camera_coord_chain` all_pass。
+
+**未做**：完整 C++ episode 重测（NO_PASSABLE 真实拒绝原因仍待验证）；未改膨胀/环视步长/PPO/缩放。
+
+**相关**：`reports/habitat_rangercr10_camera_odom_coord_fix.md`；`reports/camera_coord_fix_20261106/`

@@ -105,14 +105,19 @@ def geometric_self_hit_mask(
     depth_agree_m: float = 0.18,
     robot_scale: float = 1.0,
     pixel_stride: int = 2,
+    camera_frame: str = "optical",
 ) -> np.ndarray:
     """Mask pixels whose back-projected 3D point hits robot spheres/capsules.
 
     ################################
-    Habitat camera looks along -Z; metric depth is -z_cam. Real near furniture
-    outside the robot hull is kept (distance-to-capsule test, not blanket near).
+    camera_T_hab must match camera_frame:
+      optical: +X right, +Y down, +Z fwd; local point (x,y,+depth)
+      render:  Habitat sensor; local point (x,-y_img?); use unproject via −Z
+    Prefer optical (URDF d455_depth_optical_frame). Square-pixel K from HFOV.
     ################################
     """
+    from .camera_model import pinhole_from_hfov
+
     d = np.asarray(depth_m, dtype=np.float32)
     if d.ndim == 3:
         d = d[..., 0]
@@ -123,10 +128,10 @@ def geometric_self_hit_mask(
     R_wc = R_cw.T
     t_wc = -R_cw.T @ t_cw
 
-    fx = w / (2.0 * math.tan(hfov_deg * math.pi / 360.0))
-    fy = h / (2.0 * math.tan(hfov_deg / w * h * math.pi / 360.0))
-    cx, cy = (w - 1) * 0.5, (h - 1) * 0.5
+    K = pinhole_from_hfov(w, h, hfov_deg)
+    fx, fy, cx, cy = K["fx"], K["fy"], K["cx"], K["cy"]
     scale = float(robot_scale)
+    frame = str(camera_frame).lower()
 
     # Collect robot primitives in world frame.
     spheres: List[Tuple[np.ndarray, float]] = []
@@ -184,10 +189,18 @@ def geometric_self_hit_mask(
         return mask
     uu, vv, dd = uu[ok], vv[ok], dd[ok]
 
-    # Habitat cam: +X right, +Y down, look -Z; depth along optical axis.
+    # ################################
+    # Optical: p=(x,y,+d). Render (Habitat): look −Z ⇒ p=(x,y_img_up?,−d).
+    # Image v grows downward; optical Y down matches +v; render Y up ⇒ negate y.
+    # ################################
     x = (uu.astype(np.float64) - cx) * dd / fx
-    y = (vv.astype(np.float64) - cy) * dd / fy
-    z = -dd
+    y_img = (vv.astype(np.float64) - cy) * dd / fy
+    if frame == "render":
+        y = -y_img
+        z = -dd
+    else:
+        y = y_img
+        z = dd
     p_c = np.stack([x, y, z], axis=1)
     p_w = (p_c @ R_wc.T) + t_wc[None, :]
 
@@ -243,12 +256,14 @@ def prepare_depth_for_apexnav(
     robot_scale: float = 1.0,
     use_geometric_self_hit: bool = True,
     fallback_near_m: float = 0.35,
+    camera_frame: str = "optical",
 ) -> Tuple[np.ndarray, Dict[str, float]]:
     """Return metric depth with invalid→NaN, plus filter stats.
 
     ################################
     Output is still metric metres; caller normalizes to [0,1] for ApexNav.
     NaN survives float32 ROS Image and must be skipped in map_ros.cpp.
+    camera_T_hab + camera_frame must agree (default optical URDF link).
     ################################
     """
     d = np.asarray(depth_m, dtype=np.float32).copy()
@@ -268,12 +283,12 @@ def prepare_depth_for_apexnav(
                 camera_T_hab,
                 hfov_deg=hfov_deg,
                 robot_scale=robot_scale,
+                camera_frame=camera_frame,
             )
             geo_used = True
         except Exception:
             self_hit = np.zeros(d.shape, dtype=bool)
             geo_used = False
-
     # ################################
     # Fallback: only extremely near returns (lens dirt / mounting) if geometry
     # unavailable — does NOT blanket-mask all <0.65 m furniture.
@@ -296,6 +311,7 @@ def prepare_depth_for_apexnav(
         "frac_nan_published": float(n_nan) / max(n_pix, 1),
         "geometric_self_hit": 1.0 if geo_used else 0.0,
         "fallback_near_m": float(fallback_near_m if not geo_used else 0.0),
+        "camera_frame": str(camera_frame),
         "note": "invalid→NaN; never rewritten as max-range",
     }
     return out, stats

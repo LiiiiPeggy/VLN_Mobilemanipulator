@@ -136,10 +136,13 @@ VLN_Mobilemanipulator/
 | Demo 价值热力复用原生 `/grid_map/value_map`（ApexNav.rviz 黄→红）；仅叠 free；occ 不被覆盖 | `map_listener.render_panel`；`VALUE_*` in `map_style.py` |
 | Demo 应按 `sdf_map/resolution`（0.05 m）填充 cell 足迹，避免 1px 散点假边框；不改规划输入 | `map_raster.py`；`habitat_rangercr10_map_raster_fill.md` |
 | 环视放射状在原始 `/grid_map` 点云中已存在（稀疏角向采样）；与 1px 可视化空隙需区分 | `compare_map_raster_styles.py` |
-| D455/Habitat 内参→FOV：H=79° V≈59.25°（fx/fy 388.19/422.05 @640×480） | ApexNav launch `map_ros/fx,fy`；`lookaround_fov_diag` |
-| ApexNav TURN=π/6≈30° → 水平重叠≈49°（无 HFOV 盲楔）；白放射线主因 unknown+稀疏 free 扇区 | `habitat_rangercr10_lookaround_fov_passability.md` |
-| LOOK pitch 用 **joint3 ±0.60**（非 joint5）；仅 PPO 抬臂不做 TURN_DOWN 时 ROS 光轴近似朝上→高度滤波清空地图 | `apexnav_real_episode._execute_action`；coverage compare |
-| 同 spawn yaw 步对照（TURN_DOWN 后）：15° occ/free 1010/1275；30° 584/954；45° 281/550（诊断，非正式评测） | `lookaround_coverage_compare_20261106_071538` |
+| Habitat HFOV=79° 方像素：fx=fy≈388.191，VFOV≈63.45°（**禁止** HFOV×H/W 得 fy） | `camera_model.pinhole_from_hfov`；launch fy=fx |
+| Optical→ROS：`R_ros=C@R_optical`（勿用 `C@R@C.T` 发 camera pose）；render=`optical@Rx(π)` | `hab_optical_rot_to_ros`；`mat4_hab_optical_to_ros_pose` |
+| `/habitat/odom` 默认真实底盘 XY；旧相机 XY 代理仅 `legacy_camera_xy_proxy` | `ros_dynamic_publisher` |
+| ApexNav TURN=π/6≈30° → 水平重叠≈49°（HFOV 未变）；旧 VFOV=59.25° 结论已降级 | `habitat_rangercr10_camera_odom_coord_fix.md` |
+| LOOK pitch 用 **joint3 ±0.60**；仅 PPO 抬臂不做 TURN_DOWN 时光轴朝上→高度滤波清空地图 | `apexnav_real_episode._execute_action` |
+| `planner_first_call_diag` 是 Python 近似，不是 C++ frontier/A* 正式结果 | `planner_first_call_diag.py` 头注释 |
+| GT occ 探针是 navmesh **邻域**审计，不是 precise false-occupied rate | `gt_false_occupied_probe` |
 | ITM cosine 须在同帧 RGB-D 之前发布到 `/blip2/cosine_score`，否则 value_map 融旧分 | `apexnav_real_episode` 发布顺序；`value_map2d.cpp` |
 | 7fps 离线重渲染勿对已含价值热力的 paper map 做 legacy 重映射 | `demo_7fps_from_run._is_paper_or_value_map` |
 | Demo 7 Hz：按真实时间戳插值重渲染，检测/地图内容 hold；勿用 ffmpeg 加速 2 FPS 冒充 | `demo_7fps_from_run.py`；`run_demo_7fps.sh`；`demo_7fps_rates.json` |

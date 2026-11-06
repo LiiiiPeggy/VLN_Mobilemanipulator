@@ -1,0 +1,97 @@
+{
+  "baseline_commit_expected": "9fb8ea4",
+  "tests": {
+    "intrinsics": {
+      "K": {
+        "fx": 388.1910413097385,
+        "fy": 388.1910413097385,
+        "cx": 320.0,
+        "cy": 240.0,
+        "width": 640.0,
+        "height": 480.0,
+        "hfov_deg": 79.0,
+        "vfov_deg": 63.453048374758716,
+        "pixel_model": "square_pixels_from_hfov",
+        "source": "camera_model.pinhole_from_hfov"
+      },
+      "legacy_wrong": {
+        "fx": 388.1910413097385,
+        "fy": 422.0475153598262,
+        "vfov_deg_implied": 59.25,
+        "note": "LEGACY_WRONG: VFOV\u2248HFOV*H/W; do not use in production"
+      },
+      "checks": {
+        "fx_approx_388p191": true,
+        "fy_equals_fx": true,
+        "vfov_approx_63p453": true,
+        "legacy_fy_differs": true
+      },
+      "pass": true
+    },
+    "optical_rot_map": {
+      "err_optical_map_m": 0.0,
+      "err_legacy_hab_rot_to_ros_m": 3.7496666518505353,
+      "pass": true
+    },
+    "render_rx": {
+      "recover_err": 0.0,
+      "pass": true
+    },
+    "project_roundtrip": {
+      "pixels": [
+        {
+          "u": 320,
+          "v": 240,
+          "d": 1.5,
+          "eu": 0.0,
+          "ev": 0.0
+        },
+        {
+          "u": 0,
+          "v": 0,
+          "d": 2.0,
+          "eu": 0.0,
+          "ev": 0.0
+        },
+        {
+          "u": 639,
+          "v": 479,
+          "d": 3.0,
+          "eu": 0.0,
+          "ev": 0.0
+        },
+        {
+          "u": 100,
+          "v": 400,
+          "d": 0.8,
+          "eu": 0.0,
+          "ev": 0.0
+        },
+        {
+          "u": 500,
+          "v": 50,
+          "d": 4.5,
+          "eu": 0.0,
+          "ev": 2.842170943040401e-14
+        }
+      ],
+      "render_optical_rx_err": 0.0,
+      "pass": true
+    },
+    "agl": {
+      "ros": [
+        -2.0,
+        -1.0,
+        0.0
+      ],
+      "z_agl_at_floor": 0.0,
+      "pass": true
+    },
+    "ray_hfov": {
+      "half_hfov_left_deg": 39.50000000013901,
+      "half_hfov_right_deg": 39.50000000013901,
+      "pass": true
+    }
+  },
+  "all_pass": true
+}

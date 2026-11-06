@@ -16,11 +16,16 @@ from typing import Any, Dict, List, Optional, Sequence, Tuple
 import numpy as np
 from PIL import Image, ImageDraw
 
-# ApexNav exploration.launch depth intrinsics (640×480) — source of FOV truth.
-APEXNAV_FX = 388.1910413097385
-APEXNAV_FY = 422.0475153598262
-APEXNAV_CX = 320.0
-APEXNAV_CY = 240.0
+# ################################
+# Canonical square-pixel K from Habitat HFOV=79° @640×480 (fx=fy).
+# Legacy launch fy=422.05 (HFOV×H/W) is NOT independent "measured" FOV.
+# ################################
+from .camera_model import REF_K_640x480_HFOV79, legacy_broken_fy_from_hfov_aspect, pinhole_from_hfov
+
+APEXNAV_FX = float(REF_K_640x480_HFOV79["fx"])
+APEXNAV_FY = float(REF_K_640x480_HFOV79["fy"])
+APEXNAV_CX = float(REF_K_640x480_HFOV79["cx"])
+APEXNAV_CY = float(REF_K_640x480_HFOV79["cy"])
 APEXNAV_W = 640
 APEXNAV_H = 480
 
@@ -31,6 +36,11 @@ def fov_from_intrinsics(
     width: int = APEXNAV_W,
     height: int = APEXNAV_H,
 ) -> Dict[str, float]:
+    if abs(fx - fy) < 1e-6 and abs(fx - APEXNAV_FX) < 1e-3:
+        k = pinhole_from_hfov(width, height, 79.0)
+        k["source"] = "camera_model.pinhole_from_hfov (Habitat HFOV, square pixels)"
+        k["legacy_wrong_fy"] = legacy_broken_fy_from_hfov_aspect(width, height, 79.0)
+        return k
     hfov = 2.0 * math.atan(width / (2.0 * fx))
     vfov = 2.0 * math.atan(height / (2.0 * fy))
     return {
@@ -44,7 +54,7 @@ def fov_from_intrinsics(
         "vfov_rad": float(vfov),
         "hfov_deg": float(math.degrees(hfov)),
         "vfov_deg": float(math.degrees(vfov)),
-        "source": "ApexNav exploration.launch map_ros/fx,fy @ 640x480",
+        "source": "explicit fx/fy (not assumed Habitat HFOV)",
     }
 
 
@@ -292,44 +302,70 @@ def gt_false_occupied_probe(
     robot_xy_ros: Sequence[float],
     max_pts: int = 400,
 ) -> Dict[str, Any]:
-    """Diagnosis-only: how many occupied ROS cells land on Habitat navigable space.
+    """Diagnosis-only navmesh proximity audit for occupied cells.
 
     ################################
-    GT pathfinder must NEVER feed the planner. Mapping: ROS (x,y)=(-hab_z,-hab_x).
+    GT pathfinder must NEVER feed the planner.
+    NOT a precise false-occupied rate: reports raw query navigability,
+    horizontal snap distance, and fraction of cells with snap_xy < 0.35 m
+    that land on navigable space (neighborhood evidence only).
     ################################
     """
     if occ_xy_ros is None or len(occ_xy_ros) == 0:
-        return {"n_tested": 0, "n_nav_true": 0, "false_occupied_rate": None}
+        return {
+            "n_tested": 0,
+            "metric_name": "occ_navmesh_neighborhood_audit",
+            "precise_false_occupied_rate": None,
+        }
     pf = env.sim.pathfinder
     pts = np.asarray(occ_xy_ros, dtype=np.float64)
     if len(pts) > max_pts:
         idx = np.linspace(0, len(pts) - 1, max_pts).astype(int)
         pts = pts[idx]
-    n_nav = 0
-    n_ok = 0
+    snap_dists: List[float] = []
+    n_query_nav = 0
+    n_snap_ok = 0
+    n_near_nav = 0
+    n_fail = 0
     for x_ros, y_ros in pts:
-        # Inverse of hab_pos_to_ros planar: hab_x=-ros_y, hab_z=-ros_x
         hab_x = -float(y_ros)
         hab_z = -float(x_ros)
         p = np.array([hab_x, float(floor_y) + 0.15, hab_z], dtype=np.float32)
         try:
+            raw_nav = bool(pf.is_navigable(p))
+            if raw_nav:
+                n_query_nav += 1
             snapped = pf.snap_point(p)
             if snapped is None or np.any(np.isnan(snapped)):
+                n_fail += 1
                 continue
-            n_ok += 1
-            # If snap moves little in xz, treat as navigable neighborhood
-            if math.hypot(float(snapped[0]) - hab_x, float(snapped[2]) - hab_z) < 0.35:
-                if pf.is_navigable(snapped):
-                    n_nav += 1
+            n_snap_ok += 1
+            dxy = math.hypot(float(snapped[0]) - hab_x, float(snapped[2]) - hab_z)
+            dz = abs(float(snapped[1]) - float(p[1]))
+            snap_dists.append(dxy)
+            if dxy < 0.35 and pf.is_navigable(snapped):
+                n_near_nav += 1
         except Exception:
+            n_fail += 1
             continue
-    rate = None if n_ok == 0 else float(n_nav) / float(n_ok)
+    near_rate = None if n_snap_ok == 0 else float(n_near_nav) / float(n_snap_ok)
     return {
+        "metric_name": "occ_navmesh_neighborhood_audit",
         "n_tested": int(len(pts)),
-        "n_snap_ok": int(n_ok),
-        "n_nav_true": int(n_nav),
-        "false_occupied_rate_est": rate,
-        "note": "GT diagnosis only; high rate ⇒ many occ cells near navigable space (height band / thin obstacles / noise), not injected into planner.",
+        "n_query_navigable_raw": int(n_query_nav),
+        "n_snap_ok": int(n_snap_ok),
+        "n_query_fail": int(n_fail),
+        "n_snap_xy_lt_0p35_and_nav": int(n_near_nav),
+        "frac_near_navmesh_lt_0p35": near_rate,
+        "snap_xy_m_mean": float(np.mean(snap_dists)) if snap_dists else None,
+        "snap_xy_m_median": float(np.median(snap_dists)) if snap_dists else None,
+        "precise_false_occupied_rate": None,
+        "false_occupied_rate_est": near_rate,  # legacy key; NOT precise FO rate
+        "note": (
+            "GT diagnosis only. frac_near_navmesh_lt_0p35 means occupied cells "
+            "have a navigable snap within 0.35 m — neighborhood evidence, NOT "
+            "precise false-occupied rate. Never injected into planner."
+        ),
     }
 
 

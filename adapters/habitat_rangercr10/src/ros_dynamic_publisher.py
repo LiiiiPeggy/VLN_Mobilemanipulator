@@ -2,8 +2,8 @@
 
 Unlike baselines/ApexNav/habitat2ros/habitat_publisher.py (fixed +0.88 m height),
 this publishes:
-  - /habitat/odom         : base_link pose (ROS world)
-  - /habitat/sensor_pose  : d455 optical / Habitat camera pose (ROS world)
+  - /habitat/odom         : REAL base_link pose (ROS world) by default
+  - /habitat/sensor_pose  : D455 optical pose (ROS world) for map_ros
   - /habitat/camera_rgb
   - /habitat/camera_depth : normalized float32 [0,1] as ApexNav C++ expects;
     invalid / self-hit pixels are NaN (must be skipped in map_ros).
@@ -23,7 +23,7 @@ from .coord_habitat_ros import (
     depth_meters_to_normalized,
     hab_pos_to_ros,
     hab_yaw_to_ros,
-    mat4_hab_to_ros_pose,
+    mat4_hab_optical_to_ros_pose,
 )
 from .depth_validity import prepare_depth_for_apexnav
 
@@ -42,21 +42,26 @@ def numpy_to_imgmsg(image: np.ndarray, encoding: str) -> Image:
 
 
 class DynamicROSPublisher:
+    # ################################
+    # odom_xy_mode:
+    #   "chassis" — real base XY + yaw (required default)
+    #   "legacy_camera_xy_proxy" — old A/B behavior (camera XY, chassis yaw);
+    #       NOT a real base_link; logs explicitly.
+    # ################################
     def __init__(
         self,
         depth_min: float = 0.0,
         depth_max: float = 5.0,
         floor_y: float = 0.0,
         robot_scale: float = 1.0,
+        odom_xy_mode: str = "chassis",
     ):
         self.depth_min = depth_min
         self.depth_max = depth_max
-        # ################################
-        # Navigable floor Habitat-Y; ROS Z published as AGL (hab_y - floor_y).
-        # ################################
         self.floor_y = float(floor_y)
         self.robot_scale = float(robot_scale)
-        self.env = None  # optional RangerCr10KinematicEnv for geometric self-hit
+        self.odom_xy_mode = str(odom_xy_mode)
+        self.env = None
         self.depth_pub = rospy.Publisher("/habitat/camera_depth", Image, queue_size=10)
         self.rgb_pub = rospy.Publisher("/habitat/camera_rgb", Image, queue_size=10)
         self.odom_pub = rospy.Publisher("/habitat/odom", Odometry, queue_size=10)
@@ -81,7 +86,14 @@ class DynamicROSPublisher:
         stamp: Optional[rospy.Time] = None,
         raw_camera_T_hab=None,
     ) -> dict:
-        """Publish one synchronized observation bundle. Returns logged poses."""
+        """Publish one synchronized observation bundle.
+
+        ################################
+        camera_T_hab MUST be Habitat OPTICAL frame (d455_depth_optical_frame).
+        raw_camera_T_hab: same optical (preferred) for self-hit; if omitted,
+        camera_T_hab is used. Do not pass Habitat render (optical@Rxπ) here.
+        ################################
+        """
         ros_time = stamp or rospy.Time.now()
         rgb = np.asarray(rgb)
         if rgb.ndim == 3 and rgb.shape[-1] == 4:
@@ -93,37 +105,36 @@ class DynamicROSPublisher:
         if depth_raw.ndim == 3:
             depth_raw = depth_raw[..., 0]
 
-        # ################################
-        # Invalid / robot-body pixels → NaN (never rewrite as max-range 5 m).
-        # Geometric self-hit preferred; C++ map_ros skips NaN (adapter patch).
-        # ################################
+        optical_T = raw_camera_T_hab if raw_camera_T_hab is not None else camera_T_hab
         depth_prep, dstats = prepare_depth_for_apexnav(
             depth_raw,
             env=self.env,
-            camera_T_hab=raw_camera_T_hab if raw_camera_T_hab is not None else camera_T_hab,
+            camera_T_hab=optical_T,
             depth_min=self.depth_min,
             depth_max=self.depth_max,
             robot_scale=self.robot_scale,
             use_geometric_self_hit=self.env is not None,
+            camera_frame="optical",
         )
         self.last_depth_stats = dstats
         depth_norm = depth_meters_to_normalized(depth_prep, self.depth_min, self.depth_max)
 
-        # ################################
-        # Base / camera in ApexNav ROS: XY=(-hab_z,-hab_x), Z=hab_y-floor_y (AGL).
-        # Ranger MOVE_FORWARD (sin,cos) in Habitat xz → ROS heading = hab_yaw + π.
-        # ################################
         base_ros = hab_pos_to_ros(base_pos_hab, floor_y=self.floor_y)
         ros_yaw = float(hab_yaw_to_ros(base_yaw_hab))
         cy, sy = np.cos(ros_yaw * 0.5), np.sin(ros_yaw * 0.5)
-        base_q = (0.0, 0.0, float(sy), float(cy))  # xyzw, yaw about ROS +Z
-
-        cam_p, cam_q = mat4_hab_to_ros_pose(camera_T_hab, floor_y=self.floor_y)
+        base_q = (0.0, 0.0, float(sy), float(cy))
 
         # ################################
-        # Arm-mounted D455: plan odom XY = camera XY (ground proxy); yaw=chassis.
+        # sensor_pose: optical → ROS via C @ R_optical (map_ros pinhole).
         # ################################
-        odom_xy = (float(cam_p[0]), float(cam_p[1]))
+        cam_p, cam_q = mat4_hab_optical_to_ros_pose(optical_T, floor_y=self.floor_y)
+
+        if self.odom_xy_mode == "legacy_camera_xy_proxy":
+            odom_xy = (float(cam_p[0]), float(cam_p[1]))
+            odom_xy_source = "legacy_camera_xy_proxy"
+        else:
+            odom_xy = (float(base_ros[0]), float(base_ros[1]))
+            odom_xy_source = "chassis_base_link"
         odom_z = float(base_ros[2])
 
         odom = Odometry()
@@ -142,7 +153,9 @@ class DynamicROSPublisher:
         sensor.child_frame_id = "d455_depth_optical_frame"
         sensor.pose.pose = Pose(
             position=Point(float(cam_p[0]), float(cam_p[1]), float(cam_p[2])),
-            orientation=Quaternion(float(cam_q[0]), float(cam_q[1]), float(cam_q[2]), float(cam_q[3])),
+            orientation=Quaternion(
+                float(cam_q[0]), float(cam_q[1]), float(cam_q[2]), float(cam_q[3])
+            ),
         )
         self.pose_pub.publish(sensor)
 
@@ -161,17 +174,21 @@ class DynamicROSPublisher:
             "stamp": float(ros_time.to_sec()),
             "floor_y_hab": float(self.floor_y),
             "base_ros_chassis": base_ros.tolist(),
-            "odom_ros_plan_proxy": [odom_xy[0], odom_xy[1], odom_z],
-            "odom_xy_source": "d455_optical_xy_ground_proxy",
+            "odom_ros": [odom_xy[0], odom_xy[1], odom_z],
+            "odom_xy_source": odom_xy_source,
+            "odom_xy_mode": self.odom_xy_mode,
             "base_q_xyzw": list(base_q),
             "base_yaw_hab": float(base_yaw_hab),
             "base_yaw_ros": float(ros_yaw),
             "camera_ros": cam_p.tolist(),
             "camera_q_xyzw": cam_q.tolist(),
+            "camera_frame_published": "optical",
             "depth_norm_mean": float(np.mean(finite_norm)) if finite_norm.size else float("nan"),
             "depth_m_mean": float(np.nanmean(depth_prep)),
             "depth_validity": dstats,
             "invalid_depth_policy": "nan_skip_not_max_range",
-            # backward-compatible alias (plan proxy, not chassis)
+            # planning start uses published odom XY
             "base_ros": [odom_xy[0], odom_xy[1], odom_z],
+            # backward-compatible alias (was always the plan proxy)
+            "odom_ros_plan_proxy": [odom_xy[0], odom_xy[1], odom_z],
         }

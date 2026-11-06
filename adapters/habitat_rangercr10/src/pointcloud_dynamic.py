@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import math
 from typing import List, Sequence
 
 import cv2
@@ -10,24 +9,23 @@ import numpy as np
 import rospy
 from sensor_msgs.msg import PointCloud2, PointField
 
-from .coord_habitat_ros import hab_pos_to_ros, hab_rot_to_ros
+from .camera_model import pinhole_from_hfov
+from .coord_habitat_ros import hab_optical_rot_to_ros, hab_pos_to_ros
 
 
-def _get_point_cloud(depth: np.ndarray, mask: np.ndarray, fx: float, fy: float) -> np.ndarray:
+def _get_point_cloud(depth: np.ndarray, mask: np.ndarray, K: dict) -> np.ndarray:
     ys, xs = np.where(mask > 0)
     if len(xs) == 0:
         return np.zeros((0, 3), dtype=np.float32)
     z = depth[ys, xs]
-    x = (xs - depth.shape[1] / 2.0) * z / fx
-    y = (ys - depth.shape[0] / 2.0) * z / fy
+    # Optical local: +Z = metric depth along optical axis (map_ros convention).
+    x = (xs - K["cx"]) * z / K["fx"]
+    y = (ys - K["cy"]) * z / K["fy"]
     return np.stack([x, y, z], axis=1).astype(np.float32)
 
 
 def convert_to_pointcloud2(points: np.ndarray) -> PointCloud2:
     msg = PointCloud2()
-    # ################################
-    # Allow offline diagnostics without rospy.init_node()
-    # ################################
     try:
         msg.header.stamp = rospy.Time.now()
     except Exception:
@@ -65,7 +63,7 @@ def object_clouds_from_masks(
     max_depth: float = 5.0,
     floor_y: float = 0.0,
 ) -> List[PointCloud2]:
-    """Project masks with full camera pose (Habitat T → ROS world)."""
+    """Project masks with OPTICAL Habitat T → ROS world (C @ R_optical)."""
     if hasattr(camera_T_hab, "rotation"):
         R_hab = np.array(camera_T_hab.rotation(), dtype=np.float64).reshape(3, 3)
         p_hab = np.array(
@@ -75,18 +73,17 @@ def object_clouds_from_masks(
     else:
         M = np.asarray(camera_T_hab, dtype=np.float64).reshape(4, 4)
         R_hab, p_hab = M[:3, :3], M[:3, 3]
-    R_ros = hab_rot_to_ros(R_hab)
     # ################################
-    # Match odom/sensor_pose: ROS Z = Habitat AGL (hab_y - floor_y).
+    # camera_T_hab must be optical (not render/ee_T). R_ros = C @ R_optical.
     # ################################
+    R_ros = hab_optical_rot_to_ros(R_hab)
     p_ros = hab_pos_to_ros(p_hab, floor_y=floor_y)
 
     depth = np.asarray(depth_m, dtype=np.float32)
     if depth.ndim == 3:
         depth = depth[..., 0]
     h, w = depth.shape
-    fx = w / (2 * math.tan(hfov_deg * math.pi / 360.0))
-    fy = h / (2 * math.tan(hfov_deg / w * h * math.pi / 360.0))
+    K = pinhole_from_hfov(w, h, hfov_deg)
 
     out = []
     for object_mask in masks:
@@ -95,9 +92,7 @@ def object_clouds_from_masks(
             mask = (mask > 0).astype(np.uint8)
         mask = cv2.erode(mask * 255, None, iterations=1)
         valid = depth.copy()
-        # use metric depth directly
-        local = _get_point_cloud(valid, mask, fx, fy)
-        # filter range
+        local = _get_point_cloud(valid, mask, K)
         if local.shape[0] == 0:
             out.append(PointCloud2())
             continue

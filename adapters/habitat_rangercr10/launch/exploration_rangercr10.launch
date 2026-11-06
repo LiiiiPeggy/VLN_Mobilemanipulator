@@ -31,9 +31,13 @@
     <arg name="odometry_topic_" value="$(arg odom_topic)"/>
     <arg name="sensor_pose_topic_" value="$(arg sensor_pose_topic)"/>
     <arg name="depth_topic_" value="$(arg depth_topic)"/>
+    <!-- ################################
+      Square-pixel K from Habitat HFOV=79° @640×480: fx=fy≈388.191
+      (VFOV≈63.45°). Old fy=422.05 used wrong HFOV×H/W VFOV≈59.25°.
+    ################################ -->
     <arg name="cx_" value="320"/>
     <arg name="cy_" value="240"/>
     <arg name="fx_" value="388.1910413097385"/>
-    <arg name="fy_" value="422.0475153598262"/>
+    <arg name="fy_" value="388.1910413097385"/>
   </include>
 </launch>

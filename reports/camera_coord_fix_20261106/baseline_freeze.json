@@ -1,0 +1,27 @@
+{
+  "review_baseline_commit": "9fb8ea4cfd93a9e1431d24b7b9e940d4e0501442",
+  "branch": "cursor/habitat-rangercr10-scale070",
+  "scene_priority": "yr17PDCnDDW",
+  "spawn_ref": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_wide_yr17_openband_20261105_012302/start_pose.json",
+  "robot_scale": 0.7,
+  "lookaround_yaw_step_deg": 30,
+  "inflation_profile": "legacy018",
+  "depth_invalid_policy": "nan_skip_not_max_range",
+  "odom_xy_mode_default": "chassis",
+  "intrinsics": {
+    "width": 640,
+    "height": 480,
+    "hfov_deg": 79.0,
+    "fx": 388.1910413097385,
+    "fy": 388.1910413097385,
+    "vfov_deg": 63.453048374758716,
+    "note": "square_pixels_from_hfov; replaces legacy fy=422.05"
+  },
+  "untouched": [
+    "PPO weights",
+    "robot_scale default 1.0 path",
+    "obstacles_inflation",
+    "formal lookaround step",
+    "other baselines"
+  ]
+}

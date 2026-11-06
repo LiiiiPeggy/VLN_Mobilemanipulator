@@ -84,18 +84,15 @@ def run_one_yaw_step(
             (out_dir / f"itm_err_{i:03d}.txt").write_text(traceback.format_exc())
 
         # ################################
-        # Match apexnav_real_episode optical fix: cam_T @ Rx(π) for ROS projection.
+        # Publish OPTICAL pose to map_ros (not Habitat render optical@Rxπ).
         # ################################
-        import magnum as mn
-
         cam_T = env.camera_world_matrix()
-        ee_T = cam_T @ mn.Matrix4.rotation_x(mn.Rad(math.pi))
         meta = ros_pub.publish(
             rgb=rgb[..., :3],
             depth_m=depth,
             base_pos_hab=env.base_xyz,
             base_yaw_hab=env.base_yaw,
-            camera_T_hab=ee_T,
+            camera_T_hab=cam_T,
             raw_camera_T_hab=cam_T,
         )
         if conf_pub is not None:
@@ -215,17 +212,14 @@ def main():
             break
         rospy.sleep(0.1)
     ee0 = env.observe_ee_only()
-    import magnum as mn
-
     cam0 = env.camera_world_matrix()
-    ee_T0 = cam0 @ mn.Matrix4.rotation_x(mn.Rad(math.pi))
     for _ in range(15):
         ros_pub.publish(
             rgb=ee0["ee_rgb"][..., :3],
             depth_m=ee0["ee_depth"],
             base_pos_hab=env.base_xyz,
             base_yaw_hab=env.base_yaw,
-            camera_T_hab=ee_T0,
+            camera_T_hab=cam0,
             raw_camera_T_hab=cam0,
         )
         _pub_f64(conf_pub, 0.35)

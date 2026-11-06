@@ -339,18 +339,17 @@ class ApexNavRangerBridge:
 
     def _publish_obs_bundle(self, rgb, depth, step_i: int) -> dict:
         assert self.env and self.ros_pub
+        # ################################
+        # camera_world_matrix = URDF optical. Habitat RGB-D render uses optical@Rx(π)
+        # inside observe_ee_only; ROS sensor_pose / map_ros need OPTICAL (not render).
+        # ################################
         cam_T = self.env.camera_world_matrix()
-        # EE camera after optical fix for ROS projection
-        import magnum as mn
-
-        fix = mn.Matrix4.rotation_x(mn.Rad(math.pi))
-        ee_T = cam_T @ fix
         meta = self.ros_pub.publish(
             rgb=rgb[..., :3],
             depth_m=depth,
             base_pos_hab=self.env.base_xyz,
             base_yaw_hab=self.env.base_yaw,
-            camera_T_hab=ee_T,
+            camera_T_hab=cam_T,
             raw_camera_T_hab=cam_T,
         )
         # save artifacts
@@ -368,6 +367,7 @@ class ApexNavRangerBridge:
                     env=self.env,
                     camera_T_hab=cam_T,
                     robot_scale=float(self.env.robot_scale),
+                    camera_frame="optical",
                 )
                 ddir = self.out / "depth_validity"
                 ddir.mkdir(exist_ok=True)
@@ -894,7 +894,8 @@ class ApexNavRangerBridge:
                 # Allow map_ros depthPoseCallback + 0.25s vis_timer to publish value_map.
                 rospy.sleep(0.28)
                 # ################################
-                # Trajectory / map arrow follow plan-proxy odom (D455 XY), not chassis.
+                # Trajectory / diag start: published odom (default = real chassis XY).
+                # Also log chassis vs camera for audits.
                 # ################################
                 br = meta.get("base_ros") or hab_pos_to_ros(
                     self.env.base_xyz, floor_y=self.floor_y
@@ -904,7 +905,7 @@ class ApexNavRangerBridge:
                 clouds = object_clouds_from_masks(
                     depth,
                     masks,
-                    ee["ee_T"],
+                    self.env.camera_world_matrix(),  # optical, not render ee_T
                     hfov_deg=79.0,
                     min_depth=DEPTH_MIN,
                     max_depth=DEPTH_MAX,
@@ -917,12 +918,25 @@ class ApexNavRangerBridge:
                 if phase == "explore_planner" and not self._first_plan_diag_done:
                     try:
                         assert self.map_listener is not None
+                        chassis = meta.get("base_ros_chassis") or br
                         self.first_plan_diag = analyze_map_listener(
                             self.map_listener,
                             base_ros_xy=(float(br[0]), float(br[1])),
                             base_yaw_ros=float(meta.get("base_yaw_ros", 0.0)),
                             out_dir=self.out / "planner_first_call_diag",
                         )
+                        self.first_plan_diag["diag_kind"] = (
+                            "python_approx_frontier_astar_NOT_native_cpp_planner"
+                        )
+                        self.first_plan_diag["odom_xy_source"] = meta.get("odom_xy_source")
+                        self.first_plan_diag["chassis_ros_xy"] = [
+                            float(chassis[0]),
+                            float(chassis[1]),
+                        ]
+                        self.first_plan_diag["published_odom_xy"] = [
+                            float(br[0]),
+                            float(br[1]),
+                        ]
                         self.first_plan_diag["publish_meta"] = meta
                         self.first_plan_diag["expl_result"] = self.expl_result
                         self.first_plan_diag["final_state"] = self.final_state

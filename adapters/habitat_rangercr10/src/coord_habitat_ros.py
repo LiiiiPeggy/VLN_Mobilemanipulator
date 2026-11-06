@@ -42,32 +42,75 @@ def hab_yaw_to_ros(yaw_hab: float) -> float:
     return (y + np.pi) % (2.0 * np.pi) - np.pi
 
 
+def _C_hab_to_ros() -> np.ndarray:
+    # ROS_xyz = (-hab_z, -hab_x, hab_y) as a linear map on vectors.
+    return np.array([[0, 0, -1], [-1, 0, 0], [0, 1, 0]], dtype=np.float64)
+
+
 def hab_rot_to_ros(R: np.ndarray) -> np.ndarray:
-    """R maps habitat vectors; return R in ROS world axes."""
-    C = np.array([[0, 0, -1], [-1, 0, 0], [0, 1, 0]], dtype=np.float64)
-    return C @ R @ C.T
+    """Change-of-world-frame for rotations acting on Habitat-axis vectors.
+
+    ################################
+    R_ros = C @ R_hab @ C.T  is correct when both domain and codomain vectors
+    are labeled in the SAME world convention (Habitat axes ↔ ROS axes).
+    Do NOT use this for camera poses whose LOCAL axes are optical/render —
+    use hab_optical_rot_to_ros / mat4_hab_optical_to_ros_pose instead.
+    ################################
+    """
+    C = _C_hab_to_ros()
+    return C @ np.asarray(R, dtype=np.float64).reshape(3, 3) @ C.T
 
 
-def mat4_hab_to_ros_pose(
-    T_flat16_or_mat, floor_y: float = 0.0
-) -> Tuple[np.ndarray, np.ndarray]:
-    """Return (pos_ros xyz, quat_xyzw) from Habitat Matrix4 / 4x4."""
+def hab_optical_rot_to_ros(R_hab_optical: np.ndarray) -> np.ndarray:
+    """Habitat optical pose → ROS world rotation for map_ros projection.
+
+    ################################
+    Optical local p_opt = [x, y, depth] (X right, Y down, Z fwd).
+    world_hab = R_hab_optical @ p_opt + t_hab
+    world_ros = C @ world_hab = (C @ R_hab_optical) @ p_opt + C @ t_hab
+    Hence R_ros = C @ R_hab_optical  (no trailing C.T).
+    ################################
+    """
+    C = _C_hab_to_ros()
+    return C @ np.asarray(R_hab_optical, dtype=np.float64).reshape(3, 3)
+
+
+def _mat4_to_Rp(T_flat16_or_mat) -> Tuple[np.ndarray, np.ndarray]:
     if hasattr(T_flat16_or_mat, "rotation"):
-        # magnum Matrix4
         T = T_flat16_or_mat
         R = np.array(T.rotation(), dtype=np.float64).reshape(3, 3)
         p = np.array([T.translation.x, T.translation.y, T.translation.z], dtype=np.float64)
     else:
         M = np.asarray(T_flat16_or_mat, dtype=np.float64).reshape(4, 4)
-        # Magnum column-major flat → if already 4x4 row-major from list builder, handle both
         R = M[:3, :3]
         p = M[:3, 3]
+    return R, p
+
+
+def mat4_hab_optical_to_ros_pose(
+    T_flat16_or_mat, floor_y: float = 0.0
+) -> Tuple[np.ndarray, np.ndarray]:
+    """Optical Habitat Matrix4 → (pos_ros AGL, quat_xyzw) for /sensor_pose."""
+    R, p = _mat4_to_Rp(T_flat16_or_mat)
+    R_ros = hab_optical_rot_to_ros(R)
+    p_ros = hab_pos_to_ros(p, floor_y=floor_y)
+    return p_ros, _rot_to_xyzw(R_ros)
+
+
+def mat4_hab_to_ros_pose(
+    T_flat16_or_mat, floor_y: float = 0.0
+) -> Tuple[np.ndarray, np.ndarray]:
+    """Legacy world-axis pose convert (NOT for D455 optical → map_ros).
+
+    ################################
+    Kept for non-camera SE(3) that truly lives in Habitat world axes.
+    Camera / depth projection MUST use mat4_hab_optical_to_ros_pose.
+    ################################
+    """
+    R, p = _mat4_to_Rp(T_flat16_or_mat)
     R_ros = hab_rot_to_ros(R)
     p_ros = hab_pos_to_ros(p, floor_y=floor_y)
-    # rotation matrix → xyzw
-    q = _rot_to_xyzw(R_ros)
-    return p_ros, q
-
+    return p_ros, _rot_to_xyzw(R_ros)
 
 def _rot_to_xyzw(R: np.ndarray) -> np.ndarray:
     tr = float(np.trace(R))
