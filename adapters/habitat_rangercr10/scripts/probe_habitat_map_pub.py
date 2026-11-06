@@ -58,14 +58,13 @@ def main() -> None:
     series = []
     for i in range(int(args.n)):
         ee = env.observe_ee_only()
-        cam = env.camera_world_matrix()
-        ee_T = cam @ mn.Matrix4.rotation_x(mn.Rad(math.pi))
+        cam = env.camera_world_matrix()  # optical for map_ros
         meta = pub.publish(
             rgb=ee["ee_rgb"][..., :3],
             depth_m=ee["ee_depth"],
             base_pos_hab=env.base_xyz,
             base_yaw_hab=env.base_yaw,
-            camera_T_hab=ee_T,
+            camera_T_hab=cam,
             raw_camera_T_hab=cam,
         )
         conf.publish(Float64(0.35))

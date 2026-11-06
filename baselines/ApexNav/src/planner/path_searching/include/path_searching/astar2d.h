@@ -36,6 +36,23 @@ public:
   }
 };
 
+// ################################
+// Optional reject counters for gated planner diagnostics. Counting does NOT
+// change search decisions; "inferred from neighbor rejects" ≠ search return code.
+// ################################
+struct AstarRejectStats {
+  int occupied = 0;
+  int inflate = 0;
+  int unknown = 0;
+  int out_of_bounds = 0;
+  int time_budget = 0;
+  int node_pool = 0;
+  void reset()
+  {
+    occupied = inflate = unknown = out_of_bounds = time_budget = node_pool = 0;
+  }
+};
+
 class Astar2D {
 public:
   Astar2D() = default;
@@ -53,6 +70,12 @@ public:
   std::vector<Eigen::Vector2d> getPath();
   std::vector<Eigen::Vector2d> getVisited();
   double getEarlyTerminateCost();
+  void setCountRejects(bool enable) { count_rejects_ = enable; }
+  const AstarRejectStats& getRejectStats() const { return reject_stats_; }
+  int getLastReturnCode() const { return last_return_code_; }
+  double getLastSearchTime() const { return last_search_time_; }
+  int getUseNodeNum() const { return use_node_num_; }
+  int getIterNum() const { return iter_num_; }
 
   double lambda_heu_;
 
@@ -80,6 +103,13 @@ private:
   int allocate_num_;
   double resolution_, inv_resolution_;
   Eigen::Vector2d map_size_2d_, origin_;
+
+  // ################################
+  bool count_rejects_ = false;
+  AstarRejectStats reject_stats_;
+  int last_return_code_ = 0;
+  double last_search_time_ = 0.0;
+  // ################################
 };
 
 }  // namespace apexnav_planner

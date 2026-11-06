@@ -154,6 +154,23 @@ private:
   double itm_score_;               ///< Current image-text matching score
   ros::Time map_start_time_;       ///< Timestamp of mapping system initialization
 
+  // ################################
+  // Gated per-frame mapping pipeline stats (observe only; no free-update change).
+  // map_ros/pipeline_diag_enable, map_ros/pipeline_diag_dir
+  // ################################
+  bool pipeline_diag_enable_ = false;
+  std::string pipeline_diag_dir_;
+  int pipeline_frame_seq_ = 0;
+  int pipe_raw_valid_ = 0;
+  int pipe_proj_pts_ = 0;
+  int pipe_down_pts_ = 0;
+  int pipe_ground_band_ = 0;
+  int pipe_obstacle_band_ = 0;
+  int pipe_other_height_ = 0;
+  int pipe_obstacle_after_outlier_ = 0;
+  int pipe_rays_in_ = 0;
+  void writePipelineDiagLine(const std::string& line);
+
   friend SDFMap2D;
 };
 

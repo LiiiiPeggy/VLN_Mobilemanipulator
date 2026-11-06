@@ -11,8 +11,21 @@
 
 #include <plan_env/map_ros.h>
 #include <cmath>
+#include <fstream>
+#include <sys/stat.h>
+#include <sstream>
+#include <iomanip>
 
 namespace apexnav_planner {
+
+void MapROS::writePipelineDiagLine(const std::string& line)
+{
+  if (!pipeline_diag_enable_ || pipeline_diag_dir_.empty())
+    return;
+  std::ofstream ofs(pipeline_diag_dir_ + "/map_pipeline_diag.jsonl", std::ios::app);
+  if (ofs.is_open())
+    ofs << line << "\n";
+}
 
 void MapROS::setMap(SDFMap2D* map)
 {
@@ -26,6 +39,14 @@ void MapROS::init()
   node_.param("map_ros/fy", fy_, -1.0);
   node_.param("map_ros/cx", cx_, -1.0);
   node_.param("map_ros/cy", cy_, -1.0);
+  // ################################
+  node_.param("map_ros/pipeline_diag_enable", pipeline_diag_enable_, false);
+  node_.param("map_ros/pipeline_diag_dir", pipeline_diag_dir_, std::string(""));
+  if (pipeline_diag_enable_ && !pipeline_diag_dir_.empty()) {
+    mkdir(pipeline_diag_dir_.c_str(), 0755);
+    ROS_WARN("[MapROS] pipeline_diag_enable=true dir=%s", pipeline_diag_dir_.c_str());
+  }
+  // ################################
 
   // Load depth filtering parameters
   node_.param("map_ros/depth_filter_maxdist", depth_filter_maxdist_, -1.0);
@@ -329,17 +350,86 @@ void MapROS::depthPoseCallback(
 
   auto t1 = ros::Time::now();
 
+  // ################################
+  pipe_raw_valid_ = 0;
+  if (depth_valid_mask_ && depth_valid_mask_->data) {
+    for (int r = 0; r < depth_valid_mask_->rows; ++r) {
+      const uchar* mrow = depth_valid_mask_->ptr<uchar>(r);
+      for (int c = 0; c < depth_valid_mask_->cols; ++c)
+        pipe_raw_valid_ += mrow[c] ? 1 : 0;
+    }
+  } else {
+    pipe_raw_valid_ = -1;  // unavailable
+  }
+  // ################################
+
   // Process depth image into 3D point cloud and filter to 2D representation
   processDepthImage();
+  pipe_proj_pts_ = proj_points_cnt_;
   filterPointCloudToXY();
 
   // Update occupancy grid with filtered depth data
   vector<Eigen::Vector2i> free_grids;
   // Dilate free_grids to ensure more complete coverage
   dilateGrids(free_grids, 1);
+  const int free_before = static_cast<int>(free_grids.size());
   map_->inputDepthCloud2D(filtered_depth_cloud2d_, camera_pos_, free_grids);
+  const int free_after = static_cast<int>(free_grids.size());
+  pipe_rays_in_ = static_cast<int>(filtered_depth_cloud2d_->points.size());
   double process_time = (ros::Time::now() - t1).toSec();
   ROS_INFO_THROTTLE(50.0, "[Calculating Time] Grid Map process time = %.3f s", process_time);
+
+  // ################################
+  if (pipeline_diag_enable_) {
+    pipeline_frame_seq_ += 1;
+    // Local fixed window around camera for layer counts (observe-only).
+    const double win = 3.0;
+    int n_free = 0, n_occ = 0, n_unk = 0, n_inf = 0, n_start_free_cc = -1;
+    Eigen::Vector2i cam_idx;
+    map_->posToIndex(camera_pos, cam_idx);
+    const int start_occ = map_->getOccupancy(camera_pos);
+    const int start_inf = map_->getInflateOccupancy(camera_pos);
+    const double start_dist = map_->getDistance(camera_pos);
+    for (double x = camera_pos.x() - win; x <= camera_pos.x() + win; x += map_->getResolution()) {
+      for (double y = camera_pos.y() - win; y <= camera_pos.y() + win; y += map_->getResolution()) {
+        Eigen::Vector2d p(x, y);
+        if (!map_->isInMap(p))
+          continue;
+        const int occ = map_->getOccupancy(p);
+        if (occ == SDFMap2D::FREE)
+          n_free++;
+        else if (occ == SDFMap2D::OCCUPIED)
+          n_occ++;
+        else
+          n_unk++;
+        if (map_->getInflateOccupancy(p) == 1)
+          n_inf++;
+      }
+    }
+    std::ostringstream oss;
+    oss << std::fixed << std::setprecision(4);
+    oss << "{\"frame_seq\":" << pipeline_frame_seq_ << ",\"stamp\":" << ros::Time::now().toSec()
+        << ",\"camera_pos\":[" << camera_pos_(0) << "," << camera_pos_(1) << "," << camera_pos_(2)
+        << "],\"raw_valid_depth_px\":" << pipe_raw_valid_
+        << ",\"after_selfhit_note\":\"raw_valid excludes NaN/self-hit before uint16\""
+        << ",\"proj_points\":" << pipe_proj_pts_ << ",\"downsampled_pts\":" << pipe_down_pts_
+        << ",\"height_ground_band\":" << pipe_ground_band_
+        << ",\"height_obstacle_band\":" << pipe_obstacle_band_
+        << ",\"height_other\":" << pipe_other_height_
+        << ",\"obstacle_after_outlier\":" << pipe_obstacle_after_outlier_
+        << ",\"rays_into_occupancy\":" << pipe_rays_in_
+        << ",\"free_grids_listed\":" << free_after
+        << ",\"free_grids_before_input\":" << free_before
+        << ",\"window_m\":" << win << ",\"window_free\":" << n_free << ",\"window_occupied\":" << n_occ
+        << ",\"window_unknown\":" << n_unk << ",\"window_inflate\":" << n_inf
+        << ",\"start_raw_occ\":" << start_occ << ",\"start_inflate\":" << start_inf
+        << ",\"start_distance\":" << start_dist
+        << ",\"chassis_connected_free\":\"unavailable\""
+        << ",\"map_layer_ts\":" << ros::Time::now().toSec()
+        << ",\"raycast_num\":" << static_cast<int>(map_->md_->raycast_num_) << "}";
+    writePipelineDiagLine(oss.str());
+  }
+  // ################################
 
   t1 = ros::Time::now();
   // Update semantic value map if ITM score is available
@@ -478,6 +568,10 @@ void MapROS::filterPointCloudToXY()
   voxel_filter.setInputCloud(depth_cloud_);
   voxel_filter.setLeafSize(0.04f, 0.04f, 0.1f);  // Different resolution for XY vs Z
   voxel_filter.filter(*down_depth_cloud_3d);
+  pipe_down_pts_ = static_cast<int>(down_depth_cloud_3d->points.size());
+  pipe_ground_band_ = 0;
+  pipe_obstacle_band_ = 0;
+  pipe_other_height_ = 0;
 
   filtered_depth_cloud2d_->clear();
 
@@ -489,12 +583,18 @@ void MapROS::filterPointCloudToXY()
     pt.z = down_depth_cloud_3d->points[i].z;
 
     // Points below virtual ground (for virtual ground generation)
-    if (down_depth_cloud_3d->points[i].z < cur_floor_height + virtual_ground)
+    if (down_depth_cloud_3d->points[i].z < cur_floor_height + virtual_ground) {
       under_ground_cloud_3d->points.push_back(pt);
+      pipe_ground_band_ += 1;
+    }
     // Points in obstacle height range
     else if (down_depth_cloud_3d->points[i].z > cur_floor_height + filter_min_height_ &&
-             down_depth_cloud_3d->points[i].z < cur_floor_height + filter_max_height_)
+             down_depth_cloud_3d->points[i].z < cur_floor_height + filter_max_height_) {
       filtered_cloud_3d->points.push_back(pt);
+      pipe_obstacle_band_ += 1;
+    } else {
+      pipe_other_height_ += 1;
+    }
   }
 
   pcl::RadiusOutlierRemoval<Point3D> outrem;
@@ -506,6 +606,7 @@ void MapROS::filterPointCloudToXY()
     outrem.setMinNeighborsInRadius(35);  // Minimum neighbor threshold
     outrem.filter(*filtered_cloud_3d);
   }
+  pipe_obstacle_after_outlier_ = static_cast<int>(filtered_cloud_3d->points.size());
 
   publishPointCloud(filtered_depth_cloud_pub_, filtered_cloud_3d);
 

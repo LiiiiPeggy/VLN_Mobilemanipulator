@@ -139,9 +139,12 @@ VLN_Mobilemanipulator/
 | Habitat HFOV=79° 方像素：fx=fy≈388.191，VFOV≈63.45°（**禁止** HFOV×H/W 得 fy） | `camera_model.pinhole_from_hfov`；launch fy=fx |
 | Optical→ROS：`R_ros=C@R_optical`（勿用 `C@R@C.T` 发 camera pose）；render=`optical@Rx(π)` | `hab_optical_rot_to_ros`；`mat4_hab_optical_to_ros_pose` |
 | `/habitat/odom` 默认真实底盘 XY；旧相机 XY 代理仅 `legacy_camera_xy_proxy` | `ros_dynamic_publisher` |
-| ApexNav TURN=π/6≈30° → 水平重叠≈49°（HFOV 未变）；旧 VFOV=59.25° 结论已降级 | `habitat_rangercr10_camera_odom_coord_fix.md` |
-| LOOK pitch 用 **joint3 ±0.60**；仅 PPO 抬臂不做 TURN_DOWN 时光轴朝上→高度滤波清空地图 | `apexnav_real_episode._execute_action` |
+| ApexNav TURN=π/6≈30° → 水平重叠 **49° ≈ HFOV 的 62%**（勿写「49%」）；旧 VFOV=59.25° 已降级 | `habitat_rangercr10_camera_odom_coord_fix.md` |
+| LOOK pitch 用 **joint3 ±0.60**；缺 TURN_DOWN 时高度滤波易清空地图；「未 TURN_DOWN 光轴朝上」**待实际光轴测量验证** | `apexnav_real_episode._execute_action` |
 | `planner_first_call_diag` 是 Python 近似，不是 C++ frontier/A* 正式结果 | `planner_first_call_diag.py` 头注释 |
+| 原生规划诊断：`exploration/plan_diag_*` → `native_plan_diag.jsonl`；建图流水线 `map_ros/pipeline_diag_*` | 可关；不改决策 |
+| a5e291b 后运行时几何验收通过；yr17 30° 可持续探索；eF36/HY1 仍 NO_PASSABLE（底盘起点 UNKNOWN） | `habitat_rangercr10_geomreg_30deg_native_plan.md` |
+| GRID_STATE：UNKNOWN=0 FREE=1 OCCUPIED=2；勿把 unknown 拒绝计数当成唯一失败原因 | `sdf_map2d.h`；native plan diag |
 | GT occ 探针是 navmesh **邻域**审计，不是 precise false-occupied rate | `gt_false_occupied_probe` |
 | ITM cosine 须在同帧 RGB-D 之前发布到 `/blip2/cosine_score`，否则 value_map 融旧分 | `apexnav_real_episode` 发布顺序；`value_map2d.cpp` |
 | 7fps 离线重渲染勿对已含价值热力的 paper map 做 legacy 重映射 | `demo_7fps_from_run._is_paper_or_value_map` |
@@ -166,7 +169,7 @@ VLN_Mobilemanipulator/
 | 0.7× FK：抬臂后 TCP AGL≈0.811 m（目标 0.88±0.02 未达）；D455 optical≈0.881 m 且水平（≠TCP） | `ppo_raise_habitat_fk_070.json`；`apexnav_rangercr10_ppo_raise_s070.md` |
 | PPO/ApexNav 交接：抬臂完成保持 `arm_q`，再 26 步环视；二者不同时控底盘/臂 | `--ppo_raise_json`；`handover.json` |
 | ROS Z 必须发 **AGL**（`hab_y - floor_y`）；绝对 Habitat Y 会使 map_ros 高度滤波错位 | `coord_habitat_ros.hab_pos_to_ros` |
-| 臂载 D455：规划 `/odom_world` 平面 XY 用相机投影，避免底盘落在 UNKNOWN | `ros_dynamic_publisher`（`odom_xy_source=d455_optical_xy_ground_proxy`） |
+| `/habitat/odom` 默认真实底盘 XY（`odom_xy_mode=chassis`）；旧相机 XY 代理仅 `legacy_camera_xy_proxy` | `ros_dynamic_publisher`（a5e291b 后） |
 | Habitat `depth_sensor.min_depth` 会覆盖 `map_ros/depth_filter_mindist`；近距/无效深度须在适配层处理 | 无效→**NaN**（禁改写 5 m/0）；`depth_validity.py` 几何自遮挡；`map_ros` 跳过 NaN |
 | 近距改写为 max-range 会在环视中产生虚假占据终点/自由射线 | `habitat_rangercr10_depth_radial_fix.md`；采用 `..._depthfix4_*` |
 | catkin 前缀：`/workspace/ApexNav` → `baselines/ApexNav` | devel 路径 |

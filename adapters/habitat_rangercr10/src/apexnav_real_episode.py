@@ -838,10 +838,18 @@ class ApexNavRangerBridge:
                     if step < APEXNAV_INIT_LOOKAROUND_ACTIONS
                     else "explore_planner"
                 )
+                # ################################
+                # Bound formal explore decisions (lookaround excluded).
+                # ################################
+                max_explore = int(getattr(args, "max_explore_actions", 0) or 0)
                 if phase == "init_lookaround":
                     self.n_init_actions += 1
                 else:
+                    if max_explore > 0 and self.n_explore_actions >= max_explore:
+                        self.termination = "explore_budget_exhausted"
+                        break
                     self.n_explore_actions += 1
+
                 (self.out / "actions.jsonl").open("a").write(
                     json.dumps(
                         {
@@ -1207,6 +1215,10 @@ def main(argv=None) -> int:
     p.add_argument("--ppo_raise_json", default="")
     p.add_argument("--gpu", type=int, default=0)
     p.add_argument("--max_steps", type=int, default=40)
+    # ################################
+    # Max explore_planner decisions after 26-step init lookaround (0=unlimited).
+    # ################################
+    p.add_argument("--max_explore_actions", type=int, default=20)
     p.add_argument("--success_distance", type=float, default=1.0)
     p.add_argument("--handshake_timeout_s", type=float, default=120.0)
     p.add_argument("--action_timeout_s", type=float, default=90.0)

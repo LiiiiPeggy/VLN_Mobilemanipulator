@@ -14,12 +14,83 @@
 #include <plan_env/map_ros.h>
 #include <path_searching/kino_astar.h>
 #include <trajectory_manager/optimizer.h>
+#include <sys/stat.h>
+#include <sstream>
+#include <iomanip>
 
 using namespace Eigen;
 
 namespace apexnav_planner {
 
 ExplorationManager::~ExplorationManager() = default;
+
+void ExplorationManager::writePlanDiagLine(const std::string& line)
+{
+  if (!plan_diag_enable_ || plan_diag_dir_.empty())
+    return;
+  std::string path = plan_diag_dir_ + "/native_plan_diag.jsonl";
+  std::ofstream ofs(path, std::ios::app);
+  if (ofs.is_open())
+    ofs << line << "\n";
+}
+
+void ExplorationManager::appendCandidateDiag(const std::string& mode, const Vector2d& candidate,
+    int ret_code, double search_time, double path_len, bool success)
+{
+  if (!plan_diag_enable_)
+    return;
+  const auto& st = path_finder_->getRejectStats();
+  std::ostringstream oss;
+  oss << std::fixed << std::setprecision(4);
+  oss << "{\"mode\":\"" << mode << "\",\"candidate\":[" << candidate.x() << "," << candidate.y()
+      << "],\"raw_return_code\":" << ret_code
+      << ",\"raw_return\":\"" << (ret_code == Astar2D::REACH_END ? "REACH_END" : "NO_PATH")
+      << "\",\"success\":" << (success ? "true" : "false") << ",\"search_time_s\":" << search_time
+      << ",\"path_length_m\":" << path_len << ",\"nodes\":" << path_finder_->getUseNodeNum()
+      << ",\"iters\":" << path_finder_->getIterNum()
+      << ",\"reject_counts_inferred\":{\"occupied\":" << st.occupied << ",\"inflate\":" << st.inflate
+      << ",\"unknown\":" << st.unknown << ",\"out_of_bounds\":" << st.out_of_bounds
+      << ",\"time_budget\":" << st.time_budget << ",\"node_pool\":" << st.node_pool
+      << "},\"note\":\"reject_counts_inferred from neighbor safety checks; not sole failure cause\"}";
+  plan_diag_candidate_lines_.push_back(oss.str());
+}
+
+void ExplorationManager::flushPlanDiag(const std::string& result_name, const Vector2d& chassis_xy,
+    const Vector2d& selected_goal, const vector<Vector2d>& selected_path,
+    const std::string& stop_reason)
+{
+  if (!plan_diag_enable_)
+    return;
+  const int start_occ = sdf_map_->getOccupancy(chassis_xy);
+  const int start_inf = sdf_map_->getInflateOccupancy(chassis_xy);
+  const double start_dist = sdf_map_->getDistance(chassis_xy);
+  int reachable = 0;
+  for (const auto& line : plan_diag_candidate_lines_) {
+    if (line.find("\"success\":true") != std::string::npos)
+      reachable += 1;
+  }
+  std::ostringstream oss;
+  oss << std::fixed << std::setprecision(4);
+  oss << "{\"plan_seq\":" << plan_diag_seq_ << ",\"stamp\":" << ros::Time::now().toSec()
+      << ",\"result\":\"" << result_name << "\",\"stop_reason\":\"" << stop_reason << "\""
+      << ",\"chassis_start\":[" << chassis_xy.x() << "," << chassis_xy.y() << "]"
+      << ",\"start_raw_occ\":" << start_occ << ",\"start_inflate\":" << start_inf
+      << ",\"start_distance\":" << start_dist
+      << ",\"start_occ_legend\":\"0=UNKNOWN,1=FREE,2=OCCUPIED? check GRID_STATE enum order UNKNOWN=0 FREE=1 OCCUPIED=2\""
+      << ",\"n_active_frontiers\":" << ed_->frontier_averages_.size()
+      << ",\"n_dormant_frontiers\":" << ed_->dormant_frontier_averages_.size()
+      << ",\"n_candidate_searches\":" << plan_diag_candidate_lines_.size()
+      << ",\"n_reachable_candidates\":" << reachable
+      << ",\"selected_goal\":[" << selected_goal.x() << "," << selected_goal.y() << "]"
+      << ",\"selected_path_len\":" << Astar2D::pathLength(selected_path) << ",\"candidates\":[";
+  for (size_t i = 0; i < plan_diag_candidate_lines_.size(); ++i) {
+    if (i)
+      oss << ",";
+    oss << plan_diag_candidate_lines_[i];
+  }
+  oss << "]}";
+  writePlanDiagLine(oss.str());
+}
 
 void ExplorationManager::initialize(ros::NodeHandle& nh)
 {
@@ -43,6 +114,16 @@ void ExplorationManager::initialize(ros::NodeHandle& nh)
   nh.param("exploration/max_to_mean_threshold", ep_->max_to_mean_threshold_, 1.2);
   nh.param("exploration/max_to_mean_percentage", ep_->max_to_mean_percentage_, 0.95);
   nh.param("exploration/tsp_dir", ep_->tsp_dir_, string("null"));
+  // ################################
+  nh.param("exploration/plan_diag_enable", plan_diag_enable_, false);
+  nh.param("exploration/plan_diag_dir", plan_diag_dir_, std::string(""));
+  if (plan_diag_enable_) {
+    path_finder_->setCountRejects(true);
+    if (!plan_diag_dir_.empty())
+      mkdir(plan_diag_dir_.c_str(), 0755);
+    ROS_WARN("[ExplorationManager] plan_diag_enable=true dir=%s", plan_diag_dir_.c_str());
+  }
+  // ################################
 
   // Get map parameters for ray casting initialization
   double resolution = sdf_map_->getResolution();
@@ -69,6 +150,10 @@ int ExplorationManager::planNextBestPoint(const Vector3d& pos, const double& yaw
   Vector2d pos2d = Vector2d(pos(0), pos(1));
   ros::Time t1 = ros::Time::now();
   auto t2 = t1;
+  plan_diag_candidate_lines_.clear();
+  plan_diag_mode_tag_.clear();
+  plan_diag_seq_ += 1;
+  const int this_plan_seq = plan_diag_seq_;
 
   // Clear previous planning results
   ed_->tsp_tour_.clear();
@@ -82,8 +167,11 @@ int ExplorationManager::planNextBestPoint(const Vector3d& pos, const double& yaw
 
     // Try to find path to each detected object in order of confidence
     for (auto object_cloud : object_clouds) {
-      if (searchObjectPath(pos, object_cloud, ed_->next_pos_, ed_->next_best_path_))
+      if (searchObjectPath(pos, object_cloud, ed_->next_pos_, ed_->next_best_path_)) {
+        flushPlanDiag("SEARCH_BEST_OBJECT", pos2d, ed_->next_pos_, ed_->next_best_path_,
+            "object_path_ok");
         return SEARCH_BEST_OBJECT;
+      }
     }
   }
 
@@ -91,8 +179,11 @@ int ExplorationManager::planNextBestPoint(const Vector3d& pos, const double& yaw
   if (!object_map2d_->over_depth_object_cloud_->points.empty()) {
     ROS_WARN("[Navigation Mode (Over Depth)] Get over depth object cloud");
     if (searchObjectPath(
-            pos, object_map2d_->over_depth_object_cloud_, ed_->next_pos_, ed_->next_best_path_))
+            pos, object_map2d_->over_depth_object_cloud_, ed_->next_pos_, ed_->next_best_path_)) {
+      flushPlanDiag("SEARCH_OVER_DEPTH_OBJECT", pos2d, ed_->next_pos_, ed_->next_best_path_,
+          "over_depth_object_ok");
       return SEARCH_OVER_DEPTH_OBJECT;
+    }
   }
 
   // ==================== Exploration Mode: Frontier-Based Planning ====================
@@ -105,6 +196,7 @@ int ExplorationManager::planNextBestPoint(const Vector3d& pos, const double& yaw
   // Apply selected exploration policy to choose next frontier
   Eigen::Vector2d next_best_pos;
   std::vector<Eigen::Vector2d> next_best_path;
+  plan_diag_mode_tag_ = "active_frontier";
   chooseExplorationPolicy(pos2d, ed_->frontier_averages_, next_best_pos, next_best_path);
 
   // Handle case when no passable frontiers are found
@@ -113,12 +205,17 @@ int ExplorationManager::planNextBestPoint(const Vector3d& pos, const double& yaw
 
     // Try suspicious objects as backup
     if (!top_object_cloud->points.empty() &&
-        searchObjectPath(pos, top_object_cloud, ed_->next_pos_, ed_->next_best_path_))
+        searchObjectPath(pos, top_object_cloud, ed_->next_pos_, ed_->next_best_path_)) {
+      flushPlanDiag("SEARCH_SUSPICIOUS_OBJECT", pos2d, ed_->next_pos_, ed_->next_best_path_,
+          "suspicious_object_ok");
       return SEARCH_SUSPICIOUS_OBJECT;
-    else
+    }
+    else {
       // Try dormant frontiers as last resort
+      plan_diag_mode_tag_ = "dormant_frontier";
       chooseExplorationPolicy(
           pos2d, ed_->dormant_frontier_averages_, next_best_pos, next_best_path);
+    }
 
     // Extreme search mode when all normal options fail
     if (next_best_path.empty()) {
@@ -127,16 +224,22 @@ int ExplorationManager::planNextBestPoint(const Vector3d& pos, const double& yaw
       // Try extreme object search with relaxed constraints
       for (auto object_cloud : object_clouds) {
         if (!object_cloud->points.empty() &&
-            searchObjectPathExtreme(pos, object_cloud, ed_->next_pos_, ed_->next_best_path_))
+            searchObjectPathExtreme(pos, object_cloud, ed_->next_pos_, ed_->next_best_path_)) {
+          flushPlanDiag(
+              "SEARCH_EXTREME", pos2d, ed_->next_pos_, ed_->next_best_path_, "extreme_object");
           return SEARCH_EXTREME;
+        }
       }
 
       // Include lower confidence objects in extreme search
       sdf_map_->object_map2d_->getTopConfidenceObjectCloud(object_clouds, false, true);
       for (auto object_cloud : object_clouds) {
         if (!object_cloud->points.empty() &&
-            searchObjectPathExtreme(pos, object_cloud, ed_->next_pos_, ed_->next_best_path_))
+            searchObjectPathExtreme(pos, object_cloud, ed_->next_pos_, ed_->next_best_path_)) {
+          flushPlanDiag("SEARCH_EXTREME", pos2d, ed_->next_pos_, ed_->next_best_path_,
+              "extreme_low_conf_object");
           return SEARCH_EXTREME;
+        }
       }
 
       // Try cached over-depth objects as final option
@@ -147,6 +250,8 @@ int ExplorationManager::planNextBestPoint(const Vector3d& pos, const double& yaw
       if (!last_over_depth_object_cloud->points.empty() &&
           searchObjectPathExtreme(
               pos, last_over_depth_object_cloud, ed_->next_pos_, ed_->next_best_path_)) {
+        flushPlanDiag("SEARCH_EXTREME", pos2d, ed_->next_pos_, ed_->next_best_path_,
+            "extreme_over_depth");
         return SEARCH_EXTREME;
       }
     }
@@ -155,10 +260,14 @@ int ExplorationManager::planNextBestPoint(const Vector3d& pos, const double& yaw
     if (next_best_path.empty()) {
       if (ed_->frontiers_.empty()) {
         ROS_ERROR("No coverable frontier!!");
+        flushPlanDiag("NO_COVERABLE_FRONTIER", pos2d, Vector2d(0, 0), next_best_path,
+            "frontiers_empty");
         return NO_COVERABLE_FRONTIER;
       }
       else {
         ROS_ERROR("No passable frontier!!");
+        flushPlanDiag("NO_PASSABLE_FRONTIER", pos2d, Vector2d(0, 0), next_best_path,
+            "all_frontier_searches_failed");
         return NO_PASSABLE_FRONTIER;
       }
     }
@@ -172,7 +281,26 @@ int ExplorationManager::planNextBestPoint(const Vector3d& pos, const double& yaw
   double total_time = (ros::Time::now() - t2).toSec();
   ROS_ERROR_COND(total_time > 0.25, "[Plan NBV] Total time %.2lf s too long!!!", total_time);
 
+  flushPlanDiag("EXPLORATION", pos2d, next_best_pos, next_best_path, "frontier_path_ok");
+  (void)this_plan_seq;
   return EXPLORATION;
+}
+
+bool ExplorationManager::searchFrontierPath(const Vector2d& start, const Vector2d& end,
+    Eigen::Vector2d& refined_pos, std::vector<Eigen::Vector2d>& refined_path)
+{
+  path_finder_->reset();
+  const int ret = path_finder_->astarSearch(start, end, 0.25, 0.01);
+  const bool ok = (ret == Astar2D::REACH_END);
+  double plen = 0.0;
+  if (ok) {
+    refined_pos = end;
+    refined_path = path_finder_->getPath();
+    plen = Astar2D::pathLength(refined_path);
+  }
+  appendCandidateDiag(plan_diag_mode_tag_.empty() ? "frontier" : plan_diag_mode_tag_, end, ret,
+      path_finder_->getLastSearchTime(), plen, ok);
+  return ok;
 }
 
 void ExplorationManager::chooseExplorationPolicy(Vector2d cur_pos, vector<Vector2d> frontiers,

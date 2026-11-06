@@ -65,8 +65,7 @@ def main() -> None:
     )
 
     ee = env.observe_ee_only()
-    cam = env.camera_world_matrix()
-    ee_T = cam @ mn.Matrix4.rotation_x(mn.Rad(math.pi))
+    cam = env.camera_world_matrix()  # optical
     meta = None
     for _ in range(20):
         meta = pub.publish(
@@ -74,7 +73,7 @@ def main() -> None:
             depth_m=ee["ee_depth"],
             base_pos_hab=env.base_xyz,
             base_yaw_hab=env.base_yaw,
-            camera_T_hab=ee_T,
+            camera_T_hab=cam,
             raw_camera_T_hab=cam,
         )
         conf.publish(Float64(0.35))

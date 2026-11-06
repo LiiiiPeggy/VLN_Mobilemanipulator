@@ -1,7 +1,10 @@
-"""Static-object 3D consistency under base/arm motion (adapter diagnostic).
+"""Same static 3D point consistency under base/arm motion (adapter diagnostic).
 
-Projects a fixed image patch through dynamic EE FK before/after a base move and
-an arm tweak; records Euclidean drift. Does NOT feed GT into ApexNav.
+################################
+Uses ONE world point chosen at init (center pixel unprojected via OPTICAL pose),
+then reprojects that same point into later views. Does NOT treat different
+center image patches as the same object. Does NOT feed GT into ApexNav.
+################################
 """
 
 from __future__ import annotations
@@ -9,33 +12,37 @@ from __future__ import annotations
 import argparse
 import json
 import math
-import os
 from pathlib import Path
 
 import numpy as np
 from PIL import Image
 
-from .constants import ARM_APEXNAV_INIT, DEFAULT_OUT_DIR, DEFAULT_SCENE, URDF_HABITAT
+from .camera_model import pinhole_from_hfov, project_optical, unproject_optical
+from .constants import DEFAULT_OUT_DIR, DEFAULT_SCENE, URDF_HABITAT
 from .initial_camera_pose import apply_and_record_initial_camera
 from .kinematic_demo import DEFAULT_BASE_Y, RangerCr10KinematicEnv
 from .pointcloud_dynamic import object_clouds_from_masks
 
 
-def _center_patch_mask(h: int, w: int, size: int = 40) -> np.ndarray:
-    m = np.zeros((h, w), dtype=np.uint8)
-    cy, cx = h // 2, w // 2
-    m[cy - size // 2 : cy + size // 2, cx - size // 2 : cx + size // 2] = 1
-    return m
+def _optical_Rp(env):
+    T = env.camera_world_matrix()
+    R = np.array(T.rotation(), dtype=np.float64).reshape(3, 3)
+    p = np.array([T.translation.x, T.translation.y, T.translation.z], dtype=np.float64)
+    return R, p
 
 
-def _cloud_centroid(pc_msg) -> np.ndarray:
-    raw = np.frombuffer(pc_msg.data, dtype=np.float32)
-    if raw.size < 4:
-        return np.array([np.nan, np.nan, np.nan])
-    pts = raw.reshape(-1, 4)[:, :3]
-    if pts.shape[0] == 0:
-        return np.array([np.nan, np.nan, np.nan])
-    return pts.mean(axis=0)
+def _world_from_optical(R_hab, p_hab, p_opt):
+    return R_hab @ p_opt + p_hab
+
+
+def _project_world_to_optical_uv(R_hab, p_hab, p_w, K):
+    R_cw = R_hab.T
+    t_cw = -R_cw @ p_hab
+    p_opt = R_cw @ p_w + t_cw
+    if p_opt[2] <= 1e-6:
+        return float("nan"), float("nan"), float(p_opt[2])
+    u, v = project_optical(p_opt, K)
+    return u, v, float(p_opt[2])
 
 
 def run(args: argparse.Namespace) -> dict:
@@ -44,6 +51,42 @@ def run(args: argparse.Namespace) -> dict:
     env = RangerCr10KinematicEnv(scene=args.scene, urdf=args.urdf, gpu_device_id=args.gpu)
     env.set_base_pose(args.x, args.z, 0.0, y=DEFAULT_BASE_Y)
     apply_and_record_initial_camera(env, out / "camera_init")
+
+    obs0 = env.observe_ee_only()
+    depth0 = np.asarray(obs0["ee_depth"], dtype=np.float32)
+    if depth0.ndim == 3:
+        depth0 = depth0[..., 0]
+    h, w = depth0.shape
+    K = pinhole_from_hfov(w, h, 79.0)
+    u0, v0 = w / 2.0, h / 2.0
+    d0 = float(depth0[int(v0), int(u0)])
+    R0, p0 = _optical_Rp(env)
+    if not np.isfinite(d0) or d0 < 0.2:
+        # fall back: scan for a finite center neighborhood depth
+        d0 = float("nan")
+        for rad in range(0, 40):
+            for vv in range(max(0, int(v0) - rad), min(h, int(v0) + rad + 1)):
+                for uu in range(max(0, int(u0) - rad), min(w, int(u0) + rad + 1)):
+                    dd = float(depth0[vv, uu])
+                    if np.isfinite(dd) and dd > 0.2:
+                        u0, v0, d0 = float(uu), float(vv), dd
+                        break
+                if np.isfinite(d0):
+                    break
+            if np.isfinite(d0):
+                break
+    if not np.isfinite(d0):
+        summary = {"status": "fail", "error": "no_finite_seed_depth"}
+        (out / "summary.json").write_text(json.dumps(summary, indent=2))
+        return summary
+
+    p_opt0 = unproject_optical(u0, v0, d0, K)
+    p_world = _world_from_optical(R0, p0, p_opt0)
+    # also project a 3×3 mask around seed for cloud sanity (optical pose)
+    mask = np.zeros((h, w), dtype=np.uint8)
+    ui, vi = int(u0), int(v0)
+    mask[max(0, vi - 1) : vi + 2, max(0, ui - 1) : ui + 2] = 1
+    clouds0 = object_clouds_from_masks(depth0, [mask], env.camera_world_matrix(), hfov_deg=79.0)
 
     records = []
     for tag, mover in [
@@ -61,38 +104,49 @@ def run(args: argparse.Namespace) -> dict:
         obs = env.observe_ee_only()
         rgb, depth = obs["ee_rgb"], obs["ee_depth"]
         Image.fromarray(rgb[..., :3]).save(out / f"{tag}_rgb.png")
-        h, w = depth.shape[:2]
-        mask = _center_patch_mask(h, w)
-        clouds = object_clouds_from_masks(depth, [mask], obs["ee_T"], hfov_deg=79.0)
-        c = _cloud_centroid(clouds[0])
-        T = env.camera_world_matrix()
+        R, p = _optical_Rp(env)
+        uu, vv, z_cam = _project_world_to_optical_uv(R, p, p_world, K)
         records.append(
             {
                 "tag": tag,
-                "centroid_ros": c.tolist(),
-                "cam_pos": [T.translation.x, T.translation.y, T.translation.z],
+                "reproject_uv": [uu, vv],
+                "optical_z": z_cam,
+                "cam_pos_hab": p.tolist(),
                 "arm": env.arm_q.tolist(),
                 "base": env.base_xyz.tolist() + [env.base_yaw],
             }
         )
 
-    c0 = np.array(records[0]["centroid_ros"])
     drifts = {}
+    u_ref, v_ref = records[0]["reproject_uv"]
     for r in records[1:]:
-        c = np.array(r["centroid_ros"])
+        uu, vv = r["reproject_uv"]
         drifts[r["tag"]] = {
-            "delta_m": (c - c0).tolist(),
-            "norm_m": float(np.linalg.norm(c - c0)) if np.isfinite(c).all() else None,
+            "du_px": None if not np.isfinite(uu) else float(uu - u_ref),
+            "dv_px": None if not np.isfinite(vv) else float(vv - v_ref),
+            "pixel_err": None
+            if not (np.isfinite(uu) and np.isfinite(vv))
+            else float(math.hypot(uu - u_ref, vv - v_ref)),
         }
     summary = {
         "status": "ok",
+        "method": "same_world_point_reprojection",
+        "seed_uvd": [u0, v0, d0],
+        "seed_world_hab": p_world.tolist(),
+        "seed_cloud_width": int(getattr(clouds0[0], "width", 0) or 0),
         "records": records,
-        "drifts_vs_init": drifts,
-        "note": "Center-patch proxy; large drift may indicate projection/frame bugs.",
+        "drifts_vs_init_px": drifts,
+        "note": (
+            "Same Habitat world point reprojected via OPTICAL FK+K. "
+            "Not center-patch-as-same-object."
+        ),
         "out_dir": str(out),
     }
     (out / "summary.json").write_text(json.dumps(summary, indent=2))
-    env.close()
+    try:
+        env.close()
+    except Exception:
+        pass
     return summary
 
 

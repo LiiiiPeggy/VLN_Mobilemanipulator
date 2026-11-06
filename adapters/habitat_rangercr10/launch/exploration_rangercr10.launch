@@ -13,6 +13,13 @@
   <arg name="depth_topic" value="/habitat/camera_depth"/>
   <arg name="ranger_overlay"
        default="/workspace/VLN_Mobilemanipulator/adapters/habitat_rangercr10/config/apexnav_rangercr10_overlay.yaml"/>
+  <!-- ################################
+    Native C++ plan + map pipeline diagnostics (observe-only).
+  ################################ -->
+  <arg name="plan_diag_enable" default="false"/>
+  <arg name="plan_diag_dir" default=""/>
+  <arg name="pipeline_diag_enable" default="false"/>
+  <arg name="pipeline_diag_dir" default=""/>
 
   <group unless="$(arg is_real_world)">
     <rosparam file="$(find exploration_manager)/../../../config/habitat_eval_hm3dv2.yaml" command="load"/>
@@ -39,5 +46,9 @@
     <arg name="cy_" value="240"/>
     <arg name="fx_" value="388.1910413097385"/>
     <arg name="fy_" value="388.1910413097385"/>
+    <arg name="plan_diag_enable_" value="$(arg plan_diag_enable)"/>
+    <arg name="plan_diag_dir_" value="$(arg plan_diag_dir)"/>
+    <arg name="pipeline_diag_enable_" value="$(arg pipeline_diag_enable)"/>
+    <arg name="pipeline_diag_dir_" value="$(arg pipeline_diag_dir)"/>
   </include>
 </launch>

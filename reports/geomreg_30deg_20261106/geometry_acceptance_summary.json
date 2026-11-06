@@ -1,0 +1,312 @@
+{
+  "status": "ok",
+  "projection": {
+    "habitat_sensor": {
+      "available": true,
+      "camera_matrix": [
+        0.9768401384353638,
+        -0.2095198780298233,
+        -0.04341500252485275,
+        12.115392684936523,
+        0.1631462574005127,
+        0.8606008291244507,
+        -0.48244112730026245,
+        1.1550761461257935,
+        0.1384439915418625,
+        0.46418482065200806,
+        0.8748518228530884,
+        4.091318130493164,
+        -0.0,
+        0.0,
+        -0.0,
+        1.0
+      ],
+      "hfov_deg": 79.0,
+      "resolution": [
+        480,
+        640
+      ]
+    },
+    "analytic_K": {
+      "fx": 388.1910413097385,
+      "fy": 388.1910413097385,
+      "cx": 320.0,
+      "cy": 240.0,
+      "width": 640.0,
+      "height": 480.0,
+      "hfov_deg": 79.0,
+      "vfov_deg": 63.453048374758716,
+      "pixel_model": "square_pixels_from_hfov",
+      "source": "camera_model.pinhole_from_hfov"
+    },
+    "ros_K": {
+      "available": true,
+      "fx": 388.1910413097385,
+      "fy": 388.1910413097385,
+      "cx": 320.0,
+      "cy": 240.0,
+      "stamp": 1793938865.7514973
+    },
+    "K_abs_err": {
+      "fx": 0.0,
+      "fy": 0.0,
+      "cx": 0.0,
+      "cy": 0.0
+    },
+    "rays": {
+      "center": {
+        "uv": [
+          320.0,
+          240.0
+        ],
+        "dir_optical": [
+          0.0,
+          0.0,
+          0.9999999999989999
+        ],
+        "dir_hab_world": [
+          -0.13844400644288524,
+          -0.464184910058511,
+          -0.8748517632475686
+        ],
+        "dir_ros_world_from_sensor_pose": [
+          0.8748517632475686,
+          0.13844400644288524,
+          -0.464184910058511
+        ],
+        "map_ros_unit_depth_world": [
+          3.370902359485626,
+          12.728110373020172,
+          0.13265344606399532
+        ],
+        "angle_err_deg_sensor_vs_mapros": 0.00011459347208369784
+      },
+      "tl": {
+        "uv": [
+          0.5,
+          0.5
+        ],
+        "dir_optical": [
+          -0.5737160811405352,
+          -0.43006260229470483,
+          0.6970624192616176
+        ],
+        "dir_hab_world": [
+          -0.5867698783873425,
+          0.16675129906410935,
+          -0.7923983180362861
+        ],
+        "dir_ros_world_from_sensor_pose": [
+          0.792398318036286,
+          0.5867698783873426,
+          0.16675129906410938
+        ],
+        "map_ros_unit_depth_world": [
+          3.632818690657845,
+          13.431441596704882,
+          0.8360583950410709
+        ],
+        "angle_err_deg_sensor_vs_mapros": 0.00010555764020227493
+      },
+      "tr": {
+        "uv": [
+          639.5,
+          0.5
+        ],
+        "dir_optical": [
+          0.5737160811405352,
+          -0.43006260229470483,
+          0.6970624192616176
+        ],
+        "dir_hab_world": [
+          0.5340878454682005,
+          -0.07365854762451696,
+          -0.8422141053568877
+        ],
+        "dir_ros_world_from_sensor_pose": [
+          0.8422141053568876,
+          -0.5340878454682005,
+          -0.07365854762451694
+        ],
+        "map_ros_unit_depth_world": [
+          3.7042840084601885,
+          11.823468346557725,
+          0.4911684109514294
+        ],
+        "angle_err_deg_sensor_vs_mapros": 0.00010556454548735099
+      },
+      "bl": {
+        "uv": [
+          0.5,
+          479.5
+        ],
+        "dir_optical": [
+          -0.5737160811405352,
+          0.43006260229470483,
+          0.6970624192616176
+        ],
+        "dir_hab_world": [
+          -0.7270960735950907,
+          -0.5734731651563744,
+          -0.3774384678136165
+        ],
+        "dir_ros_world_from_sensor_pose": [
+          0.37743846781361645,
+          0.7270960735950907,
+          -0.5734731651563744
+        ],
+        "map_ros_unit_depth_world": [
+          3.037520710511064,
+          13.63275239948262,
+          -0.22586151882343874
+        ],
+        "angle_err_deg_sensor_vs_mapros": 0.00010556454548735099
+      },
+      "br": {
+        "uv": [
+          639.5,
+          479.5
+        ],
+        "dir_optical": [
+          0.5737160811405352,
+          0.43006260229470483,
+          0.6970624192616176
+        ],
+        "dir_hab_world": [
+          0.3937616502604524,
+          -0.8138830118450007,
+          -0.42725425513421805
+        ],
+        "dir_ros_world_from_sensor_pose": [
+          0.427254255134218,
+          -0.39376165026045246,
+          -0.8138830118450007
+        ],
+        "map_ros_unit_depth_world": [
+          3.1089860283134074,
+          12.024779149335462,
+          -0.5707515029130802
+        ],
+        "angle_err_deg_sensor_vs_mapros": 0.00010556109290127667
+      },
+      "left_mid": {
+        "uv": [
+          0.5,
+          240.0
+        ],
+        "dir_optical": [
+          -0.6354859028440327,
+          0.0,
+          0.7721124706187306
+        ],
+        "dir_hab_world": [
+          -0.727662443287054,
+          -0.2252560288760147,
+          -0.6478943248009487
+        ],
+        "dir_ros_world_from_sensor_pose": [
+          0.6478943248009487,
+          0.7276624432870541,
+          -0.2252560288760147
+        ],
+        "map_ros_unit_depth_world": [
+          3.335169700584455,
+          13.53209699809375,
+          0.3050984381088161
+        ],
+        "angle_err_deg_sensor_vs_mapros": 0.00010786645310688594
+      },
+      "right_mid": {
+        "uv": [
+          639.5,
+          240.0
+        ],
+        "dir_optical": [
+          0.6354859028440327,
+          0.0,
+          0.7721124706187306
+        ],
+        "dir_hab_world": [
+          0.5138737555728972,
+          -0.4915498865831225,
+          -0.7030735878928683
+        ],
+        "dir_ros_world_from_sensor_pose": [
+          0.7030735878928684,
+          -0.513873755572897,
+          -0.4915498865831225
+        ],
+        "map_ros_unit_depth_world": [
+          3.4066350183867975,
+          11.924123747946593,
+          -0.03979154598082546
+        ],
+        "angle_err_deg_sensor_vs_mapros": 0.0001078698319053991
+      }
+    },
+    "max_sensor_vs_mapros_angle_err_deg": 0.00011459347208369784,
+    "pass": true,
+    "note": "Rays from analytic optical K+FK vs map_ros unproject; Habitat P matrix recorded separately when available."
+  },
+  "odom_motion": {
+    "turn_inplace": {
+      "odom_xy_delta_m": 0.0,
+      "odom_yaw_delta_deg": 29.999999999999993,
+      "cam_pos_delta_m": 0.2192137744690866,
+      "pass_xy_static": true
+    },
+    "arm_only": {
+      "odom_xy_delta_m": 0.0,
+      "cam_pos_delta_m": 0.0260600272753515,
+      "pass_xy_static": true,
+      "pass_cam_moved": true
+    },
+    "move_forward_0p25": {
+      "odom_delta_xy": [
+        0.1993927975959937,
+        0.1508062076535417
+      ],
+      "odom_delta_norm_m": 0.2500000000000001,
+      "expected_norm_m": 0.25,
+      "norm_err_m": 1.1102230246251565e-16,
+      "pass": true
+    }
+  },
+  "odom_pass": true,
+  "self_hit": {
+    "prep_stats": {
+      "n_pixels": 307200.0,
+      "n_invalid_range": 0.0,
+      "n_self_hit": 11030.0,
+      "n_nan_published": 11030.0,
+      "frac_invalid_range": 0.0,
+      "frac_self_hit": 0.035904947916666666,
+      "frac_nan_published": 0.035904947916666666,
+      "geometric_self_hit": 1.0,
+      "fallback_near_m": 0.0,
+      "camera_frame": "optical",
+      "note": "invalid\u2192NaN; never rewritten as max-range"
+    },
+    "n_masked": 11030,
+    "geometric_self_hit": true,
+    "fallback_used": false,
+    "pose_ros": {
+      "position": [
+        2.712345600128174,
+        12.93705940246582,
+        0.593257458076477
+      ],
+      "quat_xyzw": [
+        0.7071493351037675,
+        -0.4927778860770853,
+        0.22048758998175771,
+        -0.45661252229624066
+      ],
+      "note": "optical pose for map_ros"
+    },
+    "status": "ok_geometric"
+  },
+  "floor_y": -0.95161,
+  "out_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/geometry_accept_20261106_post_a5e291b",
+  "timestamp": 1793938866.016762
+}

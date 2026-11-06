@@ -1,0 +1,110 @@
+{
+  "baseline_commit": "a5e291b",
+  "branch": "cursor/habitat-rangercr10-scale070",
+  "geometry_runtime": {
+    "status": "ok",
+    "projection_pass": true,
+    "odom_pass": true,
+    "self_hit": "ok_geometric",
+    "max_ray_angle_err_deg": 0.00011459347208369784,
+    "K_abs_err": {
+      "fx": 0.0,
+      "fy": 0.0,
+      "cx": 0.0,
+      "cy": 0.0
+    },
+    "note": "Independent diagnostic; not mixed into explore metrics"
+  },
+  "scenes": [
+    {
+      "scene": "yr17",
+      "run_id": "real_s070_pporaise_yr17_geomreg_20261106_122201",
+      "termination": "step_budget_exhausted",
+      "n_steps": 46,
+      "n_init": 26,
+      "n_explore": 20,
+      "n_native_plans": 20,
+      "plan_results": {
+        "EXPLORATION": 20
+      },
+      "n_NO_PASSABLE": 0,
+      "first_plan_result": "EXPLORATION",
+      "first_start_raw_occ": 1,
+      "first_start_inflate": 0,
+      "first_start_distance": 0.05,
+      "first_n_active_frontiers": 27,
+      "first_n_reachable": 27,
+      "first_stop_reason": "frontier_path_ok",
+      "explore_action_counts": {
+        "TURN_LEFT": 12,
+        "MOVE_FORWARD": 4,
+        "TURN_RIGHT": 4
+      },
+      "net_base_disp_m": 0.8464669816041919,
+      "final_dtg_eval": 3.797151863711203,
+      "map_free": 12167,
+      "success_claimed": false
+    },
+    {
+      "scene": "eF36",
+      "run_id": "real_s070_pporaise_ef36_geomreg_20261106_123905",
+      "termination": "planner_stop",
+      "n_steps": 27,
+      "n_init": 26,
+      "n_explore": 1,
+      "n_native_plans": 1,
+      "plan_results": {
+        "NO_PASSABLE_FRONTIER": 1
+      },
+      "n_NO_PASSABLE": 1,
+      "first_plan_result": "NO_PASSABLE_FRONTIER",
+      "first_start_raw_occ": 0,
+      "first_start_inflate": 0,
+      "first_start_distance": 0.0,
+      "first_n_active_frontiers": 2,
+      "first_n_reachable": 0,
+      "first_stop_reason": "all_frontier_searches_failed",
+      "explore_action_counts": {
+        "STOP": 1
+      },
+      "net_base_disp_m": 0.0,
+      "final_dtg_eval": 3.3614535186540637,
+      "map_free": 2777,
+      "success_claimed": false
+    },
+    {
+      "scene": "HY1",
+      "run_id": "real_s070_pporaise_hy1_geomreg_20261106_124125",
+      "termination": "planner_stop",
+      "n_steps": 27,
+      "n_init": 26,
+      "n_explore": 1,
+      "n_native_plans": 1,
+      "plan_results": {
+        "NO_PASSABLE_FRONTIER": 1
+      },
+      "n_NO_PASSABLE": 1,
+      "first_plan_result": "NO_PASSABLE_FRONTIER",
+      "first_start_raw_occ": 0,
+      "first_start_inflate": 0,
+      "first_start_distance": 0.0,
+      "first_n_active_frontiers": 21,
+      "first_n_reachable": 0,
+      "first_stop_reason": "all_frontier_searches_failed",
+      "explore_action_counts": {
+        "STOP": 1
+      },
+      "net_base_disp_m": 0.0,
+      "final_dtg_eval": 5.420430289937212,
+      "map_free": 12072,
+      "success_claimed": false
+    }
+  ],
+  "verdict": {
+    "render_ros_map_ros_consistent": true,
+    "odom_and_selfhit_runtime_pass": true,
+    "NO_PASSABLE_after_fix": "scene_dependent",
+    "native_cause": "yr17: start FREE, all 20 plans EXPLORATION, reachable frontiers>0 \u2014 no NO_PASSABLE. eF36/HY1: first plan NO_PASSABLE_FRONTIER; chassis start_raw_occ=UNKNOWN(0); candidate A* raw_return=NO_PATH with reject_counts_inferred dominated by unknown (not inflate/occupied). Pipeline camera XY often FREE while chassis start UNKNOWN \u2014 coverage/free-update gap at chassis footprint, not projection/odom regression.",
+    "next_step": "Prioritize single-variable free-update / chassis-footprint coverage task for eF36/HY1 (ground-band height_ground_band=0 throughout; do not change free policy in this round). Do NOT open formal 15\u00b0 lookaround until failing scenes have free evidence at chassis start. yr17 alone is geometrically stable + explores, but 2/3 scenes still NO_PASSABLE."
+  }
+}

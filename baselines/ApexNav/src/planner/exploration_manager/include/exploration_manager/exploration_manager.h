@@ -132,19 +132,22 @@ private:
 
   ros::ServiceClient tsp_client_;         ///< ROS service client for TSP solver
   unique_ptr<RayCaster2D> ray_caster2d_;  ///< Ray casting for collision checking
-};
 
-inline bool ExplorationManager::searchFrontierPath(const Vector2d& start, const Vector2d& end,
-    Eigen::Vector2d& refined_pos, std::vector<Eigen::Vector2d>& refined_path)
-{
-  path_finder_->reset();
-  if (path_finder_->astarSearch(start, end, 0.25, 0.01) == Astar2D::REACH_END) {
-    refined_pos = end;
-    refined_path = path_finder_->getPath();
-    return true;
-  }
-  return false;
-}
+  // ################################
+  // Gated native planner diagnostics (off by default). Does not change decisions.
+  // exploration/plan_diag_enable, exploration/plan_diag_dir
+  // ################################
+  bool plan_diag_enable_ = false;
+  std::string plan_diag_dir_;
+  int plan_diag_seq_ = 0;
+  std::string plan_diag_mode_tag_;
+  void writePlanDiagLine(const std::string& line);
+  void appendCandidateDiag(const std::string& mode, const Vector2d& candidate, int ret_code,
+      double search_time, double path_len, bool success);
+  void flushPlanDiag(const std::string& result_name, const Vector2d& chassis_xy,
+      const Vector2d& selected_goal, const vector<Vector2d>& selected_path, const std::string& stop_reason);
+  std::vector<std::string> plan_diag_candidate_lines_;
+};
 
 inline bool ExplorationManager::searchObjectPathExtreme(const Vector3d& start,
     const pcl::shared_ptr<pcl::PointCloud<pcl::PointXYZ>>& object_cloud,

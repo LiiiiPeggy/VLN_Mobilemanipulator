@@ -61,6 +61,11 @@ void Astar2D::setResolution(const double& res)
 int Astar2D::astarSearch(const Eigen::Vector2d& start_pt, const Eigen::Vector2d& end_pt,
     double success_dist, double max_time, int safety_mode)
 {
+  if (count_rejects_)
+    reject_stats_.reset();
+  last_return_code_ = 0;
+  last_search_time_ = 0.0;
+
   Node2DPtr cur_node = path_node_pool_[0];
   cur_node->parent = nullptr;
   cur_node->position = start_pt;
@@ -86,13 +91,18 @@ int Astar2D::astarSearch(const Eigen::Vector2d& start_pt, const Eigen::Vector2d&
       reach_end = true;
     if (reach_end) {
       backtrack(cur_node, end_pt);
+      last_search_time_ = (ros::Time::now() - t1).toSec();
+      last_return_code_ = REACH_END;
       return REACH_END;
     }
 
     // Early termination if time up
     if ((ros::Time::now() - t1).toSec() > max_time) {
       early_terminate_cost_ = cur_node->g_score + getDiagHeu(cur_node->position, end_pt);
-      // ROS_WARN("Astar Long Time");
+      if (count_rejects_)
+        reject_stats_.time_budget += 1;
+      last_search_time_ = (ros::Time::now() - t1).toSec();
+      last_return_code_ = NO_PATH;
       return NO_PATH;
     }
 
@@ -143,6 +153,10 @@ int Astar2D::astarSearch(const Eigen::Vector2d& start_pt, const Eigen::Vector2d&
         use_node_num_ += 1;
         if (use_node_num_ == allocate_num_) {
           cout << "run out of node pool." << endl;
+          if (count_rejects_)
+            reject_stats_.node_pool += 1;
+          last_search_time_ = (ros::Time::now() - t1).toSec();
+          last_return_code_ = NO_PATH;
           return NO_PATH;
         }
         neighbor->index = nbr_idx;
@@ -161,6 +175,8 @@ int Astar2D::astarSearch(const Eigen::Vector2d& start_pt, const Eigen::Vector2d&
       open_set_map_[nbr_idx] = neighbor;
     }
   }
+  last_search_time_ = (ros::Time::now() - t1).toSec();
+  last_return_code_ = NO_PATH;
   return NO_PATH;
 }
 
@@ -258,8 +274,11 @@ double Astar2D::pathLength(const vector<Eigen::Vector2d>& path)
 bool Astar2D::checkPointSafety(const Eigen::Vector2d& pos, int safety_mode)
 {
   // Outside map bounds is always unsafe
-  if (!sdf_map_->isInMap(pos))
+  if (!sdf_map_->isInMap(pos)) {
+    if (count_rejects_)
+      reject_stats_.out_of_bounds += 1;
     return false;
+  }
 
   // EXTREME: allow any position inside the map (bypass occupancy checks)
   if (safety_mode == SAFETY_MODE::EXTREME)
@@ -268,12 +287,23 @@ bool Astar2D::checkPointSafety(const Eigen::Vector2d& pos, int safety_mode)
   // Occupancy checks
   const auto occ = sdf_map_->getOccupancy(pos);
   // If inflated occupancy marks collision, or cell is definitely occupied -> unsafe
-  if (sdf_map_->getInflateOccupancy(pos) == 1 || occ == SDFMap2D::OCCUPIED)
+  if (sdf_map_->getInflateOccupancy(pos) == 1) {
+    if (count_rejects_)
+      reject_stats_.inflate += 1;
     return false;
+  }
+  if (occ == SDFMap2D::OCCUPIED) {
+    if (count_rejects_)
+      reject_stats_.occupied += 1;
+    return false;
+  }
 
   // In NORMAL mode, treat unknown as unsafe. In OPTIMISTIC, unknown is allowed.
-  if (occ == SDFMap2D::UNKNOWN && safety_mode == SAFETY_MODE::NORMAL)
+  if (occ == SDFMap2D::UNKNOWN && safety_mode == SAFETY_MODE::NORMAL) {
+    if (count_rejects_)
+      reject_stats_.unknown += 1;
     return false;
+  }
 
   return true;
 }

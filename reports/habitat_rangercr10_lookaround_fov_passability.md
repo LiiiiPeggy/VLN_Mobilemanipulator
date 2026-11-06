@@ -38,7 +38,7 @@
 |----|-----|
 | fx / fy | 388.191 / 422.048 |
 | HFOV | **79.00°** |
-| VFOV | **59.25°** |
+| VFOV | ~~59.25°~~ → **≈63.45°**（方像素 fx=fy；59.25° 为错误 fy 推论，已降级） |
 
 ### 2.2 正式环视（mapfill episode，ApexNav FSM）
 
@@ -145,6 +145,6 @@ Run：`/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/lookaround_coverage_co
 
 1. **白色栅格观感**：Demo 边框已用分辨率足迹消除；剩余白放射线主要是 unknown + 稀疏 free 扇区（原始数据），非插值可「抹掉」的问题。  
 2. **D455 FOV 79°/59.25°**；30° 环视重叠 49°，**无**水平盲楔。  
-3. **空地图对照故障**来自缺少 TURN_DOWN（光轴朝上），不是 sync 彻底坏掉。  
+3. **空地图对照故障**与缺少 TURN_DOWN / 高度滤波相关；「光轴朝上」**待实际光轴测量验证**，不是 sync 彻底坏掉。
 4. **不可通行**：起点 free、有 frontier 且部分 A* 通；主压力来自 unknown 连通与 inflate，而非「FOV 步长漏扫」。  
 5. **15° vs 30° vs 45°**：覆盖随步长单调变好/变差；正式改步长留待单独决策。

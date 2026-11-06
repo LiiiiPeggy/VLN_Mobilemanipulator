@@ -1,6 +1,6 @@
 # Lookaround FOV diag — `real_s070_pporaise_yr17_mapfill_20261105_212419`
 
-- HFOV/VFOV (from ApexNav fx/fy): **79.00° / 59.25°**
+- HFOV/VFOV: **79.00° / ≈63.45°**（方像素）；旧报告 59.25° 为错误 fy 推论，已降级
 - Mean TURN yaw step: **29.999998102822403°**
 - Overlap @ mean step: `{'hfov_deg': 79.0, 'yaw_step_deg': 29.999998102822403, 'overlap_deg': 49.0000018971776, 'overlap_frac_of_hfov': 0.6202531885718683, 'gap_if_negative_deg': 0.0}`
 - Overlap table: `{"15": {"hfov_deg": 79.0, "yaw_step_deg": 15.0, "overlap_deg": 64.0, "overlap_frac_of_hfov": 0.810126582278481, "gap_if_negative_deg": 0.0}, "20": {"hfov_deg": 79.0, "yaw_step_deg": 20.0, "overlap_deg": 59.0, "overlap_frac_of_hfov": 0.7468354430379747, "gap_if_negative_deg": 0.0}, "30": {"hfov_deg": 79.0, "yaw_step_deg": 30.0, "overlap_deg": 49.0, "overlap_frac_of_hfov": 0.620253164556962, "gap_if_negative_deg": 0.0}, "45": {"hfov_deg": 79.0, "yaw_step_deg": 45.0, "overlap_deg": 34.0, "overlap_frac_of_hfov": 0.43037974683544306, "gap_if_negative_deg": 0.0}}`

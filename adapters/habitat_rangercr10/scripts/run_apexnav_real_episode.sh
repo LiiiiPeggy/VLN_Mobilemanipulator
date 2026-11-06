@@ -53,9 +53,16 @@ case "$PROFILE" in
     OVERLAY="/workspace/VLN_Mobilemanipulator/adapters/habitat_rangercr10/config/apexnav_rangercr10_overlay_legacy018.yaml"
     ;;
 esac
-echo "[2/4] start exploration_rangercr10.launch (profile=$PROFILE overlay=$(basename "$OVERLAY"))"
+# ################################
+# Optional native C++ plan / map pipeline diagnostics (observe-only).
+# ################################
+PLAN_DIAG_ENABLE="${PLAN_DIAG_ENABLE:-true}"
+PIPELINE_DIAG_ENABLE="${PIPELINE_DIAG_ENABLE:-true}"
+DIAG_DIR="$OUT/native_diag"
+mkdir -p "$DIAG_DIR"
+echo "[2/4] start exploration_rangercr10.launch (profile=$PROFILE overlay=$(basename "$OVERLAY") plan_diag=$PLAN_DIAG_ENABLE)"
 docker exec -d vln-rangercr10 bash -lc \
-  "$SRC_ROS; roslaunch $LAUNCH_FILE ranger_overlay:=$OVERLAY >$LOGDIR/exploration.log 2>&1"
+  "$SRC_ROS; roslaunch $LAUNCH_FILE ranger_overlay:=$OVERLAY plan_diag_enable:=$PLAN_DIAG_ENABLE plan_diag_dir:=$DIAG_DIR pipeline_diag_enable:=$PIPELINE_DIAG_ENABLE pipeline_diag_dir:=$DIAG_DIR >$LOGDIR/exploration.log 2>&1"
 sleep 4
 # Record effective params
 docker exec vln-rangercr10 bash -lc \
@@ -118,13 +125,14 @@ if [[ -n "$PPO_RAISE_JSON" ]]; then
   SCALE_ARGS="$SCALE_ARGS --ppo_raise_json '$PPO_RAISE_JSON'"
 fi
 
-echo "[4/4] run real ApexNav episode → $OUT (robot_scale=$ROBOT_SCALE)"
+MAX_EXPLORE_ACTIONS="${MAX_EXPLORE_ACTIONS:-20}"
+echo "[4/4] run real ApexNav episode → $OUT (robot_scale=$ROBOT_SCALE max_explore=$MAX_EXPLORE_ACTIONS)"
 set +e
 docker exec \
   -e ROS_MASTER_URI="http://127.0.0.1:${ROS_PORT}" \
   -e ROS_IP=127.0.0.1 \
   -e ROS_HOSTNAME=127.0.0.1 \
-  vln-rangercr10 bash -lc "$SRC_ROS; export PYTHONPATH=/workspace/VLN_Mobilemanipulator/adapters/habitat_rangercr10:\${PYTHONPATH}; python -m src.apexnav_real_episode --out_dir '$OUT_ROOT' --run_id '$RUN_ID' --max_steps $MAX_STEPS --gpu $GPU --scene_filter '${SCENE_FILTER:-TEEsavR23oF}' --category_filter '${CATEGORY_FILTER:-chair}' --episode_id '${EPISODE_ID:-4}' --llm_answer_path $APEX/llm/answers/llm_answer_hm3d.txt --llm_response_path $APEX/llm/answers/llm_response_list.txt $SCALE_ARGS"
+  vln-rangercr10 bash -lc "$SRC_ROS; export PYTHONPATH=/workspace/VLN_Mobilemanipulator/adapters/habitat_rangercr10:\${PYTHONPATH}; python -m src.apexnav_real_episode --out_dir '$OUT_ROOT' --run_id '$RUN_ID' --max_steps $MAX_STEPS --max_explore_actions $MAX_EXPLORE_ACTIONS --gpu $GPU --scene_filter '${SCENE_FILTER:-TEEsavR23oF}' --category_filter '${CATEGORY_FILTER:-chair}' --episode_id '${EPISODE_ID:-4}' --llm_answer_path $APEX/llm/answers/llm_answer_hm3d.txt --llm_response_path $APEX/llm/answers/llm_response_list.txt $SCALE_ARGS"
 rc=$?
 set -e
 

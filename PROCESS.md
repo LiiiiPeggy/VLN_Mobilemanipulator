@@ -670,11 +670,11 @@
 - 从 mapfill 正式环视提取每帧位姿/FOV 重叠/深度有效率（`lookaround_fov_diag`）。
 - 首规划 passability 统计（free 分量、frontier、A*、inflate）。
 - 有界对照：同 yr17 spawn、同 0.7×/PPO raise/legacy018，仅改 yaw 步 15/30/45°（mapping-only）。
-- 发现对照空地图根因：缺 TURN_DOWN → 光轴朝上；对照脚本补 joint3−0.60 后地图恢复。
+- 发现对照空地图：缺 TURN_DOWN 时高度滤波易清空；曾写「光轴朝上」——**降级为待实际光轴测量验证**（非本轮实测结论）。对照脚本补 joint3−0.60 后地图恢复。
 
 **实测**：
 
-- HFOV/VFOV 79°/59.25°；30° 重叠 49°，无水平盲楔。
+- HFOV/VFOV 方像素约 79°/63.45°（旧 59.25° 为错误 fy 推论，已降级）；30° 重叠 **49°（约 HFOV 的 62%）**，无水平盲楔。
 - yaw15/30/45 末帧 occ/free：1010/1275、584/954、281/550。
 - 未改规划器/缩放/PPO/深度 NaN/膨胀；未覆盖旧 Demo。
 
@@ -692,6 +692,23 @@
 
 **操作**：新增 optical 专用转换与方像素 K；默认 chassis odom；统一 self-hit/语义点云；修正 Python A* 起点 passable；更正 GT 探针命名；离线 `validate_camera_coord_chain` all_pass。
 
-**未做**：完整 C++ episode 重测（NO_PASSABLE 真实拒绝原因仍待验证）；未改膨胀/环视步长/PPO/缩放。
+**未做（当时）**：完整 C++ episode 重测；未改膨胀/环视步长/PPO/缩放。
 
 **相关**：`reports/habitat_rangercr10_camera_odom_coord_fix.md`；`reports/camera_coord_fix_20261106/`
+
+---
+
+## 2026-11-06 a5e291b 后 30° 正式回归 + 原生规划归因
+
+**操作**：收尾 optical 调用方/文档；运行时几何验收；C++ `plan_diag`/`pipeline_diag`；同 spawn yr17→eF36→HY1 有界 30° 回归（≤20 探索）。
+
+**结果**：
+
+- 运行时：投影/ROS K/map_ros 射线、底盘 odom、几何自遮挡 **通过**。
+- yr17：20× 原生 `EXPLORATION`，无 NO_PASSABLE，FWD×4。
+- eF36/HY1：首规划 `NO_PASSABLE_FRONTIER`；底盘 `start_raw_occ=UNKNOWN`；候选 `NO_PATH` 且 inferred reject 以 unknown 为主（非 inflate）。
+- 全程 `height_ground_band=0`（观察）；本轮未改 free 策略。
+
+**决策**：下一步单变量修底盘 free 缺口；暂缓 15°。
+
+**相关**：`reports/habitat_rangercr10_geomreg_30deg_native_plan.md`；`reports/geomreg_30deg_20261106/`
