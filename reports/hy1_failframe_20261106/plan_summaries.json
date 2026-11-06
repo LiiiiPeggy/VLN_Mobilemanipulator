@@ -1,0 +1,226 @@
+[
+  {
+    "plan_seq": 1,
+    "result": "EXPLORATION",
+    "stop_reason": "frontier_path_ok",
+    "chassis_start": [
+      1.4327,
+      -23.7172
+    ],
+    "start_raw_occ": 0,
+    "start_inflate": 0,
+    "free_within_0p3": 51,
+    "unk_within_0p3": 60,
+    "occ_within_0p3": 0,
+    "inf_within_0p3": 0,
+    "nearest_free_m": 0.05,
+    "n_reachable_candidates": 19,
+    "n_candidate_searches": 20,
+    "selected_goal": [
+      4.5,
+      -22.375
+    ],
+    "selected_path_len": 3.4386,
+    "any_success_path_relied_near_start_exemption": 1,
+    "first_ok_near_start_skip_accepted": 40,
+    "first_ok_near_start_skip_would_fail": 20,
+    "first_ok_path_relied_exemption": 1,
+    "first_ok_path_len": 5.8811
+  },
+  {
+    "plan_seq": 4,
+    "result": "EXPLORATION",
+    "stop_reason": "frontier_path_ok",
+    "chassis_start": [
+      1.4327,
+      -23.7172
+    ],
+    "start_raw_occ": 0,
+    "start_inflate": 0,
+    "free_within_0p3": 51,
+    "unk_within_0p3": 60,
+    "occ_within_0p3": 0,
+    "inf_within_0p3": 0,
+    "nearest_free_m": 0.05,
+    "n_reachable_candidates": 25,
+    "n_candidate_searches": 26,
+    "selected_goal": [
+      -1.2776,
+      -21.025
+    ],
+    "selected_path_len": 4.3984,
+    "any_success_path_relied_near_start_exemption": 1,
+    "first_ok_near_start_skip_accepted": 40,
+    "first_ok_near_start_skip_would_fail": 20,
+    "first_ok_path_relied_exemption": 1,
+    "first_ok_path_len": 5.8811
+  },
+  {
+    "plan_seq": 8,
+    "result": "EXPLORATION",
+    "stop_reason": "frontier_path_ok",
+    "chassis_start": [
+      1.4914,
+      -23.4742
+    ],
+    "start_raw_occ": 1,
+    "start_inflate": 0,
+    "free_within_0p3": 98,
+    "unk_within_0p3": 13,
+    "occ_within_0p3": 0,
+    "inf_within_0p3": 0,
+    "nearest_free_m": 0.0,
+    "n_reachable_candidates": 25,
+    "n_candidate_searches": 26,
+    "selected_goal": [
+      -1.2776,
+      -21.025
+    ],
+    "selected_path_len": 3.9698,
+    "any_success_path_relied_near_start_exemption": 0,
+    "first_ok_near_start_skip_accepted": 47,
+    "first_ok_near_start_skip_would_fail": 4,
+    "first_ok_path_relied_exemption": 0,
+    "first_ok_path_len": 5.7391
+  },
+  {
+    "plan_seq": 12,
+    "result": "EXPLORATION",
+    "stop_reason": "frontier_path_ok",
+    "chassis_start": [
+      1.5502,
+      -23.2312
+    ],
+    "start_raw_occ": 1,
+    "start_inflate": 0,
+    "free_within_0p3": 109,
+    "unk_within_0p3": 2,
+    "occ_within_0p3": 0,
+    "inf_within_0p3": 0,
+    "nearest_free_m": 0.0,
+    "n_reachable_candidates": 21,
+    "n_candidate_searches": 23,
+    "selected_goal": [
+      -1.2776,
+      -21.025
+    ],
+    "selected_path_len": 3.8085,
+    "any_success_path_relied_near_start_exemption": 0,
+    "first_ok_near_start_skip_accepted": 61,
+    "first_ok_near_start_skip_would_fail": 1,
+    "first_ok_path_relied_exemption": 0,
+    "first_ok_path_len": 5.7725
+  },
+  {
+    "plan_seq": 23,
+    "result": "EXPLORATION",
+    "stop_reason": "frontier_path_ok",
+    "chassis_start": [
+      1.5502,
+      -23.2312
+    ],
+    "start_raw_occ": 1,
+    "start_inflate": 0,
+    "free_within_0p3": 109,
+    "unk_within_0p3": 2,
+    "occ_within_0p3": 0,
+    "inf_within_0p3": 0,
+    "nearest_free_m": 0.0,
+    "n_reachable_candidates": 28,
+    "n_candidate_searches": 31,
+    "selected_goal": [
+      -1.2776,
+      -21.025
+    ],
+    "selected_path_len": 3.8085,
+    "any_success_path_relied_near_start_exemption": 0,
+    "first_ok_near_start_skip_accepted": 61,
+    "first_ok_near_start_skip_would_fail": 1,
+    "first_ok_path_relied_exemption": 0,
+    "first_ok_path_len": 5.771
+  },
+  {
+    "plan_seq": 24,
+    "result": "EXPLORATION",
+    "stop_reason": "frontier_path_ok",
+    "chassis_start": [
+      1.1174,
+      -22.6466
+    ],
+    "start_raw_occ": 1,
+    "start_inflate": 0,
+    "free_within_0p3": 111,
+    "unk_within_0p3": 0,
+    "occ_within_0p3": 0,
+    "inf_within_0p3": 0,
+    "nearest_free_m": 0.0,
+    "n_reachable_candidates": 30,
+    "n_candidate_searches": 32,
+    "selected_goal": [
+      -1.2776,
+      -21.025
+    ],
+    "selected_path_len": 3.2036,
+    "any_success_path_relied_near_start_exemption": 0,
+    "first_ok_near_start_skip_accepted": 34,
+    "first_ok_near_start_skip_would_fail": 0,
+    "first_ok_path_relied_exemption": 0,
+    "first_ok_path_len": 6.4496
+  },
+  {
+    "plan_seq": 25,
+    "result": "EXPLORATION",
+    "stop_reason": "frontier_path_ok",
+    "chassis_start": [
+      1.6089,
+      -22.9882
+    ],
+    "start_raw_occ": 1,
+    "start_inflate": 0,
+    "free_within_0p3": 111,
+    "unk_within_0p3": 0,
+    "occ_within_0p3": 0,
+    "inf_within_0p3": 5,
+    "nearest_free_m": 0.0,
+    "n_reachable_candidates": 27,
+    "n_candidate_searches": 47,
+    "selected_goal": [
+      -1.2776,
+      -21.025
+    ],
+    "selected_path_len": 3.8862,
+    "any_success_path_relied_near_start_exemption": 0,
+    "first_ok_near_start_skip_accepted": 74,
+    "first_ok_near_start_skip_would_fail": 2,
+    "first_ok_path_relied_exemption": 0,
+    "first_ok_path_len": 5.7725
+  },
+  {
+    "plan_seq": 26,
+    "result": "EXPLORATION",
+    "stop_reason": "frontier_path_ok",
+    "chassis_start": [
+      1.6089,
+      -22.9882
+    ],
+    "start_raw_occ": 1,
+    "start_inflate": 0,
+    "free_within_0p3": 111,
+    "unk_within_0p3": 0,
+    "occ_within_0p3": 0,
+    "inf_within_0p3": 5,
+    "nearest_free_m": 0.0,
+    "n_reachable_candidates": 27,
+    "n_candidate_searches": 47,
+    "selected_goal": [
+      -1.2776,
+      -21.025
+    ],
+    "selected_path_len": 3.8862,
+    "any_success_path_relied_near_start_exemption": 0,
+    "first_ok_near_start_skip_accepted": 74,
+    "first_ok_near_start_skip_would_fail": 2,
+    "first_ok_path_relied_exemption": 0,
+    "first_ok_path_len": 5.7725
+  }
+]

@@ -51,7 +51,10 @@ void ExplorationManager::appendCandidateDiag(const std::string& mode, const Vect
       << ",\"reject_counts_inferred\":{\"occupied\":" << st.occupied << ",\"inflate\":" << st.inflate
       << ",\"unknown\":" << st.unknown << ",\"out_of_bounds\":" << st.out_of_bounds
       << ",\"time_budget\":" << st.time_budget << ",\"node_pool\":" << st.node_pool
-      << "},\"note\":\"reject_counts_inferred from neighbor safety checks; not sole failure cause\"}";
+      << ",\"near_start_skip_accepted\":" << st.near_start_skip_accepted
+      << ",\"near_start_skip_would_fail\":" << st.near_start_skip_would_fail
+      << ",\"path_relied_near_start_exemption\":" << st.path_relied_near_start_exemption
+      << "},\"note\":\"reject_counts_inferred from neighbor safety checks; near_start_* observe-only, exemption unchanged\"}";
   plan_diag_candidate_lines_.push_back(oss.str());
 }
 
@@ -65,10 +68,69 @@ void ExplorationManager::flushPlanDiag(const std::string& result_name, const Vec
   const int start_inf = sdf_map_->getInflateOccupancy(chassis_xy);
   const double start_dist = sdf_map_->getDistance(chassis_xy);
   int reachable = 0;
+  int any_path_relied_exemption = 0;
   for (const auto& line : plan_diag_candidate_lines_) {
     if (line.find("\"success\":true") != std::string::npos)
       reachable += 1;
+    if (line.find("\"path_relied_near_start_exemption\":1") != std::string::npos)
+      any_path_relied_exemption = 1;
   }
+  // Local free/occ/unk rings around chassis (observe-only).
+  int free_within_0p3 = 0, occ_within_0p3 = 0, unk_within_0p3 = 0, inf_within_0p3 = 0;
+  double nearest_free_m = 1e9;
+  const double res = sdf_map_->getResolution();
+  for (double x = chassis_xy.x() - 2.0; x <= chassis_xy.x() + 2.0; x += res) {
+    for (double y = chassis_xy.y() - 2.0; y <= chassis_xy.y() + 2.0; y += res) {
+      Vector2d p(x, y);
+      if (!sdf_map_->isInMap(p))
+        continue;
+      const double d = (p - chassis_xy).norm();
+      const int occ = sdf_map_->getOccupancy(p);
+      if (occ == SDFMap2D::FREE) {
+        nearest_free_m = std::min(nearest_free_m, d);
+        if (d <= 0.3)
+          free_within_0p3 += 1;
+      } else if (occ == SDFMap2D::OCCUPIED) {
+        if (d <= 0.3)
+          occ_within_0p3 += 1;
+      } else if (d <= 0.3) {
+        unk_within_0p3 += 1;
+      }
+      if (d <= 0.3 && sdf_map_->getInflateOccupancy(p) == 1)
+        inf_within_0p3 += 1;
+    }
+  }
+  if (nearest_free_m > 1e8)
+    nearest_free_m = -1.0;
+
+  // Dump compact local map window for this plan call.
+  if (!plan_diag_dir_.empty()) {
+    std::ostringstream mp;
+    mp << plan_diag_dir_ << "/plan_seq_" << plan_diag_seq_ << "_local_map.json";
+    std::ofstream mofs(mp.str());
+    if (mofs.is_open()) {
+      const double half = 1.5;
+      mofs << std::fixed << std::setprecision(4);
+      mofs << "{\"plan_seq\":" << plan_diag_seq_ << ",\"chassis\":[" << chassis_xy.x() << ","
+           << chassis_xy.y() << "],\"resolution\":" << res << ",\"half_m\":" << half
+           << ",\"cells\":[";
+      bool first = true;
+      for (double x = chassis_xy.x() - half; x <= chassis_xy.x() + half; x += res) {
+        for (double y = chassis_xy.y() - half; y <= chassis_xy.y() + half; y += res) {
+          Vector2d p(x, y);
+          if (!sdf_map_->isInMap(p))
+            continue;
+          if (!first)
+            mofs << ",";
+          first = false;
+          mofs << "[" << x << "," << y << "," << sdf_map_->getOccupancy(p) << ","
+               << sdf_map_->getInflateOccupancy(p) << "]";
+        }
+      }
+      mofs << "]}";
+    }
+  }
+
   std::ostringstream oss;
   oss << std::fixed << std::setprecision(4);
   oss << "{\"plan_seq\":" << plan_diag_seq_ << ",\"stamp\":" << ros::Time::now().toSec()
@@ -76,13 +138,24 @@ void ExplorationManager::flushPlanDiag(const std::string& result_name, const Vec
       << ",\"chassis_start\":[" << chassis_xy.x() << "," << chassis_xy.y() << "]"
       << ",\"start_raw_occ\":" << start_occ << ",\"start_inflate\":" << start_inf
       << ",\"start_distance\":" << start_dist
-      << ",\"start_occ_legend\":\"0=UNKNOWN,1=FREE,2=OCCUPIED? check GRID_STATE enum order UNKNOWN=0 FREE=1 OCCUPIED=2\""
+      << ",\"free_within_0p3\":" << free_within_0p3 << ",\"occ_within_0p3\":" << occ_within_0p3
+      << ",\"unk_within_0p3\":" << unk_within_0p3 << ",\"inf_within_0p3\":" << inf_within_0p3
+      << ",\"nearest_free_m\":" << nearest_free_m
+      << ",\"any_success_path_relied_near_start_exemption\":" << any_path_relied_exemption
+      << ",\"start_occ_legend\":\"0=UNKNOWN,1=FREE,2=OCCUPIED\""
       << ",\"n_active_frontiers\":" << ed_->frontier_averages_.size()
       << ",\"n_dormant_frontiers\":" << ed_->dormant_frontier_averages_.size()
       << ",\"n_candidate_searches\":" << plan_diag_candidate_lines_.size()
       << ",\"n_reachable_candidates\":" << reachable
       << ",\"selected_goal\":[" << selected_goal.x() << "," << selected_goal.y() << "]"
-      << ",\"selected_path_len\":" << Astar2D::pathLength(selected_path) << ",\"candidates\":[";
+      << ",\"selected_path_len\":" << Astar2D::pathLength(selected_path)
+      << ",\"selected_path\":[";
+  for (size_t i = 0; i < selected_path.size(); ++i) {
+    if (i)
+      oss << ",";
+    oss << "[" << selected_path[i].x() << "," << selected_path[i].y() << "]";
+  }
+  oss << "],\"candidates\":[";
   for (size_t i = 0; i < plan_diag_candidate_lines_.size(); ++i) {
     if (i)
       oss << ",";

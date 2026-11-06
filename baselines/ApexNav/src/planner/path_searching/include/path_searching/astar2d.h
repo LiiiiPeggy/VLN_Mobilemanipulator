@@ -47,9 +47,23 @@ struct AstarRejectStats {
   int out_of_bounds = 0;
   int time_budget = 0;
   int node_pool = 0;
+  // ################################
+  // Observe-only: 0.25 m near-start safety skip (does NOT change the skip).
+  // near_start_skip_accepted: nbr expanded while ||nbr-start||<=0.25 without
+  //   applying checkPointSafety to gate expansion.
+  // near_start_skip_would_fail: subset that would fail checkPointSafety if
+  //   the exemption were not applied (counterfactual).
+  // path_relied_near_start_exemption: successful path contains a node within
+  //   0.25 m of start that would fail safety (counterfactual).
+  // ################################
+  int near_start_skip_accepted = 0;
+  int near_start_skip_would_fail = 0;
+  int path_relied_near_start_exemption = 0;
   void reset()
   {
     occupied = inflate = unknown = out_of_bounds = time_budget = node_pool = 0;
+    near_start_skip_accepted = near_start_skip_would_fail = 0;
+    path_relied_near_start_exemption = 0;
   }
 };
 

@@ -1,0 +1,110 @@
+[
+  {
+    "plan_seq": 1,
+    "result": "EXPLORATION",
+    "stop_reason": "frontier_path_ok",
+    "chassis_start": [
+      1.4327,
+      -23.7172
+    ],
+    "start_raw_occ": 0,
+    "start_inflate": 0,
+    "n_reachable_candidates": 2,
+    "n_candidate_searches": 31,
+    "selected_goal": [
+      1.0694,
+      -24.0287
+    ],
+    "selected_path_len": 0.7373,
+    "n_success": 2,
+    "fail_reject_agg": {
+      "occupied": 0,
+      "inflate": 0,
+      "unknown": 4366,
+      "out_of_bounds": 0,
+      "time_budget": 0,
+      "node_pool": 0
+    }
+  },
+  {
+    "plan_seq": 2,
+    "result": "EXPLORATION",
+    "stop_reason": "frontier_path_ok",
+    "chassis_start": [
+      1.4327,
+      -23.7172
+    ],
+    "start_raw_occ": 0,
+    "start_inflate": 0,
+    "n_reachable_candidates": 2,
+    "n_candidate_searches": 31,
+    "selected_goal": [
+      1.0694,
+      -24.0287
+    ],
+    "selected_path_len": 0.7373,
+    "n_success": 2,
+    "fail_reject_agg": {
+      "occupied": 0,
+      "inflate": 0,
+      "unknown": 4366,
+      "out_of_bounds": 0,
+      "time_budget": 0,
+      "node_pool": 0
+    }
+  },
+  {
+    "plan_seq": 3,
+    "result": "EXPLORATION",
+    "stop_reason": "frontier_path_ok",
+    "chassis_start": [
+      1.1929,
+      -23.7878
+    ],
+    "start_raw_occ": 0,
+    "start_inflate": 0,
+    "n_reachable_candidates": 2,
+    "n_candidate_searches": 29,
+    "selected_goal": [
+      1.0694,
+      -24.0287
+    ],
+    "selected_path_len": 0.2744,
+    "n_success": 2,
+    "fail_reject_agg": {
+      "occupied": 0,
+      "inflate": 0,
+      "unknown": 5300,
+      "out_of_bounds": 0,
+      "time_budget": 0,
+      "node_pool": 0
+    }
+  },
+  {
+    "plan_seq": 4,
+    "result": "NO_PASSABLE_FRONTIER",
+    "stop_reason": "all_frontier_searches_failed",
+    "chassis_start": [
+      1.1929,
+      -23.7878
+    ],
+    "start_raw_occ": 0,
+    "start_inflate": 0,
+    "n_reachable_candidates": 0,
+    "n_candidate_searches": 25,
+    "selected_goal": [
+      0.0,
+      0.0
+    ],
+    "selected_path_len": 0.0,
+    "n_success": 0,
+    "fail_reject_agg": {
+      "occupied": 0,
+      "inflate": 0,
+      "unknown": 4910,
+      "out_of_bounds": 0,
+      "time_budget": 0,
+      "node_pool": 0
+    }
+  }
+]

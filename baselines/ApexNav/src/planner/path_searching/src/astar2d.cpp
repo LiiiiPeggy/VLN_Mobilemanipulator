@@ -91,6 +91,19 @@ int Astar2D::astarSearch(const Eigen::Vector2d& start_pt, const Eigen::Vector2d&
       reach_end = true;
     if (reach_end) {
       backtrack(cur_node, end_pt);
+      // ################################
+      // Counterfactual: did the returned path need the 0.25 m start skip?
+      // ################################
+      if (count_rejects_) {
+        for (const auto& p : path_nodes_) {
+          if ((p - start_pt).norm() > 0.25)
+            continue;
+          if (!checkPointSafety(p, safety_mode)) {
+            reject_stats_.path_relied_near_start_exemption = 1;
+            break;
+          }
+        }
+      }
       last_search_time_ = (ros::Time::now() - t1).toSec();
       last_return_code_ = REACH_END;
       return REACH_END;
@@ -119,7 +132,11 @@ int Astar2D::astarSearch(const Eigen::Vector2d& start_pt, const Eigen::Vector2d&
       nbr_pos = cur_pos + step;
 
       // Skip safety raycast if still near start to avoid immediate termination
-      if ((nbr_pos - start_pt).norm() > 0.25) {
+      // ################################
+      // Observe-only counters for the 0.25 m exemption (behavior unchanged).
+      // ################################
+      const double dist_from_start = (nbr_pos - start_pt).norm();
+      if (dist_from_start > 0.25) {
         // Check safety
         if (!checkPointSafety(nbr_pos, safety_mode))
           continue;
@@ -137,6 +154,10 @@ int Astar2D::astarSearch(const Eigen::Vector2d& start_pt, const Eigen::Vector2d&
         }
         if (!safe)
           continue;
+      } else if (count_rejects_) {
+        reject_stats_.near_start_skip_accepted += 1;
+        if (!checkPointSafety(nbr_pos, safety_mode))
+          reject_stats_.near_start_skip_would_fail += 1;
       }
 
       // Check not in close set
