@@ -1,0 +1,221 @@
+{
+  "resolution_m": 0.05,
+  "inflation_m": 0.18,
+  "inf_step": 4,
+  "frame_reset_ok": true,
+  "merge_matches_full_rebuild_all_cases": true,
+  "overwrite_fails_disjoint_obstacle_case": true,
+  "cases": [
+    {
+      "overwrite": {
+        "name": "obstacle_outside_ground_box",
+        "mode": "overwrite",
+        "n_occ": 1,
+        "local_window": [
+          32,
+          39,
+          40,
+          42
+        ],
+        "n_full_inf": 49,
+        "n_local_inf": 0,
+        "n_missing_vs_full": 49,
+        "n_extra_vs_full": 0,
+        "missing_sample": [
+          [
+            66,
+            40
+          ],
+          [
+            67,
+            38
+          ],
+          [
+            67,
+            39
+          ],
+          [
+            67,
+            40
+          ],
+          [
+            67,
+            41
+          ],
+          [
+            67,
+            42
+          ],
+          [
+            68,
+            37
+          ],
+          [
+            68,
+            38
+          ]
+        ],
+        "match_full": false
+      },
+      "merge": {
+        "name": "obstacle_outside_ground_box",
+        "mode": "merge",
+        "n_occ": 1,
+        "local_window": [
+          32,
+          39,
+          70,
+          42
+        ],
+        "n_full_inf": 49,
+        "n_local_inf": 49,
+        "n_missing_vs_full": 0,
+        "n_extra_vs_full": 0,
+        "missing_sample": [],
+        "match_full": true
+      }
+    },
+    {
+      "overwrite": {
+        "name": "obstacle_only",
+        "mode": "overwrite",
+        "n_occ": 2,
+        "local_window": [
+          40,
+          38,
+          58,
+          44
+        ],
+        "n_full_inf": 93,
+        "n_local_inf": 93,
+        "n_missing_vs_full": 0,
+        "n_extra_vs_full": 0,
+        "missing_sample": [],
+        "match_full": true
+      },
+      "merge": {
+        "name": "obstacle_only",
+        "mode": "merge",
+        "n_occ": 2,
+        "local_window": [
+          40,
+          38,
+          58,
+          44
+        ],
+        "n_full_inf": 93,
+        "n_local_inf": 93,
+        "n_missing_vs_full": 0,
+        "n_extra_vs_full": 0,
+        "missing_sample": [],
+        "match_full": true
+      }
+    },
+    {
+      "overwrite": {
+        "name": "ground_only",
+        "mode": "overwrite",
+        "n_occ": 0,
+        "local_window": [
+          30,
+          40,
+          40,
+          42
+        ],
+        "n_full_inf": 0,
+        "n_local_inf": 0,
+        "n_missing_vs_full": 0,
+        "n_extra_vs_full": 0,
+        "missing_sample": [],
+        "match_full": true
+      },
+      "merge": {
+        "name": "ground_only",
+        "mode": "merge",
+        "n_occ": 0,
+        "local_window": [
+          30,
+          40,
+          40,
+          42
+        ],
+        "n_full_inf": 0,
+        "n_local_inf": 0,
+        "n_missing_vs_full": 0,
+        "n_extra_vs_full": 0,
+        "missing_sample": [],
+        "match_full": true
+      }
+    },
+    {
+      "overwrite": {
+        "name": "mixed_overlap",
+        "mode": "overwrite",
+        "n_occ": 1,
+        "local_window": [
+          40,
+          39,
+          50,
+          41
+        ],
+        "n_full_inf": 49,
+        "n_local_inf": 0,
+        "n_missing_vs_full": 49,
+        "n_extra_vs_full": 0,
+        "missing_sample": [
+          [
+            47,
+            40
+          ],
+          [
+            48,
+            38
+          ],
+          [
+            48,
+            39
+          ],
+          [
+            48,
+            40
+          ],
+          [
+            48,
+            41
+          ],
+          [
+            48,
+            42
+          ],
+          [
+            49,
+            37
+          ],
+          [
+            49,
+            38
+          ]
+        ],
+        "match_full": false
+      },
+      "merge": {
+        "name": "mixed_overlap",
+        "mode": "merge",
+        "n_occ": 1,
+        "local_window": [
+          40,
+          39,
+          51,
+          41
+        ],
+        "n_full_inf": 49,
+        "n_local_inf": 49,
+        "n_missing_vs_full": 0,
+        "n_extra_vs_full": 0,
+        "missing_sample": [],
+        "match_full": true
+      }
+    }
+  ],
+  "pass": true
+}

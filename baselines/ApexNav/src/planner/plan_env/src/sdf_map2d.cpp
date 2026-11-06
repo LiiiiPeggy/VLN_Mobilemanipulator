@@ -428,8 +428,24 @@ void SDFMap2D::inputFreeRayCloud2D(const pcl::PointCloud<pcl::PointXY>::Ptr& poi
     }
   }
 
-  md_->local_update_mind_ = update_mind;
-  md_->local_update_maxd_ = update_maxd;
+  // ################################
+  // Same-frame merge: if inputDepthCloud2D already set local_update_* this
+  // callback, expand the AABB so clearAndInflateLocalMap covers BOTH obstacle
+  // and ground-free regions. Overwriting (bug) drops obstacles outside the
+  // ground-only box from this frame's inflation pass.
+  // Frame boundary: MapROS sets local_updated_=false after inflate; next frame
+  // first writer assigns, subsequent writers merge.
+  // ################################
+  const bool merge_with_prior = map_ros_->local_updated_;
+  if (merge_with_prior) {
+    for (int k = 0; k < 2; ++k) {
+      md_->local_update_mind_[k] = min(md_->local_update_mind_[k], update_mind[k]);
+      md_->local_update_maxd_[k] = max(md_->local_update_maxd_[k], update_maxd[k]);
+    }
+  } else {
+    md_->local_update_mind_ = update_mind;
+    md_->local_update_maxd_ = update_maxd;
+  }
   posToIndex(md_->local_update_mind_, md_->local_update_min_);
   posToIndex(md_->local_update_maxd_, md_->local_update_max_);
   for (int k = 0; k < 2; ++k) {
