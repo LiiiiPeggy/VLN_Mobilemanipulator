@@ -186,23 +186,14 @@ class ApexNavMapListener:
         free_mask = np.zeros((h, w), dtype=bool)
         occ_mask = np.zeros((h, w), dtype=bool)
 
-        unk = _cloud_xy(self.clouds["unknown"])
+        # ################################
+        # Unknown stays paper-white BACKGROUND — do not paint unknown cells
+        # (avoids white-on-white "grid" speckles). Never morph-fill unknown.
+        # ################################
         free = _cloud_xy(self.clouds["free"])
         occ = _cloud_xy(self.clouds["occupied"])
-        res_m = estimate_resolution_m(free, occ, unk, default=DEFAULT_MAP_RESOLUTION_M)
+        res_m = estimate_resolution_m(free, occ, default=DEFAULT_MAP_RESOLUTION_M)
 
-        # Unknown can be huge — subsample points but still fill each kept cell.
-        if unk.shape[0] > 40000:
-            unk = unk[np.linspace(0, unk.shape[0] - 1, 40000).astype(int)]
-
-        fill_cells_rgb(
-            canvas,
-            unk,
-            PAPER_UNKNOWN,
-            center_xy=center_xy,
-            scale=scale,
-            resolution_m=res_m,
-        )
         fill_cells_rgb(
             canvas,
             free,

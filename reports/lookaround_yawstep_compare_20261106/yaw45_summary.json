@@ -1,0 +1,233 @@
+{
+  "step_deg": 45.0,
+  "n_views": 8,
+  "overlap": {
+    "hfov_deg": 79.0,
+    "yaw_step_deg": 45.0,
+    "overlap_deg": 34.0,
+    "overlap_frac_of_hfov": 0.43037974683544306,
+    "gap_if_negative_deg": 0.0
+  },
+  "final_map": {
+    "occupied": 281,
+    "free": 550,
+    "unknown": 23022,
+    "value_map": 0,
+    "occupied_msgs": 38,
+    "free_msgs": 38
+  },
+  "series": [
+    {
+      "i": 0,
+      "yaw_hab": -3.0176531591671405,
+      "yaw_ros": 0.12393949442265262,
+      "camera_ros": [
+        2.658081531524658,
+        12.683205604553223,
+        0.5605602274990081
+      ],
+      "camera_pitch_deg": 31.213436439902274,
+      "camera_yaw_deg": 3.1066656148276515,
+      "stamp_ros": 1793920599.7114532,
+      "itm_cosine": -1.0,
+      "map": {
+        "occupied": 40,
+        "free": 57,
+        "unknown": 21894,
+        "value_map": 0,
+        "occupied_msgs": 24,
+        "free_msgs": 24
+      },
+      "frac_nan_published": 0.5673958333333333,
+      "frac_self_hit": 0.5620833333333334
+    },
+    {
+      "i": 1,
+      "yaw_hab": -2.232254995769692,
+      "yaw_ros": 0.9093376578201013,
+      "camera_ros": [
+        2.508634567260742,
+        13.092513084411621,
+        0.5605600486850738
+      ],
+      "camera_pitch_deg": 31.21345823998364,
+      "camera_yaw_deg": 48.106693076696374,
+      "stamp_ros": 1793920600.2287798,
+      "itm_cosine": -1.0,
+      "map": {
+        "occupied": 40,
+        "free": 57,
+        "unknown": 21894,
+        "value_map": 0,
+        "occupied_msgs": 26,
+        "free_msgs": 26
+      },
+      "frac_nan_published": 0.49046875,
+      "frac_self_hit": 0.49046875
+    },
+    {
+      "i": 2,
+      "yaw_hab": -1.446856832372244,
+      "yaw_ros": 1.6947358212175487,
+      "camera_ros": [
+        2.1135363578796387,
+        13.276262283325195,
+        0.5605601082897186
+      ],
+      "camera_pitch_deg": 31.213450101653436,
+      "camera_yaw_deg": 93.10667941312079,
+      "stamp_ros": 1793920600.7381632,
+      "itm_cosine": -1.0,
+      "map": {
+        "occupied": 84,
+        "free": 114,
+        "unknown": 24324,
+        "value_map": 0,
+        "occupied_msgs": 28,
+        "free_msgs": 28
+      },
+      "frac_nan_published": 0.37662109375,
+      "frac_self_hit": 0.37662109375
+    },
+    {
+      "i": 3,
+      "yaw_hab": -0.6614586689747957,
+      "yaw_ros": 2.480133984614998,
+      "camera_ros": [
+        1.7042288780212402,
+        13.126816749572754,
+        0.5605600486850738
+      ],
+      "camera_pitch_deg": 31.21345920764787,
+      "camera_yaw_deg": 138.10668311927097,
+      "stamp_ros": 1793920601.235496,
+      "itm_cosine": -1.0,
+      "map": {
+        "occupied": 116,
+        "free": 193,
+        "unknown": 24096,
+        "value_map": 0,
+        "occupied_msgs": 30,
+        "free_msgs": 30
+      },
+      "frac_nan_published": 0.434619140625,
+      "frac_self_hit": 0.4327799479166667
+    },
+    {
+      "i": 4,
+      "yaw_hab": 0.12393949442265262,
+      "yaw_ros": -3.017653159167141,
+      "camera_ros": [
+        1.5204790830612183,
+        12.731719017028809,
+        0.5605604063129425
+      ],
+      "camera_pitch_deg": 31.21343666075753,
+      "camera_yaw_deg": -176.8933739609546,
+      "stamp_ros": 1793920601.7330818,
+      "itm_cosine": -1.0,
+      "map": {
+        "occupied": 174,
+        "free": 344,
+        "unknown": 23715,
+        "value_map": 0,
+        "occupied_msgs": 32,
+        "free_msgs": 32
+      },
+      "frac_nan_published": 0.388134765625,
+      "frac_self_hit": 0.3752669270833333
+    },
+    {
+      "i": 5,
+      "yaw_hab": 0.9093376578201009,
+      "yaw_ros": -2.2322549957696918,
+      "camera_ros": [
+        1.6699250936508179,
+        12.32241153717041,
+        0.5605602573013305
+      ],
+      "camera_pitch_deg": 31.213445695421846,
+      "camera_yaw_deg": -131.8933494216921,
+      "stamp_ros": 1793920602.2401783,
+      "itm_cosine": -1.0,
+      "map": {
+        "occupied": 204,
+        "free": 417,
+        "unknown": 23492,
+        "value_map": 0,
+        "occupied_msgs": 34,
+        "free_msgs": 34
+      },
+      "frac_nan_published": 0.42966145833333336,
+      "frac_self_hit": 0.429208984375
+    },
+    {
+      "i": 6,
+      "yaw_hab": 1.6947358212175492,
+      "yaw_ros": -1.4468568323722444,
+      "camera_ros": [
+        2.06502366065979,
+        12.138662338256836,
+        0.5605600486850738
+      ],
+      "camera_pitch_deg": 31.213456357185464,
+      "camera_yaw_deg": -86.89333868235406,
+      "stamp_ros": 1793920602.766511,
+      "itm_cosine": -1.0,
+      "map": {
+        "occupied": 249,
+        "free": 470,
+        "unknown": 23250,
+        "value_map": 0,
+        "occupied_msgs": 36,
+        "free_msgs": 36
+      },
+      "frac_nan_published": 0.40123046875,
+      "frac_self_hit": 0.37318359375
+    },
+    {
+      "i": 7,
+      "yaw_hab": 2.4801339846149975,
+      "yaw_ros": -0.6614586689747952,
+      "camera_ros": [
+        2.4743311405181885,
+        12.288106918334961,
+        0.5605602274990081
+      ],
+      "camera_pitch_deg": 31.213439847584098,
+      "camera_yaw_deg": -41.893333681697364,
+      "stamp_ros": 1793920603.2554104,
+      "itm_cosine": -1.0,
+      "map": {
+        "occupied": 281,
+        "free": 550,
+        "unknown": 23022,
+        "value_map": 0,
+        "occupied_msgs": 38,
+        "free_msgs": 38
+      },
+      "frac_nan_published": 0.4926302083333333,
+      "frac_self_hit": 0.43026041666666665
+    }
+  ],
+  "fov": {
+    "fx": 388.1910413097385,
+    "fy": 422.0475153598262,
+    "cx": 320.0,
+    "cy": 240.0,
+    "width": 640,
+    "height": 480,
+    "hfov_rad": 1.3788101090755203,
+    "vfov_rad": 1.0341075818066403,
+    "hfov_deg": 79.0,
+    "vfov_deg": 59.25000000000001,
+    "source": "ApexNav exploration.launch map_ros/fx,fy @ 640x480"
+  },
+  "gt_false_occupied_probe": {
+    "n_tested": 281,
+    "n_snap_ok": 281,
+    "n_nav_true": 270,
+    "false_occupied_rate_est": 0.9608540925266904,
+    "note": "GT diagnosis only; high rate \u21d2 many occ cells near navigable space (height band / thin obstacles / noise), not injected into planner."
+  }
+}

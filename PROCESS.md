@@ -656,3 +656,28 @@
 **结论**：假边框为 1px 欠采样；放射扇区为环视稀疏观测。未改规划输入。
 
 **相关**：`reports/habitat_rangercr10_map_raster_fill.md`
+
+---
+
+## 2026-11-06 视场/环视/不可通行诊断 + yaw 步长对照
+
+**模块**：`adapters/habitat_rangercr10` 诊断层（同分支）
+
+**问题**：白栅格观感是否仍含可视化伪影；30° 环视是否造成覆盖盲区；NO_PASSABLE/A* 与地图误识别关系。
+
+**操作**：
+
+- 从 mapfill 正式环视提取每帧位姿/FOV 重叠/深度有效率（`lookaround_fov_diag`）。
+- 首规划 passability 统计（free 分量、frontier、A*、inflate）。
+- 有界对照：同 yr17 spawn、同 0.7×/PPO raise/legacy018，仅改 yaw 步 15/30/45°（mapping-only）。
+- 发现对照空地图根因：缺 TURN_DOWN → 光轴朝上；对照脚本补 joint3−0.60 后地图恢复。
+
+**实测**：
+
+- HFOV/VFOV 79°/59.25°；30° 重叠 49°，无水平盲楔。
+- yaw15/30/45 末帧 occ/free：1010/1275、584/954、281/550。
+- 未改规划器/缩放/PPO/深度 NaN/膨胀；未覆盖旧 Demo。
+
+**结论**：当前不可通行压力主要来自 unknown+膨胀连通，而非 30° FOV 漏扫。若改环视步长须单独开实验。
+
+**相关**：`reports/habitat_rangercr10_lookaround_fov_passability.md`；`reports/lookaround_yawstep_compare_20261106/`

@@ -1,0 +1,210 @@
+[
+  {
+    "step": 0,
+    "occupied": 40,
+    "free": 57,
+    "unknown": 21894,
+    "value_map": 57,
+    "frac_nan": 0.5673958333333333
+  },
+  {
+    "step": 1,
+    "occupied": 65,
+    "free": 94,
+    "unknown": 22949,
+    "value_map": 94,
+    "frac_nan": 0.6550944010416667
+  },
+  {
+    "step": 2,
+    "occupied": 99,
+    "free": 236,
+    "unknown": 23632,
+    "value_map": 236,
+    "frac_nan": 0.43457682291666666
+  },
+  {
+    "step": 3,
+    "occupied": 146,
+    "free": 293,
+    "unknown": 23797,
+    "value_map": 293,
+    "frac_nan": 0.37662109375
+  },
+  {
+    "step": 4,
+    "occupied": 182,
+    "free": 377,
+    "unknown": 23549,
+    "value_map": 377,
+    "frac_nan": 0.42998697916666667
+  },
+  {
+    "step": 5,
+    "occupied": 353,
+    "free": 443,
+    "unknown": 23158,
+    "value_map": 443,
+    "frac_nan": 0.43801432291666664
+  },
+  {
+    "step": 6,
+    "occupied": 411,
+    "free": 594,
+    "unknown": 22777,
+    "value_map": 594,
+    "frac_nan": 0.388134765625
+  },
+  {
+    "step": 7,
+    "occupied": 447,
+    "free": 667,
+    "unknown": 22536,
+    "value_map": 667,
+    "frac_nan": 0.4251171875
+  },
+  {
+    "step": 8,
+    "occupied": 473,
+    "free": 721,
+    "unknown": 22345,
+    "value_map": 721,
+    "frac_nan": 0.4359537760416667
+  },
+  {
+    "step": 9,
+    "occupied": 518,
+    "free": 774,
+    "unknown": 22103,
+    "value_map": 774,
+    "frac_nan": 0.40123046875
+  },
+  {
+    "step": 10,
+    "occupied": 556,
+    "free": 889,
+    "unknown": 21801,
+    "value_map": 889,
+    "frac_nan": 0.4846484375
+  },
+  {
+    "step": 11,
+    "occupied": 584,
+    "free": 954,
+    "unknown": 21591,
+    "value_map": 954,
+    "frac_nan": 0.4584830729166667
+  },
+  {
+    "step": 12,
+    "occupied": 584,
+    "free": 1007,
+    "unknown": 21538,
+    "value_map": 1007,
+    "frac_nan": 0.5674088541666666
+  },
+  {
+    "step": 13,
+    "occupied": 584,
+    "free": 1023,
+    "unknown": 21522,
+    "value_map": 1023,
+    "frac_nan": 0.57892578125
+  },
+  {
+    "step": 14,
+    "occupied": 584,
+    "free": 1067,
+    "unknown": 21478,
+    "value_map": 1067,
+    "frac_nan": 0.5177180989583333
+  },
+  {
+    "step": 15,
+    "occupied": 584,
+    "free": 1067,
+    "unknown": 21478,
+    "value_map": 1067,
+    "frac_nan": 0.061048177083333335
+  },
+  {
+    "step": 16,
+    "occupied": 584,
+    "free": 1067,
+    "unknown": 21478,
+    "value_map": 1067,
+    "frac_nan": 0.08681640625
+  },
+  {
+    "step": 17,
+    "occupied": 584,
+    "free": 1067,
+    "unknown": 21478,
+    "value_map": 1067,
+    "frac_nan": 0.327861328125
+  },
+  {
+    "step": 18,
+    "occupied": 584,
+    "free": 1067,
+    "unknown": 21478,
+    "value_map": 1067,
+    "frac_nan": 0.35114908854166665
+  },
+  {
+    "step": 19,
+    "occupied": 584,
+    "free": 1067,
+    "unknown": 21478,
+    "value_map": 1067,
+    "frac_nan": 0.26954752604166665
+  },
+  {
+    "step": 20,
+    "occupied": 584,
+    "free": 1067,
+    "unknown": 21478,
+    "value_map": 1067,
+    "frac_nan": 0.18891927083333335
+  },
+  {
+    "step": 21,
+    "occupied": 584,
+    "free": 1067,
+    "unknown": 21478,
+    "value_map": 1067,
+    "frac_nan": 0.10872721354166667
+  },
+  {
+    "step": 22,
+    "occupied": 584,
+    "free": 1067,
+    "unknown": 21478,
+    "value_map": 1067,
+    "frac_nan": 0.23027669270833334
+  },
+  {
+    "step": 23,
+    "occupied": 584,
+    "free": 1067,
+    "unknown": 21478,
+    "value_map": 1067,
+    "frac_nan": 0.2648470052083333
+  },
+  {
+    "step": 24,
+    "occupied": 584,
+    "free": 1067,
+    "unknown": 21478,
+    "value_map": 1067,
+    "frac_nan": 0.248603515625
+  },
+  {
+    "step": 25,
+    "occupied": 584,
+    "free": 1067,
+    "unknown": 21478,
+    "value_map": 1067,
+    "frac_nan": 0.5789290364583334
+  }
+]

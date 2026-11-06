@@ -1,0 +1,13 @@
+{
+  "base_cell_state": "free",
+  "free_component_from_start": 440,
+  "frontier_seed_cells": 468,
+  "frontier_clusters": 16,
+  "astar_trials_n": 16,
+  "astar_ok_n": 4,
+  "occupied_pts": 584,
+  "free_pts": 1067,
+  "unknown_pts": 21478,
+  "inflate_pts": 1649,
+  "hypothesis": "If base_cell_state!=free or free_component small and astar_ok_n==0, NO_PASSABLE is map connectivity / start occupancy \u2014 not missing frontiers."
+}
