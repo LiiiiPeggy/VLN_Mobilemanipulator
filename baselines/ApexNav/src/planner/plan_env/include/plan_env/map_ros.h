@@ -170,12 +170,21 @@ private:
   int pipe_obstacle_after_outlier_ = 0;
   int pipe_rays_in_ = 0;
   // ################################
-  // Single-variable ground free-ray path (adapter-gated).
+  // Ground free-ray path (adapter-gated) + geometry gates.
+  // AGL [0, ground_free_max_agl] may free-ray after planarity check.
+  // AGL (max_agl, filter_min_height] → low obstacle OCCUPIED (not free).
   // ################################
   bool ground_free_ray_enable_ = false;
+  double ground_free_max_agl_ = 0.03;
+  double ground_free_planar_radius_ = 0.12;
+  double ground_free_planar_z_tol_ = 0.02;
+  int ground_free_planar_min_neighbors_ = 5;
   int pipe_ground_free_cands_ = 0;
   int pipe_ground_free_after_outlier_ = 0;
+  int pipe_ground_free_planar_reject_ = 0;
+  int pipe_low_obstacle_ = 0;
   PointCloud2D::Ptr ground_free_cloud2d_;
+  bool isPlanarGroundPoint(const PointCloud3D::Ptr& cloud, int idx) const;
   void writePipelineDiagLine(const std::string& line);
 
   friend SDFMap2D;

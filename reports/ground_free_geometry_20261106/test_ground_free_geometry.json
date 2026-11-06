@@ -1,0 +1,60 @@
+{
+  "pass": true,
+  "params": {
+    "filter_min_height": 0.28,
+    "ground_free_max_agl": 0.03,
+    "planar_radius": 0.12,
+    "planar_z_tol": 0.02,
+    "planar_min_neighbors": 5
+  },
+  "results": [
+    {
+      "case": "planar_floor_1cm",
+      "class": "GROUND_FREE",
+      "expect": "GROUND_FREE"
+    },
+    {
+      "case": "low_obstacle_5cm",
+      "agl_m": 0.05,
+      "class": "LOW_OBSTACLE",
+      "expect": "LOW_OBSTACLE",
+      "endpoint_label_gated": "OCCUPIED",
+      "endpoint_label_naive": "FREE",
+      "naive_would_free": true,
+      "gated_not_free": true
+    },
+    {
+      "case": "low_obstacle_10cm",
+      "agl_m": 0.1,
+      "class": "LOW_OBSTACLE",
+      "expect": "LOW_OBSTACLE",
+      "endpoint_label_gated": "OCCUPIED",
+      "endpoint_label_naive": "FREE",
+      "naive_would_free": true,
+      "gated_not_free": true
+    },
+    {
+      "case": "low_obstacle_20cm",
+      "agl_m": 0.2,
+      "class": "LOW_OBSTACLE",
+      "expect": "LOW_OBSTACLE",
+      "endpoint_label_gated": "OCCUPIED",
+      "endpoint_label_naive": "FREE",
+      "naive_would_free": true,
+      "gated_not_free": true
+    },
+    {
+      "case": "sparse_spike_1cm",
+      "class": "PLANAR_REJECT",
+      "expect": "PLANAR_REJECT",
+      "endpoint_label_gated": "UNKNOWN"
+    },
+    {
+      "case": "policy_invariants",
+      "inflation_radius_changed": false,
+      "unknown_relaxed": false,
+      "filter_min_height": 0.28,
+      "ground_free_max_agl": 0.03
+    }
+  ]
+}

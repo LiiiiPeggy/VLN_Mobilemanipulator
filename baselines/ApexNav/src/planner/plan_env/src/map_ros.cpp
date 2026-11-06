@@ -43,13 +43,21 @@ void MapROS::init()
   node_.param("map_ros/pipeline_diag_enable", pipeline_diag_enable_, false);
   node_.param("map_ros/pipeline_diag_dir", pipeline_diag_dir_, std::string(""));
   node_.param("map_ros/ground_free_ray_enable", ground_free_ray_enable_, false);
+  // ################################
+  // Geometry gates: do NOT treat full AGL [0, filter_min_height] as ground.
+  // ################################
+  node_.param("map_ros/ground_free_max_agl", ground_free_max_agl_, 0.03);
+  node_.param("map_ros/ground_free_planar_radius", ground_free_planar_radius_, 0.12);
+  node_.param("map_ros/ground_free_planar_z_tol", ground_free_planar_z_tol_, 0.02);
+  node_.param("map_ros/ground_free_planar_min_neighbors", ground_free_planar_min_neighbors_, 5);
   if (pipeline_diag_enable_ && !pipeline_diag_dir_.empty()) {
     mkdir(pipeline_diag_dir_.c_str(), 0755);
     ROS_WARN("[MapROS] pipeline_diag_enable=true dir=%s", pipeline_diag_dir_.c_str());
   }
   if (ground_free_ray_enable_) {
     ROS_WARN("[MapROS] ground_free_ray_enable=true "
-             "(AGL [0, filter_min_height] → free rays only, no OCCUPIED)");
+             "(AGL [0, %.3f] + planar → free rays; (%.3f, filter_min] → OCCUPIED low obstacles)",
+        ground_free_max_agl_, ground_free_max_agl_);
   }
   ground_free_cloud2d_.reset(new PointCloud2D());
   // ################################
@@ -429,8 +437,11 @@ void MapROS::depthPoseCallback(
         << ",\"height_obstacle_band\":" << pipe_obstacle_band_
         << ",\"height_other\":" << pipe_other_height_
         << ",\"ground_free_ray_enable\":" << (ground_free_ray_enable_ ? "true" : "false")
+        << ",\"ground_free_max_agl\":" << ground_free_max_agl_
         << ",\"ground_free_cands\":" << pipe_ground_free_cands_
+        << ",\"ground_free_planar_reject\":" << pipe_ground_free_planar_reject_
         << ",\"ground_free_after_outlier\":" << pipe_ground_free_after_outlier_
+        << ",\"low_obstacle_band\":" << pipe_low_obstacle_
         << ",\"obstacle_after_outlier\":" << pipe_obstacle_after_outlier_
         << ",\"rays_into_occupancy\":" << pipe_rays_in_
         << ",\"free_grids_listed\":" << free_after
@@ -563,6 +574,34 @@ void MapROS::getObservationObjectsCloud(const std::vector<int>& filter_object_id
   map_->object_map2d_->inputObservationObjectsCloud(observation_clouds, max(0.0, itm_score_));
 }
 
+// ################################
+// Local XY neighborhood must look like a flat patch (same AGL), not a
+// sparse spike / object edge mistaken for floor.
+// ################################
+bool MapROS::isPlanarGroundPoint(const PointCloud3D::Ptr& cloud, int idx) const
+{
+  if (!cloud || idx < 0 || idx >= static_cast<int>(cloud->points.size()))
+    return false;
+  const auto& p = cloud->points[idx];
+  const double r2 = ground_free_planar_radius_ * ground_free_planar_radius_;
+  int n_ok = 0;
+  for (int j = 0; j < static_cast<int>(cloud->points.size()); ++j) {
+    if (j == idx)
+      continue;
+    const auto& q = cloud->points[j];
+    const double dx = static_cast<double>(p.x) - static_cast<double>(q.x);
+    const double dy = static_cast<double>(p.y) - static_cast<double>(q.y);
+    if (dx * dx + dy * dy > r2)
+      continue;
+    if (std::fabs(static_cast<double>(p.z) - static_cast<double>(q.z)) <=
+        ground_free_planar_z_tol_)
+      n_ok += 1;
+    if (n_ok >= ground_free_planar_min_neighbors_)
+      return true;
+  }
+  return false;
+}
+
 /**
  * @brief Filter and process 3D point cloud to 2D occupancy grid
  */
@@ -589,10 +628,13 @@ void MapROS::filterPointCloudToXY()
   pipe_other_height_ = 0;
   pipe_ground_free_cands_ = 0;
   pipe_ground_free_after_outlier_ = 0;
+  pipe_ground_free_planar_reject_ = 0;
+  pipe_low_obstacle_ = 0;
 
   filtered_depth_cloud2d_->clear();
   ground_free_cloud2d_->clear();
   PointCloud3D::Ptr ground_free_cloud_3d(new PointCloud3D());
+  std::vector<int> provisional_ground_idx;
 
   // Separate points by height categories
   for (int i = 0; i < (int)down_depth_cloud_3d->points.size(); i++) {
@@ -600,6 +642,7 @@ void MapROS::filterPointCloudToXY()
     pt.x = down_depth_cloud_3d->points[i].x;
     pt.y = down_depth_cloud_3d->points[i].y;
     pt.z = down_depth_cloud_3d->points[i].z;
+    const double agl = static_cast<double>(pt.z) - cur_floor_height;
 
     // Points below virtual ground (for virtual ground generation)
     if (down_depth_cloud_3d->points[i].z < cur_floor_height + virtual_ground) {
@@ -613,17 +656,34 @@ void MapROS::filterPointCloudToXY()
       pipe_obstacle_band_ += 1;
     }
     // ################################
-    // Floor / near-ground band previously counted as height_other and dropped.
-    // When enabled: keep as FREE-RAY endpoints only (not OCCUPIED).
-    // AGL in [0, filter_min_height].
+    // Near-ground AGL [0, filter_min_height]:
+    //  - [0, ground_free_max_agl] + planar → free-ray candidates
+    //  - (max_agl, filter_min] → low obstacles → OCCUPIED (not free)
+    // Never treat the full 0–filter_min band as free ground.
     // ################################
-    else if (ground_free_ray_enable_ &&
-             down_depth_cloud_3d->points[i].z >= cur_floor_height &&
-             down_depth_cloud_3d->points[i].z <= cur_floor_height + filter_min_height_) {
+    else if (ground_free_ray_enable_ && agl >= 0.0 &&
+             agl <= filter_min_height_) {
+      if (agl <= ground_free_max_agl_) {
+        provisional_ground_idx.push_back(i);
+      } else {
+        filtered_cloud_3d->points.push_back(pt);
+        pipe_low_obstacle_ += 1;
+      }
+    } else {
+      pipe_other_height_ += 1;
+    }
+  }
+
+  // Planarity gate on provisional near-floor points (against downsampled cloud).
+  for (int idx : provisional_ground_idx) {
+    Point3D pt = down_depth_cloud_3d->points[idx];
+    if (isPlanarGroundPoint(down_depth_cloud_3d, idx)) {
       ground_free_cloud_3d->points.push_back(pt);
       pipe_ground_free_cands_ += 1;
     } else {
-      pipe_other_height_ += 1;
+      // Rejected floor candidates are NOT free-rayed; keep unknown (safer
+      // than carving FREE). Count separately from height_other.
+      pipe_ground_free_planar_reject_ += 1;
     }
   }
 
