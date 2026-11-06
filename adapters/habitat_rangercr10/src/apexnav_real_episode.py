@@ -771,6 +771,52 @@ class ApexNavRangerBridge:
                 (self.out / "itm_seed_warn.txt").write_text(traceback.format_exc())
             meta = self._publish_obs_bundle(ee["ee_rgb"], ee["ee_depth"], 0)
             (self.out / "pre_plan_obs_meta.json").write_text(json.dumps(meta, indent=2))
+            # ################################
+            # Experimental chassis-look pre-burst (off by default).
+            # CHASSIS_LOOK_MODE=none|budget_match|chassis_ground
+            # B=budget_match: same extra pubs/wait at raised forward pose.
+            # C=chassis_ground: LOOK_DOWN (joint3 −0.60) to see floor toward
+            #   chassis–camera segment (not through body), then restore arm.
+            # Does not change ApexNav 26-step / 30° / ground / inflation / A*.
+            # ################################
+            look_mode = (os.environ.get("CHASSIS_LOOK_MODE") or "none").strip()
+            extra_pubs = int(os.environ.get("CHASSIS_LOOK_EXTRA_PUBS") or "40")
+            extra_hz = float(os.environ.get("CHASSIS_LOOK_EXTRA_HZ") or "4")
+            look_meta: Dict[str, Any] = {
+                "mode": look_mode,
+                "extra_pubs": extra_pubs,
+                "extra_hz": extra_hz,
+                "applied": False,
+            }
+            if look_mode in ("budget_match", "chassis_ground") and extra_pubs > 0:
+                raised_q = list(self.env.arm_q)
+                if look_mode == "chassis_ground":
+                    q = list(raised_q)
+                    q[2] = float(q[2]) - 0.60  # LOOK_DOWN via joint3
+                    self.env.set_arm_joints(q)
+                    look_meta["look_joint3_delta"] = -0.60
+                    look_meta["pose"] = "LOOK_DOWN_toward_chassis_side_ground"
+                else:
+                    look_meta["pose"] = "raised_forward_unchanged"
+                dt = 1.0 / max(extra_hz, 1e-3)
+                t_burst0 = time.time()
+                for k in range(extra_pubs):
+                    ee_b = self.env.observe_ee_only()
+                    self._publish_obs_bundle(ee_b["ee_rgb"], ee_b["ee_depth"], 0)
+                    rospy.sleep(dt)
+                look_meta["applied"] = True
+                look_meta["elapsed_s"] = float(time.time() - t_burst0)
+                if look_mode == "chassis_ground":
+                    self.env.set_arm_joints(raised_q)
+                    ee = self.env.observe_ee_only()
+                    self._publish_obs_bundle(ee["ee_rgb"], ee["ee_depth"], 0)
+                (self.out / "chassis_look_burst.json").write_text(
+                    json.dumps(look_meta, indent=2)
+                )
+            else:
+                (self.out / "chassis_look_burst.json").write_text(
+                    json.dumps(look_meta, indent=2)
+                )
             _pub_f64(confidence_threshold_pub, fusion_threshold)
             trigger_pub.publish(PoseStamped())
             _pub_int(state_pub, HABITAT_STATE.READY)
