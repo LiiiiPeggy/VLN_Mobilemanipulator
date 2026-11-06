@@ -486,6 +486,23 @@ void SDFMap2D::setForceOccGrid(const Eigen::Vector2d& pos)
   md_->occupancy_buffer_[adr] = mp_->clamp_max_log_;
 }
 
+void SDFMap2D::diagSetOccupancyState(const Eigen::Vector2d& pos, int state, int inflate)
+{
+  if (!isInMap(pos))
+    return;
+  Eigen::Vector2i idx;
+  posToIndex(pos, idx);
+  const int adr = toAddress(idx);
+  if (state == UNKNOWN)
+    md_->occupancy_buffer_[adr] = mp_->clamp_min_log_ - mp_->unknown_flag_;
+  else if (state == FREE)
+    md_->occupancy_buffer_[adr] = mp_->clamp_min_log_;
+  else if (state == OCCUPIED)
+    md_->occupancy_buffer_[adr] = mp_->clamp_max_log_;
+  if (inflate >= 0)
+    md_->occupancy_buffer_inflate_[adr] = static_cast<char>(inflate ? 1 : 0);
+}
+
 void SDFMap2D::diagClearAndInflateLocalMap()
 {
   clearAndInflateLocalMap();

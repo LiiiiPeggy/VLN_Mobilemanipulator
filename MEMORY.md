@@ -154,6 +154,18 @@ VLN_Mobilemanipulator/
 | 门控后 short3：yr17/eF36 通；HY1 仍首规划 NO_PASSABLE（free@0.3=0）→ 覆盖不足，可另立补视 | `groundgate_short3_20261106` |
 | HY1 钉死 spawn 下首规划 NO_PASSABLE 高度可复现（5/5）；首规划前深度帧 ≈54–57 | `hy1_baseline_repeats_20261106` |
 | A/B/C 补视：额外 40 帧@4Hz；C=LOOK_DOWN 朝底盘侧地面；**C 相对 B 无改善**，三组均 free@0.3=0 | `hy1_look_abc_20261106` |
+| HY1 固定构型：B/C 车体 0–0.6 m 地面均不在 FOV、无有效深度点；最早缺口=观察覆盖；原生 3D z=5/10/20 cm→OCC 正常 | `hy1_chassis_observability_20261106`；`MapROS::diagProcessCloud3DKeepZ` |
+| 0.7× half_l≈0.46 m：0–0.3 m 诊断环多在车下；验收用车外带+前向走廊，不等于环带 | `hy1_startup_pose_geometry_20261106` |
+| 完整臂搜索：走廊地面几何可见（cand05/06；C 亦可见）；生产平面/离群后走廊端点稀疏（C:62→0）；车下不可见 | 同上；`test_map_cloud_csv_replay` |
+| 单帧 MapROS free-ray 候选可进管道，log-odds 端点仍常 UNKNOWN；起点在车下可能仍 UNKNOWN→接口问题另立 | 同上 |
+| cand05 静态多帧：走廊 FREE 于 N=5→82 后饱和（跨度~0.25 m）；起点 absent；帧计数以 pipeline `frame_seq` 为准 | `hy1_cand05_static_multiframe_20261106` |
+| 走廊地面门控最早损失在 **voxel**（C:62→0；cand05:27→3）；非先被平面/离群清零 | `gate_stage_loss_diag.json` |
+| HY1 首规划包围底盘：主因 **UNKNOWN moat**（0–0.3 全 UNKNOWN 且在车下；车外 0.3–0.6 仍以 UNKNOWN 阻断）；非近场 OCC/膨胀；拒绝 unknown≫0、occ/inf=0 | `hy1_surround_nontraversable_20261106`；run `..._hy1_base_rep_v2_r1_20261106_191426` |
+| `map_pipeline_diag.start_raw_occ` = **相机格**；`native_plan_diag.start_raw_occ` = **底盘**；二者不可混读 | `map_ros.cpp` pipeline 窗口 |
+| 相机偏置已进链路：sensor_pose optical、odom=chassis、射线起点=camera_pos_；legacy 代理关；环视 0→1 同点重投影深度误差 max≈1.8 mm | 同上；`ros_dynamic_publisher` |
+| 最近 FREE≈0.52 m > A* 0.25 m 豁免 → 本帧豁免救不了 NO_PASSABLE；禁止据此扩大豁免 | `native_plan_diag`；`astar2d` |
+| `startup_prior_mode`：`none`（默认）\|`initial_footprint`；F0=底盘足迹一次生成；仅规划查询放行 F0∩UNKNOWN；不改地图；`initial_footprint` 关闭 0.25 m near-start skip | `astar2d`；`algorithm_rangercr10.xml`；`hy1_startup_prior_20261107` |
+| 先验 ≠ 视觉 FREE ≠ 完整足迹安全验收；禁止用扩 F0/恢复半径豁免凑通 | 同上 |
 | 父 shell 污染 `FORCE_SPAWN_JSON` 会导致错场景；复测脚本须钉死路径 | `run_hy1_baseline_repeats.sh` |
 | 豁免反事实须静默检查边+采样，禁止因起点 UNKNOWN 单独置位，禁止污染 reject 计数 | `astar2d.cpp` checkPointSafetySilent |
 | GT occ 探针是 navmesh **邻域**审计，不是 precise false-occupied rate | `gt_false_occupied_probe` |

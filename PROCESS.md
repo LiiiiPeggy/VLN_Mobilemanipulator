@@ -766,3 +766,107 @@
 **结果**：基线 NO_PASSABLE 5/5；A/B/C 均为 NO_PASSABLE 5/5、free@0.3=0；C 不优于 B → **不支持朝向补视有效**。默认部署未改。
 
 **相关**：`reports/hy1_triad_evidence_20261106*`；`reports/hy1_baseline_repeats_20261106*`；`reports/hy1_look_abc_20261106*`
+
+---
+
+## 2026-11-06 HY1 近底盘可观测性缺口定位
+
+**模块**：固定构型探针 + `MapROS::diagProcessCloud3DKeepZ` + `test_map_pipeline_replay` Case C
+
+**问题**：A/B/C 均 free@0.3=0；需区分「未见地面 / 过滤误杀 / 射线未穿格 / 地图更新失效」。
+
+**操作**（未改默认部署与门控）：
+
+- 探针保存 B/C 关节、相机位姿/optical R、底盘位姿、同步 RGB/raw depth/self-hit，并投影 0–0.3/0.3–0.6 m 候选地面。
+- 镜像生产管道做环带逐阶段统计与 UNKNOWN 格追踪。
+- 原生测试保留 XY-only Case A/B 并准确命名范围；新增真实 z=5/10/20 cm 3D-keep-Z Case C。
+
+**实测**：
+
+- B：光学近水平；环带 `n_in_fov=0`；点云 0–0.6 m=0；最近点≈1.58 m。
+- C：j3−0.60 下俯成立（cam_z 0.88→0.56，fwd_z→−0.52）；环带仍 `n_in_fov=0`；点云 0–0.6 m=0；最近点≈0.85 m（织物，非足迹）。
+- 0–0.3 m 代表格：无 free-ray miss；过滤/地图更新路径未触发。
+- Case C ALL_PASS：低矮障碍经生产过滤后 OCCUPIED。
+
+**结论**：最早缺口 = **目标地面未被看到**（传感器/姿态可观测性）。优先另立启动策略任务做几何可验证覆盖姿态；不修过滤/不强制 FREE。
+
+**相关**：`reports/hy1_chassis_observability_20261106*`；`adapters/.../hy1_chassis_ground_observability_probe.py`
+
+---
+
+## 2026-11-06 HY1 启动观测几何可行性
+
+**模块**：臂完整构型离线搜索 + 几何一致性 + MapROS CSV 回放
+
+**操作**：冻结可观测性证据与 0.7× 足迹区带定义；在 URDF 限位内搜索 1449 构型；FOV/接触/深度/生产镜像/走廊连通；几何一致性复核；`test_map_cloud_csv_replay` 静态回放。未改默认部署与门控。
+
+**结果**：
+
+- 走廊目标地面：**可被看到**（cand05/06；lookdown_C geom=60）。
+- 生产后走廊地面端点：**稀疏**（cand05=3；C raw62→after0）——门控过滤记录在案，本轮不改。
+- 车下 0–0.3 m：**不可见**（足迹遮挡）。
+- 起点模拟 free：**否** → 预告 start-state/接口风险。
+- 优选：`cand05`（备选 `cand06`）。
+
+**结论**：有限搜索内存在可行观察姿态；下一步特征开关静态多帧+独立启动实验，不把无解说成全局不存在。
+
+**相关**：`reports/hy1_startup_pose_geometry_20261106*`
+
+---
+
+## 2026-11-06 cand05 静态多帧生产链路
+
+**模块**：`STATIC_OBS_ENABLE` + exploration map_ros（无底盘、无改门控）
+
+**操作**：固定 cand05；按 pipeline `frame_seq` 在 1/5/10/20 检查点采样走廊 FREE/起点/门控镜像；离线追踪 C 与 cand05 走廊地面损失阶段。
+
+**结果**：
+
+- N=5：走廊 FREE=82；其后新增=0 → **空间饱和**（停 40）。
+- 跨度~0.25 m，非足迹级连续通路；底盘中心 **absent**。
+- C：走廊 raw 62 → voxel 后 0（最早损失）。cand05：27→3 后保持。
+
+**结论**：禁止加帧宣称改善；下一步覆盖重设计，并可选独立修 voxel Z 混合；不改起点豁免。
+
+**相关**：`reports/hy1_cand05_static_multiframe_20261106*`
+
+---
+
+## 2026-11-06 HY1「空旷却包围底盘不可通行」根因
+
+**模块**：离线冻结 run 分层诊断（只诊断）
+
+**操作**：
+
+- 冻结 `99ebb49` + `real_s070_hy1_base_rep_v2_r1_20261106_191426`（不用旧 7fps 视频推断）。
+- 原生 `plan_seq_1_local_map` 分 FREE/UNKNOWN/OCC/inflate；足迹内/外分带；叠加相机轨迹与候选拒绝。
+- 核对 odom/sensor_pose/射线起点；帧0→1 静态种子重投影。
+- 交叉 cand05/C voxel 损失（独立支线）。
+
+**结果**：
+
+- 包围环 = **UNKNOWN**（0–0.3 全在车下；车外 moat≈0.5 m）；最近 OCC≈0.87 m；候选拒绝 unknown=3943、occ/inf=0。
+- 相机偏置正确；legacy 代理关；重投影 max≈1.8 mm → 不支持外参/同步假障。
+- 最近 FREE 0.52 m > 0.25 m 豁免 → 豁免不能打通。
+
+**结论**：主因观测盲区→UNKNOWN；下一步覆盖重做；可选独立修 voxel；不强制 FREE/不扩豁免/不注 GT。
+
+**相关**：`reports/hy1_surround_nontraversable_20261106*`
+
+---
+
+## 2026-11-07 初始足迹通行先验（startup_prior）
+
+**模块**：Astar2D 规划查询 + 适配 launch；HY1 冻结地图原生 A/B
+
+**操作**：
+
+- 唯一开关 `startup_prior_mode=none|initial_footprint`（默认 none）。
+- F0 由底盘位姿+`footprint_at_scale` 半轴一次生成；不改写占据；`initial_footprint` 关闭 0.25 m skip。
+- `test_startup_prior_astar` 加载冻结 cells/candidates 跑生产 A*。
+
+**结果**：A 0/26；B 5/26，路径长≈0.63 m；安全边 F0 外 UNKNOWN=0；OCC/inflate 仍拒；地图未变。
+
+**结论**：启动先验接口有效；默认仍 none；执行安全另立。
+
+**相关**：`reports/hy1_startup_prior_20261107*`

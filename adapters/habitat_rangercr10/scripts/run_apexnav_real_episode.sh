@@ -58,15 +58,29 @@ esac
 # ################################
 PLAN_DIAG_ENABLE="${PLAN_DIAG_ENABLE:-true}"
 PIPELINE_DIAG_ENABLE="${PIPELINE_DIAG_ENABLE:-true}"
+# ################################
+# startup_prior_mode: none (default) | initial_footprint
+# half_l/half_w from footprint_at_scale(ROBOT_SCALE); unused when none.
+# ################################
+STARTUP_PRIOR_MODE="${STARTUP_PRIOR_MODE:-none}"
+ROBOT_SCALE="${ROBOT_SCALE:-1.0}"
+read -r STARTUP_PRIOR_HALF_L STARTUP_PRIOR_HALF_W < <(python3 - <<PY
+import sys
+sys.path.insert(0, "/home/ubuntu/locomani/VLN_Mobilemanipulator/adapters/habitat_rangercr10")
+from src.robot_scale import footprint_at_scale
+fp = footprint_at_scale(float("${ROBOT_SCALE}"))
+print(fp["chassis_half_length_m"], fp["chassis_half_width_m"])
+PY
+)
 DIAG_DIR="$OUT/native_diag"
 mkdir -p "$DIAG_DIR"
-echo "[2/4] start exploration_rangercr10.launch (profile=$PROFILE overlay=$(basename "$OVERLAY") plan_diag=$PLAN_DIAG_ENABLE)"
+echo "[2/4] start exploration_rangercr10.launch (profile=$PROFILE overlay=$(basename "$OVERLAY") plan_diag=$PLAN_DIAG_ENABLE startup_prior=$STARTUP_PRIOR_MODE half=${STARTUP_PRIOR_HALF_L}x${STARTUP_PRIOR_HALF_W})"
 docker exec -d vln-rangercr10 bash -lc \
-  "$SRC_ROS; roslaunch $LAUNCH_FILE ranger_overlay:=$OVERLAY plan_diag_enable:=$PLAN_DIAG_ENABLE plan_diag_dir:=$DIAG_DIR pipeline_diag_enable:=$PIPELINE_DIAG_ENABLE pipeline_diag_dir:=$DIAG_DIR >$LOGDIR/exploration.log 2>&1"
+  "$SRC_ROS; roslaunch $LAUNCH_FILE ranger_overlay:=$OVERLAY plan_diag_enable:=$PLAN_DIAG_ENABLE plan_diag_dir:=$DIAG_DIR pipeline_diag_enable:=$PIPELINE_DIAG_ENABLE pipeline_diag_dir:=$DIAG_DIR startup_prior_mode:=$STARTUP_PRIOR_MODE startup_prior_half_length:=$STARTUP_PRIOR_HALF_L startup_prior_half_width:=$STARTUP_PRIOR_HALF_W >$LOGDIR/exploration.log 2>&1"
 sleep 4
 # Record effective params
 docker exec vln-rangercr10 bash -lc \
-  "$SRC_ROS; rosparam get /habitat/simulator/agents/main_agent/radius; rosparam get /exploration_node/sdf_map/obstacles_inflation; rosparam get /exploration_node/sdf_map/optimistic; rosparam get /exploration_node/map_ros/depth_filter_mindist; rosparam get /exploration_node/map_ros/filter_min_height; rosparam get /exploration_node/map_ros/filter_max_height" \
+  "$SRC_ROS; rosparam get /habitat/simulator/agents/main_agent/radius; rosparam get /exploration_node/sdf_map/obstacles_inflation; rosparam get /exploration_node/sdf_map/optimistic; rosparam get /exploration_node/map_ros/depth_filter_mindist; rosparam get /exploration_node/map_ros/filter_min_height; rosparam get /exploration_node/map_ros/filter_max_height; rosparam get /exploration_node/exploration/startup_prior_mode; rosparam get /exploration_node/exploration/startup_prior_half_length; rosparam get /exploration_node/exploration/startup_prior_half_width" \
   >"$LOGDIR/effective_params.txt" 2>&1 || true
 
 echo "[3/4] start VLM servers (yolo/dino/blip2/sam) if not up"

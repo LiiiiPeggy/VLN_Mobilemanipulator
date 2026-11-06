@@ -20,6 +20,13 @@
     <arg name="plan_diag_dir_" default=""/>
     <arg name="pipeline_diag_enable_" default="false"/>
     <arg name="pipeline_diag_dir_" default=""/>
+    <!-- ################################
+      startup_prior_mode: none | initial_footprint (default none).
+      half_l/half_w from footprint_at_scale(robot_scale); unused when none.
+    ################################ -->
+    <arg name="startup_prior_mode_" default="none"/>
+    <arg name="startup_prior_half_length_" default="0.0"/>
+    <arg name="startup_prior_half_width_" default="0.0"/>
 
     <!-- main node -->
     <node pkg="exploration_manager" name="exploration_node" type="exploration_node" output="screen">
@@ -88,6 +95,13 @@
         <param name="exploration/max_to_mean_threshold" value="1.10" type="double"/>
         <param name="exploration/max_to_mean_percentage" value="0.90" type="double"/>
         <param name="exploration/tsp_dir" value="$(find lkh_mtsp_solver)/resource" type="string"/>
+        <!-- ################################
+          Initial footprint traversability prior (planning query only).
+          Default none. Does NOT rewrite occupancy / expand F0 / restore 0.25 m skip.
+        ################################ -->
+        <param name="exploration/startup_prior_mode" value="$(arg startup_prior_mode_)" type="string"/>
+        <param name="exploration/startup_prior_half_length" value="$(arg startup_prior_half_length_)" type="double"/>
+        <param name="exploration/startup_prior_half_width" value="$(arg startup_prior_half_width_)" type="double"/>
         <!-- ################################
           Gated native plan / map pipeline diagnostics (off unless dir set).
           Does not change planning or free-update decisions.

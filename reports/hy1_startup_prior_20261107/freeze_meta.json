@@ -1,0 +1,17 @@
+{
+  "run": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_s070_hy1_base_rep_v2_r1_20261106_191426",
+  "plan_seq": 1,
+  "chassis": [
+    1.4327,
+    -23.7172
+  ],
+  "yaw_ros": -2.3315909698614945,
+  "resolution": 0.05,
+  "half_m": 1.5,
+  "n_cells": 3660,
+  "n_candidates": 26,
+  "native_result": "NO_PASSABLE_FRONTIER",
+  "robot_scale": 0.7,
+  "half_l_0p7": 0.4557,
+  "half_w_0p7": 0.30429
+}

@@ -93,6 +93,25 @@ public:
   int getUseNodeNum() const { return use_node_num_; }
   int getIterNum() const { return iter_num_; }
 
+  // ################################
+  // Initial footprint traversability prior (planning query only; map unchanged).
+  // mode: "none" | "initial_footprint"
+  // ################################
+  enum StartupPriorMode { STARTUP_PRIOR_NONE = 0, STARTUP_PRIOR_INITIAL_FOOTPRINT = 1 };
+  int getStartupPriorMode() const { return startup_prior_mode_; }
+  bool hasStartupPrior() const { return f0_ready_; }
+  void clearStartupPrior();
+  // Generate F0 once from chassis pose (not camera). No-op if already set or mode=none.
+  void ensureStartupPrior(const Eigen::Vector2d& chassis_xy, double yaw_ros);
+  bool isInsideStartupPrior(const Eigen::Vector2d& pos) const;
+  Eigen::Vector2d getStartupPriorCenter() const { return f0_center_; }
+  double getStartupPriorYaw() const { return f0_yaw_; }
+  double getStartupPriorHalfLength() const { return f0_half_l_; }
+  double getStartupPriorHalfWidth() const { return f0_half_w_; }
+  const std::vector<Eigen::Vector2i>& getStartupPriorCells() const { return f0_cells_; }
+  // Observe-only / offline replay: expose production safety predicate.
+  bool diagCheckPointSafety(const Eigen::Vector2d& pos, int safety_mode = SAFETY_MODE::NORMAL);
+
   double lambda_heu_;
 
 private:
@@ -108,6 +127,7 @@ private:
   bool checkPointSafetySilent(const Eigen::Vector2d& pos, int safety_mode) const;
   bool edgeWouldFailSafetySilent(const Eigen::Vector2d& from, const Eigen::Vector2d& to,
       int safety_mode) const;
+  bool unknownAllowedByStartupPrior(const Eigen::Vector2d& pos) const;
 
   // main data structure
   std::vector<Node2DPtr> path_node_pool_;
@@ -131,6 +151,16 @@ private:
   AstarRejectStats reject_stats_;
   int last_return_code_ = 0;
   double last_search_time_ = 0.0;
+  // Startup prior (default none).
+  int startup_prior_mode_ = STARTUP_PRIOR_NONE;
+  double startup_prior_half_l_ = 0.0;
+  double startup_prior_half_w_ = 0.0;
+  bool f0_ready_ = false;
+  Eigen::Vector2d f0_center_{0.0, 0.0};
+  double f0_yaw_ = 0.0;
+  double f0_half_l_ = 0.0;
+  double f0_half_w_ = 0.0;
+  std::vector<Eigen::Vector2i> f0_cells_;
   // ################################
 };
 

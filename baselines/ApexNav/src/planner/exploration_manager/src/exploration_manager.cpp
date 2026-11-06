@@ -223,6 +223,11 @@ void ExplorationManager::initialize(ros::NodeHandle& nh)
 int ExplorationManager::planNextBestPoint(const Vector3d& pos, const double& yaw)
 {
   Vector2d pos2d = Vector2d(pos(0), pos(1));
+  // ################################
+  // Initial footprint prior: generate F0 once from chassis pose+yaw (not camera).
+  // Does not rewrite occupancy; cleared on episode re-init via Astar2D recreate.
+  // ################################
+  path_finder_->ensureStartupPrior(pos2d, yaw);
   ros::Time t1 = ros::Time::now();
   auto t2 = t1;
   plan_diag_candidate_lines_.clear();

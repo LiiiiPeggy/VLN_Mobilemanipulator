@@ -43,3 +43,10 @@ target_link_libraries(path_searching
     ${catkin_LIBRARIES}
     ${OMPL_LIBRARIES}
 )
+
+# ################################
+# Native A* startup-prior A/B replay on frozen HY1 local map.
+# ################################
+add_executable(test_startup_prior_astar test/test_startup_prior_astar.cpp)
+target_link_libraries(test_startup_prior_astar path_searching ${catkin_LIBRARIES})
+add_dependencies(test_startup_prior_astar ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})

@@ -1,5 +1,7 @@
 #include <path_searching/astar2d.h>
+#include <cmath>
 #include <sstream>
+#include <string>
 
 using namespace std;
 using namespace Eigen;
@@ -30,11 +32,106 @@ void Astar2D::init(ros::NodeHandle& nh, const SDFMap2D::Ptr& sdf_map)
   cout << "origin_: " << origin_.transpose() << endl;
   cout << "map size: " << map_size_2d_.transpose() << endl;
 
+  // ################################
+  // Startup prior: default none. Footprint half-size from adapter (scaled).
+  // ################################
+  std::string prior_mode = "none";
+  nh.param("exploration/startup_prior_mode", prior_mode, std::string("none"));
+  nh.param("exploration/startup_prior_half_length", startup_prior_half_l_, 0.0);
+  nh.param("exploration/startup_prior_half_width", startup_prior_half_w_, 0.0);
+  if (prior_mode == "initial_footprint") {
+    startup_prior_mode_ = STARTUP_PRIOR_INITIAL_FOOTPRINT;
+    ROS_WARN("[Astar2D] startup_prior_mode=initial_footprint half_l=%.4f half_w=%.4f "
+             "(0.25m near-start skip DISABLED; map UNKNOWN unchanged)",
+        startup_prior_half_l_, startup_prior_half_w_);
+  } else {
+    startup_prior_mode_ = STARTUP_PRIOR_NONE;
+    if (prior_mode != "none")
+      ROS_WARN("[Astar2D] unknown startup_prior_mode='%s' → none", prior_mode.c_str());
+  }
+  clearStartupPrior();
+
   path_node_pool_.resize(allocate_num_);
   for (int i = 0; i < allocate_num_; i++) path_node_pool_[i] = new Node2D;
   use_node_num_ = 0;
   iter_num_ = 0;
   early_terminate_cost_ = 0.0;
+}
+
+void Astar2D::clearStartupPrior()
+{
+  f0_ready_ = false;
+  f0_center_.setZero();
+  f0_yaw_ = 0.0;
+  f0_half_l_ = 0.0;
+  f0_half_w_ = 0.0;
+  f0_cells_.clear();
+}
+
+void Astar2D::ensureStartupPrior(const Eigen::Vector2d& chassis_xy, double yaw_ros)
+{
+  if (startup_prior_mode_ != STARTUP_PRIOR_INITIAL_FOOTPRINT)
+    return;
+  if (f0_ready_)
+    return;
+  if (startup_prior_half_l_ <= 1e-6 || startup_prior_half_w_ <= 1e-6) {
+    ROS_ERROR("[Astar2D] initial_footprint requires positive "
+              "exploration/startup_prior_half_{length,width}");
+    return;
+  }
+  f0_center_ = chassis_xy;
+  f0_yaw_ = yaw_ros;
+  f0_half_l_ = startup_prior_half_l_;
+  f0_half_w_ = startup_prior_half_w_;
+  // Mark ready before rasterize so isInsideStartupPrior works.
+  f0_ready_ = true;
+  f0_cells_.clear();
+  // Rasterize: include only cells whose CENTER lies inside the oriented footprint
+  // (no exterior expansion).
+  const double res = sdf_map_->getResolution();
+  const double reach =
+      std::sqrt(f0_half_l_ * f0_half_l_ + f0_half_w_ * f0_half_w_) + res;
+  for (double x = f0_center_.x() - reach; x <= f0_center_.x() + reach + 1e-9; x += res) {
+    for (double y = f0_center_.y() - reach; y <= f0_center_.y() + reach + 1e-9; y += res) {
+      Eigen::Vector2d c(x, y);
+      if (!sdf_map_->isInMap(c))
+        continue;
+      Eigen::Vector2i idx;
+      sdf_map_->posToIndex(c, idx);
+      Eigen::Vector2d cell_c;
+      sdf_map_->indexToPos(idx, cell_c);
+      if (!isInsideStartupPrior(cell_c))
+        continue;
+      f0_cells_.push_back(idx);
+    }
+  }
+  ROS_WARN("[Astar2D] F0 generated once at chassis=(%.3f,%.3f) yaw=%.3f cells=%zu "
+           "(fixed for episode; does not follow motion)",
+      f0_center_.x(), f0_center_.y(), f0_yaw_, f0_cells_.size());
+}
+
+bool Astar2D::isInsideStartupPrior(const Eigen::Vector2d& pos) const
+{
+  if (!f0_ready_)
+    return false;
+  const double dx = pos.x() - f0_center_.x();
+  const double dy = pos.y() - f0_center_.y();
+  const double c = std::cos(f0_yaw_);
+  const double s = std::sin(f0_yaw_);
+  const double bx = c * dx + s * dy;
+  const double by = -s * dx + c * dy;
+  return std::fabs(bx) <= f0_half_l_ + 1e-9 && std::fabs(by) <= f0_half_w_ + 1e-9;
+}
+
+bool Astar2D::unknownAllowedByStartupPrior(const Eigen::Vector2d& pos) const
+{
+  return startup_prior_mode_ == STARTUP_PRIOR_INITIAL_FOOTPRINT && f0_ready_ &&
+         isInsideStartupPrior(pos);
+}
+
+bool Astar2D::diagCheckPointSafety(const Eigen::Vector2d& pos, int safety_mode)
+{
+  return checkPointSafety(pos, safety_mode);
 }
 
 void Astar2D::reset()
@@ -136,12 +233,14 @@ int Astar2D::astarSearch(const Eigen::Vector2d& start_pt, const Eigen::Vector2d&
     for (auto step : steps) {
       nbr_pos = cur_pos + step;
 
-      // Skip safety raycast if still near start to avoid immediate termination
       // ################################
-      // Observe-only counters for the 0.25 m exemption (behavior unchanged).
+      // Near-start 0.25 m safety skip: ONLY in startup_prior_mode=none.
+      // initial_footprint: all edges checked; F0 handles init UNKNOWN.
       // ################################
       const double dist_from_start = (nbr_pos - start_pt).norm();
-      if (dist_from_start > 0.25) {
+      const bool use_near_start_skip =
+          (startup_prior_mode_ == STARTUP_PRIOR_NONE) && (dist_from_start <= 0.25);
+      if (!use_near_start_skip) {
         // Check safety
         if (!checkPointSafety(nbr_pos, safety_mode))
           continue;
@@ -310,8 +409,14 @@ bool Astar2D::checkPointSafetySilent(const Eigen::Vector2d& pos, int safety_mode
     return false;
   if (occ == SDFMap2D::OCCUPIED)
     return false;
-  if (occ == SDFMap2D::UNKNOWN && safety_mode == SAFETY_MODE::NORMAL)
+  // ################################
+  // UNKNOWN: allow only if inside fixed F0 under initial_footprint.
+  // ################################
+  if (occ == SDFMap2D::UNKNOWN && safety_mode == SAFETY_MODE::NORMAL) {
+    if (unknownAllowedByStartupPrior(pos))
+      return true;
     return false;
+  }
   return true;
 }
 
@@ -359,8 +464,11 @@ bool Astar2D::checkPointSafety(const Eigen::Vector2d& pos, int safety_mode)
     return false;
   }
 
-  // In NORMAL mode, treat unknown as unsafe. In OPTIMISTIC, unknown is allowed.
+  // In NORMAL mode, treat unknown as unsafe unless inside fixed F0
+  // (startup_prior_mode=initial_footprint). Occupancy buffer is NOT rewritten.
   if (occ == SDFMap2D::UNKNOWN && safety_mode == SAFETY_MODE::NORMAL) {
+    if (unknownAllowedByStartupPrior(pos))
+      return true;
     if (count_rejects_)
       reject_stats_.unknown += 1;
     return false;

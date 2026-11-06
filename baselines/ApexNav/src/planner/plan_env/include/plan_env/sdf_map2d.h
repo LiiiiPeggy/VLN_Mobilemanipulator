@@ -90,9 +90,17 @@ public:
   // ################################
   // Diag / native replay hooks (no planning decision change when unused).
   // ################################
+  void clearAndInflateLocalMap();
   void diagClearAndInflateLocalMap();
   void getLocalUpdateIndexBox(Eigen::Vector2i& bmin, Eigen::Vector2i& bmax) const;
   bool diagLocalUpdated() const;
+  // Force cell occupancy/inflate for offline planner replay (does not run online).
+  // state: UNKNOWN=0, FREE=1, OCCUPIED=2 (GRID_STATE).
+  void diagSetOccupancyState(const Eigen::Vector2d& pos, int state, int inflate = -1);
+  // ################################
+  // Diagnostic access to MapROS (3D-keep-Z filter path). No online behavior change.
+  // ################################
+  MapROS* diagMapRos() { return map_ros_.get(); }
 
   // Integrated mapping components
   shared_ptr<ObjectMap2D> object_map2d_;
@@ -100,7 +108,6 @@ public:
 
 private:
   // Internal map processing functions
-  void clearAndInflateLocalMap();
   void inflatePoint(const Eigen::Vector2i& pt, int step, vector<Eigen::Vector2i>& pts);
   void setCacheOccupancy(const int& adr, const int& occ);
   Eigen::Vector2d closetPointInMap(const Eigen::Vector2d& pt, const Eigen::Vector2d& camera_pt);

@@ -20,6 +20,9 @@
   <arg name="plan_diag_dir" default=""/>
   <arg name="pipeline_diag_enable" default="false"/>
   <arg name="pipeline_diag_dir" default=""/>
+  <arg name="startup_prior_mode" default="none"/>
+  <arg name="startup_prior_half_length" default="0.0"/>
+  <arg name="startup_prior_half_width" default="0.0"/>
 
   <group unless="$(arg is_real_world)">
     <rosparam file="$(find exploration_manager)/../../../config/habitat_eval_hm3dv2.yaml" command="load"/>
@@ -50,5 +53,8 @@
     <arg name="plan_diag_dir_" value="$(arg plan_diag_dir)"/>
     <arg name="pipeline_diag_enable_" value="$(arg pipeline_diag_enable)"/>
     <arg name="pipeline_diag_dir_" value="$(arg pipeline_diag_dir)"/>
+    <arg name="startup_prior_mode_" value="$(arg startup_prior_mode)"/>
+    <arg name="startup_prior_half_length_" value="$(arg startup_prior_half_length)"/>
+    <arg name="startup_prior_half_width_" value="$(arg startup_prior_half_width)"/>
   </include>
 </launch>
