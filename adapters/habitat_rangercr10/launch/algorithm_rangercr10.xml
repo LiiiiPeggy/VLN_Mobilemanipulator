@@ -70,6 +70,12 @@
         <param name="map_ros/skip_pixel" value="1"/>
         <param name="map_ros/frame_id" value="world"/>
         <param name="map_ros/virtual_ground_height" value="-0.34"/>
+        <!-- ################################
+          Single-variable fix (base-start UNKNOWN): AGL [0, filter_min_height]
+          points previously dropped as height_other. Enable free-ray-only
+          carving (no OCCUPIED). Does not change inflation / lookaround / PPO.
+        ################################ -->
+        <param name="map_ros/ground_free_ray_enable" value="true" type="bool"/>
 
         <!-- Exploration manager -->
         <!-- 0: distance 1: semantic 2: hybrid(TSP sem + closest dist) 3: TSP(distance) -->

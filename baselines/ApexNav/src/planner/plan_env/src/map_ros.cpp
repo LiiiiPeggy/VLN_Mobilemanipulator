@@ -42,10 +42,16 @@ void MapROS::init()
   // ################################
   node_.param("map_ros/pipeline_diag_enable", pipeline_diag_enable_, false);
   node_.param("map_ros/pipeline_diag_dir", pipeline_diag_dir_, std::string(""));
+  node_.param("map_ros/ground_free_ray_enable", ground_free_ray_enable_, false);
   if (pipeline_diag_enable_ && !pipeline_diag_dir_.empty()) {
     mkdir(pipeline_diag_dir_.c_str(), 0755);
     ROS_WARN("[MapROS] pipeline_diag_enable=true dir=%s", pipeline_diag_dir_.c_str());
   }
+  if (ground_free_ray_enable_) {
+    ROS_WARN("[MapROS] ground_free_ray_enable=true "
+             "(AGL [0, filter_min_height] → free rays only, no OCCUPIED)");
+  }
+  ground_free_cloud2d_.reset(new PointCloud2D());
   // ################################
 
   // Load depth filtering parameters
@@ -374,6 +380,12 @@ void MapROS::depthPoseCallback(
   dilateGrids(free_grids, 1);
   const int free_before = static_cast<int>(free_grids.size());
   map_->inputDepthCloud2D(filtered_depth_cloud2d_, camera_pos_, free_grids);
+  // ################################
+  // Single-variable: ground-band free rays after obstacle update.
+  // ################################
+  if (ground_free_ray_enable_ && ground_free_cloud2d_ && !ground_free_cloud2d_->empty()) {
+    map_->inputFreeRayCloud2D(ground_free_cloud2d_, camera_pos_, free_grids);
+  }
   const int free_after = static_cast<int>(free_grids.size());
   pipe_rays_in_ = static_cast<int>(filtered_depth_cloud2d_->points.size());
   double process_time = (ros::Time::now() - t1).toSec();
@@ -416,6 +428,9 @@ void MapROS::depthPoseCallback(
         << ",\"height_ground_band\":" << pipe_ground_band_
         << ",\"height_obstacle_band\":" << pipe_obstacle_band_
         << ",\"height_other\":" << pipe_other_height_
+        << ",\"ground_free_ray_enable\":" << (ground_free_ray_enable_ ? "true" : "false")
+        << ",\"ground_free_cands\":" << pipe_ground_free_cands_
+        << ",\"ground_free_after_outlier\":" << pipe_ground_free_after_outlier_
         << ",\"obstacle_after_outlier\":" << pipe_obstacle_after_outlier_
         << ",\"rays_into_occupancy\":" << pipe_rays_in_
         << ",\"free_grids_listed\":" << free_after
@@ -572,8 +587,12 @@ void MapROS::filterPointCloudToXY()
   pipe_ground_band_ = 0;
   pipe_obstacle_band_ = 0;
   pipe_other_height_ = 0;
+  pipe_ground_free_cands_ = 0;
+  pipe_ground_free_after_outlier_ = 0;
 
   filtered_depth_cloud2d_->clear();
+  ground_free_cloud2d_->clear();
+  PointCloud3D::Ptr ground_free_cloud_3d(new PointCloud3D());
 
   // Separate points by height categories
   for (int i = 0; i < (int)down_depth_cloud_3d->points.size(); i++) {
@@ -592,6 +611,17 @@ void MapROS::filterPointCloudToXY()
              down_depth_cloud_3d->points[i].z < cur_floor_height + filter_max_height_) {
       filtered_cloud_3d->points.push_back(pt);
       pipe_obstacle_band_ += 1;
+    }
+    // ################################
+    // Floor / near-ground band previously counted as height_other and dropped.
+    // When enabled: keep as FREE-RAY endpoints only (not OCCUPIED).
+    // AGL in [0, filter_min_height].
+    // ################################
+    else if (ground_free_ray_enable_ &&
+             down_depth_cloud_3d->points[i].z >= cur_floor_height &&
+             down_depth_cloud_3d->points[i].z <= cur_floor_height + filter_min_height_) {
+      ground_free_cloud_3d->points.push_back(pt);
+      pipe_ground_free_cands_ += 1;
     } else {
       pipe_other_height_ += 1;
     }
@@ -608,6 +638,16 @@ void MapROS::filterPointCloudToXY()
   }
   pipe_obstacle_after_outlier_ = static_cast<int>(filtered_cloud_3d->points.size());
 
+  // Milder outlier filter for ground free-ray candidates (sparser than obstacles).
+  if (ground_free_ray_enable_ && !ground_free_cloud_3d->points.empty()) {
+    pcl::RadiusOutlierRemoval<Point3D> ground_outrem;
+    ground_outrem.setInputCloud(ground_free_cloud_3d);
+    ground_outrem.setRadiusSearch(0.25);
+    ground_outrem.setMinNeighborsInRadius(8);
+    ground_outrem.filter(*ground_free_cloud_3d);
+  }
+  pipe_ground_free_after_outlier_ = static_cast<int>(ground_free_cloud_3d->points.size());
+
   publishPointCloud(filtered_depth_cloud_pub_, filtered_cloud_3d);
 
   // Project 3D obstacle points to 2D for occupancy mapping
@@ -616,6 +656,14 @@ void MapROS::filterPointCloudToXY()
     pt_xy.x = pt.x;
     pt_xy.y = pt.y;
     filtered_depth_cloud2d_->points.push_back(pt_xy);
+  }
+  if (ground_free_ray_enable_) {
+    for (auto pt : ground_free_cloud_3d->points) {
+      Point2D pt_xy;
+      pt_xy.x = pt.x;
+      pt_xy.y = pt.y;
+      ground_free_cloud2d_->points.push_back(pt_xy);
+    }
   }
 
   // Remove outliers from under-ground points (handles noisy depth data)

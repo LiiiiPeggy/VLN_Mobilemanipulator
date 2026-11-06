@@ -1,0 +1,239 @@
+{
+  "yr17": {
+    "chassis_xy": [
+      2.0893,
+      12.7075
+    ],
+    "camera_xy": [
+      2.7412,
+      12.7172
+    ],
+    "offset_m": 0.6519721619823963,
+    "chassis_cell": "FREE",
+    "camera_cell": "FREE",
+    "rings_chassis": {
+      "0.1": {
+        "free": 5,
+        "occ": 0,
+        "unk": 8,
+        "absent": 0,
+        "total": 13
+      },
+      "0.2": {
+        "free": 30,
+        "occ": 0,
+        "unk": 19,
+        "absent": 0,
+        "total": 49
+      },
+      "0.3": {
+        "free": 67,
+        "occ": 0,
+        "unk": 46,
+        "absent": 0,
+        "total": 113
+      },
+      "0.5": {
+        "free": 171,
+        "occ": 0,
+        "unk": 146,
+        "absent": 0,
+        "total": 317
+      }
+    },
+    "rings_camera": {
+      "0.1": {
+        "free": 12,
+        "occ": 0,
+        "unk": 1,
+        "absent": 0,
+        "total": 13
+      },
+      "0.2": {
+        "free": 32,
+        "occ": 0,
+        "unk": 17,
+        "absent": 0,
+        "total": 49
+      },
+      "0.3": {
+        "free": 71,
+        "occ": 0,
+        "unk": 42,
+        "absent": 0,
+        "total": 113
+      },
+      "0.5": {
+        "free": 192,
+        "occ": 3,
+        "unk": 93,
+        "absent": 29,
+        "total": 317
+      }
+    },
+    "n_free": 11330,
+    "n_occ": 3645,
+    "n_unk": 50273,
+    "plan_result": "EXPLORATION",
+    "start_raw_occ": 1,
+    "nearest_free_to_chassis_m": 0.013066751700402673
+  },
+  "eF36": {
+    "chassis_xy": [
+      -14.4976,
+      -3.2068
+    ],
+    "camera_xy": [
+      -14.4892,
+      -2.5549
+    ],
+    "offset_m": 0.6519541164836679,
+    "chassis_cell": "UNK",
+    "camera_cell": "FREE",
+    "rings_chassis": {
+      "0.1": {
+        "free": 0,
+        "occ": 0,
+        "unk": 13,
+        "absent": 0,
+        "total": 13
+      },
+      "0.2": {
+        "free": 0,
+        "occ": 0,
+        "unk": 49,
+        "absent": 0,
+        "total": 49
+      },
+      "0.3": {
+        "free": 0,
+        "occ": 0,
+        "unk": 113,
+        "absent": 0,
+        "total": 113
+      },
+      "0.5": {
+        "free": 0,
+        "occ": 0,
+        "unk": 317,
+        "absent": 0,
+        "total": 317
+      }
+    },
+    "rings_camera": {
+      "0.1": {
+        "free": 11,
+        "occ": 0,
+        "unk": 2,
+        "absent": 0,
+        "total": 13
+      },
+      "0.2": {
+        "free": 26,
+        "occ": 0,
+        "unk": 23,
+        "absent": 0,
+        "total": 49
+      },
+      "0.3": {
+        "free": 58,
+        "occ": 0,
+        "unk": 55,
+        "absent": 0,
+        "total": 113
+      },
+      "0.5": {
+        "free": 180,
+        "occ": 0,
+        "unk": 137,
+        "absent": 0,
+        "total": 317
+      }
+    },
+    "n_free": 2777,
+    "n_occ": 2056,
+    "n_unk": 31711,
+    "plan_result": "NO_PASSABLE_FRONTIER",
+    "start_raw_occ": 0,
+    "nearest_free_to_chassis_m": 0.506252901226255
+  },
+  "HY1": {
+    "chassis_xy": [
+      1.4327,
+      -23.7172
+    ],
+    "camera_xy": [
+      0.9344,
+      -24.1378
+    ],
+    "offset_m": 0.6520791746406263,
+    "chassis_cell": "UNK",
+    "camera_cell": "FREE",
+    "rings_chassis": {
+      "0.1": {
+        "free": 0,
+        "occ": 0,
+        "unk": 13,
+        "absent": 0,
+        "total": 13
+      },
+      "0.2": {
+        "free": 0,
+        "occ": 0,
+        "unk": 49,
+        "absent": 0,
+        "total": 49
+      },
+      "0.3": {
+        "free": 0,
+        "occ": 0,
+        "unk": 113,
+        "absent": 0,
+        "total": 113
+      },
+      "0.5": {
+        "free": 0,
+        "occ": 0,
+        "unk": 317,
+        "absent": 0,
+        "total": 317
+      }
+    },
+    "rings_camera": {
+      "0.1": {
+        "free": 11,
+        "occ": 0,
+        "unk": 2,
+        "absent": 0,
+        "total": 13
+      },
+      "0.2": {
+        "free": 24,
+        "occ": 0,
+        "unk": 25,
+        "absent": 0,
+        "total": 49
+      },
+      "0.3": {
+        "free": 58,
+        "occ": 0,
+        "unk": 55,
+        "absent": 0,
+        "total": 113
+      },
+      "0.5": {
+        "free": 192,
+        "occ": 0,
+        "unk": 125,
+        "absent": 0,
+        "total": 317
+      }
+    },
+    "n_free": 12072,
+    "n_occ": 1201,
+    "n_unk": 111418,
+    "plan_result": "NO_PASSABLE_FRONTIER",
+    "start_raw_occ": 0,
+    "nearest_free_to_chassis_m": 0.5175858672722816
+  }
+}

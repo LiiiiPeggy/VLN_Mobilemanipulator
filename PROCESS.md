@@ -712,3 +712,30 @@
 **决策**：下一步单变量修底盘 free 缺口；暂缓 15°。
 
 **相关**：`reports/habitat_rangercr10_geomreg_30deg_native_plan.md`；`reports/geomreg_30deg_20261106/`
+
+---
+
+## 2026-11-06 底盘起点 UNKNOWN：地面 free-ray 单变量
+
+**模块**：`map_ros` / `sdf_map2d` / `algorithm_rangercr10.xml`
+
+**问题**：臂载相机相对底盘前向约 0.65 m；free 由障碍终点→相机射线雕刻。AGL∈[0, `filter_min_height`] 地面点原计入 `height_other` 丢弃 → 相机邻域可 FREE、底盘中心仍 UNKNOWN（eF36/HY1）。
+
+**操作（仅一变量）**：
+
+- Launch：`map_ros/ground_free_ray_enable=true`
+- `filterPointCloudToXY`：地面带 → free-ray 候选（不写 OCCUPIED）
+- `SDFMap2D::inputFreeRayCloud2D`：只 miss/free，遇已 OCCUPIED 不穿透
+- 禁止项均未做：强制 UNKNOWN→FREE、缩膨胀、相机假 odom、15°、PPO/0.7×/环视
+
+**结果（同 spawn 30° ≤20 探索）**：
+
+| 场景 | 起点 | NO_PASSABLE | EXPLORATION | 净位移 |
+|------|------|-------------|-------------|--------|
+| yr17 | FREE→FREE | 0 | 20 | 0.85→1.56 m |
+| eF36 | UNKNOWN→**FREE** | 1→**0** | 0→**20** | 0→**3.17 m** |
+| HY1 | UNKNOWN→仍 UNKNOWN | 仍 1（第 4 次） | 0→3 后失败 | 0→0.25 m |
+
+**结论**：根因判断成立（地面过滤）；eF36 完全恢复；HY1 为同根因下场景覆盖不足（地面候选多但未落底盘 0.3 m），另立单变量；暂缓 15°；足迹安全未专项宣称。
+
+**相关**：`reports/base_start_unknown_diagnosis.md`；`reports/base_start_unknown_20261106/`

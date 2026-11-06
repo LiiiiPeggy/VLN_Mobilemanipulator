@@ -1,0 +1,144 @@
+{
+  "yr17_before": {
+    "run_id": "real_s070_pporaise_yr17_geomreg_20261106_122201",
+    "termination": "step_budget_exhausted",
+    "n_steps": 46,
+    "n_explore": 20,
+    "plan_results": {
+      "EXPLORATION": 20
+    },
+    "n_NO_PASSABLE": 0,
+    "first_result": "EXPLORATION",
+    "first_start_raw_occ": 1,
+    "first_start_inflate": 0,
+    "first_n_reachable": 27,
+    "nearest_free_m": 0.022599822738994427,
+    "free_within_0p3": 66,
+    "explore_actions": {
+      "TURN_LEFT": 12,
+      "MOVE_FORWARD": 4,
+      "TURN_RIGHT": 4
+    },
+    "net_base_disp_m": 0.8464669816041919,
+    "n_blocked_steps": 0,
+    "success_claimed": false
+  },
+  "yr17_after": {
+    "run_id": "real_s070_pporaise_yr17_groundfree_20261106_172630",
+    "termination": "step_budget_exhausted",
+    "n_steps": 46,
+    "n_explore": 20,
+    "plan_results": {
+      "EXPLORATION": 20
+    },
+    "n_NO_PASSABLE": 0,
+    "first_result": "EXPLORATION",
+    "first_start_raw_occ": 1,
+    "first_start_inflate": 0,
+    "first_n_reachable": 18,
+    "nearest_free_m": 0.022599822738994427,
+    "free_within_0p3": 116,
+    "explore_actions": {
+      "TURN_RIGHT": 6,
+      "MOVE_FORWARD": 8,
+      "TURN_LEFT": 6
+    },
+    "net_base_disp_m": 1.5623011650138405,
+    "n_blocked_steps": 0,
+    "success_claimed": false
+  },
+  "eF36_before": {
+    "run_id": "real_s070_pporaise_ef36_geomreg_20261106_123905",
+    "termination": "planner_stop",
+    "n_steps": 27,
+    "n_explore": 1,
+    "plan_results": {
+      "NO_PASSABLE_FRONTIER": 1
+    },
+    "n_NO_PASSABLE": 1,
+    "first_result": "NO_PASSABLE_FRONTIER",
+    "first_start_raw_occ": 0,
+    "first_start_inflate": 0,
+    "first_n_reachable": 0,
+    "nearest_free_m": 0.5270309424465649,
+    "free_within_0p3": 0,
+    "explore_actions": {
+      "STOP": 1
+    },
+    "net_base_disp_m": 0.0,
+    "n_blocked_steps": 0,
+    "success_claimed": false
+  },
+  "eF36_after": {
+    "run_id": "real_s070_pporaise_ef36_groundfree_20261106_140100",
+    "termination": "step_budget_exhausted",
+    "n_steps": 46,
+    "n_explore": 20,
+    "plan_results": {
+      "EXPLORATION": 20
+    },
+    "n_NO_PASSABLE": 0,
+    "first_result": "EXPLORATION",
+    "first_start_raw_occ": 1,
+    "first_start_inflate": 0,
+    "first_n_reachable": 4,
+    "nearest_free_m": 0.029016879335112492,
+    "free_within_0p3": 85,
+    "explore_actions": {
+      "MOVE_FORWARD": 14,
+      "TURN_RIGHT": 4,
+      "TURN_LEFT": 2
+    },
+    "net_base_disp_m": 3.165063509461095,
+    "n_blocked_steps": 0,
+    "success_claimed": false
+  },
+  "HY1_before": {
+    "run_id": "real_s070_pporaise_hy1_geomreg_20261106_124125",
+    "termination": "planner_stop",
+    "n_steps": 27,
+    "n_explore": 1,
+    "plan_results": {
+      "NO_PASSABLE_FRONTIER": 1
+    },
+    "n_NO_PASSABLE": 1,
+    "first_result": "NO_PASSABLE_FRONTIER",
+    "first_start_raw_occ": 0,
+    "first_start_inflate": 0,
+    "first_n_reachable": 0,
+    "nearest_free_m": 0.5439395373123297,
+    "free_within_0p3": 0,
+    "explore_actions": {
+      "STOP": 1
+    },
+    "net_base_disp_m": 0.0,
+    "n_blocked_steps": 0,
+    "success_claimed": false
+  },
+  "HY1_after": {
+    "run_id": "real_s070_pporaise_hy1_groundfree_20261106_172428",
+    "termination": "planner_stop",
+    "n_steps": 30,
+    "n_explore": 4,
+    "plan_results": {
+      "EXPLORATION": 3,
+      "NO_PASSABLE_FRONTIER": 1
+    },
+    "n_NO_PASSABLE": 1,
+    "first_result": "EXPLORATION",
+    "first_start_raw_occ": 0,
+    "first_start_inflate": 0,
+    "first_n_reachable": 2,
+    "nearest_free_m": 0.5422554361797166,
+    "free_within_0p3": 0,
+    "explore_actions": {
+      "TURN_RIGHT": 1,
+      "MOVE_FORWARD": 1,
+      "TURN_LEFT": 1,
+      "STOP": 1
+    },
+    "net_base_disp_m": 0.24999999999999964,
+    "n_blocked_steps": 0,
+    "success_claimed": false
+  }
+}

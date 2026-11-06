@@ -360,6 +360,107 @@ void SDFMap2D::inputDepthCloud2D(const pcl::PointCloud<pcl::PointXY>::Ptr& point
   }
 }
 
+// ################################
+// Ground / free-only rays: same miss updates as depth rays, never OCCUPIED hits.
+// Does not change obstacle band logic in inputDepthCloud2D.
+// ################################
+void SDFMap2D::inputFreeRayCloud2D(const pcl::PointCloud<pcl::PointXY>::Ptr& points,
+    const Eigen::Vector3d& camera_pos, vector<Eigen::Vector2i>& free_grids)
+{
+  const int point_num = points->points.size();
+  if (point_num == 0)
+    return;
+
+  md_->raycast_num_ += 1;
+  Eigen::Vector2d sensor_pos = Eigen::Vector2d(camera_pos(0), camera_pos(1));
+  Eigen::Vector2d update_mind = sensor_pos;
+  Eigen::Vector2d update_maxd = sensor_pos;
+
+  Eigen::Vector2d bound_inf(mp_->local_bound_, mp_->local_bound_);
+  Eigen::Vector2d local_bound_mind = sensor_pos - bound_inf;
+  Eigen::Vector2d local_bound_maxd = sensor_pos + bound_inf;
+  posToIndex(local_bound_mind, md_->local_bound_min_);
+  posToIndex(local_bound_maxd, md_->local_bound_max_);
+  boundIndex(md_->local_bound_min_);
+  boundIndex(md_->local_bound_max_);
+
+  std::unordered_map<int, char> flag_free;
+  Eigen::Vector2d pt_w;
+  Eigen::Vector2i idx;
+
+  for (int i = 0; i < point_num; ++i) {
+    auto& pt = points->points[i];
+    pt_w << pt.x, pt.y;
+    if (!isInMap(pt_w)) {
+      pt_w = closetPointInMap(pt_w, sensor_pos);
+      double length = (pt_w - sensor_pos).norm();
+      if (length > mp_->max_ray_length_)
+        pt_w = (pt_w - sensor_pos) / length * mp_->max_ray_length_ + sensor_pos;
+    } else {
+      double length = (pt_w - sensor_pos).norm();
+      if (length > mp_->max_ray_length_)
+        pt_w = (pt_w - sensor_pos) / length * mp_->max_ray_length_ + sensor_pos;
+    }
+    for (int k = 0; k < 2; ++k) {
+      update_mind[k] = min(update_mind[k], pt_w[k]);
+      update_maxd[k] = max(update_maxd[k], pt_w[k]);
+    }
+    posToIndex(pt_w, idx);
+    int vox_adr = toAddress(idx);
+    if (md_->flag_rayend_[vox_adr] == md_->raycast_num_)
+      continue;
+    md_->flag_rayend_[vox_adr] = md_->raycast_num_;
+
+    // Free-only: always ray_mode-0 style from endpoint to sensor, skip occupied hits.
+    caster_->input(pt_w, sensor_pos);
+    while (caster_->nextId(idx)) {
+      int adr = toAddress(idx);
+      if (md_->virtual_ground_buffer_[adr])
+        continue;
+      // Do not carve through known occupied
+      if (md_->occupancy_buffer_[adr] > mp_->min_occupancy_log_)
+        continue;
+      setCacheOccupancy(adr, 0);
+      if (!flag_free.count(adr)) {
+        flag_free[adr] = 1;
+        free_grids.push_back(idx);
+      }
+    }
+  }
+
+  md_->local_update_mind_ = update_mind;
+  md_->local_update_maxd_ = update_maxd;
+  posToIndex(md_->local_update_mind_, md_->local_update_min_);
+  posToIndex(md_->local_update_maxd_, md_->local_update_max_);
+  for (int k = 0; k < 2; ++k) {
+    md_->update_mind_[k] = min(update_mind[k], md_->update_mind_[k]);
+    md_->update_maxd_[k] = max(update_maxd[k], md_->update_maxd_[k]);
+  }
+  posToIndex(md_->update_mind_, md_->update_min_);
+  posToIndex(md_->update_maxd_, md_->update_max_);
+  boundIndex(md_->update_min_);
+  boundIndex(md_->update_max_);
+  map_ros_->local_updated_ = true;
+
+  while (!md_->cache_voxel_.empty()) {
+    int adr = md_->cache_voxel_.front();
+    md_->cache_voxel_.pop();
+    double log_odds_update =
+        md_->count_hit_[adr] >= md_->count_miss_[adr] ? mp_->prob_hit_log_ : mp_->prob_miss_log_;
+    md_->count_hit_[adr] = md_->count_miss_[adr] = 0;
+    if (md_->occupancy_buffer_[adr] < mp_->clamp_min_log_ - 1e-3)
+      md_->occupancy_buffer_[adr] = mp_->min_occupancy_log_;
+    double last_occupancy = md_->occupancy_buffer_[adr];
+    md_->occupancy_buffer_[adr] =
+        std::min(std::max(md_->occupancy_buffer_[adr] + log_odds_update, mp_->clamp_min_log_),
+            mp_->clamp_max_log_);
+    double now_occupancy = md_->occupancy_buffer_[adr];
+    if (last_occupancy > mp_->min_occupancy_log_ && now_occupancy < mp_->min_occupancy_log_) {
+      md_->occupancy_need_clear_.push_back(addressToIdx(adr));
+    }
+  }
+}
+
 void SDFMap2D::setForceOccGrid(const Eigen::Vector2d& pos)
 {
   // Force a grid cell to be occupied (used for debugging or special cases)

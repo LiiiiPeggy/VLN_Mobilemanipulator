@@ -143,8 +143,11 @@ VLN_Mobilemanipulator/
 | LOOK pitch 用 **joint3 ±0.60**；缺 TURN_DOWN 时高度滤波易清空地图；「未 TURN_DOWN 光轴朝上」**待实际光轴测量验证** | `apexnav_real_episode._execute_action` |
 | `planner_first_call_diag` 是 Python 近似，不是 C++ frontier/A* 正式结果 | `planner_first_call_diag.py` 头注释 |
 | 原生规划诊断：`exploration/plan_diag_*` → `native_plan_diag.jsonl`；建图流水线 `map_ros/pipeline_diag_*` | 可关；不改决策 |
-| a5e291b 后运行时几何验收通过；yr17 30° 可持续探索；eF36/HY1 仍 NO_PASSABLE（底盘起点 UNKNOWN） | `habitat_rangercr10_geomreg_30deg_native_plan.md` |
+| a5e291b 后运行时几何验收通过；yr17 30° 可持续探索；修复前 eF36/HY1 底盘起点 UNKNOWN→NO_PASSABLE | `habitat_rangercr10_geomreg_30deg_native_plan.md` |
 | GRID_STATE：UNKNOWN=0 FREE=1 OCCUPIED=2；勿把 unknown 拒绝计数当成唯一失败原因 | `sdf_map2d.h`；native plan diag |
+| 相机邻域 FREE ≠ 底盘起点 FREE；臂载 D455 相对底盘 XY 偏移 ≈0.65 m | `base_start_unknown_diagnosis.md` |
+| 地面带 AGL[0,`filter_min_height`] 原丢弃→`height_other`；适配 `ground_free_ray_enable` 只打 free 射线不写 OCCUPIED | `map_ros`；`SDFMap2D::inputFreeRayCloud2D`；`algorithm_rangercr10.xml` |
+| groundfree 后：eF36 起点 FREE+20×EXPLORATION；yr17 对照 OK；HY1 起点仍 UNKNOWN（部分规划后 NO_PASSABLE） | `reports/base_start_unknown_20261106/` |
 | GT occ 探针是 navmesh **邻域**审计，不是 precise false-occupied rate | `gt_false_occupied_probe` |
 | ITM cosine 须在同帧 RGB-D 之前发布到 `/blip2/cosine_score`，否则 value_map 融旧分 | `apexnav_real_episode` 发布顺序；`value_map2d.cpp` |
 | 7fps 离线重渲染勿对已含价值热力的 paper map 做 legacy 重映射 | `demo_7fps_from_run._is_paper_or_value_map` |

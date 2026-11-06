@@ -169,6 +169,13 @@ private:
   int pipe_other_height_ = 0;
   int pipe_obstacle_after_outlier_ = 0;
   int pipe_rays_in_ = 0;
+  // ################################
+  // Single-variable ground free-ray path (adapter-gated).
+  // ################################
+  bool ground_free_ray_enable_ = false;
+  int pipe_ground_free_cands_ = 0;
+  int pipe_ground_free_after_outlier_ = 0;
+  PointCloud2D::Ptr ground_free_cloud2d_;
   void writePipelineDiagLine(const std::string& line);
 
   friend SDFMap2D;
