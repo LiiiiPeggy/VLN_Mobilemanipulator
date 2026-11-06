@@ -53,8 +53,10 @@ void ExplorationManager::appendCandidateDiag(const std::string& mode, const Vect
       << ",\"time_budget\":" << st.time_budget << ",\"node_pool\":" << st.node_pool
       << ",\"near_start_skip_accepted\":" << st.near_start_skip_accepted
       << ",\"near_start_skip_would_fail\":" << st.near_start_skip_would_fail
+      << ",\"path_exempted_edges\":" << st.path_exempted_edges
+      << ",\"path_exempted_edges_would_fail\":" << st.path_exempted_edges_would_fail
       << ",\"path_relied_near_start_exemption\":" << st.path_relied_near_start_exemption
-      << "},\"note\":\"reject_counts_inferred from neighbor safety checks; near_start_* observe-only, exemption unchanged\"}";
+      << "},\"note\":\"reject_counts from gated search only; near_start_* / path_exempted_* silent counterfactual, exemption unchanged\"}";
   plan_diag_candidate_lines_.push_back(oss.str());
 }
 

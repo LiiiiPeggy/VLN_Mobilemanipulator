@@ -1,0 +1,6 @@
+/workspace/ApexNav/devel/lib/plan_env/test_map_pipeline_replay
+[0m[INFO] [1793961517.922649137]: prob_hit_log = 0.847298, prob_miss_log = -0.619039[0m
+[PASS] same-frame local_update merge + inflate retains far obstacle
+[0m[INFO] [1793961517.934563958]: prob_hit_log = 0.847298, prob_miss_log = -0.619039[0m
+[PASS] 5/10/20cm-band endpoints stay OCCUPIED after free-ray update
+ALL_PASS

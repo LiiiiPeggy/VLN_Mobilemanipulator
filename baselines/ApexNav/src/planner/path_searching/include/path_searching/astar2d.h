@@ -49,20 +49,22 @@ struct AstarRejectStats {
   int node_pool = 0;
   // ################################
   // Observe-only: 0.25 m near-start safety skip (does NOT change the skip).
-  // near_start_skip_accepted: nbr expanded while ||nbr-start||<=0.25 without
-  //   applying checkPointSafety to gate expansion.
-  // near_start_skip_would_fail: subset that would fail checkPointSafety if
-  //   the exemption were not applied (counterfactual).
-  // path_relied_near_start_exemption: successful path contains a node within
-  //   0.25 m of start that would fail safety (counterfactual).
+  // Counterfactual safety uses a silent checker — must NOT increment occupied/
+  // inflate/unknown reject counts.
+  // path_relied_near_start_exemption: selected path has an exempted EDGE
+  //   (destination within 0.25 m of start) whose nbr or intermediate samples
+  //   would fail safety. Does NOT fire solely because the start cell is UNKNOWN.
   // ################################
   int near_start_skip_accepted = 0;
   int near_start_skip_would_fail = 0;
+  int path_exempted_edges = 0;
+  int path_exempted_edges_would_fail = 0;
   int path_relied_near_start_exemption = 0;
   void reset()
   {
     occupied = inflate = unknown = out_of_bounds = time_budget = node_pool = 0;
     near_start_skip_accepted = near_start_skip_would_fail = 0;
+    path_exempted_edges = path_exempted_edges_would_fail = 0;
     path_relied_near_start_exemption = 0;
   }
 };
@@ -100,6 +102,12 @@ private:
   double getManhHeu(const Eigen::Vector2d& x1, const Eigen::Vector2d& x2);
   double getEuclHeu(const Eigen::Vector2d& x1, const Eigen::Vector2d& x2);
   bool checkPointSafety(const Eigen::Vector2d& pos, int safety_mode);
+  // ################################
+  // Same predicates as checkPointSafety but never mutates reject_stats_.
+  // ################################
+  bool checkPointSafetySilent(const Eigen::Vector2d& pos, int safety_mode) const;
+  bool edgeWouldFailSafetySilent(const Eigen::Vector2d& from, const Eigen::Vector2d& to,
+      int safety_mode) const;
 
   // main data structure
   std::vector<Node2DPtr> path_node_pool_;

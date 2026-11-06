@@ -1,0 +1,18 @@
+[
+  {
+    "step": 26,
+    "name": "MOVE_FORWARD"
+  },
+  {
+    "step": 27,
+    "name": "MOVE_FORWARD"
+  },
+  {
+    "step": 28,
+    "name": "TURN_LEFT"
+  },
+  {
+    "step": 29,
+    "name": "TURN_LEFT"
+  }
+]

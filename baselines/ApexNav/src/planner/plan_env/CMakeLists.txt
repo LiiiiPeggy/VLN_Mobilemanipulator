@@ -66,3 +66,11 @@ target_link_libraries(plan_env
   ${catkin_LIBRARIES}
   ${PCL_LIBRARIES}
 )
+
+# ################################
+# Native C++ production-path replay (distinct from Python model tests).
+# ################################
+add_executable(test_map_pipeline_replay test/test_map_pipeline_replay.cpp)
+target_link_libraries(test_map_pipeline_replay plan_env ${catkin_LIBRARIES} ${PCL_LIBRARIES})
+add_dependencies(test_map_pipeline_replay ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+

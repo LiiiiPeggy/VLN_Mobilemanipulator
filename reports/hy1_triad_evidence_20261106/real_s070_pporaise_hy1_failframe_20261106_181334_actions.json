@@ -1,0 +1,82 @@
+[
+  {
+    "step": 26,
+    "name": "TURN_LEFT"
+  },
+  {
+    "step": 27,
+    "name": "TURN_LEFT"
+  },
+  {
+    "step": 28,
+    "name": "TURN_LEFT"
+  },
+  {
+    "step": 29,
+    "name": "TURN_LEFT"
+  },
+  {
+    "step": 30,
+    "name": "TURN_LEFT"
+  },
+  {
+    "step": 31,
+    "name": "TURN_LEFT"
+  },
+  {
+    "step": 32,
+    "name": "TURN_LEFT"
+  },
+  {
+    "step": 33,
+    "name": "TURN_LEFT"
+  },
+  {
+    "step": 34,
+    "name": "MOVE_FORWARD"
+  },
+  {
+    "step": 35,
+    "name": "MOVE_FORWARD"
+  },
+  {
+    "step": 36,
+    "name": "TURN_LEFT"
+  },
+  {
+    "step": 37,
+    "name": "MOVE_FORWARD"
+  },
+  {
+    "step": 38,
+    "name": "TURN_LEFT"
+  },
+  {
+    "step": 39,
+    "name": "MOVE_FORWARD"
+  },
+  {
+    "step": 40,
+    "name": "TURN_LEFT"
+  },
+  {
+    "step": 41,
+    "name": "TURN_RIGHT"
+  },
+  {
+    "step": 42,
+    "name": "MOVE_FORWARD"
+  },
+  {
+    "step": 43,
+    "name": "TURN_LEFT"
+  },
+  {
+    "step": 44,
+    "name": "TURN_RIGHT"
+  },
+  {
+    "step": 45,
+    "name": "MOVE_FORWARD"
+  }
+]

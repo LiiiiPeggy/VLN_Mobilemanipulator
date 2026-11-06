@@ -1,0 +1,254 @@
+[
+  {
+    "run_id": "real_s070_pporaise_hy1_failframe_20261106_181334",
+    "code_version": {
+      "inferred_code_window": "post-ef70acd / during 813827c instrumentation",
+      "note": "plan_diag_enable=true but native_plan_diag.jsonl missing (only pipeline); concurrent with 181431",
+      "baseline_branch": "cursor/habitat-rangercr10-scale070"
+    },
+    "config": {
+      "robot_scale": 0.7,
+      "inflation_profile": "legacy018",
+      "yaw_step_deg": 30,
+      "max_explore_actions": 20,
+      "ground_free_ray_enable": true,
+      "ground_free_max_agl": 0.03,
+      "plan_diag_enable": true,
+      "force_spawn_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_wide_hy1_openband_20261105_113724/start_pose.json",
+      "scene": "HY1NcmCgn3n",
+      "episode_id": 3,
+      "category": "chair",
+      "seed_note": "Habitat episode fixed via force_spawn; no separate RNG seed recorded in process_meta (gap)"
+    },
+    "spawn": {
+      "x": 23.717180252075195,
+      "z": -1.4326800107955933,
+      "yaw": 0.8100016837283014,
+      "nav_clearance_m": 0.5302008390426636,
+      "forced_from": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_wide_hy1_openband_20261105_113724/start_pose.json"
+    },
+    "n_init_lookaround": 26,
+    "explore_actions": [
+      {
+        "step": 26,
+        "name": "TURN_LEFT"
+      },
+      {
+        "step": 27,
+        "name": "TURN_LEFT"
+      },
+      {
+        "step": 28,
+        "name": "TURN_LEFT"
+      },
+      {
+        "step": 29,
+        "name": "TURN_LEFT"
+      },
+      {
+        "step": 30,
+        "name": "TURN_LEFT"
+      },
+      {
+        "step": 31,
+        "name": "TURN_LEFT"
+      },
+      {
+        "step": 32,
+        "name": "TURN_LEFT"
+      },
+      {
+        "step": 33,
+        "name": "TURN_LEFT"
+      },
+      {
+        "step": 34,
+        "name": "MOVE_FORWARD"
+      },
+      {
+        "step": 35,
+        "name": "MOVE_FORWARD"
+      },
+      {
+        "step": 36,
+        "name": "TURN_LEFT"
+      },
+      {
+        "step": 37,
+        "name": "MOVE_FORWARD"
+      },
+      {
+        "step": 38,
+        "name": "TURN_LEFT"
+      },
+      {
+        "step": 39,
+        "name": "MOVE_FORWARD"
+      },
+      {
+        "step": 40,
+        "name": "TURN_LEFT"
+      },
+      {
+        "step": 41,
+        "name": "TURN_RIGHT"
+      },
+      {
+        "step": 42,
+        "name": "MOVE_FORWARD"
+      },
+      {
+        "step": 43,
+        "name": "TURN_LEFT"
+      },
+      {
+        "step": 44,
+        "name": "TURN_RIGHT"
+      },
+      {
+        "step": 45,
+        "name": "MOVE_FORWARD"
+      }
+    ],
+    "explore_counter": {
+      "TURN_LEFT": 12,
+      "MOVE_FORWARD": 6,
+      "TURN_RIGHT": 2
+    },
+    "termination": "explore_budget_exhausted",
+    "status": "ok",
+    "n_steps": 46,
+    "n_explore": 20,
+    "pipeline_depth_frames_total": 37,
+    "plan_diag_n": 0,
+    "depth_frames_stamp_le_first_plan": 37,
+    "first_plan": null,
+    "host_log_head": "EGL ICD ok (/usr/share/glvnd/egl_vendor.d/10_nvidia.json size=107)\n[1/4] start isolated roscore :11312\n[2/4] start exploration_rangercr10.launch (profile=legacy018 overlay=apexnav_rangercr10_overlay_legacy018.yaml plan_diag=true)\n[3/4] start VLM servers (yolo/dino/blip2/sam) if not up\nexploration_node OK\nOK\n[4/4] run real ApexNav episode \u2192 /media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_s070_pporaise_hy1_failframe_20261106_181334 (robot_scale=0.7 max_explore=20)\nPluginManager::Manager: duplicate static plugin StbImageImporter, ignoring\nPluginManager::Manager: duplicate static plugin GltfImporter, ignoring\nPluginManager::Manager: duplicate static plugin BasisImporter, ignoring\nPluginManager::Manager: duplicate static plugin AssimpImporter, ignoring\nPluginManager::Manager: duplicate static plugin AnySceneImporter, ignoring",
+    "do_not_collapse_with_other_runs": true
+  },
+  {
+    "run_id": "real_s070_pporaise_hy1_failframe_20261106_181431",
+    "code_version": {
+      "inferred_code_window": "813827c (exemption observe counters + local map dumps)",
+      "note": "full native_plan_diag + plan_seq_*_local_map.json",
+      "baseline_branch": "cursor/habitat-rangercr10-scale070"
+    },
+    "config": {
+      "robot_scale": 0.7,
+      "inflation_profile": "legacy018",
+      "yaw_step_deg": 30,
+      "max_explore_actions": 20,
+      "ground_free_ray_enable": true,
+      "ground_free_max_agl": 0.03,
+      "plan_diag_enable": true,
+      "force_spawn_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_wide_hy1_openband_20261105_113724/start_pose.json",
+      "scene": "HY1NcmCgn3n",
+      "episode_id": 3,
+      "category": "chair",
+      "seed_note": "Habitat episode fixed via force_spawn; no separate RNG seed recorded in process_meta (gap)"
+    },
+    "spawn": {
+      "x": 23.717180252075195,
+      "z": -1.4326800107955933,
+      "yaw": 0.8100016837283014,
+      "nav_clearance_m": 0.5302008390426636,
+      "forced_from": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_wide_hy1_openband_20261105_113724/start_pose.json"
+    },
+    "n_init_lookaround": 26,
+    "explore_actions": [
+      {
+        "step": 26,
+        "name": "MOVE_FORWARD"
+      },
+      {
+        "step": 27,
+        "name": "MOVE_FORWARD"
+      },
+      {
+        "step": 28,
+        "name": "TURN_LEFT"
+      },
+      {
+        "step": 29,
+        "name": "TURN_LEFT"
+      }
+    ],
+    "explore_counter": {
+      "MOVE_FORWARD": 2,
+      "TURN_LEFT": 2
+    },
+    "termination": "planner_action_timeout",
+    "status": "failed",
+    "n_steps": 30,
+    "n_explore": 4,
+    "pipeline_depth_frames_total": 160,
+    "plan_diag_n": 26,
+    "depth_frames_stamp_le_first_plan": 128,
+    "first_plan": {
+      "result": "EXPLORATION",
+      "start_raw_occ": 0,
+      "free_within_0p3": 51,
+      "nearest_free_m": 0.05,
+      "any_success_path_relied_near_start_exemption": 1,
+      "note_exemption_may_be_overcount_pre_fix": true
+    },
+    "host_log_head": "EGL ICD ok (/usr/share/glvnd/egl_vendor.d/10_nvidia.json size=107)\n[1/4] start isolated roscore :11312\n[2/4] start exploration_rangercr10.launch (profile=legacy018 overlay=apexnav_rangercr10_overlay_legacy018.yaml plan_diag=true)\n[3/4] start VLM servers (yolo/dino/blip2/sam) if not up\nexploration_node OK\nOK\n[4/4] run real ApexNav episode \u2192 /media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_s070_pporaise_hy1_failframe_20261106_181431 (robot_scale=0.7 max_explore=20)\nPluginManager::Manager: duplicate static plugin StbImageImporter, ignoring\nPluginManager::Manager: duplicate static plugin GltfImporter, ignoring\nPluginManager::Manager: duplicate static plugin BasisImporter, ignoring\nPluginManager::Manager: duplicate static plugin AssimpImporter, ignoring\nPluginManager::Manager: duplicate static plugin AnySceneImporter, ignoring",
+    "do_not_collapse_with_other_runs": true
+  },
+  {
+    "run_id": "real_s070_groundgate_hy1_20261106_182146",
+    "code_version": {
+      "inferred_code_window": "63edb4b short3 batch (same gated geometry)",
+      "note": "first-plan NO_PASSABLE",
+      "baseline_branch": "cursor/habitat-rangercr10-scale070"
+    },
+    "config": {
+      "robot_scale": 0.7,
+      "inflation_profile": "legacy018",
+      "yaw_step_deg": 30,
+      "max_explore_actions": 20,
+      "ground_free_ray_enable": true,
+      "ground_free_max_agl": 0.03,
+      "plan_diag_enable": true,
+      "force_spawn_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_wide_hy1_openband_20261105_113724/start_pose.json",
+      "scene": "HY1NcmCgn3n",
+      "episode_id": 3,
+      "category": "chair",
+      "seed_note": "Habitat episode fixed via force_spawn; no separate RNG seed recorded in process_meta (gap)"
+    },
+    "spawn": {
+      "x": 23.717180252075195,
+      "z": -1.4326800107955933,
+      "yaw": 0.8100016837283014,
+      "nav_clearance_m": 0.5302008390426636,
+      "forced_from": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_wide_hy1_openband_20261105_113724/start_pose.json"
+    },
+    "n_init_lookaround": 26,
+    "explore_actions": [
+      {
+        "step": 26,
+        "name": "STOP"
+      }
+    ],
+    "explore_counter": {
+      "STOP": 1
+    },
+    "termination": "planner_stop",
+    "status": "ok",
+    "n_steps": 27,
+    "n_explore": 1,
+    "pipeline_depth_frames_total": 62,
+    "plan_diag_n": 1,
+    "depth_frames_stamp_le_first_plan": 57,
+    "first_plan": {
+      "result": "NO_PASSABLE_FRONTIER",
+      "start_raw_occ": 0,
+      "free_within_0p3": 0,
+      "nearest_free_m": 0.522,
+      "any_success_path_relied_near_start_exemption": 0,
+      "note_exemption_may_be_overcount_pre_fix": true
+    },
+    "host_log_head": "EGL ICD ok (/usr/share/glvnd/egl_vendor.d/10_nvidia.json size=107)\n[1/4] start isolated roscore :11312\n[2/4] start exploration_rangercr10.launch (profile=legacy018 overlay=apexnav_rangercr10_overlay_legacy018.yaml plan_diag=true)\n[3/4] start VLM servers (yolo/dino/blip2/sam) if not up\nexploration_node OK\nOK\n[4/4] run real ApexNav episode \u2192 /media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_s070_groundgate_hy1_20261106_182146 (robot_scale=0.7 max_explore=20)\nPluginManager::Manager: duplicate static plugin StbImageImporter, ignoring\nPluginManager::Manager: duplicate static plugin GltfImporter, ignoring\nPluginManager::Manager: duplicate static plugin BasisImporter, ignoring\nPluginManager::Manager: duplicate static plugin AssimpImporter, ignoring\nPluginManager::Manager: duplicate static plugin AnySceneImporter, ignoring",
+    "do_not_collapse_with_other_runs": true
+  }
+]

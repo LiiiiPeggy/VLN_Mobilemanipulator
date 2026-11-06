@@ -1182,12 +1182,60 @@ class ApexNavRangerBridge:
             },
         }
         (self.out / "summary.json").write_text(json.dumps(summary, indent=2))
-        # also write process exit hint separately
+        # ################################
+        # Evidence meta: code version + fixed experiment knobs (repeatability).
+        # ################################
+        import subprocess
+
+        def _git_sha(cwd: str) -> Optional[str]:
+            try:
+                r = subprocess.run(
+                    ["git", "rev-parse", "HEAD"],
+                    cwd=cwd,
+                    capture_output=True,
+                    text=True,
+                    timeout=5,
+                )
+                return r.stdout.strip() if r.returncode == 0 else None
+            except Exception:
+                return None
+
+        repo_root = str(Path(__file__).resolve().parents[2])
+        native_diag = self.out / "native_diag"
+        pipe_n = 0
+        plan_n = 0
+        if (native_diag / "map_pipeline_diag.jsonl").is_file():
+            pipe_n = sum(
+                1
+                for l in (native_diag / "map_pipeline_diag.jsonl").read_text().splitlines()
+                if l.strip()
+            )
+        if (native_diag / "native_plan_diag.jsonl").is_file():
+            plan_n = sum(
+                1
+                for l in (native_diag / "native_plan_diag.jsonl").read_text().splitlines()
+                if l.strip()
+            )
         (self.out / "process_meta.json").write_text(
             json.dumps(
                 {
                     "expected_cleanup_abort": "habitat Simulator.close may SIGABRT/134",
                     "task_status_file": "summary.json",
+                    "git_sha_vln": _git_sha(repo_root),
+                    "locomanip_commit": LOCOMANIP_COMMIT,
+                    "robot_scale": float(getattr(args, "robot_scale", 1.0)),
+                    "scene_filter": getattr(args, "scene_filter", None),
+                    "category_filter": getattr(args, "category_filter", None),
+                    "episode_id": getattr(args, "episode_id", None),
+                    "force_spawn_json": getattr(args, "force_spawn_json", None),
+                    "ppo_raise_json": getattr(args, "ppo_raise_json", None),
+                    "max_steps": getattr(args, "max_steps", None),
+                    "max_explore_actions": getattr(args, "max_explore_actions", None),
+                    "seed_note": "episode+force_spawn pin pose; Habitat RNG seed not separately pinned",
+                    "pipeline_depth_frames": pipe_n,
+                    "plan_diag_n": plan_n,
+                    "yaw_step_deg_expected": 30,
+                    "inflation_profile_env": os.environ.get("INFLATION_PROFILE", ""),
                 },
                 indent=2,
             )

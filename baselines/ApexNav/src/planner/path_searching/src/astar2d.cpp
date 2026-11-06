@@ -92,15 +92,20 @@ int Astar2D::astarSearch(const Eigen::Vector2d& start_pt, const Eigen::Vector2d&
     if (reach_end) {
       backtrack(cur_node, end_pt);
       // ################################
-      // Counterfactual: did the returned path need the 0.25 m start skip?
+      // Counterfactual on SELECTED PATH edges only (not "start is UNKNOWN").
+      // An edge is exempted iff its destination is within 0.25 m of start
+      // (same gate as search). Check dest + intermediate samples silently.
       // ################################
-      if (count_rejects_) {
-        for (const auto& p : path_nodes_) {
-          if ((p - start_pt).norm() > 0.25)
+      if (count_rejects_ && path_nodes_.size() >= 2) {
+        for (size_t i = 0; i + 1 < path_nodes_.size(); ++i) {
+          const Eigen::Vector2d& a = path_nodes_[i];
+          const Eigen::Vector2d& b = path_nodes_[i + 1];
+          if ((b - start_pt).norm() > 0.25)
             continue;
-          if (!checkPointSafety(p, safety_mode)) {
+          reject_stats_.path_exempted_edges += 1;
+          if (edgeWouldFailSafetySilent(a, b, safety_mode)) {
+            reject_stats_.path_exempted_edges_would_fail += 1;
             reject_stats_.path_relied_near_start_exemption = 1;
-            break;
           }
         }
       }
@@ -156,7 +161,9 @@ int Astar2D::astarSearch(const Eigen::Vector2d& start_pt, const Eigen::Vector2d&
           continue;
       } else if (count_rejects_) {
         reject_stats_.near_start_skip_accepted += 1;
-        if (!checkPointSafety(nbr_pos, safety_mode))
+        // Silent: do not pollute occupied/inflate/unknown reject tallies.
+        if (!checkPointSafetySilent(nbr_pos, safety_mode) ||
+            edgeWouldFailSafetySilent(cur_pos, nbr_pos, safety_mode))
           reject_stats_.near_start_skip_would_fail += 1;
       }
 
@@ -290,6 +297,39 @@ double Astar2D::pathLength(const vector<Eigen::Vector2d>& path)
     return length;
   for (int i = 0; i < (int)path.size() - 1; ++i) length += (path[i + 1] - path[i]).norm();
   return length;
+}
+
+bool Astar2D::checkPointSafetySilent(const Eigen::Vector2d& pos, int safety_mode) const
+{
+  if (!sdf_map_->isInMap(pos))
+    return false;
+  if (safety_mode == SAFETY_MODE::EXTREME)
+    return true;
+  const auto occ = sdf_map_->getOccupancy(pos);
+  if (sdf_map_->getInflateOccupancy(pos) == 1)
+    return false;
+  if (occ == SDFMap2D::OCCUPIED)
+    return false;
+  if (occ == SDFMap2D::UNKNOWN && safety_mode == SAFETY_MODE::NORMAL)
+    return false;
+  return true;
+}
+
+bool Astar2D::edgeWouldFailSafetySilent(const Eigen::Vector2d& from, const Eigen::Vector2d& to,
+    int safety_mode) const
+{
+  if (!checkPointSafetySilent(to, safety_mode))
+    return true;
+  Eigen::Vector2d dir = to - from;
+  const double len = dir.norm();
+  if (len < 1e-9)
+    return false;
+  dir.normalize();
+  for (double l = 0.025; l < len; l += 0.025) {
+    if (!checkPointSafetySilent(from + l * dir, safety_mode))
+      return true;
+  }
+  return false;
 }
 
 bool Astar2D::checkPointSafety(const Eigen::Vector2d& pos, int safety_mode)

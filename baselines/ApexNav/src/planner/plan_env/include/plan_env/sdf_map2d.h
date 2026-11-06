@@ -87,6 +87,12 @@ public:
   double getResolution();
   int getVoxelNum();
   void setForceOccGrid(const Eigen::Vector2d& pos);
+  // ################################
+  // Diag / native replay hooks (no planning decision change when unused).
+  // ################################
+  void diagClearAndInflateLocalMap();
+  void getLocalUpdateIndexBox(Eigen::Vector2i& bmin, Eigen::Vector2i& bmax) const;
+  bool diagLocalUpdated() const;
 
   // Integrated mapping components
   shared_ptr<ObjectMap2D> object_map2d_;

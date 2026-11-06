@@ -486,6 +486,22 @@ void SDFMap2D::setForceOccGrid(const Eigen::Vector2d& pos)
   md_->occupancy_buffer_[adr] = mp_->clamp_max_log_;
 }
 
+void SDFMap2D::diagClearAndInflateLocalMap()
+{
+  clearAndInflateLocalMap();
+}
+
+void SDFMap2D::getLocalUpdateIndexBox(Eigen::Vector2i& bmin, Eigen::Vector2i& bmax) const
+{
+  bmin = md_->local_update_min_;
+  bmax = md_->local_update_max_;
+}
+
+bool SDFMap2D::diagLocalUpdated() const
+{
+  return map_ros_ && map_ros_->local_updated_;
+}
+
 Eigen::Vector2d SDFMap2D::closetPointInMap(
     const Eigen::Vector2d& pt, const Eigen::Vector2d& camera_pt)
 {
