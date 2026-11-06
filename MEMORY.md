@@ -148,6 +148,10 @@ VLN_Mobilemanipulator/
 | 相机邻域 FREE ≠ 底盘起点 FREE；臂载 D455 相对底盘 XY 偏移 ≈0.65 m | `base_start_unknown_diagnosis.md` |
 | 地面带 AGL[0,`filter_min_height`] 原丢弃→`height_other`；适配 `ground_free_ray_enable` 只打 free 射线不写 OCCUPIED | `map_ros`；`SDFMap2D::inputFreeRayCloud2D`；`algorithm_rangercr10.xml` |
 | groundfree 后：eF36 起点 FREE+20×EXPLORATION；yr17 对照 OK；HY1 起点仍 UNKNOWN（部分规划后 NO_PASSABLE） | `reports/base_start_unknown_20261106/` |
+| 同帧 `inputFreeRayCloud2D` 必须 **merge** `local_update_*`，否则障碍盒外 OCC 本帧不膨胀 | `sdf_map2d.cpp`；`local_update_merge_20261106` |
+| 地面 free 仅 AGL≤`ground_free_max_agl`(0.03)+平面；`(max,filter_min]`→低矮 OCC；禁止整段 0–0.28 当地面 | `map_ros`；`ground_free_geometry_20261106` |
+| A* `||nbr-start||≤0.25` 跳过安全检查；起点 UNKNOWN 仍成功 ⇒ 依赖该豁免（observe：`path_relied_near_start_exemption`） | `astar2d.cpp`；`hy1_failframe_20261106` |
+| 门控后 short3：yr17/eF36 通；HY1 仍首规划 NO_PASSABLE（free@0.3=0）→ 覆盖不足，可另立补视 | `groundgate_short3_20261106` |
 | GT occ 探针是 navmesh **邻域**审计，不是 precise false-occupied rate | `gt_false_occupied_probe` |
 | ITM cosine 须在同帧 RGB-D 之前发布到 `/blip2/cosine_score`，否则 value_map 融旧分 | `apexnav_real_episode` 发布顺序；`value_map2d.cpp` |
 | 7fps 离线重渲染勿对已含价值热力的 paper map 做 legacy 重映射 | `demo_7fps_from_run._is_paper_or_value_map` |

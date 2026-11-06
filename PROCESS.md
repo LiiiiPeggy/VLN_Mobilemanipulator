@@ -739,3 +739,20 @@
 **结论**：根因判断成立（地面过滤）；eF36 完全恢复；HY1 为同根因下场景覆盖不足（地面候选多但未落底盘 0.3 m），另立单变量；暂缓 15°；足迹安全未专项宣称。
 
 **相关**：`reports/base_start_unknown_diagnosis.md`；`reports/base_start_unknown_20261106/`
+
+---
+
+## 2026-11-06 地面 free-ray 正确性收口（分提交）
+
+**模块**：`sdf_map2d` / `map_ros` / `astar2d` plan_diag / 三场景短跑
+
+**操作与提交**：
+
+1. `6df8ceb` — 同帧 `local_update` merge；离线对照全图膨胀。  
+2. `ef70acd` — AGL≤0.03+平面才 free-ray；5/10/20 cm→OCC；单测通过。  
+3. `813827c` — 0.25 m 豁免 observe-only；HY1 失败帧 dump；经典第 4 次=覆盖不足。  
+4. 本轮 short3 报告 — yr17/eF36 20 探索；HY1 再现首规划 NO_PASSABLE。
+
+**结论**：地图更新与地面候选正确性门槛通过；HY1 仍归因底盘侧地面覆盖不足 → **允许另立补视单变量**（本轮未改姿态）。
+
+**相关**：`reports/local_update_merge_20261106*`；`reports/ground_free_geometry_20261106*`；`reports/hy1_failframe_20261106*`；`reports/groundgate_short3_20261106*`

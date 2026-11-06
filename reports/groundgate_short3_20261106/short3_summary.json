@@ -1,0 +1,105 @@
+[
+  {
+    "tag": "yr17",
+    "run_id": "real_s070_groundgate_yr17_20261106_182146",
+    "termination": "explore_budget_exhausted",
+    "status": "ok",
+    "n_explore": 20,
+    "explore_actions": {
+      "TURN_RIGHT": 7,
+      "TURN_LEFT": 5,
+      "MOVE_FORWARD": 8
+    },
+    "net_disp_m_from_plan_chassis": 1.799014132796071,
+    "first_start_raw": 1,
+    "last_start_raw": 1,
+    "first_start_inflate": 0,
+    "last_start_inflate": 0,
+    "first_free_0p3": 112,
+    "last_free_0p3": 111,
+    "first_nearest_free": 0.0,
+    "last_nearest_free": 0.0,
+    "n_NO_PASSABLE": 0,
+    "plan_results": {
+      "EXPLORATION": 21
+    },
+    "first_relied_exemption": 0,
+    "window_occ_first_last": [
+      95,
+      889
+    ],
+    "window_inf_first_last": [
+      0,
+      3139
+    ],
+    "blocked0_not_footprint_proof": true
+  },
+  {
+    "tag": "ef36",
+    "run_id": "real_s070_groundgate_ef36_20261106_182146",
+    "termination": "explore_budget_exhausted",
+    "status": "ok",
+    "n_explore": 20,
+    "explore_actions": {
+      "TURN_RIGHT": 5,
+      "MOVE_FORWARD": 8,
+      "TURN_LEFT": 7
+    },
+    "net_disp_m_from_plan_chassis": 0.8464496736368918,
+    "first_start_raw": 0,
+    "last_start_raw": 1,
+    "first_start_inflate": 0,
+    "last_start_inflate": 0,
+    "first_free_0p3": 0,
+    "last_free_0p3": 98,
+    "first_nearest_free": 0.4717,
+    "last_nearest_free": 0.0,
+    "n_NO_PASSABLE": 0,
+    "plan_results": {
+      "EXPLORATION": 21
+    },
+    "first_relied_exemption": 1,
+    "window_occ_first_last": [
+      231,
+      2252
+    ],
+    "window_inf_first_last": [
+      0,
+      4386
+    ],
+    "blocked0_not_footprint_proof": true
+  },
+  {
+    "tag": "hy1",
+    "run_id": "real_s070_groundgate_hy1_20261106_182146",
+    "termination": "planner_stop",
+    "status": "ok",
+    "n_explore": 1,
+    "explore_actions": {
+      "STOP": 1
+    },
+    "net_disp_m_from_plan_chassis": null,
+    "first_start_raw": 0,
+    "last_start_raw": 0,
+    "first_start_inflate": 0,
+    "last_start_inflate": 0,
+    "first_free_0p3": 0,
+    "last_free_0p3": 0,
+    "first_nearest_free": 0.522,
+    "last_nearest_free": 0.522,
+    "n_NO_PASSABLE": 1,
+    "plan_results": {
+      "NO_PASSABLE_FRONTIER": 1
+    },
+    "first_relied_exemption": 0,
+    "window_occ_first_last": [
+      903,
+      1412
+    ],
+    "window_inf_first_last": [
+      0,
+      3745
+    ],
+    "blocked0_not_footprint_proof": true
+  }
+]
