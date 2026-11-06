@@ -127,11 +127,20 @@ fi
 
 MAX_EXPLORE_ACTIONS="${MAX_EXPLORE_ACTIONS:-20}"
 echo "[4/4] run real ApexNav episode → $OUT (robot_scale=$ROBOT_SCALE max_explore=$MAX_EXPLORE_ACTIONS)"
+# ################################
+# Forward optional experimental chassis-look burst env (default none).
+# ################################
+LOOK_MODE="${CHASSIS_LOOK_MODE:-none}"
+LOOK_PUBS="${CHASSIS_LOOK_EXTRA_PUBS:-40}"
+LOOK_HZ="${CHASSIS_LOOK_EXTRA_HZ:-4}"
 set +e
 docker exec \
   -e ROS_MASTER_URI="http://127.0.0.1:${ROS_PORT}" \
   -e ROS_IP=127.0.0.1 \
   -e ROS_HOSTNAME=127.0.0.1 \
+  -e CHASSIS_LOOK_MODE="$LOOK_MODE" \
+  -e CHASSIS_LOOK_EXTRA_PUBS="$LOOK_PUBS" \
+  -e CHASSIS_LOOK_EXTRA_HZ="$LOOK_HZ" \
   vln-rangercr10 bash -lc "$SRC_ROS; export PYTHONPATH=/workspace/VLN_Mobilemanipulator/adapters/habitat_rangercr10:\${PYTHONPATH}; python -m src.apexnav_real_episode --out_dir '$OUT_ROOT' --run_id '$RUN_ID' --max_steps $MAX_STEPS --max_explore_actions $MAX_EXPLORE_ACTIONS --gpu $GPU --scene_filter '${SCENE_FILTER:-TEEsavR23oF}' --category_filter '${CATEGORY_FILTER:-chair}' --episode_id '${EPISODE_ID:-4}' --llm_answer_path $APEX/llm/answers/llm_answer_hm3d.txt --llm_response_path $APEX/llm/answers/llm_response_list.txt $SCALE_ARGS"
 rc=$?
 set -e

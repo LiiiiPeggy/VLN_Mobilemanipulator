@@ -756,3 +756,13 @@
 **结论**：地图更新与地面候选正确性门槛通过；HY1 仍归因底盘侧地面覆盖不足 → **允许另立补视单变量**（本轮未改姿态）。
 
 **相关**：`reports/local_update_merge_20261106*`；`reports/ground_free_geometry_20261106*`；`reports/hy1_failframe_20261106*`；`reports/groundgate_short3_20261106*`
+
+---
+
+## 2026-11-06 HY1 重复性与补视 A/B/C
+
+**操作**：triad 并列证据；豁免静默计数；C++ `test_map_pipeline_replay`；基线 5×（v2）；A/B/C 各 5×（EXTRA_PUBS=40）。
+
+**结果**：基线 NO_PASSABLE 5/5；A/B/C 均为 NO_PASSABLE 5/5、free@0.3=0；C 不优于 B → **不支持朝向补视有效**。默认部署未改。
+
+**相关**：`reports/hy1_triad_evidence_20261106*`；`reports/hy1_baseline_repeats_20261106*`；`reports/hy1_look_abc_20261106*`

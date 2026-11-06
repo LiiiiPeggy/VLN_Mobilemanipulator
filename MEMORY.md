@@ -152,6 +152,10 @@ VLN_Mobilemanipulator/
 | 地面 free 仅 AGL≤`ground_free_max_agl`(0.03)+平面；`(max,filter_min]`→低矮 OCC；禁止整段 0–0.28 当地面 | `map_ros`；`ground_free_geometry_20261106` |
 | A* `||nbr-start||≤0.25` 跳过安全检查；起点 UNKNOWN 仍成功 ⇒ 依赖该豁免（observe：`path_relied_near_start_exemption`） | `astar2d.cpp`；`hy1_failframe_20261106` |
 | 门控后 short3：yr17/eF36 通；HY1 仍首规划 NO_PASSABLE（free@0.3=0）→ 覆盖不足，可另立补视 | `groundgate_short3_20261106` |
+| HY1 钉死 spawn 下首规划 NO_PASSABLE 高度可复现（5/5）；首规划前深度帧 ≈54–57 | `hy1_baseline_repeats_20261106` |
+| A/B/C 补视：额外 40 帧@4Hz；C=LOOK_DOWN 朝底盘侧地面；**C 相对 B 无改善**，三组均 free@0.3=0 | `hy1_look_abc_20261106` |
+| 父 shell 污染 `FORCE_SPAWN_JSON` 会导致错场景；复测脚本须钉死路径 | `run_hy1_baseline_repeats.sh` |
+| 豁免反事实须静默检查边+采样，禁止因起点 UNKNOWN 单独置位，禁止污染 reject 计数 | `astar2d.cpp` checkPointSafetySilent |
 | GT occ 探针是 navmesh **邻域**审计，不是 precise false-occupied rate | `gt_false_occupied_probe` |
 | ITM cosine 须在同帧 RGB-D 之前发布到 `/blip2/cosine_score`，否则 value_map 融旧分 | `apexnav_real_episode` 发布顺序；`value_map2d.cpp` |
 | 7fps 离线重渲染勿对已含价值热力的 paper map 做 legacy 重映射 | `demo_7fps_from_run._is_paper_or_value_map` |
