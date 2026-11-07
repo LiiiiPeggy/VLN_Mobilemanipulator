@@ -1,0 +1,44 @@
+{
+  "baseline_batch": "ab24_A_none_20261107_172219",
+  "hold_batch": "ab24_hold_20261107_231416",
+  "baseline": {
+    "SR_proxy": "3/24",
+    "start_blocked": 0,
+    "ever_selected": 8,
+    "selected_incomplete": 5,
+    "successes": [
+      "ef36_bed_4",
+      "hy1_chair_3",
+      "lt9_chair_1"
+    ],
+    "fail_hist": {
+      "explore_no_goal": 18,
+      "ok_success_proxy": 3,
+      "stop_not_near_goal": 3
+    }
+  },
+  "hold": {
+    "SR_proxy": "4/24",
+    "start_blocked": 0,
+    "ever_selected": 8,
+    "selected_incomplete": 4,
+    "successes": [
+      "yr17_chair_0",
+      "ef36_bed_4",
+      "hy1_chair_3",
+      "lt9_chair_1"
+    ],
+    "fail_hist": {
+      "explore_no_goal": 16,
+      "ok_success_proxy": 4,
+      "stop_not_near_goal": 4
+    },
+    "mean_steps_after_select": 23.0
+  },
+  "regression": {
+    "baseline_successes_kept": true,
+    "new_successes": [
+      "yr17_chair_0"
+    ]
+  }
+}

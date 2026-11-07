@@ -171,6 +171,9 @@ VLN_Mobilemanipulator/
 | HY1 冻结：expand 0→0.3 cells 221→729，可达仍 5/26（其余非单靠足迹外 UNKNOWN） | `hy1_startup_prior_expand_20261107` |
 | `obstacle_denoise=none\|median3`：仅滤当前帧障碍投影（OCC 写入/膨胀前）；不改 FREE/射线延长；剔除≠FREE | `sdf_map2d`；`algorithm_rangercr10` launch |
 | expand0.3 去噪 A/B（同 24-ep）：A none SR 3/24，B med3 4/24；start_blocked=0；inflate↓~28%；主失败仍 explore_no_goal；**默认 denoise=none** | `reports/obstacle_denoise_ab_20261107.md` |
+| ObjectHold：`SEARCH_OBJECT` 下高置信 object 云瞬时为空时，有界复用上一拍接近点（≤12 miss、≤3 m），避免立刻切 frontier | `exploration_fsm.cpp`；`MAX_OBJECT_HOLD_MISS` |
+| yr17 首次接近失败：seq67 无 Navigation Mode 日志→云空；非停止门控、非从未检测；Hold 后 yr17 SR_proxy 成功 | `reports/object_approach_hold_20261107.md` |
+| expand0.3+Hold 24-ep：SR_proxy 3/24→4/24；原成功保留；曾选中未完成 5→4；主剩余失败仍多为从未 SEARCH | `ab24_hold_20261107_231416` |
 | 改 `path_searching` ABI 相关接口后须同步重编 `exploration_manager`（仅编前者会 segfault=infra_fail） | `adapters/habitat_rangercr10/README.md` |
 | Ranger ObjectNav 适配成功代理：`planner_stop` ∧ dtg≤1.0 m；官方 SPL / 净位移本路径不算（无 geodesic/位姿轨迹） | `summarize_startup_prior_e2e.py` |
 | 父 shell 污染 `FORCE_SPAWN_JSON` 会导致错场景；复测脚本须钉死路径 | `run_hy1_baseline_repeats.sh` |

@@ -916,6 +916,25 @@
 
 ---
 
+## 2026-11-07 ObjectHold：接近中丢目标云不立刻改探索
+
+**模块**：`exploration_fsm.cpp`（Habitat 离散 FSM）
+
+**问题**：yr17 在 `SEARCH_BEST_OBJECT` 推进至距接近点 ~1.2 m 时，高置信 `object_clouds` 变空；`planNextBestPoint` 返回 `EXPLORATION`；因 `replan_flag_` 在 SEARCH 下恒 true，探索稳定性启发式不保留旧路径 → 立刻切 frontier，终局被标 `explore_no_goal`。
+
+**操作**：单点 ObjectHold——`final_result_==SEARCH_OBJECT` 且本拍为 EXPLORATION 时，复用上一拍 `next_pos_`/`path`，最多 12 次且距离 ≤3 m；重新 SEARCH 成功则清零。
+
+**结果**：
+- yr17：ObjectHold×6 → Reach → SR_proxy 成功（dtg≈0.48）。
+- 同清单 24-ep：SR_proxy **3/24→4/24**；基线三成功保留；新增 `yr17_chair_0`；曾选中未完成 5→4。
+- 仍有 16/24 `explore_no_goal` 且多数从未 SEARCH。
+
+**结论**：局部根因已修且整批无回归；**不继续叠 hold/锁定**。下一刀应针对「从未进入 SEARCH」。
+
+**相关**：`reports/object_approach_hold_20261107.md`；commit `87a233e`
+
+---
+
 ## 2026-11-07 startup_prior → ObjectNav e2e A/B
 
 **模块**：同一 24-ep 清单；A=`none` vs B=`initial_footprint`；短预算→探针→预算100 全量

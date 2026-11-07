@@ -22,3 +22,15 @@
 ## 最小修复
 
 有界 ObjectHold：在上述条件下复用上一拍 `next_pos_`/`next_best_path_`，最多 `MAX_OBJECT_HOLD_MISS=12` 次，且距旧目标 ≤ `OBJECT_HOLD_MAX_DIST=3.0` m；重新 SEARCH 成功则清零计数。
+
+## 修复后验证（`yr17_hold_20261107_215803`）
+
+| 项 | 结果 |
+|----|------|
+| SR_proxy | **成功**（`planner_stop` ∧ dtg≈0.48 m） |
+| ObjectHold | 6 次 keep（miss 1…6，距接近点 0.97→0.27 m） |
+| Reach | 出现 `Reach the object successfully!!!` |
+| SEARCH 步 | habitat expl_result=1 共 **13** 步（基线 6） |
+| 仍无 SEARCH→探索→再 SEARCH 空转环 | 接近保持后直接闭合停止 |
+
+视频：`.../e2e_sp_yr17_hold_20261107_215803_initial_footprint_yr17_chair_0/demo/apexnav_ranger_paper_demo.mp4`
