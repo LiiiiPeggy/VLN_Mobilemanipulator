@@ -60,6 +60,26 @@ public:
   void setMap(SDFMap2D* map);
   void init();
 
+  // ################################
+  // Diagnostic: inject world-frame PointXYZ cloud (keeps Z / AGL), run the
+  // production voxel → height classify → outlier → inputDepth/FreeRay path.
+  // Does not alter online depth callback behavior when unused.
+  // ################################
+  struct DiagCloud3DStats {
+    int n_in = 0;
+    int n_down = 0;
+    int n_obstacle_band = 0;
+    int n_low_obstacle = 0;
+    int n_ground_cands = 0;
+    int n_planar_reject = 0;
+    int n_obstacle_after_outlier = 0;
+    int n_ground_after_outlier = 0;
+    int n_filtered_xy = 0;
+    int n_ground_free_xy = 0;
+  };
+  DiagCloud3DStats diagProcessCloud3DKeepZ(const PointCloud3D::Ptr& cloud_world,
+      const Eigen::Vector3d& camera_pos, const Eigen::Quaterniond& camera_q);
+
 private:
   // ROS callback functions
   void depthPoseCallback(  ///< Process synchronized depth image and pose data

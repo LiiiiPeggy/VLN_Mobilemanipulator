@@ -91,9 +91,11 @@ class GLIPDemo(object):
     def build_tokenizer(self):
         cfg = self.cfg
         tokenizer = None
-        if cfg.MODEL.LANGUAGE_BACKBONE.TOKENIZER_TYPE == "bert-base-uncased":
-            tokenizer = AutoTokenizer.from_pretrained("bert-base-uncased")
-        elif cfg.MODEL.LANGUAGE_BACKBONE.TOKENIZER_TYPE == "clip":
+        # ################################
+        # VLN adapt: accept local BERT path or hub id
+        # ################################
+        tok_type = cfg.MODEL.LANGUAGE_BACKBONE.TOKENIZER_TYPE
+        if tok_type == "clip":
             from transformers import CLIPTokenizerFast
             if cfg.MODEL.DYHEAD.FUSE_CONFIG.MLM_LOSS:
                 tokenizer = CLIPTokenizerFast.from_pretrained("openai/clip-vit-base-patch32",
@@ -101,6 +103,15 @@ class GLIPDemo(object):
             else:
                 tokenizer = CLIPTokenizerFast.from_pretrained("openai/clip-vit-base-patch32",
                                                               from_slow=True)
+        else:
+            try:
+                from utils.bert_local import resolve_bert_pretrained
+            except Exception:
+                import sys as _sys
+                _sys.path.insert(0, "/workspace/SG-Nav")
+                from utils.bert_local import resolve_bert_pretrained
+            tokenizer = AutoTokenizer.from_pretrained(resolve_bert_pretrained(tok_type))
+        # ################################
         return tokenizer
 
     def run_ner(self, caption):

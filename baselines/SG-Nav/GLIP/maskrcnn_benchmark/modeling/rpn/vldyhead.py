@@ -563,7 +563,17 @@ class VLDyHead(torch.nn.Module):
         self.cfg = cfg
         # bert_cfg = BertConfig.from_pretrained(cfg.MODEL.LANGUAGE_BACKBONE.MODEL_TYPE)
         if cfg.MODEL.LANGUAGE_BACKBONE.MODEL_TYPE == "bert-base-uncased":
-            lang_cfg = BertConfig.from_pretrained(cfg.MODEL.LANGUAGE_BACKBONE.MODEL_TYPE)
+            # ################################
+            # VLN adapt: offline local BERT path
+            # ################################
+            import os as _os
+            _bert = _os.environ.get(
+                "BERT_BASE_UNCASED_PATH",
+                "/shared/cache/huggingface/bert-base-uncased",
+            )
+            _load = _bert if _os.path.isdir(_bert) else cfg.MODEL.LANGUAGE_BACKBONE.MODEL_TYPE
+            lang_cfg = BertConfig.from_pretrained(_load)
+            # ################################
         elif cfg.MODEL.LANGUAGE_BACKBONE.MODEL_TYPE == "clip":
             lang_cfg = cfg
         else:
@@ -721,7 +731,17 @@ class VLDyHead(torch.nn.Module):
         
         if self.cfg.MODEL.DYHEAD.FUSE_CONFIG.MLM_LOSS:
             if cfg.MODEL.LANGUAGE_BACKBONE.MODEL_TYPE == "clip":
-                lang_cfg = BertConfig.from_pretrained("bert-base-uncased")
+                # ################################
+                # VLN adapt: offline BERT config
+                # ################################
+                try:
+                    from utils.bert_local import resolve_bert_pretrained
+                except Exception:
+                    import sys as _sys
+                    _sys.path.insert(0, "/workspace/SG-Nav")
+                    from utils.bert_local import resolve_bert_pretrained
+                lang_cfg = BertConfig.from_pretrained(resolve_bert_pretrained("bert-base-uncased"))
+                # ################################
                 lang_cfg.hidden_size = cfg.MODEL.CLIP.WIDTH
                 lang_cfg.vocab_size = cfg.MODEL.CLIP.VOCAB_SIZE
             self.mlm_head = BertLMPredictionHead(

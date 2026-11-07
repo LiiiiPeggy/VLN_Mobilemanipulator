@@ -31,7 +31,21 @@ def get_config():
         config = yaml.safe_load(file)
     args = vars(args)
     args.update(config)
-        
+
+    # ################################
+    # VLN adapt: fill LLM/VLM secrets from env (never commit keys in yaml)
+    # ################################
+    if str(args.get("api_key", "")).upper() in ("", "ENV", "OLLAMA"):
+        env_key = os.getenv("OPENAI_API_KEY") or os.getenv("GPT_OPENAI_KEY") or args.get("api_key")
+        if env_key and str(env_key).upper() != "ENV":
+            args["api_key"] = env_key
+    if os.getenv("OPENAI_BASE_URL") or os.getenv("GPT_END_POINT"):
+        args["base_url"] = os.getenv("OPENAI_BASE_URL") or os.getenv("GPT_END_POINT")
+    if os.getenv("GPT_MODEL"):
+        args["llm_model"] = os.getenv("GPT_MODEL")
+        args["vlm_model"] = os.getenv("GPT_VLM_MODEL", os.getenv("GPT_MODEL"))
+    # ################################
+
     args = SimpleNamespace(**args)
 
     args.is_debugging = sys.gettrace() is not None

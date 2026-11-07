@@ -155,8 +155,8 @@ class ApexNavMapListener:
 
         ################################
         Paper occ base + ApexNav.rviz value heat (yellow→red) on free cells only.
-        Each /grid_map cell is filled as a solid footprint at map resolution
-        (no 1-px speckles / fake cell borders). Occupied never covered by heat.
+        Each /grid_map cell is filled as a slightly enlarged footprint
+        (demo-only; hides 1px white seam grids). Occupied never covered by heat.
         ################################
         """
         h, w = size[1], size[0]

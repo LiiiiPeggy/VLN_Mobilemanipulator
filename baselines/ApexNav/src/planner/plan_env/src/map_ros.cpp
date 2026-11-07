@@ -452,7 +452,14 @@ void MapROS::depthPoseCallback(
         << ",\"start_distance\":" << start_dist
         << ",\"chassis_connected_free\":\"unavailable\""
         << ",\"map_layer_ts\":" << ros::Time::now().toSec()
-        << ",\"raycast_num\":" << static_cast<int>(map_->md_->raycast_num_) << "}";
+        << ",\"raycast_num\":" << static_cast<int>(map_->md_->raycast_num_)
+        // ################################
+        << ",\"obstacle_denoise\":\"" << map_->mp_->obstacle_denoise_mode_ << "\""
+        << ",\"denoise_occ_before\":" << map_->md_->denoise_frame_occ_before_
+        << ",\"denoise_occ_after\":" << map_->md_->denoise_frame_occ_after_
+        << ",\"denoise_removed\":" << map_->md_->denoise_frame_removed_
+        // ################################
+        << "}";
     writePipelineDiagLine(oss.str());
   }
   // ################################
@@ -469,6 +476,20 @@ void MapROS::depthPoseCallback(
     map_->clearAndInflateLocalMap();
     esdf_need_update_ = true;
     local_updated_ = false;
+    // ################################
+    if (pipeline_diag_enable_ && !pipeline_diag_dir_.empty()) {
+      std::ostringstream oss2;
+      oss2 << "{\"frame_seq\":" << pipeline_frame_seq_
+           << ",\"event\":\"after_inflate\""
+           << ",\"last_inflate_cells\":" << map_->md_->last_inflate_cells_
+           << ",\"sum_inflate_cells\":" << map_->md_->sum_inflate_cells_
+           << ",\"denoise_sum_occ_before\":" << map_->md_->denoise_sum_occ_before_
+           << ",\"denoise_sum_occ_after\":" << map_->md_->denoise_sum_occ_after_
+           << ",\"denoise_sum_removed\":" << map_->md_->denoise_sum_removed_
+           << ",\"denoise_frames\":" << map_->md_->denoise_frames_ << "}";
+      writePipelineDiagLine(oss2.str());
+    }
+    // ################################
   }
 }
 
@@ -836,5 +857,39 @@ PointCloud3D::Ptr MapROS::dbscan(const PointCloud3D::Ptr& cloud, double eps, int
   for (int idx : cluster_indices[largest_cluster_index].indices)
     largest_cluster->points.push_back(cloud->points[idx]);
   return largest_cluster;
+}
+
+// ################################
+// Diagnostic inject: keep Z through production filterPointCloudToXY + map update.
+// ################################
+MapROS::DiagCloud3DStats MapROS::diagProcessCloud3DKeepZ(const PointCloud3D::Ptr& cloud_world,
+    const Eigen::Vector3d& camera_pos, const Eigen::Quaterniond& camera_q)
+{
+  DiagCloud3DStats st;
+  if (!cloud_world || !map_)
+    return st;
+  depth_cloud_.reset(new PointCloud3D());
+  *depth_cloud_ = *cloud_world;
+  st.n_in = static_cast<int>(depth_cloud_->points.size());
+  camera_pos_ = camera_pos;
+  camera_q_ = camera_q;
+  filterPointCloudToXY();
+  st.n_down = pipe_down_pts_;
+  st.n_obstacle_band = pipe_obstacle_band_;
+  st.n_low_obstacle = pipe_low_obstacle_;
+  st.n_ground_cands = pipe_ground_free_cands_;
+  st.n_planar_reject = pipe_ground_free_planar_reject_;
+  st.n_obstacle_after_outlier = pipe_obstacle_after_outlier_;
+  st.n_ground_after_outlier = pipe_ground_free_after_outlier_;
+  st.n_filtered_xy = filtered_depth_cloud2d_ ? static_cast<int>(filtered_depth_cloud2d_->points.size()) : 0;
+  st.n_ground_free_xy = ground_free_cloud2d_ ? static_cast<int>(ground_free_cloud2d_->points.size()) : 0;
+
+  vector<Eigen::Vector2i> free_grids;
+  dilateGrids(free_grids, 1);
+  map_->inputDepthCloud2D(filtered_depth_cloud2d_, camera_pos_, free_grids);
+  if (ground_free_ray_enable_ && ground_free_cloud2d_ && !ground_free_cloud2d_->empty())
+    map_->inputFreeRayCloud2D(ground_free_cloud2d_, camera_pos_, free_grids);
+  map_->diagClearAndInflateLocalMap();
+  return st;
 }
 }  // namespace apexnav_planner

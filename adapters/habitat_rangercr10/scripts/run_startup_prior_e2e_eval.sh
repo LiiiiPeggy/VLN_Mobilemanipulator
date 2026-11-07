@@ -54,7 +54,7 @@ while IFS=$'\t' read -r MODE EP_ID SCENE CAT EP FORCE; do
     'pkill -9 -f "roscore -p 11312" 2>/dev/null; pkill -9 -f exploration_node 2>/dev/null; sleep 1; true' || true
   set +e
   # ################################
-  # SKIP_DEMO 透传：批跑默认可关视频编码；代表性结果再编码。
+  # SKIP_DEMO / STARTUP_PRIOR_EXPAND_M 透传（initial_footprint 默认 0.3 由下游脚本处理）。
   # ################################
   INFLATION_PROFILE="$PROFILE" \
     SCENE_FILTER="$SCENE" CATEGORY_FILTER="$CAT" EPISODE_ID="$EP" \
@@ -62,6 +62,8 @@ while IFS=$'\t' read -r MODE EP_ID SCENE CAT EP FORCE; do
     RUN_ID="$RUN_ID" ROBOT_SCALE=0.7 \
     FORCE_SPAWN_JSON="$FORCE" PPO_RAISE_JSON="$RAISE_OUT" \
     STARTUP_PRIOR_MODE="$MODE" \
+    STARTUP_PRIOR_EXPAND_M="${STARTUP_PRIOR_EXPAND_M:-}" \
+    OBSTACLE_DENOISE="${OBSTACLE_DENOISE:-none}" \
     SKIP_DEMO="${SKIP_DEMO:-0}" \
     bash "$ROOT/adapters/habitat_rangercr10/scripts/run_apexnav_real_episode.sh" \
     >"$OUT_ROOT/${RUN_ID}_host.log" 2>&1
@@ -77,6 +79,8 @@ row = {
     "batch_id": "$BATCH_ID",
     "run_id": "$RUN_ID",
     "startup_prior_mode": "$MODE",
+    "startup_prior_expand_m": float("${STARTUP_PRIOR_EXPAND_M:-0.3}"),
+    "obstacle_denoise": "${OBSTACLE_DENOISE:-none}",
     "episode_list_id": "$EP_ID",
     "scene": "$SCENE",
     "category": "$CAT",
@@ -107,6 +111,29 @@ if sum_p.is_file():
             p = json.loads(line)
             if "NO_PASSABLE" in str(p.get("result", "")):
                 n_nopass += 1
+    # ################################
+    # Denoise / inflate diagnostics from pipeline_diag.jsonl (if enabled).
+    # ################################
+    denoise_before = denoise_after = denoise_removed = inflate_sum = denoise_frames = 0
+    pd = run / "native_diag" / "map_pipeline_diag.jsonl"
+    if pd.is_file():
+        for line in pd.read_text().splitlines():
+            if not line.strip():
+                continue
+            try:
+                p = json.loads(line)
+            except Exception:
+                continue
+            if p.get("event") == "after_inflate":
+                denoise_before = int(p.get("denoise_sum_occ_before") or denoise_before)
+                denoise_after = int(p.get("denoise_sum_occ_after") or denoise_after)
+                denoise_removed = int(p.get("denoise_sum_removed") or denoise_removed)
+                inflate_sum = int(p.get("sum_inflate_cells") or inflate_sum)
+                denoise_frames = int(p.get("denoise_frames") or denoise_frames)
+            elif "denoise_occ_before" in p:
+                # fallback: last frame-only counters if no after_inflate event
+                pass
+    # ################################
     near = bool(s.get("near_goal"))
     term = s.get("termination")
     # ObjectNav-style proxy (Habitat success_distance); not official challenge eval.
@@ -145,6 +172,11 @@ if sum_p.is_file():
         "objectnav_success_proxy": success_proxy,
         "n_native_nopassable": n_nopass,
         "fail_class": fail,
+        "denoise_sum_occ_before": denoise_before,
+        "denoise_sum_occ_after": denoise_after,
+        "denoise_sum_removed": denoise_removed,
+        "denoise_frames": denoise_frames,
+        "sum_inflate_cells": inflate_sum,
         "demo_mp4": str(run / "demo" / "apexnav_ranger_paper_demo.mp4")
             if (run / "demo" / "apexnav_ranger_paper_demo.mp4").is_file() else None,
     })

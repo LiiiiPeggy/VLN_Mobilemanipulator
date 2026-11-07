@@ -16,6 +16,28 @@
 
 本目录 Demo 默认是 **`kinematic_state_set`**（直接写底盘 SE(2)+臂关节），**不是** Ranger 四轮转向全身动力学。碰撞接触点仅作诊断。
 
+## Catkin 重编（改 `astar2d` / `plan_env` 后必做）
+
+容器 `vln-rangercr10` 中运行入口源码：`source /workspace/ApexNav/devel/setup.bash`  
+（`/workspace/ApexNav` → `baselines/ApexNav` 软链）。改头文件成员布局后**必须**重编依赖包，否则会 ABI 错位 segfault（记为基础设施失败，不计入导航 SR）。
+
+```bash
+docker exec vln-rangercr10 bash -lc '
+source /opt/ros/noetic/setup.bash
+cd /workspace/ApexNav
+# 改 path_searching/astar2d.h → 至少
+catkin_make --pkg path_searching exploration_manager -DCMAKE_BUILD_TYPE=Release
+# 改 plan_env/sdf_map2d.* / map_ros.* → 至少
+catkin_make --pkg plan_env path_searching exploration_manager -DCMAKE_BUILD_TYPE=Release
+'
+# 确认入口加载的是该工作区产物：
+#   rosrun / roslaunch 前 source /workspace/ApexNav/devel/setup.bash
+#   exploration_node → /workspace/ApexNav/devel/lib/exploration_manager/exploration_node
+```
+
+冻结实验基线（启动）：`startup_prior_mode=initial_footprint`，`expand_m=0.3`（半轴外扩；0.7× F0 半轴≈0.756×0.604 m，地图分辨率 0.05 m）。  
+障碍去噪：`obstacle_denoise=none|median3`（当前帧 OCC 投影，进持久地图/膨胀前）。
+
 ## 运行
 
 ```bash

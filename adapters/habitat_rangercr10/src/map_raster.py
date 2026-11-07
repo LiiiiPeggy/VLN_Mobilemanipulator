@@ -3,8 +3,9 @@
 ################################
 Demo-only. Does NOT change map resolution, occupancy logs, inflation, or
 planner inputs. Fills each published cell as a solid footprint matching
-sdf_map/resolution (default 0.05 m) so adjacent cells abut without fake
-1-pixel "borders". No morphological open/close / large blur.
+sdf_map/resolution (default 0.05 m). Slightly enlarge the painted footprint
+so sub-pixel round-off does not leave 1px paper-white seams (look like a
+H/V grid on value heat). No morphological open/close / large blur.
 ################################
 """
 
@@ -17,6 +18,13 @@ import numpy as np
 
 
 DEFAULT_MAP_RESOLUTION_M = 0.05  # ApexNav sdf_map/resolution
+
+# ################################
+# Demo paint only: expand each cell half-axis so adjacent footprints overlap
+# enough to hide 1px white seams on ~320x240 / 12 m panels (~1.3 px/cell).
+# Does NOT change /grid_map data or planner. 1.0 = exact res/2.
+# ################################
+CELL_FOOTPRINT_EXPAND = 1.20
 
 
 def estimate_resolution_m(
@@ -67,14 +75,21 @@ def cell_pixel_rect(
     width: int,
     height: int,
     resolution_m: float,
+    footprint_expand: float = CELL_FOOTPRINT_EXPAND,
 ) -> Optional[Tuple[int, int, int, int]]:
     """Return inclusive pixel rect (x0,y0,x1,y1) covering one map cell footprint.
 
-    Cell is axis-aligned in world: [x-res/2, x+res/2] × [y-res/2, y+res/2]
-    (ApexNav publishes cell centers). Adjacent cells share edges → no gap/border.
+    Cell is axis-aligned in world around the published center. Demo paint uses
+    ``footprint_expand``>1 so neighboring cells overlap in pixel space and hide
+    paper-white seam grids; planner/map buffers are untouched.
     """
     res = float(resolution_m)
-    half = 0.5 * res
+    # ################################
+    # Slightly enlarge painted half-axis (demo only).
+    # ################################
+    half = 0.5 * res * float(footprint_expand)
+    # Also guarantee ≥0.5 px pad so tiny scales still overlap neighbors.
+    half = max(half, 0.5 * res + (0.5 / max(float(scale), 1e-6)))
     # World corners (ROS x-y). Image y flips.
     corners = (
         (x - half, y - half),
@@ -92,6 +107,13 @@ def cell_pixel_rect(
     x1 = int(math.ceil(max(pxs))) - 1
     y0 = int(math.floor(min(pys)))
     y1 = int(math.ceil(max(pys))) - 1
+    # ################################
+    # +1 px pad: closes residual 1px paper-white seams from floor/ceil.
+    # ################################
+    x0 -= 1
+    y0 -= 1
+    x1 += 1
+    y1 += 1
     # Ensure at least 1×1 when scale is tiny.
     if x1 < x0:
         x1 = x0

@@ -544,7 +544,17 @@ class ATSSLossComputation(torch.nn.Module):
                 self.tokenizer = CLIPTokenizerFast.from_pretrained("openai/clip-vit-base-patch32",
                                                                             from_slow=True)
         else:
-            self.tokenizer = AutoTokenizer.from_pretrained(self.lang)
+            # ################################
+            # VLN adapt: offline BERT tokenizer
+            # ################################
+            try:
+                from utils.bert_local import resolve_bert_pretrained
+            except Exception:
+                import sys as _sys
+                _sys.path.insert(0, "/workspace/SG-Nav")
+                from utils.bert_local import resolve_bert_pretrained
+            self.tokenizer = AutoTokenizer.from_pretrained(resolve_bert_pretrained(self.lang))
+            # ################################
 
         # if use shallow contrastive loss
         if self.cfg.MODEL.DYHEAD.FUSE_CONFIG.USE_SHALLOW_CONTRASTIVE_LOSS \

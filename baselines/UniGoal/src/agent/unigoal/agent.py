@@ -13,7 +13,17 @@ from torchvision import transforms
 
 from src.utils.fmm.fmm_planner_policy import FMMPlanner
 import src.utils.fmm.pose_utils as pu
-from src.utils.visualization.semantic_prediction import SemanticPredMaskRCNN
+# ################################
+# VLN adapt: detectron2 optional (only needed for Mask-RCNN viz path)
+# ################################
+try:
+    from src.utils.visualization.semantic_prediction import SemanticPredMaskRCNN
+except Exception as _e:  # pragma: no cover
+    SemanticPredMaskRCNN = None
+    _SEM_PRED_IMPORT_ERROR = _e
+else:
+    _SEM_PRED_IMPORT_ERROR = None
+# ################################
 from src.utils.visualization.visualization import (
     init_vis_image,
     draw_line,
@@ -41,7 +51,18 @@ class UniGoal_Agent():
                                interpolation=Image.NEAREST)])
 
 
-        self.sem_pred = SemanticPredMaskRCNN(args)
+        # ################################
+        # VLN adapt: skip SemanticPredMaskRCNN when detectron2 unavailable / visualize=0
+        # ################################
+        if SemanticPredMaskRCNN is None:
+            if getattr(args, "visualize", 0):
+                raise RuntimeError(
+                    f"detectron2 required for visualize; import failed: {_SEM_PRED_IMPORT_ERROR}"
+                )
+            self.sem_pred = None
+        else:
+            self.sem_pred = SemanticPredMaskRCNN(args)
+        # ################################
         self.llm = LLM(self.args.base_url, self.args.api_key, self.args.llm_model)
 
         self.selem = skimage.morphology.disk(3)

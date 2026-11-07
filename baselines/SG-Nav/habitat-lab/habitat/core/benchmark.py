@@ -136,6 +136,19 @@ class Benchmark:
                 )
             )
 
+        # ################################
+        # VLN adapt: cap episodes via SGNAV_NUM_EPISODES for smoke / small-batch
+        # ################################
+        _cap = os.environ.get("SGNAV_NUM_EPISODES", "").strip()
+        if _cap:
+            try:
+                _n = int(_cap)
+                if _n > 0:
+                    num_episodes = min(num_episodes, _n)
+            except ValueError:
+                pass
+        # ################################
+
         assert num_episodes > 0, "num_episodes should be greater than 0"
         print(num_episodes)
         agg_metrics: Dict = defaultdict(float)

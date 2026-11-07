@@ -23,10 +23,16 @@
     <!-- ################################
       startup_prior_mode: none | initial_footprint (default none).
       half_l/half_w from footprint_at_scale(robot_scale); unused when none.
+      expand_m: isotropic margin beyond chassis half (default 0).
     ################################ -->
     <arg name="startup_prior_mode_" default="none"/>
     <arg name="startup_prior_half_length_" default="0.0"/>
     <arg name="startup_prior_half_width_" default="0.0"/>
+    <arg name="startup_prior_expand_m_" default="0.0"/>
+    <!-- ################################
+      obstacle_denoise: none | median3 (current-frame OCC projection filter).
+    ################################ -->
+    <arg name="obstacle_denoise_" default="none"/>
 
     <!-- main node -->
     <node pkg="exploration_manager" name="exploration_node" type="exploration_node" output="screen">
@@ -57,6 +63,11 @@
         <param name="sdf_map/max_ray_length" value="4.99"/>
         <param name="sdf_map/optimistic" value="false" type="bool"/>
         <param name="sdf_map/signed_dist" value="false" type="bool"/>
+        <!-- ################################
+          Current-frame obstacle projection denoise before persistent OCC+inflate.
+          none = original; median3 = cv::medianBlur ksize=3 (HomeRobot-style).
+        ################################ -->
+        <param name="sdf_map/obstacle_denoise" value="$(arg obstacle_denoise_)" type="string"/>
 
         <param name="map_ros/cx" value="$(arg cx_)"/>
         <param name="map_ros/cy" value="$(arg cy_)"/>
@@ -97,11 +108,13 @@
         <param name="exploration/tsp_dir" value="$(find lkh_mtsp_solver)/resource" type="string"/>
         <!-- ################################
           Initial footprint traversability prior (planning query only).
-          Default none. Does NOT rewrite occupancy / expand F0 / restore 0.25 m skip.
+          Default none. Does NOT rewrite occupancy / restore 0.25 m skip.
+          expand_m grows F0 beyond chassis footprint (still query-only).
         ################################ -->
         <param name="exploration/startup_prior_mode" value="$(arg startup_prior_mode_)" type="string"/>
         <param name="exploration/startup_prior_half_length" value="$(arg startup_prior_half_length_)" type="double"/>
         <param name="exploration/startup_prior_half_width" value="$(arg startup_prior_half_width_)" type="double"/>
+        <param name="exploration/startup_prior_expand_m" value="$(arg startup_prior_expand_m_)" type="double"/>
         <!-- ################################
           Gated native plan / map pipeline diagnostics (off unless dir set).
           Does not change planning or free-update decisions.

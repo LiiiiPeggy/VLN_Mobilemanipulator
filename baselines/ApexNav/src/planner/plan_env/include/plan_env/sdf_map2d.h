@@ -8,6 +8,7 @@
 #include <utility>
 #include <queue>
 #include <tuple>
+#include <string>
 
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
@@ -146,6 +147,12 @@ struct MapParam2D {
   double local_bound_;     ///< Local mapping boundary limit
   double unknown_flag_;    ///< Flag value for unknown regions
   int buffer_size_;        ///< Size of map data buffers
+  // ################################
+  // Current-frame obstacle projection denoise (before persistent OCC + inflate).
+  // "none" | "median3". Does not rewrite FREE/UNKNOWN ternary map encoding.
+  // ################################
+  std::string obstacle_denoise_mode_;
+  // ################################
 };
 
 struct MapData2D {
@@ -170,6 +177,20 @@ struct MapData2D {
   Eigen::Vector2d local_update_mind_, local_update_maxd_;  ///< Local update region coordinates
   Eigen::Vector2i update_min_, update_max_;                ///< Global update boundary indices
   Eigen::Vector2d update_mind_, update_maxd_;              ///< Global update boundary coordinates
+
+  // ################################
+  // Per-frame / cumulative denoise diagnostics (query-only counters).
+  // ################################
+  int denoise_frame_occ_before_ = 0;
+  int denoise_frame_occ_after_ = 0;
+  int denoise_frame_removed_ = 0;
+  long long denoise_sum_occ_before_ = 0;
+  long long denoise_sum_occ_after_ = 0;
+  long long denoise_sum_removed_ = 0;
+  int denoise_frames_ = 0;
+  int last_inflate_cells_ = 0;
+  long long sum_inflate_cells_ = 0;
+  // ################################
 
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 };

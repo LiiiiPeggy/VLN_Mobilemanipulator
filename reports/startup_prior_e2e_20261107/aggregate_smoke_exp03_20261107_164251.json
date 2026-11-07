@@ -1,0 +1,140 @@
+{
+  "batch_id": "smoke_exp03_20261107_164251",
+  "n_rows": 3,
+  "by_mode": {
+    "initial_footprint": {
+      "n": 3,
+      "success_proxy": 2,
+      "success_rate": 0.6666666666666666,
+      "spl_note": "official SPL not computed (no geodesic path length in adapter summary); report SR proxy only",
+      "entered_explore_rate": 1.0,
+      "start_blocked_rate": 0.0,
+      "nopassable_or_stuck_rate": 0.0,
+      "explore_no_goal_rate": 0.3333333333333333,
+      "stop_not_near_goal_rate": 0.0,
+      "runtime_error_rate": 0.0,
+      "mean_forward_m": 10.416666666666666,
+      "mean_n_explore": 85.66666666666667,
+      "mean_elapsed_sec": 216.65253893534342,
+      "fail_class_hist": {
+        "ok_success_proxy": 2,
+        "explore_no_goal": 1
+      }
+    }
+  },
+  "rows": [
+    {
+      "batch_id": "smoke_exp03_20261107_164251",
+      "run_id": "e2e_sp_smoke_exp03_20261107_164251_initial_footprint_hy1_chair_3",
+      "startup_prior_mode": "initial_footprint",
+      "episode_list_id": "hy1_chair_3",
+      "scene": "HY1NcmCgn3n",
+      "category": "chair",
+      "episode_id": "3",
+      "robot_scale": 0.7,
+      "scale_tag": "scaled_robot_proxy_070",
+      "rc": 0,
+      "force_spawn_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_wide_hy1_openband_20261105_113724/start_pose.json",
+      "status": "ok",
+      "termination": "planner_stop",
+      "elapsed_sec": 233.69616103172302,
+      "n_steps": 110,
+      "entered_explore": true,
+      "n_explore": 84,
+      "n_init_lookaround": 26,
+      "explore_actions": {
+        "TURN_LEFT": 18,
+        "MOVE_FORWARD": 46,
+        "TURN_RIGHT": 19,
+        "STOP": 1
+      },
+      "expl_result_hist": {
+        "0": 59,
+        "1": 25
+      },
+      "forward_m": 11.5,
+      "final_dtg": 0.6128766104626614,
+      "near_goal": true,
+      "success_distance": 1.0,
+      "objectnav_success_proxy": true,
+      "n_native_nopassable": 0,
+      "fail_class": "ok_success_proxy",
+      "demo_mp4": null
+    },
+    {
+      "batch_id": "smoke_exp03_20261107_164251",
+      "run_id": "e2e_sp_smoke_exp03_20261107_164251_initial_footprint_ef36_chair_4",
+      "startup_prior_mode": "initial_footprint",
+      "episode_list_id": "ef36_chair_4",
+      "scene": "eF36g7L6Z9M",
+      "category": "chair",
+      "episode_id": "4",
+      "robot_scale": 0.7,
+      "scale_tag": "scaled_robot_proxy_070",
+      "rc": 0,
+      "force_spawn_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_wide_ef36_openband_20261105_124359/start_pose.json",
+      "status": "ok",
+      "termination": "planner_stop",
+      "elapsed_sec": 152.31612038612366,
+      "n_steps": 99,
+      "entered_explore": true,
+      "n_explore": 73,
+      "n_init_lookaround": 26,
+      "explore_actions": {
+        "TURN_RIGHT": 20,
+        "TURN_LEFT": 14,
+        "MOVE_FORWARD": 38,
+        "STOP": 1
+      },
+      "expl_result_hist": {
+        "0": 56,
+        "1": 17
+      },
+      "forward_m": 9.5,
+      "final_dtg": 0.9277353835376835,
+      "near_goal": true,
+      "success_distance": 1.0,
+      "objectnav_success_proxy": true,
+      "n_native_nopassable": 0,
+      "fail_class": "ok_success_proxy",
+      "demo_mp4": null
+    },
+    {
+      "batch_id": "smoke_exp03_20261107_164251",
+      "run_id": "e2e_sp_smoke_exp03_20261107_164251_initial_footprint_yr17_chair_0",
+      "startup_prior_mode": "initial_footprint",
+      "episode_list_id": "yr17_chair_0",
+      "scene": "yr17PDCnDDW",
+      "category": "chair",
+      "episode_id": "0",
+      "robot_scale": 0.7,
+      "scale_tag": "scaled_robot_proxy_070",
+      "rc": 0,
+      "force_spawn_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_wide_yr17_openband_20261105_012302/start_pose.json",
+      "status": "ok",
+      "termination": "explore_budget_exhausted",
+      "elapsed_sec": 263.9453353881836,
+      "n_steps": 126,
+      "entered_explore": true,
+      "n_explore": 100,
+      "n_init_lookaround": 26,
+      "explore_actions": {
+        "TURN_RIGHT": 22,
+        "TURN_LEFT": 37,
+        "MOVE_FORWARD": 41
+      },
+      "expl_result_hist": {
+        "0": 94,
+        "1": 6
+      },
+      "forward_m": 10.25,
+      "final_dtg": 3.57995602025102,
+      "near_goal": false,
+      "success_distance": 1.0,
+      "objectnav_success_proxy": false,
+      "n_native_nopassable": 0,
+      "fail_class": "explore_no_goal",
+      "demo_mp4": null
+    }
+  ]
+}

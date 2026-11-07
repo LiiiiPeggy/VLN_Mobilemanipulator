@@ -873,6 +873,49 @@
 
 ---
 
+## 2026-11-07 启动先验 F0 外扩（expand_m）
+
+**模块**：`astar2d` / Ranger launch / `run_apexnav_real_episode.sh`
+
+**动机**：用户要求扩大启动先验范围；在不改写占据、不恢复 0.25 m skip 的前提下，用各向同性 margin 放大 F0。
+
+**操作**：
+- 新增 `exploration/startup_prior_expand_m`；F0_half = chassis_half + expand。
+- launch 默认 0；`STARTUP_PRIOR_MODE=initial_footprint` 时脚本默认 expand **0.3**。
+- 冻结回放扩为 A/B/C；sweep 0.3/0.5/0.8/1.0。
+
+**结果**：expand 0.3 cells 221→729；可达仍 5/26；路径略短；OCC/inflate/外 UNKNOWN 拒检 PASS。本冻结集外扩不增候选数。
+
+**结论**：接口就绪。首轮 live 冒烟因只重编 `path_searching`、未重编 `exploration_manager` 导致 ABI 错位 segfault；双包重编后冒烟 2/3 success（hy1/ef36），yr17 探索至预算耗尽。端到端 expand0.3 ±denoise 见下节。
+
+**相关**：`reports/hy1_startup_prior_expand_20261107*`；`batch_smoke_exp03_20261107_164251.jsonl`
+
+---
+
+## 2026-11-07 障碍去噪 median3 A/B（expand=0.3 冻结基线）
+
+**模块**：`sdf_map2d` / Ranger launch / ObjectNav e2e
+
+**动机**：启动已解封后检验轻量 OCC 去噪是否改善任务 SR；禁止 DBSCAN/形态学；仅当前帧、剔除≠FREE、不延长射线。
+
+**操作**：
+- 冻结 `initial_footprint`+`expand_m=0.3`（有效半轴 0.756×0.604 m，729 cells）。
+- 实现 `obstacle_denoise=none|median3`；同步重编 `path_searching`+`exploration_manager`（+plan_env 链）。
+- 同清单 24-ep：A=`none`（`ab24_A_none_20261107_172219`）、B=`median3`（`ab24_B_med3_20261107_185105`）；预算 150/100。
+
+**结果**：
+- A SR_proxy **3/24**；B **4/24**；两侧 start_blocked=0、mid_nopass=0。
+- B 平均剔除 ~1.8e4 OCC 投影；mean inflate 475891→343056（↓~28%）。
+- 翻转：B 多成功 `dd4b_chair_5`/`dd4b_toilet_0`；A 的 `ef36_bed_4` 在 B 近失（dtg 0.98→1.14）。
+- 主失败仍 `explore_no_goal`（A 18 / B 16）。yr17：曾 SEARCH_BEST_OBJECT，接近未闭合→预算耗尽。
+- 路径/净位移与 SPL 同为 N/A；`forward_m` 与 fwd/turn 比两臂接近。
+
+**结论**：median3 **不默认开启**（ΔSR 在噪声内且有近失回归）；开关保留。启动解封后下一瓶颈是目标搜索/接近/停止，不是再扩 F0 或加形态学去噪。
+
+**相关**：`reports/obstacle_denoise_ab_20261107.md`；`reports/obstacle_denoise_ab_20261107/`
+
+---
+
 ## 2026-11-07 startup_prior → ObjectNav e2e A/B
 
 **模块**：同一 24-ep 清单；A=`none` vs B=`initial_footprint`；短预算→探针→预算100 全量

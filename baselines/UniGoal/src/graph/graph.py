@@ -366,7 +366,23 @@ Please provide the relationship you can determine from the image.
         self.room_nodes = room_nodes
 
     def get_grounded_sam(self, device):
-        model = load_model(self.groundingdino_config_file, self.groundingdino_checkpoint, device=device)
+        # ################################
+        # VLN adapt: newer grounded_sam_demo.load_model requires bert_base_uncased_path
+        # Prefer local cache (HF hub often unreachable in container).
+        # ################################
+        bert_path = os.environ.get(
+            "BERT_BASE_UNCASED_PATH",
+            "/shared/cache/huggingface/bert-base-uncased",
+        )
+        if not os.path.isdir(bert_path):
+            bert_path = None
+        model = load_model(
+            self.groundingdino_config_file,
+            self.groundingdino_checkpoint,
+            bert_path,
+            device=device,
+        )
+        # ################################
         predictor = SamPredictor(sam_model_registry[self.sam_version](checkpoint=self.sam_checkpoint).to(device))
         return model, predictor
     

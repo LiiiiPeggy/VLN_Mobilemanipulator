@@ -65,6 +65,7 @@ add_library(plan_env
 target_link_libraries(plan_env
   ${catkin_LIBRARIES}
   ${PCL_LIBRARIES}
+  ${OpenCV_LIBRARIES}
 )
 
 # ################################
@@ -73,4 +74,12 @@ target_link_libraries(plan_env
 add_executable(test_map_pipeline_replay test/test_map_pipeline_replay.cpp)
 target_link_libraries(test_map_pipeline_replay plan_env ${catkin_LIBRARIES} ${PCL_LIBRARIES})
 add_dependencies(test_map_pipeline_replay ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
+# ################################
+# Offline CSV → MapROS 3D-keep-Z diagnostic replay (startup pose geometry).
+# ################################
+add_executable(test_map_cloud_csv_replay test/test_map_cloud_csv_replay.cpp)
+target_link_libraries(test_map_cloud_csv_replay plan_env ${catkin_LIBRARIES} ${PCL_LIBRARIES})
+add_dependencies(test_map_cloud_csv_replay ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
 

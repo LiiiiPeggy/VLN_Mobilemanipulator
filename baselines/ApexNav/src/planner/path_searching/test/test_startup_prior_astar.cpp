@@ -152,13 +152,16 @@ struct RunResult {
 
 static RunResult runMode(ros::NodeHandle& nh, const std::string& mode, const std::vector<Cell>& cells,
     const std::vector<Cand>& cands, const Vector2d& chassis, double yaw, double half_l,
-    double half_w)
+    double half_w, double expand_m = 0.0)
 {
   RunResult rr;
   rr.mode = mode;
   nh.setParam("exploration/startup_prior_mode", mode);
   nh.setParam("exploration/startup_prior_half_length", half_l);
   nh.setParam("exploration/startup_prior_half_width", half_w);
+  // ################################
+  nh.setParam("exploration/startup_prior_expand_m", expand_m);
+  // ################################
 
   SDFMap2D::Ptr map(new SDFMap2D);
   map->initMap(nh);
@@ -299,7 +302,8 @@ static RunResult runMode(ros::NodeHandle& nh, const std::string& mode, const std
 }
 
 static void writeJson(const std::string& path, const RunResult& A, const RunResult& B,
-    const Vector2d& chassis, double yaw, double half_l, double half_w)
+    const RunResult* C, const Vector2d& chassis, double yaw, double half_l, double half_w,
+    double expand_m)
 {
   std::ofstream ofs(path);
   auto dump = [&](const RunResult& r) {
@@ -328,10 +332,15 @@ static void writeJson(const std::string& path, const RunResult& A, const RunResu
     ofs << "}";
   };
   ofs << "{\"chassis\":[" << chassis.x() << "," << chassis.y() << "],\"yaw\":" << yaw
-      << ",\"half_l\":" << half_l << ",\"half_w\":" << half_w << ",\"A\":{";
+      << ",\"half_l\":" << half_l << ",\"half_w\":" << half_w
+      << ",\"expand_m\":" << expand_m << ",\"A\":{";
   dump(A);
   ofs << "},\"B\":{";
   dump(B);
+  if (C) {
+    ofs << "},\"C\":{";
+    dump(*C);
+  }
   ofs << "}}\n";
 }
 
@@ -341,7 +350,7 @@ int main(int argc, char** argv)
   ros::NodeHandle nh("~");
 
   std::string cells_csv, cands_csv, out_json;
-  double cx, cy, yaw, half_l, half_w, map_size;
+  double cx, cy, yaw, half_l, half_w, expand_m, map_size;
   nh.param("cells_csv", cells_csv, std::string(""));
   nh.param("candidates_csv", cands_csv, std::string(""));
   nh.param("out_json", out_json, std::string("/tmp/startup_prior_ab.json"));
@@ -350,6 +359,9 @@ int main(int argc, char** argv)
   nh.param("yaw", yaw, 0.0);
   nh.param("half_l", half_l, 0.4557);
   nh.param("half_w", half_w, 0.30429);
+  // ################################
+  nh.param("expand_m", expand_m, 0.3);
+  // ################################
   nh.param("map_size", map_size, 80.0);
 
   if (cells_csv.empty() || cands_csv.empty()) {
@@ -362,37 +374,49 @@ int main(int argc, char** argv)
     std::cerr << "[FAIL] empty cells/cands\n";
     return 2;
   }
-  std::cout << "[INFO] cells=" << cells.size() << " cands=" << cands.size() << "\n";
+  std::cout << "[INFO] cells=" << cells.size() << " cands=" << cands.size()
+            << " expand_m=" << expand_m << "\n";
 
   setBaseParams(nh, map_size);
   Vector2d chassis(cx, cy);
 
-  RunResult A = runMode(nh, "none", cells, cands, chassis, yaw, half_l, half_w);
+  RunResult A = runMode(nh, "none", cells, cands, chassis, yaw, half_l, half_w, 0.0);
   RunResult B =
-      runMode(nh, "initial_footprint", cells, cands, chassis, yaw, half_l, half_w);
+      runMode(nh, "initial_footprint", cells, cands, chassis, yaw, half_l, half_w, 0.0);
+  // ################################
+  // C: same prior with isotropic expand (Ranger experiment default).
+  // ################################
+  RunResult C = runMode(
+      nh, "initial_footprint", cells, cands, chassis, yaw, half_l, half_w, expand_m);
+  // ################################
 
-  writeJson(out_json, A, B, chassis, yaw, half_l, half_w);
+  writeJson(out_json, A, B, &C, chassis, yaw, half_l, half_w, expand_m);
 
   std::cout << "[A none] reachable=" << A.n_reachable << "/" << A.n_candidates
             << " best_len=" << A.best_len << " map_unchanged=" << A.map_unchanged << "\n";
-  std::cout << "[B initial_footprint] reachable=" << B.n_reachable << "/" << B.n_candidates
-            << " best_len=" << B.best_len
+  std::cout << "[B initial_footprint expand=0] reachable=" << B.n_reachable << "/"
+            << B.n_candidates << " best_len=" << B.best_len
             << " prior_unk_samples=" << B.path_prior_unknown_samples
             << " outside_f0_unk=" << B.path_outside_f0_unknown
             << " map_unchanged=" << B.map_unchanged << "\n";
-  std::cout << "[B checks] f0_unk_allowed=" << B.f0_unk_allowed
-            << " outside_rejected=" << B.outside_f0_unk_rejected
-            << " occ_rej=" << B.f0_occ_rejected << " inf_rej=" << B.f0_inflate_rejected
-            << " no_follow=" << B.f0_not_follow_motion
-            << " cleared=" << B.f0_cleared_on_clear << "\n";
+  std::cout << "[C initial_footprint expand=" << expand_m << "] reachable=" << C.n_reachable
+            << "/" << C.n_candidates << " best_len=" << C.best_len
+            << " prior_unk_samples=" << C.path_prior_unknown_samples
+            << " outside_f0_unk=" << C.path_outside_f0_unknown
+            << " map_unchanged=" << C.map_unchanged << "\n";
+  std::cout << "[C checks] f0_unk_allowed=" << C.f0_unk_allowed
+            << " outside_rejected=" << C.outside_f0_unk_rejected
+            << " occ_rej=" << C.f0_occ_rejected << " inf_rej=" << C.f0_inflate_rejected
+            << " no_follow=" << C.f0_not_follow_motion
+            << " cleared=" << C.f0_cleared_on_clear << "\n";
   std::cout << "[OUT] " << out_json << "\n";
 
-  bool ok = B.map_unchanged && A.map_unchanged && B.outside_f0_unk_rejected &&
-            B.f0_inflate_rejected && B.f0_not_follow_motion && B.f0_cleared_on_clear &&
+  bool ok = B.map_unchanged && A.map_unchanged && C.map_unchanged &&
+            C.outside_f0_unk_rejected && C.f0_inflate_rejected && C.f0_not_follow_motion &&
+            C.f0_cleared_on_clear && C.path_outside_f0_unknown == 0 &&
             B.path_outside_f0_unknown == 0;
-  if (B.n_reachable > 0)
-    ok = ok && B.f0_unk_allowed;
-  // A expected: typically 0 reachable on HY1 freeze
+  if (C.n_reachable > 0)
+    ok = ok && C.f0_unk_allowed;
   if (!ok) {
     std::cerr << "[FAIL] validation checks\n";
     return 1;

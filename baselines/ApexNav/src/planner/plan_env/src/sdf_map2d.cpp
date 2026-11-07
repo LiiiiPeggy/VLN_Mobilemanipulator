@@ -16,6 +16,7 @@
 #include <plan_env/object_map2d.h>
 #include <plan_env/value_map2d.h>
 #include <unordered_map>
+#include <opencv2/imgproc.hpp>
 
 namespace apexnav_planner {
 SDFMap2D::~SDFMap2D() = default;
@@ -36,6 +37,19 @@ void SDFMap2D::initMap(ros::NodeHandle& nh)
   nh.param("sdf_map/local_bound", mp_->local_bound_, 1.0);
   nh.param("sdf_map/optimistic", mp_->optimistic_, true);
   nh.param("sdf_map/signed_dist", mp_->signed_dist_, false);
+  // ################################
+  // Obstacle projection denoise: none (default) | median3 (HomeRobot-style).
+  // ################################
+  nh.param("sdf_map/obstacle_denoise", mp_->obstacle_denoise_mode_, std::string("none"));
+  if (mp_->obstacle_denoise_mode_ != "none" && mp_->obstacle_denoise_mode_ != "median3") {
+    ROS_WARN("[SDFMap2D] unknown obstacle_denoise='%s' → none",
+        mp_->obstacle_denoise_mode_.c_str());
+    mp_->obstacle_denoise_mode_ = "none";
+  }
+  if (mp_->obstacle_denoise_mode_ != "none")
+    ROS_WARN("[SDFMap2D] obstacle_denoise=%s (current-frame OCC hits only; no FREE rewrite)",
+        mp_->obstacle_denoise_mode_.c_str());
+  // ################################
   mp_->default_dist_ = 0.0;
 
   // Calculate map boundaries and resolution parameters
@@ -197,6 +211,11 @@ void SDFMap2D::inputDepthCloud2D(const pcl::PointCloud<pcl::PointXY>::Ptr& point
   int vox_adr;
   double length;
   std::unordered_map<int, char> flag_occ, flag_free;
+  // ################################
+  // flag_occ_ray: original hit cells for ray stop (do not extend rays after denoise).
+  // flag_occ: OCC hits that survive denoise and may enter persistent map.
+  // ################################
+  std::unordered_map<int, char> flag_occ_ray;
 
   // First pass: Mark all occupied grids from depth points
   for (int i = 0; i < point_num; ++i) {
@@ -224,9 +243,61 @@ void SDFMap2D::inputDepthCloud2D(const pcl::PointCloud<pcl::PointXY>::Ptr& point
     }
     posToIndex(pt_w, idx);
     vox_adr = toAddress(idx);
-    if (tmp_flag)
+    if (tmp_flag) {
       flag_occ[vox_adr] = 1;  // Mark as occupied in hash map
+      flag_occ_ray[vox_adr] = 1;
+    }
   }
+
+  // ################################
+  // median3: filter current-frame OCC projection only (HomeRobot-style).
+  // Keep-subset: never invent new OCC; removed hits stay non-OCC and non-FREE.
+  // ################################
+  md_->denoise_frame_occ_before_ = static_cast<int>(flag_occ.size());
+  md_->denoise_frame_occ_after_ = md_->denoise_frame_occ_before_;
+  md_->denoise_frame_removed_ = 0;
+  if (mp_->obstacle_denoise_mode_ == "median3" && !flag_occ.empty()) {
+    int xmin = mp_->map_voxel_num_(0), ymin = mp_->map_voxel_num_(1);
+    int xmax = -1, ymax = -1;
+    for (const auto& kv : flag_occ) {
+      Eigen::Vector2i id = addressToIdx(kv.first);
+      xmin = std::min(xmin, id(0));
+      ymin = std::min(ymin, id(1));
+      xmax = std::max(xmax, id(0));
+      ymax = std::max(ymax, id(1));
+    }
+    // Pad 1 cell so median3 has neighborhood at edges.
+    xmin = std::max(0, xmin - 1);
+    ymin = std::max(0, ymin - 1);
+    xmax = std::min(mp_->map_voxel_num_(0) - 1, xmax + 1);
+    ymax = std::min(mp_->map_voxel_num_(1) - 1, ymax + 1);
+    const int w = xmax - xmin + 1;
+    const int h = ymax - ymin + 1;
+    if (w > 0 && h > 0) {
+      cv::Mat img(h, w, CV_8UC1, cv::Scalar(0));
+      for (const auto& kv : flag_occ) {
+        Eigen::Vector2i id = addressToIdx(kv.first);
+        img.at<uchar>(id(1) - ymin, id(0) - xmin) = 255;
+      }
+      cv::Mat filtered;
+      cv::medianBlur(img, filtered, 3);
+      std::unordered_map<int, char> kept;
+      for (const auto& kv : flag_occ) {
+        Eigen::Vector2i id = addressToIdx(kv.first);
+        if (filtered.at<uchar>(id(1) - ymin, id(0) - xmin) > 0)
+          kept[kv.first] = 1;
+      }
+      flag_occ.swap(kept);
+      md_->denoise_frame_occ_after_ = static_cast<int>(flag_occ.size());
+      md_->denoise_frame_removed_ =
+          md_->denoise_frame_occ_before_ - md_->denoise_frame_occ_after_;
+    }
+  }
+  md_->denoise_sum_occ_before_ += md_->denoise_frame_occ_before_;
+  md_->denoise_sum_occ_after_ += md_->denoise_frame_occ_after_;
+  md_->denoise_sum_removed_ += md_->denoise_frame_removed_;
+  md_->denoise_frames_ += 1;
+  // ################################
 
   // Second pass: Perform raycasting to mark free space, excluding occupied grids
   for (int i = 0; i < point_num; ++i) {
@@ -254,7 +325,8 @@ void SDFMap2D::inputDepthCloud2D(const pcl::PointCloud<pcl::PointXY>::Ptr& point
     }
     posToIndex(pt_w, idx);
     vox_adr = toAddress(idx);
-    if (tmp_flag == 1)
+    // Only surviving (denoised) hits enter persistent OCC cache.
+    if (tmp_flag == 1 && flag_occ.count(vox_adr) && flag_occ[vox_adr] == 1)
       setCacheOccupancy(vox_adr, tmp_flag);
 
     // Update the bounding box of affected area
@@ -281,7 +353,10 @@ void SDFMap2D::inputDepthCloud2D(const pcl::PointCloud<pcl::PointXY>::Ptr& point
       }
       while (caster_->nextId(idx)) {
         int adr = toAddress(idx);
-        if (flag_occ.count(adr) && flag_occ[adr] == 1)  // Skip if marked as occupied
+        // ################################
+        // Skip at original ray-end hits so denoise does not extend free rays.
+        // ################################
+        if (flag_occ_ray.count(adr) && flag_occ_ray[adr] == 1)
           continue;
         if (md_->virtual_ground_buffer_[adr])  // Skip virtual ground
           continue;
@@ -291,18 +366,33 @@ void SDFMap2D::inputDepthCloud2D(const pcl::PointCloud<pcl::PointXY>::Ptr& point
           free_grids.push_back(idx);
         }
       }
-      setCacheOccupancy(toAddress(idx), 0);
-      if (!flag_free.count(toAddress(idx))) {
-        flag_free[toAddress(idx)] = 1;
-        free_grids.push_back(idx);
+      // ################################
+      // Denoised-away hits must not be rewritten to FREE (none mode unchanged).
+      // ################################
+      {
+        const int end_adr = toAddress(idx);
+        const bool denoise_dropped =
+            (mp_->obstacle_denoise_mode_ == "median3") && flag_occ_ray.count(end_adr) &&
+            !(flag_occ.count(end_adr) && flag_occ[end_adr] == 1);
+        if (!denoise_dropped) {
+          setCacheOccupancy(end_adr, 0);
+          if (!flag_free.count(end_adr)) {
+            flag_free[end_adr] = 1;
+            free_grids.push_back(idx);
+          }
+        }
       }
+      // ################################
     }
     else {
       // Ray mode 1: Cast from sensor to point
       caster_->input(sensor_pos, pt_w);
       while (caster_->nextId(idx)) {
         int adr = toAddress(idx);
-        if (flag_occ.count(adr) && flag_occ[adr] == 1)  // Stop if hit occupied grid
+        // ################################
+        // Stop at original depth hit (even if median3 dropped OCC write).
+        // ################################
+        if (flag_occ_ray.count(adr) && flag_occ_ray[adr] == 1)
           break;
         if (md_->virtual_ground_buffer_[adr])  // Stop at virtual ground
           break;
@@ -692,6 +782,19 @@ void SDFMap2D::clearAndInflateLocalMap()
         }
       }
     }
+
+  // ################################
+  // Count inflated cells in the local update window (diag for denoise A/B).
+  // ################################
+  int n_inf = 0;
+  for (int x = range_min(0); x <= range_max(0); ++x)
+    for (int y = range_min(1); y <= range_max(1); ++y) {
+      if (md_->occupancy_buffer_inflate_[toAddress(x, y)] == 1)
+        n_inf++;
+    }
+  md_->last_inflate_cells_ = n_inf;
+  md_->sum_inflate_cells_ += n_inf;
+  // ################################
 }
 
 double SDFMap2D::getDistWithGrad(const Eigen::Vector2d& pos, Eigen::Vector2d& grad)

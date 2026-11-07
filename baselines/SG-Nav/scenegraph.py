@@ -9,7 +9,15 @@ import numpy as np
 import omegaconf
 import supervision as sv
 import torch
-import ollama
+# ################################
+# VLN adapt: optional OpenAI-compatible LLM/VLM (model8) instead of local Ollama
+# ################################
+try:
+    import ollama
+except ImportError:  # pragma: no cover
+    ollama = None
+from openai import OpenAI
+# ################################
 from omegaconf import DictConfig
 from PIL import Image
 from sklearn.cluster import DBSCAN
@@ -158,8 +166,17 @@ class SceneGraph():
         self.init_room_nodes()
         self.reason_visualization = ''
         self.is_navigation = is_navigation
-        self.llm_name = 'llama3.2-vision'
-        self.vlm_name = 'llama3.2-vision'
+        # ################################
+        # VLN adapt: model8 OpenAI-compat by default; set SGNAV_LLM_BACKEND=ollama for local
+        # ################################
+        self.llm_backend = os.getenv("SGNAV_LLM_BACKEND", "openai").lower()
+        self.llm_base_url = os.getenv("OPENAI_BASE_URL", os.getenv("GPT_END_POINT", "https://model8.run/v1"))
+        self.llm_api_key = os.getenv("OPENAI_API_KEY", os.getenv("GPT_OPENAI_KEY", "ollama"))
+        default_model = "gpt-5.6-luna" if self.llm_backend != "ollama" else "llama3.2-vision"
+        self.llm_name = os.getenv("GPT_MODEL", default_model)
+        self.vlm_name = os.getenv("GPT_VLM_MODEL", self.llm_name)
+        self._openai_client = None
+        # ################################
         self.seg_xyxy = None
         self.seg_caption = None
         
@@ -312,7 +329,22 @@ Object pair(s):
             # model = YOLO(args.model_path)
             # return model
         elif variant == "groundedsam":
-            model = load_model(self.groundingdino_config_file, self.groundingdino_checkpoint, None, device=device)
+            # ################################
+            # VLN adapt: pass local BERT path into GroundingDINO
+            # ################################
+            _bert = os.environ.get(
+                "BERT_BASE_UNCASED_PATH",
+                "/shared/cache/huggingface/bert-base-uncased",
+            )
+            if not os.path.isdir(_bert):
+                _bert = None
+            model = load_model(
+                self.groundingdino_config_file,
+                self.groundingdino_checkpoint,
+                _bert,
+                device=device,
+            )
+            # ################################
             predictor = SamPredictor(sam_model_registry[self.sam_version](checkpoint=self.sam_checkpoint).to(device))
             return model, predictor
         else:
@@ -756,30 +788,109 @@ Object pair(s):
             self.update_node()
             self.update_edge()
     
+    # ################################
+    # VLN adapt: OpenAI-compatible chat (model8) with Ollama fallback + retries
+    # ################################
+    def _get_openai_client(self):
+        if self._openai_client is None:
+            timeout = float(os.getenv("OPENAI_TIMEOUT", "180"))
+            self._openai_client = OpenAI(
+                api_key=self.llm_api_key,
+                base_url=self.llm_base_url,
+                timeout=timeout,
+                max_retries=0,
+            )
+        return self._openai_client
+
+    def _openai_call_with_retry(self, fn):
+        import time
+        retries = int(os.getenv("OPENAI_CALL_RETRIES", "8"))
+        backoff = float(os.getenv("OPENAI_RETRY_BACKOFF", "8.0"))
+        last = None
+        for i in range(retries):
+            try:
+                return fn()
+            except Exception as e:
+                last = e
+                wait = min(backoff * (2 ** i) + 5.0, 90.0)
+                print(
+                    f"[sgnav llm/vlm] attempt {i+1}/{retries} failed: "
+                    f"{type(e).__name__}: {e}; sleep {wait:.1f}s",
+                    flush=True,
+                )
+                if i + 1 >= retries:
+                    break
+                time.sleep(wait)
+        raise last
+
     def get_llm_response(self, prompt):
-        response = ollama.chat(
-            model=self.llm_name,
-            messages=[{
-                'role': 'user',
-                'content': prompt,
-            }]
-        )
-        return response.message.content
-    
+        if self.llm_backend == "ollama":
+            if ollama is None:
+                raise RuntimeError("ollama not installed; set SGNAV_LLM_BACKEND=openai")
+            response = ollama.chat(
+                model=self.llm_name,
+                messages=[{
+                    'role': 'user',
+                    'content': prompt,
+                }]
+            )
+            return response.message.content
+
+        def _do():
+            chat_completion = self._get_openai_client().chat.completions.create(
+                messages=[{'role': 'user', 'content': prompt}],
+                model=self.llm_name,
+            )
+            return chat_completion.choices[0].message.content
+
+        return self._openai_call_with_retry(_do)
+
     def get_vlm_response(self, prompt, image):
+        # JPEG + OpenAI-compat image_url={"url": data:...} (MSGNav-compatible)
+        img = image
+        try:
+            max_side = int(os.getenv("VLM_MAX_SIDE", "384"))
+            w, h = img.size
+            scale = min(1.0, float(max_side) / float(max(w, h)))
+            if scale < 1.0:
+                img = img.resize((max(1, int(w * scale)), max(1, int(h * scale))))
+        except Exception:
+            img = image
         buffered = BytesIO()
-        image.save(buffered, format='PNG')
+        img.save(buffered, format='JPEG', quality=75)
         image_bytes = base64.b64encode(buffered.getvalue())
         image_str = str(image_bytes, 'utf-8')
-        response = ollama.chat(
-            model=self.vlm_name,
-            messages=[{
-                'role': 'user',
-                'content': prompt,
-                'images': [image_str]
-            }]
-        )
-        return response.message.content
+        if self.llm_backend == "ollama":
+            if ollama is None:
+                raise RuntimeError("ollama not installed; set SGNAV_LLM_BACKEND=openai")
+            response = ollama.chat(
+                model=self.vlm_name,
+                messages=[{
+                    'role': 'user',
+                    'content': prompt,
+                    'images': [image_str]
+                }]
+            )
+            return response.message.content
+
+        def _do():
+            chat_completion = self._get_openai_client().chat.completions.create(
+                messages=[{
+                    'role': 'user',
+                    'content': [
+                        {"type": "text", "text": prompt},
+                        {
+                            "type": "image_url",
+                            "image_url": {"url": "data:image/jpeg;base64," + image_str},
+                        },
+                    ],
+                }],
+                model=self.vlm_name,
+            )
+            return chat_completion.choices[0].message.content
+
+        return self._openai_call_with_retry(_do)
+    # ################################
         
     def find_modes(self, lst):  
         if len(lst) == 0:

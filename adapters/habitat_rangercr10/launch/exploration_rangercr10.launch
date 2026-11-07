@@ -23,6 +23,11 @@
   <arg name="startup_prior_mode" default="none"/>
   <arg name="startup_prior_half_length" default="0.0"/>
   <arg name="startup_prior_half_width" default="0.0"/>
+  <!-- ################################
+    Isotropic F0 margin beyond chassis half (m). 0 = exact footprint.
+  ################################ -->
+  <arg name="startup_prior_expand_m" default="0.0"/>
+  <arg name="obstacle_denoise" default="none"/>
 
   <group unless="$(arg is_real_world)">
     <rosparam file="$(find exploration_manager)/../../../config/habitat_eval_hm3dv2.yaml" command="load"/>
@@ -56,5 +61,7 @@
     <arg name="startup_prior_mode_" value="$(arg startup_prior_mode)"/>
     <arg name="startup_prior_half_length_" value="$(arg startup_prior_half_length)"/>
     <arg name="startup_prior_half_width_" value="$(arg startup_prior_half_width)"/>
+    <arg name="startup_prior_expand_m_" value="$(arg startup_prior_expand_m)"/>
+    <arg name="obstacle_denoise_" value="$(arg obstacle_denoise)"/>
   </include>
 </launch>

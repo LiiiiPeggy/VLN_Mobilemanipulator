@@ -1,0 +1,645 @@
+{
+  "freeze": {
+    "git_sha_workspace_at_diag": "99ebb496023470b27b254fede0a867dce3681f0f",
+    "run_id": "real_s070_hy1_base_rep_v2_r1_20261106_191426",
+    "run_path": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_s070_hy1_base_rep_v2_r1_20261106_191426",
+    "process_meta": {
+      "expected_cleanup_abort": "habitat Simulator.close may SIGABRT/134",
+      "task_status_file": "summary.json",
+      "git_sha_vln": null,
+      "locomanip_commit": "ec5fd6584bd3d562812c12ef2d8e2f87fba98175",
+      "robot_scale": 0.7,
+      "scene_filter": "HY1NcmCgn3n",
+      "category_filter": "chair",
+      "episode_id": "3",
+      "force_spawn_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_wide_hy1_openband_20261105_113724/start_pose.json",
+      "ppo_raise_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/ppo_raise_stage410d_z040.json",
+      "max_steps": 50,
+      "max_explore_actions": 20,
+      "seed_note": "episode+force_spawn pin pose; Habitat RNG seed not separately pinned",
+      "pipeline_depth_frames": 60,
+      "plan_diag_n": 1,
+      "yaw_step_deg_expected": 30,
+      "inflation_profile_env": ""
+    },
+    "robot_scale": 0.7,
+    "force_spawn_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_wide_hy1_openband_20261105_113724/start_pose.json",
+    "n_init_lookaround_actions": 26,
+    "entered_callActionPlanner": true,
+    "native_first_plan_result": "NO_PASSABLE_FRONTIER",
+    "map_frame_begin": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_s070_hy1_base_rep_v2_r1_20261106_191426/maps/frame_0000.png",
+    "map_frame_end": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_s070_hy1_base_rep_v2_r1_20261106_191426/maps/frame_0026.png",
+    "demo_video_not_used_for_inference": "7fps hy1_20261105_171252 is older PPO-raise demo; this diag uses real_s070_hy1_base_rep_v2_r1_20261106_191426 native_diag at plan_seq=1",
+    "workspace_diff_note": "Working tree has uncommitted MEMORY/PROGRESS/PROCESS + map_ros diag helpers + HY1 probe scripts; default deploy lookaround/ground/inflation/A* unchanged for this frozen run."
+  },
+  "local_map_analysis": {
+    "chassis_xy": [
+      1.4327,
+      -23.7172
+    ],
+    "yaw_ros": -2.3315909698614945,
+    "resolution": 0.05,
+    "half_m": 1.5,
+    "footprint_half_lw": [
+      0.4557,
+      0.30428999999999995
+    ],
+    "global_raw": {
+      "UNKNOWN": 533,
+      "FREE": 2915,
+      "OCCUPIED": 212
+    },
+    "global_inflate_ones": 704,
+    "bands": {
+      "0.0-0.3": {
+        "all": {
+          "n": 111,
+          "raw": {
+            "UNKNOWN": 111
+          },
+          "inflate_any": 0,
+          "inflate_only_non_raw_occ": 0,
+          "raw_occ_and_inflate": 0,
+          "overlap_note": "inflate overlays raw OCC; inflate_only = inflated FREE/UNKNOWN cells",
+          "block_share": {
+            "UNKNOWN": 111,
+            "FREE": 0,
+            "OCCUPIED": 0
+          }
+        },
+        "under_body": {
+          "n": 111,
+          "raw": {
+            "UNKNOWN": 111
+          },
+          "inflate_any": 0,
+          "inflate_only_non_raw_occ": 0,
+          "raw_occ_and_inflate": 0,
+          "overlap_note": "inflate overlays raw OCC; inflate_only = inflated FREE/UNKNOWN cells",
+          "block_share": {
+            "UNKNOWN": 111,
+            "FREE": 0,
+            "OCCUPIED": 0
+          }
+        },
+        "exterior": {
+          "n": 0,
+          "raw": {},
+          "inflate_any": 0,
+          "inflate_only_non_raw_occ": 0,
+          "raw_occ_and_inflate": 0,
+          "overlap_note": "inflate overlays raw OCC; inflate_only = inflated FREE/UNKNOWN cells",
+          "block_share": {
+            "UNKNOWN": 0,
+            "FREE": 0,
+            "OCCUPIED": 0
+          }
+        }
+      },
+      "0.3-0.6": {
+        "all": {
+          "n": 327,
+          "raw": {
+            "UNKNOWN": 293,
+            "FREE": 34
+          },
+          "inflate_any": 0,
+          "inflate_only_non_raw_occ": 0,
+          "raw_occ_and_inflate": 0,
+          "overlap_note": "inflate overlays raw OCC; inflate_only = inflated FREE/UNKNOWN cells",
+          "block_share": {
+            "UNKNOWN": 293,
+            "FREE": 34,
+            "OCCUPIED": 0
+          }
+        },
+        "under_body": {
+          "n": 106,
+          "raw": {
+            "UNKNOWN": 106
+          },
+          "inflate_any": 0,
+          "inflate_only_non_raw_occ": 0,
+          "raw_occ_and_inflate": 0,
+          "overlap_note": "inflate overlays raw OCC; inflate_only = inflated FREE/UNKNOWN cells",
+          "block_share": {
+            "UNKNOWN": 106,
+            "FREE": 0,
+            "OCCUPIED": 0
+          }
+        },
+        "exterior": {
+          "n": 221,
+          "raw": {
+            "UNKNOWN": 187,
+            "FREE": 34
+          },
+          "inflate_any": 0,
+          "inflate_only_non_raw_occ": 0,
+          "raw_occ_and_inflate": 0,
+          "overlap_note": "inflate overlays raw OCC; inflate_only = inflated FREE/UNKNOWN cells",
+          "block_share": {
+            "UNKNOWN": 187,
+            "FREE": 34,
+            "OCCUPIED": 0
+          }
+        }
+      },
+      "0.6-1.0": {
+        "all": {
+          "n": 811,
+          "raw": {
+            "UNKNOWN": 60,
+            "FREE": 748,
+            "OCCUPIED": 3
+          },
+          "inflate_any": 40,
+          "inflate_only_non_raw_occ": 37,
+          "raw_occ_and_inflate": 3,
+          "overlap_note": "inflate overlays raw OCC; inflate_only = inflated FREE/UNKNOWN cells",
+          "block_share": {
+            "UNKNOWN": 60,
+            "FREE": 748,
+            "OCCUPIED": 3
+          }
+        },
+        "under_body": {
+          "n": 0,
+          "raw": {},
+          "inflate_any": 0,
+          "inflate_only_non_raw_occ": 0,
+          "raw_occ_and_inflate": 0,
+          "overlap_note": "inflate overlays raw OCC; inflate_only = inflated FREE/UNKNOWN cells",
+          "block_share": {
+            "UNKNOWN": 0,
+            "FREE": 0,
+            "OCCUPIED": 0
+          }
+        },
+        "exterior": {
+          "n": 811,
+          "raw": {
+            "UNKNOWN": 60,
+            "FREE": 748,
+            "OCCUPIED": 3
+          },
+          "inflate_any": 40,
+          "inflate_only_non_raw_occ": 37,
+          "raw_occ_and_inflate": 3,
+          "overlap_note": "inflate overlays raw OCC; inflate_only = inflated FREE/UNKNOWN cells",
+          "block_share": {
+            "UNKNOWN": 60,
+            "FREE": 748,
+            "OCCUPIED": 3
+          }
+        }
+      },
+      "1.0-1.5": {
+        "all": {
+          "n": 1564,
+          "raw": {
+            "UNKNOWN": 35,
+            "FREE": 1409,
+            "OCCUPIED": 120
+          },
+          "inflate_any": 393,
+          "inflate_only_non_raw_occ": 273,
+          "raw_occ_and_inflate": 120,
+          "overlap_note": "inflate overlays raw OCC; inflate_only = inflated FREE/UNKNOWN cells",
+          "block_share": {
+            "UNKNOWN": 35,
+            "FREE": 1409,
+            "OCCUPIED": 120
+          }
+        },
+        "under_body": {
+          "n": 0,
+          "raw": {},
+          "inflate_any": 0,
+          "inflate_only_non_raw_occ": 0,
+          "raw_occ_and_inflate": 0,
+          "overlap_note": "inflate overlays raw OCC; inflate_only = inflated FREE/UNKNOWN cells",
+          "block_share": {
+            "UNKNOWN": 0,
+            "FREE": 0,
+            "OCCUPIED": 0
+          }
+        },
+        "exterior": {
+          "n": 1564,
+          "raw": {
+            "UNKNOWN": 35,
+            "FREE": 1409,
+            "OCCUPIED": 120
+          },
+          "inflate_any": 393,
+          "inflate_only_non_raw_occ": 273,
+          "raw_occ_and_inflate": 120,
+          "overlap_note": "inflate overlays raw OCC; inflate_only = inflated FREE/UNKNOWN cells",
+          "block_share": {
+            "UNKNOWN": 35,
+            "FREE": 1409,
+            "OCCUPIED": 120
+          }
+        }
+      }
+    },
+    "exterior_target_0p3_1p0": {
+      "n": 1032,
+      "raw": {
+        "UNKNOWN": 247,
+        "FREE": 782,
+        "OCCUPIED": 3
+      },
+      "inflate_any": 40,
+      "inflate_only_non_raw_occ": 37,
+      "raw_occ_and_inflate": 3,
+      "overlap_note": "inflate overlays raw OCC; inflate_only = inflated FREE/UNKNOWN cells",
+      "block_share": {
+        "UNKNOWN": 247,
+        "FREE": 782,
+        "OCCUPIED": 3
+      }
+    },
+    "start_cell": {
+      "xy": [
+        1.4327,
+        -23.7172
+      ],
+      "raw": "UNKNOWN",
+      "inflate": 0,
+      "dxy": 0.0
+    },
+    "nearest_free_m": 0.5220153254455275,
+    "nearest_free_xy": [
+      1.2827,
+      -24.2172
+    ],
+    "nearest_occ_m": 0.8732124598286489,
+    "nearest_occ_xy": [
+      0.5827,
+      -23.5172
+    ],
+    "nearest_exterior_unk_m": 0.320156211871642,
+    "unknown_moat_radius_m": 0.5,
+    "near_start_exempt_m": 0.25,
+    "gap_exempt_to_free_m": 0.27201532544552753
+  },
+  "camera_bias_chain": {
+    "pre_plan": {
+      "odom_xy_mode": "chassis",
+      "odom_xy_source": "chassis_base_link",
+      "camera_frame_published": "optical",
+      "invalid_depth_policy": "nan_skip_not_max_range",
+      "base_ros_chassis": [
+        1.4326800107955933,
+        -23.717180252075195,
+        0.3093207912838459
+      ],
+      "camera_ros": [
+        0.934428334236145,
+        -24.137754440307617,
+        0.8811983292770386
+      ],
+      "odom_equals_chassis": true,
+      "cam_base_xy_offset_m": 0.6520255984251397,
+      "depth_validity": {
+        "n_pixels": 307200.0,
+        "n_invalid_range": 32539.0,
+        "n_self_hit": 0.0,
+        "n_nan_published": 32539.0,
+        "frac_invalid_range": 0.10592122395833334,
+        "frac_self_hit": 0.0,
+        "frac_nan_published": 0.10592122395833334,
+        "geometric_self_hit": 1.0,
+        "fallback_near_m": 0.0,
+        "camera_frame": "optical",
+        "note": "invalid\u2192NaN; never rewritten as max-range"
+      }
+    },
+    "lookaround_n_publish": 27,
+    "base_xy_std_m": [
+      0.0,
+      0.0
+    ],
+    "base_drift_m": 0.0,
+    "cam_base_offset_m": {
+      "mean": 0.6122025826880068,
+      "std": 0.04132534610194714,
+      "min": 0.5693149055789054,
+      "max": 0.6520256895200776
+    },
+    "odom_minus_chassis_max_m": 0.0,
+    "odom_xy_sources": [
+      "chassis_base_link"
+    ],
+    "odom_xy_modes": [
+      "chassis"
+    ],
+    "legacy_camera_xy_proxy_enabled": false,
+    "verdict": "camera offset present in sensor_pose; planning odom uses chassis; legacy proxy OFF"
+  },
+  "camera_traj_xy": [
+    [
+      0.9772060513496399,
+      -24.058746337890625
+    ],
+    [
+      1.209010124206543,
+      -24.240718841552734
+    ],
+    [
+      1.500746250152588,
+      -24.282411575317383
+    ],
+    [
+      1.7742444276809692,
+      -24.172653198242188
+    ],
+    [
+      1.9562205076217651,
+      -23.94085121154785
+    ],
+    [
+      1.9979143142700195,
+      -23.64911651611328
+    ],
+    [
+      1.8881540298461914,
+      -23.375614166259766
+    ],
+    [
+      1.6563498973846436,
+      -23.193641662597656
+    ],
+    [
+      1.3646137714385986,
+      -23.151948928833008
+    ],
+    [
+      1.0911155939102173,
+      -23.261707305908203
+    ],
+    [
+      0.9091397523880005,
+      -23.49350929260254
+    ],
+    [
+      0.867445707321167,
+      -23.78524398803711
+    ],
+    [
+      0.9772060513496399,
+      -24.058746337890625
+    ],
+    [
+      0.934428334236145,
+      -24.137754440307617
+    ],
+    [
+      1.2114681005477905,
+      -24.33053207397461
+    ],
+    [
+      1.547781229019165,
+      -24.358964920043945
+    ],
+    [
+      1.8532530069351196,
+      -24.215431213378906
+    ],
+    [
+      2.0460331439971924,
+      -23.93838882446289
+    ],
+    [
+      2.074465036392212,
+      -23.602079391479492
+    ],
+    [
+      1.930931806564331,
+      -23.296606063842773
+    ],
+    [
+      1.6538925170898438,
+      -23.10382843017578
+    ],
+    [
+      1.317578673362732,
+      -23.075395584106445
+    ],
+    [
+      1.0121068954467773,
+      -23.218929290771484
+    ],
+    [
+      0.8193270564079285,
+      -23.4959716796875
+    ],
+    [
+      0.7908946871757507,
+      -23.8322811126709
+    ],
+    [
+      0.934428334236145,
+      -24.137754440307617
+    ],
+    [
+      0.934428334236145,
+      -24.137754440307617
+    ]
+  ],
+  "multiview_wall_consistency": {
+    "status": "ok",
+    "seed_frame": 0,
+    "seed_meta_frame": 0,
+    "seed_uvd": [
+      200,
+      152,
+      1.6181423664093018
+    ],
+    "seed_world_ros": [
+      0.21111017965814172,
+      -25.498176405672645,
+      -0.02620296263904698
+    ],
+    "frames_checked": [
+      0,
+      1,
+      8,
+      9,
+      17,
+      18,
+      25,
+      26
+    ],
+    "n_ok": 2,
+    "abs_depth_err_m": {
+      "mean": 0.0009111875249792067,
+      "median": 0.0009111875249792067,
+      "max": 0.0018223750416896944
+    },
+    "records": [
+      {
+        "frame": 0,
+        "status": "ok",
+        "reproject_uv": [
+          199.99999999964325,
+          151.99999999840634
+        ],
+        "z_pred": 1.618142366401033,
+        "z_meas": 1.6181423664093018,
+        "abs_depth_err_m": 8.268719042803241e-12
+      },
+      {
+        "frame": 1,
+        "status": "ok",
+        "reproject_uv": [
+          467.7055528661526,
+          192.48043472258308
+        ],
+        "z_pred": 1.587095595615659,
+        "z_meas": 1.5889179706573486,
+        "abs_depth_err_m": 0.0018223750416896944
+      },
+      {
+        "frame": 8,
+        "status": "behind_camera"
+      },
+      {
+        "frame": 9,
+        "status": "behind_camera"
+      },
+      {
+        "frame": 17,
+        "status": "behind_camera"
+      },
+      {
+        "frame": 18,
+        "status": "behind_camera"
+      },
+      {
+        "frame": 25,
+        "status": "out_of_fov",
+        "reproject_uv": [
+          213.53751493098056,
+          499.6698167819052
+        ],
+        "z_cam": 1.4490702780533682
+      },
+      {
+        "frame": 26,
+        "status": "out_of_fov",
+        "reproject_uv": [
+          213.53751493098056,
+          499.6698167819052
+        ],
+        "z_cam": 1.4490702780533682
+      }
+    ],
+    "note": "Same world seed reprojected via published optical pose+K; large yaw-dependent depth error would suggest extrinsics/sync bug. Sampling different surfaces can inflate error without pose error."
+  },
+  "native_plan": {
+    "result": "NO_PASSABLE_FRONTIER",
+    "start_raw_occ": 0,
+    "start_raw_legend": "0=UNKNOWN,1=FREE,2=OCCUPIED",
+    "start_inflate": 0,
+    "free_within_0p3": 0,
+    "unk_within_0p3": 111,
+    "occ_within_0p3": 0,
+    "inf_within_0p3": 0,
+    "nearest_free_m": 0.522,
+    "n_reachable_candidates": 0,
+    "n_candidate_searches": 26,
+    "reject_counts_sum_over_candidates": {
+      "occupied": 0,
+      "inflate": 0,
+      "unknown": 3943,
+      "out_of_bounds": 0
+    },
+    "dominant_reject": "unknown",
+    "any_success_path_relied_near_start_exemption": 0,
+    "selected_path": [],
+    "pipeline_start_raw_is_camera_not_chassis": true,
+    "pipeline_note": "map_pipeline_diag.start_raw_occ uses camera_pos (see map_ros.cpp); native_plan_diag.start_raw_occ uses chassis. Do not conflate."
+  },
+  "representative_cells": [
+    {
+      "role": "chassis_start",
+      "xy": [
+        1.4327,
+        -23.7172
+      ],
+      "raw": "UNKNOWN",
+      "inflate": 0,
+      "why_nontraversable": "UNKNOWN at planning start; optimistic=false treats unknown as blocked; nearest FREE=0.522 m > near-start exemption 0.25 m",
+      "false_obstacle": false,
+      "provenance": "no depth endpoint / free-ray hit under footprint (observation cover)"
+    },
+    {
+      "role": "nearest_exterior_UNKNOWN",
+      "xy": [
+        1.1827,
+        -23.5172
+      ],
+      "d_chassis_m": 0.320156211871642,
+      "raw": "UNKNOWN",
+      "inflate": 0,
+      "why_nontraversable": "never observed \u2192 remains UNKNOWN (not raw OCC, not inflate)",
+      "false_obstacle": false,
+      "provenance": "no free-ray / occ update for this cell in lookaround coverage"
+    },
+    {
+      "role": "nearest_raw_OCCUPIED",
+      "xy": [
+        0.5827,
+        -23.5172
+      ],
+      "d_chassis_m": 0.8732124598286489,
+      "raw": "OCCUPIED",
+      "inflate": 1,
+      "why_nontraversable": "raw OCCUPIED endpoint (likely real scene geometry at ~0.9 m+)",
+      "false_obstacle": "not_indicated_for_chassis_surround",
+      "provenance": "depth\u2192world\u2192height classify\u2192occ update; not the surround moat"
+    },
+    {
+      "role": "nearest_inflate_non_raw_occ",
+      "xy": [
+        0.7327,
+        -23.5672
+      ],
+      "d_chassis_m": 0.7158910531638174,
+      "raw": "FREE",
+      "inflate": 1,
+      "why_nontraversable": "inflation halo of a real OCC cell (legacy018=0.18 m)",
+      "false_obstacle": false,
+      "provenance": "triggered by nearby raw OCC; not chassis-local"
+    }
+  ],
+  "cand05_C_gate_stage_loss": {
+    "lookdown_C": {
+      "earliest_corridor_ground_loss": null,
+      "endpoint_cells_after_outlier": null,
+      "corridor_raw_ground": null
+    },
+    "cand05": {
+      "earliest_corridor_ground_loss": null,
+      "endpoint_cells_after_outlier": null,
+      "corridor_raw_ground": null
+    }
+  },
+  "answers": {
+    "surround_primary": "UNKNOWN",
+    "surround_not": [
+      "raw_OCCUPIED_near_chassis",
+      "inflation_near_chassis"
+    ],
+    "camera_bias_handled": true,
+    "camera_bias_evidence": "camera offset present in sensor_pose; planning odom uses chassis; legacy proxy OFF",
+    "open_area_not_FREE_earliest": "exterior near-chassis cells never receive free-ray updates under default PPO-raise + 30\u00b0 lookaround coverage; under-body 0\u20130.3 m is footprint-occluded (not a required observe target). Separately, when cand05/C geometries do put corridor ground in FOV, earliest map-side loss is voxel Z-mix (C:62\u21920; cand05:27\u21923).",
+    "false_obstacle_near_chassis": false,
+    "false_obstacle_note": "Nearest OCC \u22480.87 m; surround moat is UNKNOWN. No evidence that chassis-enclosing non-traversable ring is a projected false obstacle.",
+    "fix_or_observe": "Do NOT force FREE / widen exemption / inject GT. Primary: observation coverage redesign for exterior annulus. Optional independent: voxel Z-mix min-repro fix for cand05/C corridor ground. If exterior FREE reaches chassis but start stays UNKNOWN \u2192 start-state/planner-interface.",
+    "still_depends_on_start_exemption": "At this frozen first-plan: exemption would NOT create a path (nearest FREE 0.52 m > 0.25 m; all candidates reject on unknown)."
+  }
+}

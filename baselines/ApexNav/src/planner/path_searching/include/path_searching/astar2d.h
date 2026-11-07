@@ -96,6 +96,7 @@ public:
   // ################################
   // Initial footprint traversability prior (planning query only; map unchanged).
   // mode: "none" | "initial_footprint"
+  // Effective F0 half = chassis half + startup_prior_expand_m (isotropic margin).
   // ################################
   enum StartupPriorMode { STARTUP_PRIOR_NONE = 0, STARTUP_PRIOR_INITIAL_FOOTPRINT = 1 };
   int getStartupPriorMode() const { return startup_prior_mode_; }
@@ -108,6 +109,7 @@ public:
   double getStartupPriorYaw() const { return f0_yaw_; }
   double getStartupPriorHalfLength() const { return f0_half_l_; }
   double getStartupPriorHalfWidth() const { return f0_half_w_; }
+  double getStartupPriorExpandM() const { return startup_prior_expand_m_; }
   const std::vector<Eigen::Vector2i>& getStartupPriorCells() const { return f0_cells_; }
   // Observe-only / offline replay: expose production safety predicate.
   bool diagCheckPointSafety(const Eigen::Vector2d& pos, int safety_mode = SAFETY_MODE::NORMAL);
@@ -155,6 +157,11 @@ private:
   int startup_prior_mode_ = STARTUP_PRIOR_NONE;
   double startup_prior_half_l_ = 0.0;
   double startup_prior_half_w_ = 0.0;
+  // ################################
+  // Isotropic margin added to chassis half_l/half_w when building F0.
+  // ################################
+  double startup_prior_expand_m_ = 0.0;
+  // ################################
   bool f0_ready_ = false;
   Eigen::Vector2d f0_center_{0.0, 0.0};
   double f0_yaw_ = 0.0;

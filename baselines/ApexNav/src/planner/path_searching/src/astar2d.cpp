@@ -33,17 +33,24 @@ void Astar2D::init(ros::NodeHandle& nh, const SDFMap2D::Ptr& sdf_map)
   cout << "map size: " << map_size_2d_.transpose() << endl;
 
   // ################################
-  // Startup prior: default none. Footprint half-size from adapter (scaled).
+  // Startup prior: default none. Chassis half from adapter; optional expand_m.
+  // Effective F0 half = chassis half + max(0, expand_m). Map not rewritten.
   // ################################
   std::string prior_mode = "none";
   nh.param("exploration/startup_prior_mode", prior_mode, std::string("none"));
   nh.param("exploration/startup_prior_half_length", startup_prior_half_l_, 0.0);
   nh.param("exploration/startup_prior_half_width", startup_prior_half_w_, 0.0);
+  nh.param("exploration/startup_prior_expand_m", startup_prior_expand_m_, 0.0);
+  if (startup_prior_expand_m_ < 0.0)
+    startup_prior_expand_m_ = 0.0;
   if (prior_mode == "initial_footprint") {
     startup_prior_mode_ = STARTUP_PRIOR_INITIAL_FOOTPRINT;
-    ROS_WARN("[Astar2D] startup_prior_mode=initial_footprint half_l=%.4f half_w=%.4f "
+    ROS_WARN("[Astar2D] startup_prior_mode=initial_footprint chassis_half=%.4fx%.4f "
+             "expand_m=%.4f → F0_half=%.4fx%.4f "
              "(0.25m near-start skip DISABLED; map UNKNOWN unchanged)",
-        startup_prior_half_l_, startup_prior_half_w_);
+        startup_prior_half_l_, startup_prior_half_w_, startup_prior_expand_m_,
+        startup_prior_half_l_ + startup_prior_expand_m_,
+        startup_prior_half_w_ + startup_prior_expand_m_);
   } else {
     startup_prior_mode_ = STARTUP_PRIOR_NONE;
     if (prior_mode != "none")
@@ -81,13 +88,16 @@ void Astar2D::ensureStartupPrior(const Eigen::Vector2d& chassis_xy, double yaw_r
   }
   f0_center_ = chassis_xy;
   f0_yaw_ = yaw_ros;
-  f0_half_l_ = startup_prior_half_l_;
-  f0_half_w_ = startup_prior_half_w_;
+  // ################################
+  // Expand: isotropic margin beyond chassis footprint (still query-only).
+  // ################################
+  f0_half_l_ = startup_prior_half_l_ + startup_prior_expand_m_;
+  f0_half_w_ = startup_prior_half_w_ + startup_prior_expand_m_;
+  // ################################
   // Mark ready before rasterize so isInsideStartupPrior works.
   f0_ready_ = true;
   f0_cells_.clear();
-  // Rasterize: include only cells whose CENTER lies inside the oriented footprint
-  // (no exterior expansion).
+  // Rasterize: include only cells whose CENTER lies inside the oriented F0 box.
   const double res = sdf_map_->getResolution();
   const double reach =
       std::sqrt(f0_half_l_ * f0_half_l_ + f0_half_w_ * f0_half_w_) + res;
@@ -105,9 +115,11 @@ void Astar2D::ensureStartupPrior(const Eigen::Vector2d& chassis_xy, double yaw_r
       f0_cells_.push_back(idx);
     }
   }
-  ROS_WARN("[Astar2D] F0 generated once at chassis=(%.3f,%.3f) yaw=%.3f cells=%zu "
+  ROS_WARN("[Astar2D] F0 generated once at chassis=(%.3f,%.3f) yaw=%.3f "
+           "F0_half=%.4fx%.4f expand_m=%.4f cells=%zu "
            "(fixed for episode; does not follow motion)",
-      f0_center_.x(), f0_center_.y(), f0_yaw_, f0_cells_.size());
+      f0_center_.x(), f0_center_.y(), f0_yaw_, f0_half_l_, f0_half_w_,
+      startup_prior_expand_m_, f0_cells_.size());
 }
 
 bool Astar2D::isInsideStartupPrior(const Eigen::Vector2d& pos) const

@@ -165,9 +165,14 @@ VLN_Mobilemanipulator/
 | 相机偏置已进链路：sensor_pose optical、odom=chassis、射线起点=camera_pos_；legacy 代理关；环视 0→1 同点重投影深度误差 max≈1.8 mm | 同上；`ros_dynamic_publisher` |
 | 最近 FREE≈0.52 m > A* 0.25 m 豁免 → 本帧豁免救不了 NO_PASSABLE；禁止据此扩大豁免 | `native_plan_diag`；`astar2d` |
 | `startup_prior_mode`：`none`（默认）\|`initial_footprint`；F0=底盘足迹一次生成；仅规划查询放行 F0∩UNKNOWN；不改地图；`initial_footprint` 关闭 0.25 m near-start skip | `astar2d`；`algorithm_rangercr10.xml`；`hy1_startup_prior_20261107` |
-| 先验 ≠ 视觉 FREE ≠ 完整足迹安全验收；禁止用扩 F0/恢复半径豁免凑通 | 同上 |
-| ObjectNav e2e（24-ep 固定清单）：先验消除 start_blocked（5→0）；b100 下 SR_proxy A 2/24→B 3/24；SPL N/A（无 geodesic）；B 主失败仍 `explore_no_goal`（14/24）→下一步攻目标搜索/停止，不扩 F0 | `reports/startup_prior_e2e_20261107.md`；`ab24_b100_20261107_123427` |
-| Ranger ObjectNav 适配成功代理：`planner_stop` ∧ dtg≤1.0 m；官方 SPL 本路径不算 | `summarize_startup_prior_e2e.py` |
+| `startup_prior_expand_m`：各向外扩（米）；有效半轴=足迹半轴+expand；launch 默认 0；Ranger `initial_footprint` 入口默认 **0.3**（可 `EXPAND_M=0` 回退） | `astar2d`；`run_apexnav_real_episode.sh`；`hy1_startup_prior_expand_20261107` |
+| 先验 ≠ 视觉 FREE ≠ 完整足迹安全验收；外扩仍拒 OCC/inflate/F0 外 UNKNOWN，禁止恢复 0.25 m skip 凑通 | 同上 |
+| ObjectNav e2e（24-ep，expand=0）：先验消除 start_blocked（5→0）；b100 SR_proxy A 2/24→B 3/24；SPL N/A；B 主失败 `explore_no_goal` 14/24 | `reports/startup_prior_e2e_20261107.md`；`ab24_b100_20261107_123427` |
+| HY1 冻结：expand 0→0.3 cells 221→729，可达仍 5/26（其余非单靠足迹外 UNKNOWN） | `hy1_startup_prior_expand_20261107` |
+| `obstacle_denoise=none\|median3`：仅滤当前帧障碍投影（OCC 写入/膨胀前）；不改 FREE/射线延长；剔除≠FREE | `sdf_map2d`；`algorithm_rangercr10` launch |
+| expand0.3 去噪 A/B（同 24-ep）：A none SR 3/24，B med3 4/24；start_blocked=0；inflate↓~28%；主失败仍 explore_no_goal；**默认 denoise=none** | `reports/obstacle_denoise_ab_20261107.md` |
+| 改 `path_searching` ABI 相关接口后须同步重编 `exploration_manager`（仅编前者会 segfault=infra_fail） | `adapters/habitat_rangercr10/README.md` |
+| Ranger ObjectNav 适配成功代理：`planner_stop` ∧ dtg≤1.0 m；官方 SPL / 净位移本路径不算（无 geodesic/位姿轨迹） | `summarize_startup_prior_e2e.py` |
 | 父 shell 污染 `FORCE_SPAWN_JSON` 会导致错场景；复测脚本须钉死路径 | `run_hy1_baseline_repeats.sh` |
 | 豁免反事实须静默检查边+采样，禁止因起点 UNKNOWN 单独置位，禁止污染 reject 计数 | `astar2d.cpp` checkPointSafetySilent |
 | GT occ 探针是 navmesh **邻域**审计，不是 precise false-occupied rate | `gt_false_occupied_probe` |

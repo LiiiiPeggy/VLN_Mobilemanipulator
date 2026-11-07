@@ -1,4 +1,5 @@
 from copy import deepcopy
+import os
 import numpy as np
 import torch
 from torch import nn
@@ -15,9 +16,18 @@ class BertEncoder(nn.Module):
         print("LANGUAGE BACKBONE USE GRADIENT CHECKPOINTING: ", self.cfg.MODEL.LANGUAGE_BACKBONE.USE_CHECKPOINT)
 
         if self.bert_name == "bert-base-uncased":
-            config = BertConfig.from_pretrained(self.bert_name)
+            # ################################
+            # VLN adapt: load BERT from local cache when hub is unreachable
+            # ################################
+            _bert = os.environ.get(
+                "BERT_BASE_UNCASED_PATH",
+                "/shared/cache/huggingface/bert-base-uncased",
+            )
+            load_name = _bert if os.path.isdir(_bert) else self.bert_name
+            # ################################
+            config = BertConfig.from_pretrained(load_name)
             config.gradient_checkpointing = self.cfg.MODEL.LANGUAGE_BACKBONE.USE_CHECKPOINT
-            self.model = BertModel.from_pretrained(self.bert_name, add_pooling_layer=False, config=config)
+            self.model = BertModel.from_pretrained(load_name, add_pooling_layer=False, config=config)
             self.language_dim = 768
         elif self.bert_name == "roberta-base":
             config = RobertaConfig.from_pretrained(self.bert_name)

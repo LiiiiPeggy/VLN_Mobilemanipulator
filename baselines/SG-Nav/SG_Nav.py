@@ -88,6 +88,16 @@ class SG_Nav_Agent():
         glip_cfg.merge_from_file(config_file) 
         glip_cfg.merge_from_list(["MODEL.WEIGHT", weight_file])
         glip_cfg.merge_from_list(["MODEL.DEVICE", "cuda"])
+        # ################################
+        # VLN adapt: offline BERT for GLIP tokenizer (no huggingface.co)
+        # ################################
+        _bert = os.environ.get(
+            "BERT_BASE_UNCASED_PATH",
+            "/shared/cache/huggingface/bert-base-uncased",
+        )
+        if os.path.isdir(_bert):
+            glip_cfg.merge_from_list(["MODEL.LANGUAGE_BACKBONE.TOKENIZER_TYPE", _bert])
+        # ################################
         self.glip_demo = GLIPDemo(
             glip_cfg,
             min_image_size=800,
