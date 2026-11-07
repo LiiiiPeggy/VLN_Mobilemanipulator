@@ -1,0 +1,71 @@
+{
+  "batch_id": "probe_b100_20261107_112127",
+  "n_rows": 3,
+  "by_mode": {
+    "initial_footprint": {
+      "n": 3,
+      "success_proxy": 0,
+      "success_rate": 0.0,
+      "spl_note": "official SPL not computed (no geodesic path length in adapter summary); report SR proxy only",
+      "entered_explore_rate": 0.0,
+      "start_blocked_rate": 0.0,
+      "nopassable_or_stuck_rate": 0.0,
+      "explore_no_goal_rate": 0.0,
+      "stop_not_near_goal_rate": 0.0,
+      "runtime_error_rate": 1.0,
+      "mean_forward_m": 0.0,
+      "mean_n_explore": 0.0,
+      "mean_elapsed_sec": null,
+      "fail_class_hist": {
+        "runtime_or_interface": 3
+      }
+    }
+  },
+  "rows": [
+    {
+      "batch_id": "probe_b100_20261107_112127",
+      "run_id": "e2e_sp_probe_b100_20261107_112127_initial_footprint_lt9_sofa_4",
+      "startup_prior_mode": "initial_footprint",
+      "episode_list_id": "lt9_sofa_4",
+      "scene": "LT9Jq6dN3Ea",
+      "category": "sofa",
+      "episode_id": "4",
+      "robot_scale": 0.7,
+      "scale_tag": "scaled_robot_proxy_070",
+      "rc": 1,
+      "force_spawn_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_wide_lt9ep0_openband_20261105_124956/start_pose.json",
+      "fail_class": "runtime_or_interface",
+      "status": "missing_summary"
+    },
+    {
+      "batch_id": "probe_b100_20261107_112127",
+      "run_id": "e2e_sp_probe_b100_20261107_112127_initial_footprint_ef36_bed_4",
+      "startup_prior_mode": "initial_footprint",
+      "episode_list_id": "ef36_bed_4",
+      "scene": "eF36g7L6Z9M",
+      "category": "bed",
+      "episode_id": "4",
+      "robot_scale": 0.7,
+      "scale_tag": "scaled_robot_proxy_070",
+      "rc": 1,
+      "force_spawn_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_wide_ef36_openband_20261105_124359/start_pose.json",
+      "fail_class": "runtime_or_interface",
+      "status": "missing_summary"
+    },
+    {
+      "batch_id": "probe_b100_20261107_112127",
+      "run_id": "e2e_sp_probe_b100_20261107_112127_initial_footprint_dd4b_plant_5",
+      "startup_prior_mode": "initial_footprint",
+      "episode_list_id": "dd4b_plant_5",
+      "scene": "Dd4bFSTQ8gi",
+      "category": "plant",
+      "episode_id": "5",
+      "robot_scale": 0.7,
+      "scale_tag": "scaled_robot_proxy_070",
+      "rc": 1,
+      "force_spawn_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_ctrl_dd4b_chair5_20261105_001053/start_pose.json",
+      "fail_class": "runtime_or_interface",
+      "status": "missing_summary"
+    }
+  ]
+}

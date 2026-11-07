@@ -1,0 +1,3 @@
+initial_footprint	lt9_sofa_4	LT9Jq6dN3Ea	sofa	4	/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_wide_lt9ep0_openband_20261105_124956/start_pose.json
+initial_footprint	ef36_bed_4	eF36g7L6Z9M	bed	4	/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_wide_ef36_openband_20261105_124359/start_pose.json
+initial_footprint	dd4b_plant_5	Dd4bFSTQ8gi	plant	5	/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_ctrl_dd4b_chair5_20261105_001053/start_pose.json

@@ -1,0 +1,134 @@
+{
+  "batch_id": "smoke_B_20261107_015113",
+  "n_rows": 3,
+  "by_mode": {
+    "initial_footprint": {
+      "n": 3,
+      "success_proxy": 0,
+      "success_rate": 0.0,
+      "spl_note": "official SPL not computed (no geodesic path length in adapter summary); report SR proxy only",
+      "entered_explore_rate": 1.0,
+      "start_blocked_rate": 0.0,
+      "nopassable_or_stuck_rate": 0.0,
+      "explore_no_goal_rate": 1.0,
+      "stop_not_near_goal_rate": 0.0,
+      "runtime_error_rate": 0.0,
+      "mean_forward_m": 2.0,
+      "mean_n_explore": 20.0,
+      "mean_elapsed_sec": 91.44563070933025,
+      "fail_class_hist": {
+        "explore_no_goal": 3
+      }
+    }
+  },
+  "rows": [
+    {
+      "batch_id": "smoke_B_20261107_015113",
+      "run_id": "e2e_sp_smoke_B_20261107_015113_initial_footprint_hy1_chair_3",
+      "startup_prior_mode": "initial_footprint",
+      "episode_list_id": "hy1_chair_3",
+      "scene": "HY1NcmCgn3n",
+      "category": "chair",
+      "episode_id": "3",
+      "robot_scale": 0.7,
+      "scale_tag": "scaled_robot_proxy_070",
+      "rc": 0,
+      "force_spawn_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_wide_hy1_openband_20261105_113724/start_pose.json",
+      "status": "ok",
+      "termination": "explore_budget_exhausted",
+      "elapsed_sec": 94.3582112789154,
+      "n_steps": 46,
+      "entered_explore": true,
+      "n_explore": 20,
+      "n_init_lookaround": 26,
+      "explore_actions": {
+        "TURN_LEFT": 8,
+        "MOVE_FORWARD": 11,
+        "TURN_RIGHT": 1
+      },
+      "expl_result_hist": {
+        "0": 20
+      },
+      "forward_m": 2.75,
+      "final_dtg": 7.688497295086112,
+      "near_goal": false,
+      "success_distance": 1.0,
+      "objectnav_success_proxy": false,
+      "n_native_nopassable": 0,
+      "fail_class": "explore_no_goal",
+      "demo_mp4": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/e2e_sp_smoke_B_20261107_015113_initial_footprint_hy1_chair_3/demo/apexnav_ranger_paper_demo.mp4"
+    },
+    {
+      "batch_id": "smoke_B_20261107_015113",
+      "run_id": "e2e_sp_smoke_B_20261107_015113_initial_footprint_ef36_chair_4",
+      "startup_prior_mode": "initial_footprint",
+      "episode_list_id": "ef36_chair_4",
+      "scene": "eF36g7L6Z9M",
+      "category": "chair",
+      "episode_id": "4",
+      "robot_scale": 0.7,
+      "scale_tag": "scaled_robot_proxy_070",
+      "rc": 0,
+      "force_spawn_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_wide_ef36_openband_20261105_124359/start_pose.json",
+      "status": "ok",
+      "termination": "explore_budget_exhausted",
+      "elapsed_sec": 71.96776962280273,
+      "n_steps": 46,
+      "entered_explore": true,
+      "n_explore": 20,
+      "n_init_lookaround": 26,
+      "explore_actions": {
+        "TURN_RIGHT": 8,
+        "TURN_LEFT": 7,
+        "MOVE_FORWARD": 5
+      },
+      "expl_result_hist": {
+        "0": 20
+      },
+      "forward_m": 1.25,
+      "final_dtg": 3.768792697843977,
+      "near_goal": false,
+      "success_distance": 1.0,
+      "objectnav_success_proxy": false,
+      "n_native_nopassable": 0,
+      "fail_class": "explore_no_goal",
+      "demo_mp4": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/e2e_sp_smoke_B_20261107_015113_initial_footprint_ef36_chair_4/demo/apexnav_ranger_paper_demo.mp4"
+    },
+    {
+      "batch_id": "smoke_B_20261107_015113",
+      "run_id": "e2e_sp_smoke_B_20261107_015113_initial_footprint_yr17_chair_0",
+      "startup_prior_mode": "initial_footprint",
+      "episode_list_id": "yr17_chair_0",
+      "scene": "yr17PDCnDDW",
+      "category": "chair",
+      "episode_id": "0",
+      "robot_scale": 0.7,
+      "scale_tag": "scaled_robot_proxy_070",
+      "rc": 0,
+      "force_spawn_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_wide_yr17_openband_20261105_012302/start_pose.json",
+      "status": "ok",
+      "termination": "explore_budget_exhausted",
+      "elapsed_sec": 108.01091122627258,
+      "n_steps": 46,
+      "entered_explore": true,
+      "n_explore": 20,
+      "n_init_lookaround": 26,
+      "explore_actions": {
+        "TURN_RIGHT": 7,
+        "TURN_LEFT": 5,
+        "MOVE_FORWARD": 8
+      },
+      "expl_result_hist": {
+        "0": 20
+      },
+      "forward_m": 2.0,
+      "final_dtg": 5.172149814616572,
+      "near_goal": false,
+      "success_distance": 1.0,
+      "objectnav_success_proxy": false,
+      "n_native_nopassable": 0,
+      "fail_class": "explore_no_goal",
+      "demo_mp4": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/e2e_sp_smoke_B_20261107_015113_initial_footprint_yr17_chair_0/demo/apexnav_ranger_paper_demo.mp4"
+    }
+  ]
+}

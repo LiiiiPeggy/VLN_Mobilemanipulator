@@ -1,0 +1,43 @@
+{
+  "task": "ObjectNav-HM3D-v2-val",
+  "robot_scale": 0.7,
+  "scale_tag": "scaled_robot_proxy_070",
+  "inflation_profile": "legacy018",
+  "max_steps": 50,
+  "max_explore_actions": 20,
+  "success_distance_m": 1.0,
+  "ppo_raise_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/ppo_raise_stage410d_z040.json",
+  "budget_note": "ab24_20261107_015625 used max_steps=50 / max_explore=20 (adapter smoke default). Official ApexNav ObjectNav max_episode_steps=500. Near-misses under B reached dtg≈1.1–1.5m then explore_budget_exhausted → probe/fix round uses MAX_STEPS=150 MAX_EXPLORE_ACTIONS=100.",
+  "note": "Fixed list for A/B startup_prior. Same spawn/budget/seed protocol for both arms. ObjectNav via apexnav_real_episode (not instruction VLN).",
+  "episodes": [
+    {"id": "yr17_plant_0", "scene_filter": "yr17PDCnDDW", "category": "plant", "episode_id": "0", "force_spawn_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_wide_yr17_openband_20261105_012302/start_pose.json"},
+    {"id": "yr17_chair_0", "scene_filter": "yr17PDCnDDW", "category": "chair", "episode_id": "0", "force_spawn_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_wide_yr17_openband_20261105_012302/start_pose.json"},
+    {"id": "yr17_sofa_0", "scene_filter": "yr17PDCnDDW", "category": "sofa", "episode_id": "0", "force_spawn_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_wide_yr17_openband_20261105_012302/start_pose.json"},
+    {"id": "yr17_tv_0", "scene_filter": "yr17PDCnDDW", "category": "tv_monitor", "episode_id": "0", "force_spawn_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_wide_yr17_openband_20261105_012302/start_pose.json"},
+    {"id": "ef36_plant_4", "scene_filter": "eF36g7L6Z9M", "category": "plant", "episode_id": "4", "force_spawn_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_wide_ef36_openband_20261105_124359/start_pose.json"},
+    {"id": "ef36_tv_3", "scene_filter": "eF36g7L6Z9M", "category": "tv_monitor", "episode_id": "3", "force_spawn_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_wide_ef36_openband_20261105_124359/start_pose.json"},
+    {"id": "ef36_bed_4", "scene_filter": "eF36g7L6Z9M", "category": "bed", "episode_id": "4", "force_spawn_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_wide_ef36_openband_20261105_124359/start_pose.json"},
+    {"id": "ef36_toilet_3", "scene_filter": "eF36g7L6Z9M", "category": "toilet", "episode_id": "3", "force_spawn_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_wide_ef36_openband_20261105_124359/start_pose.json"},
+    {"id": "hy1_plant_0", "scene_filter": "HY1NcmCgn3n", "category": "plant", "episode_id": "0", "force_spawn_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_wide_hy1_openband_20261105_113724/start_pose.json"},
+    {"id": "hy1_tv_0", "scene_filter": "HY1NcmCgn3n", "category": "tv_monitor", "episode_id": "0", "force_spawn_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_wide_hy1_openband_20261105_113724/start_pose.json"},
+    {"id": "hy1_chair_3", "scene_filter": "HY1NcmCgn3n", "category": "chair", "episode_id": "3", "force_spawn_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_wide_hy1_openband_20261105_113724/start_pose.json"},
+    {"id": "hy1_plant_1", "scene_filter": "HY1NcmCgn3n", "category": "plant", "episode_id": "1", "force_spawn_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_wide_hy1_openband_20261105_113724/start_pose.json"},
+    {"id": "lt9_tv_0", "scene_filter": "LT9Jq6dN3Ea", "category": "tv_monitor", "episode_id": "0", "force_spawn_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_wide_lt9ep0_openband_20261105_124956/start_pose.json"},
+    {"id": "lt9_chair_1", "scene_filter": "LT9Jq6dN3Ea", "category": "chair", "episode_id": "1", "force_spawn_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_wide_lt9ep0_openband_20261105_124956/start_pose.json"},
+    {"id": "lt9_toilet_2", "scene_filter": "LT9Jq6dN3Ea", "category": "toilet", "episode_id": "2", "force_spawn_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_wide_lt9ep0_openband_20261105_124956/start_pose.json"},
+    {"id": "lt9_sofa_4", "scene_filter": "LT9Jq6dN3Ea", "category": "sofa", "episode_id": "4", "force_spawn_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_wide_lt9ep0_openband_20261105_124956/start_pose.json"},
+    {"id": "k1cup_sofa_0", "scene_filter": "k1cupFYWXJ6", "category": "sofa", "episode_id": "0", "force_spawn_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_wide_k1cupep3_openband_20261105_125038/start_pose.json"},
+    {"id": "k1cup_chair_0", "scene_filter": "k1cupFYWXJ6", "category": "chair", "episode_id": "0", "force_spawn_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_wide_k1cupep3_openband_20261105_125038/start_pose.json"},
+    {"id": "k1cup_plant_0", "scene_filter": "k1cupFYWXJ6", "category": "plant", "episode_id": "0", "force_spawn_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_wide_k1cupep3_openband_20261105_125038/start_pose.json"},
+    {"id": "k1cup_sofa_1", "scene_filter": "k1cupFYWXJ6", "category": "sofa", "episode_id": "1", "force_spawn_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_wide_k1cupep3_openband_20261105_125038/start_pose.json"},
+    {"id": "dd4b_chair_5", "scene_filter": "Dd4bFSTQ8gi", "category": "chair", "episode_id": "5", "force_spawn_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_ctrl_dd4b_chair5_20261105_001053/start_pose.json"},
+    {"id": "dd4b_plant_5", "scene_filter": "Dd4bFSTQ8gi", "category": "plant", "episode_id": "5", "force_spawn_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_ctrl_dd4b_chair5_20261105_001053/start_pose.json"},
+    {"id": "dd4b_toilet_0", "scene_filter": "Dd4bFSTQ8gi", "category": "toilet", "episode_id": "0", "force_spawn_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_ctrl_dd4b_chair5_20261105_001053/start_pose.json"},
+    {"id": "dd4b_bed_1", "scene_filter": "Dd4bFSTQ8gi", "category": "bed", "episode_id": "1", "force_spawn_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_ctrl_dd4b_chair5_20261105_001053/start_pose.json"}
+  ],
+  "smoke": [
+    {"id": "hy1_chair_3", "scene_filter": "HY1NcmCgn3n", "category": "chair", "episode_id": "3", "force_spawn_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_wide_hy1_openband_20261105_113724/start_pose.json"},
+    {"id": "ef36_chair_4", "scene_filter": "eF36g7L6Z9M", "category": "chair", "episode_id": "4", "force_spawn_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_wide_ef36_openband_20261105_124359/start_pose.json"},
+    {"id": "yr17_chair_0", "scene_filter": "yr17PDCnDDW", "category": "chair", "episode_id": "0", "force_spawn_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_wide_yr17_openband_20261105_012302/start_pose.json"}
+  ]
+}

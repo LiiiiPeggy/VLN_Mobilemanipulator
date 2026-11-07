@@ -166,6 +166,8 @@ VLN_Mobilemanipulator/
 | 最近 FREE≈0.52 m > A* 0.25 m 豁免 → 本帧豁免救不了 NO_PASSABLE；禁止据此扩大豁免 | `native_plan_diag`；`astar2d` |
 | `startup_prior_mode`：`none`（默认）\|`initial_footprint`；F0=底盘足迹一次生成；仅规划查询放行 F0∩UNKNOWN；不改地图；`initial_footprint` 关闭 0.25 m near-start skip | `astar2d`；`algorithm_rangercr10.xml`；`hy1_startup_prior_20261107` |
 | 先验 ≠ 视觉 FREE ≠ 完整足迹安全验收；禁止用扩 F0/恢复半径豁免凑通 | 同上 |
+| ObjectNav e2e（24-ep 固定清单）：先验消除 start_blocked（5→0）；b100 下 SR_proxy A 2/24→B 3/24；SPL N/A（无 geodesic）；B 主失败仍 `explore_no_goal`（14/24）→下一步攻目标搜索/停止，不扩 F0 | `reports/startup_prior_e2e_20261107.md`；`ab24_b100_20261107_123427` |
+| Ranger ObjectNav 适配成功代理：`planner_stop` ∧ dtg≤1.0 m；官方 SPL 本路径不算 | `summarize_startup_prior_e2e.py` |
 | 父 shell 污染 `FORCE_SPAWN_JSON` 会导致错场景；复测脚本须钉死路径 | `run_hy1_baseline_repeats.sh` |
 | 豁免反事实须静默检查边+采样，禁止因起点 UNKNOWN 单独置位，禁止污染 reject 计数 | `astar2d.cpp` checkPointSafetySilent |
 | GT occ 探针是 navmesh **邻域**审计，不是 precise false-occupied rate | `gt_false_occupied_probe` |
@@ -207,6 +209,9 @@ VLN_Mobilemanipulator/
 |------|------|----------|
 | Habitat 小版本分裂 | 见 §4 | 一 baseline 一环境 |
 | SG-Nav/UniGoal 挂错镜像 | 文档要 0.2.4 / 0.2.3，compose 暂用 habitat025 | 专用镜像或改映射 |
+| MP3D 仅 `.glb` | ObjectNav `DISTANCE_TO_GOAL` → `pathfinder.geodesic_distance` 无 navmesh 会 **segfault** | `scripts/build_mp3d_navmeshes.py` 按 agent r=0.18/h=0.88 重算并落盘 `{id}.navmesh`（自算≠官方，SPL 可能偏差） |
+| model8 VLM `image_url` | 传字符串会被网关/兼容层打回 502/超时；OpenAI 兼容需 `{"url":"data:..."}` | UniGoal `src/utils/llm.py`、SG-Nav `scenegraph.py`（对齐 MSGNav） |
+| SG-Nav 缺 pytorch3d | `compute_3d_iou_accuracte_batch` import 失败 | 容器 `pytorch3d==0.7.4`（py39/cu118/torch2.0.1） |
 | MSGNav open_clip 预训练 | `ViT-H-14-quickgelu`/`dfn5b` 需 HF 大权重；直连常失败 | `HF_ENDPOINT=hf-mirror.com` + D 盘 `HF_HOME` 预拉 |
 | `docker compose --force-recreate` | 清掉未 bake 的 pip 层 | 用 `docker commit` tag（如 `:msgnav-deps`）或写入 Dockerfile |
 | APRR 子模块不全 | data / detection 未拉全 | 按需补齐 |

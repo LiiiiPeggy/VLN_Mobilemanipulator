@@ -870,3 +870,50 @@
 **结论**：启动先验接口有效；默认仍 none；执行安全另立。
 
 **相关**：`reports/hy1_startup_prior_20261107*`
+
+---
+
+## 2026-11-07 startup_prior → ObjectNav e2e A/B
+
+**模块**：同一 24-ep 清单；A=`none` vs B=`initial_footprint`；短预算→探针→预算100 全量
+
+**操作**：
+
+- 冒烟 B 3 ep；短预算 50/20 全量 48；近失探针 B×3（预算 150/100）；全量 `ab24_b100_20261107_123427`（SKIP_DEMO=1）至 48/48。
+- 唯一预算改动：`MAX_EXPLORE_ACTIONS` 20→100、`MAX_STEPS` 50→150；不改几何/感知/策略/默认 prior。
+
+**结果**：
+
+- 短：A SR 1/24 start_blocked 5；B SR 0 start_blocked 0；主失败 explore_no_goal。
+- 探针：`ef36_bed_4` 近失闭合成功。
+- b100 终表：A SR 2/24、B 3/24；start_blocked 5→0；mean_fwd 7.01→8.25；pairwise 仅 B 多成功 `hy1_chair_3`；SPL N/A。
+- B 主失败仍 explore_no_goal 14/24（58%）。
+
+**结论**：先验改善启动与探索持续性；SR 略升但非主增益来源。预算100 后瓶颈转为目标搜索/停止，禁止回头扩 F0。
+
+**相关**：`reports/startup_prior_e2e_20261107.md`；`reports/startup_prior_e2e_20261107/`
+
+
+---
+
+## 2026-11-07 修复 SG-Nav / UniGoal 冒烟阻塞
+
+**模块**：SG-Nav、UniGoal
+
+**问题**：
+1. SG-Nav 在 `print(num_episodes)` 后静默退出：MP3D 无 `.navmesh` → `geodesic_distance` segfault；另缺 `pytorch3d`。
+2. UniGoal/SG-Nav VLM 调 model8 持续 502/超时：`image_url` 传了字符串而非 `{"url": data:...}`。
+
+**操作**：
+- 为 11 个 MP3D val 场景重算 navmesh（`scripts/build_mp3d_navmeshes.py`，r=0.18/h=0.88）。
+- `vln-sgnav` 安装 `pytorch3d==0.7.4`。
+- 修正 UniGoal `src/utils/llm.py` 与 SG-Nav `scenegraph.py` 的 VLM payload；外层重试、缩小 JPEG。
+- smoke：`SGNAV_NUM_EPISODES`、`pipefail`、faulthandler。
+
+**实测**：
+- SG-Nav 1ep：`runs/SG-Nav/smoke_20261107_143201_host/`，goal=cabinet，success=0 / SPL=0 / dtg≈11.06 → **SINGLE_EPISODE_OK**（非论文复现）。
+- UniGoal smoke120：`luna_smoke120/.../total.json` = `succ=0,spl=0`；VLM 多次 200 OK → **SINGLE_EPISODE_OK（弱，步数偏少）**。
+
+**结论**：两边主阻塞已解除；论文指标仍需批量/长步数评测。自算 navmesh 可能使 SPL 与官方不完全可比。
+
+**相关**：`runs/SG-Nav/smoke_status.md`、`runs/UniGoal/smoke_1ep_status.md`

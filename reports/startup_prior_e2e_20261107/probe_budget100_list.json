@@ -1,0 +1,13 @@
+{
+  "task": "ObjectNav-HM3D-v2-val",
+  "robot_scale": 0.7,
+  "note": "Near-miss / budget-exhausted probes under initial_footprint from ab24. Same spawns; MAX_EXPLORE=100 MAX_STEPS=150.",
+  "max_steps": 150,
+  "max_explore_actions": 100,
+  "episodes": [],
+  "smoke": [
+    {"id": "lt9_sofa_4", "scene_filter": "LT9Jq6dN3Ea", "category": "sofa", "episode_id": "4", "force_spawn_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_wide_lt9ep0_openband_20261105_124956/start_pose.json"},
+    {"id": "ef36_bed_4", "scene_filter": "eF36g7L6Z9M", "category": "bed", "episode_id": "4", "force_spawn_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_wide_ef36_openband_20261105_124359/start_pose.json"},
+    {"id": "dd4b_plant_5", "scene_filter": "Dd4bFSTQ8gi", "category": "plant", "episode_id": "5", "force_spawn_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_ctrl_dd4b_chair5_20261105_001053/start_pose.json"}
+  ]
+}

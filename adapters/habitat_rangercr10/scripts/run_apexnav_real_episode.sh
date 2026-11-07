@@ -162,14 +162,21 @@ set -e
 # stop ONLY our isolated ROS tree (do not touch host :11311 / vln-apexnav)
 docker exec vln-rangercr10 bash -lc "$SRC_ROS; rosnode kill -a 2>/dev/null || true; kill \$(pgrep -f 'roscore -p ${ROS_PORT}') 2>/dev/null || true" || true
 
-# Encode 16:9 paper-style demo if frames exist (inside container: owns root-written files)
-if docker exec vln-rangercr10 bash -lc "compgen -G '$OUT/demo/frame_*.png' >/dev/null"; then
+# ################################
+# SKIP_DEMO=1：批评测跳过 ffmpeg，避免拖慢；代表性成功/失败再单独编码。
+# ################################
+SKIP_DEMO="${SKIP_DEMO:-0}"
+if [[ "$SKIP_DEMO" != "1" ]] && docker exec vln-rangercr10 bash -lc "compgen -G '$OUT/demo/frame_*.png' >/dev/null"; then
   echo "[demo] encode apexnav_ranger_paper_demo.mp4"
   docker exec vln-rangercr10 bash -lc \
     "ffmpeg -y -framerate 2 -i '$OUT/demo/frame_%04d.png' -c:v libx264 -pix_fmt yuv420p -crf 23 \
      '$OUT/demo/apexnav_ranger_paper_demo.mp4' >/dev/null 2>&1; chown -R 1000:1000 '$OUT' || true" \
     || true
+elif [[ "$SKIP_DEMO" == "1" ]]; then
+  echo "[demo] SKIP_DEMO=1 — leave frames unencoded"
+  docker exec vln-rangercr10 bash -lc "chown -R 1000:1000 '$OUT' || true" || true
 fi
+# ################################
 
 SUM="$OUT/summary.json"
 if [[ ! -f "$SUM" ]]; then
