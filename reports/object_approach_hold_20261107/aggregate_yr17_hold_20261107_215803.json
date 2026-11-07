@@ -1,0 +1,71 @@
+{
+  "batch_id": "yr17_hold_20261107_215803",
+  "n_rows": 1,
+  "by_mode": {
+    "initial_footprint": {
+      "n": 1,
+      "success_proxy": 1,
+      "success_rate": 1.0,
+      "spl_note": "official SPL not computed (no geodesic path length in adapter summary); report SR proxy only",
+      "entered_explore_rate": 1.0,
+      "start_blocked_rate": 0.0,
+      "nopassable_or_stuck_rate": 0.0,
+      "explore_no_goal_rate": 0.0,
+      "stop_not_near_goal_rate": 0.0,
+      "runtime_error_rate": 0.0,
+      "mean_forward_m": 7.5,
+      "mean_n_explore": 73.0,
+      "mean_elapsed_sec": 425.77275252342224,
+      "fail_class_hist": {
+        "ok_success_proxy": 1
+      }
+    }
+  },
+  "rows": [
+    {
+      "batch_id": "yr17_hold_20261107_215803",
+      "run_id": "e2e_sp_yr17_hold_20261107_215803_initial_footprint_yr17_chair_0",
+      "startup_prior_mode": "initial_footprint",
+      "startup_prior_expand_m": 0.3,
+      "obstacle_denoise": "none",
+      "episode_list_id": "yr17_chair_0",
+      "scene": "yr17PDCnDDW",
+      "category": "chair",
+      "episode_id": "0",
+      "robot_scale": 0.7,
+      "scale_tag": "scaled_robot_proxy_070",
+      "rc": 0,
+      "force_spawn_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_wide_yr17_openband_20261105_012302/start_pose.json",
+      "status": "ok",
+      "termination": "planner_stop",
+      "elapsed_sec": 425.77275252342224,
+      "n_steps": 99,
+      "entered_explore": true,
+      "n_explore": 73,
+      "n_init_lookaround": 26,
+      "explore_actions": {
+        "TURN_RIGHT": 15,
+        "TURN_LEFT": 27,
+        "MOVE_FORWARD": 30,
+        "STOP": 1
+      },
+      "expl_result_hist": {
+        "0": 60,
+        "1": 13
+      },
+      "forward_m": 7.5,
+      "final_dtg": 0.4834299570953338,
+      "near_goal": true,
+      "success_distance": 1.0,
+      "objectnav_success_proxy": true,
+      "n_native_nopassable": 0,
+      "fail_class": "ok_success_proxy",
+      "denoise_sum_occ_before": 88900,
+      "denoise_sum_occ_after": 88900,
+      "denoise_sum_removed": 0,
+      "denoise_frames": 205,
+      "sum_inflate_cells": 889303,
+      "demo_mp4": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/e2e_sp_yr17_hold_20261107_215803_initial_footprint_yr17_chair_0/demo/apexnav_ranger_paper_demo.mp4"
+    }
+  ]
+}

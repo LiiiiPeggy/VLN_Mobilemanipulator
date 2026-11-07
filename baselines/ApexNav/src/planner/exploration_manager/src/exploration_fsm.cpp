@@ -265,11 +265,45 @@ int ExplorationFSM::callActionPlanner()
 
   if (expl_res != EXPL_RESULT::EXPLORATION) {
     fd_->replan_flag_ = true;
+    // ################################
+    fd_->object_hold_miss_count_ = 0;
+    // ################################
   }
   if (expl_res == EXPL_RESULT::EXPLORATION && !fd_->replan_flag_) {
     expl_manager_->ed_->next_best_path_ = last_next_best_path;
     expl_manager_->ed_->next_pos_ = last_next_pos;
     fd_->replan_flag_ = true;
+  }
+  // ################################
+  // Object-approach hold (minimal fix for yr17-class abandon):
+  // Trigger: final_result_==SEARCH_OBJECT but planNextBestPoint returned
+  // EXPLORATION because getTopConfidenceObjectCloud() was empty this cycle
+  // (no "[Navigation Mode] Get object_cloud" log). Explore stability above
+  // does not apply (replan_flag_ was set true on prior SEARCH). Without hold,
+  // robot immediately switches to a frontier and never resumes approach.
+  // Behavior change: reuse last next_pos_/path for ≤ MAX_OBJECT_HOLD_MISS
+  // cycles while still within OBJECT_HOLD_MAX_DIST of that goal.
+  // ################################
+  else if (expl_res == EXPL_RESULT::EXPLORATION &&
+           fd_->final_result_ == FINAL_RESULT::SEARCH_OBJECT && !last_next_best_path.empty()) {
+    const double hold_dist = (current_pos - last_next_pos).norm();
+    if (hold_dist <= FSMConstants::OBJECT_HOLD_MAX_DIST &&
+        fd_->object_hold_miss_count_ < FSMConstants::MAX_OBJECT_HOLD_MISS) {
+      fd_->object_hold_miss_count_++;
+      expl_manager_->ed_->next_best_path_ = last_next_best_path;
+      expl_manager_->ed_->next_pos_ = last_next_pos;
+      expl_res = EXPL_RESULT::SEARCH_BEST_OBJECT;
+      ROS_WARN(
+          "[ObjectHold] miss=%d/%d dist_to_goal=%.2fm — keep last approach point",
+          fd_->object_hold_miss_count_, FSMConstants::MAX_OBJECT_HOLD_MISS, hold_dist);
+    } else {
+      fd_->object_hold_miss_count_ = 0;
+      ROS_WARN(
+          "[ObjectHold] drop hold (miss would be %d, dist=%.2fm)",
+          fd_->object_hold_miss_count_ + 1, hold_dist);
+    }
+  } else if (fd_->final_result_ != FINAL_RESULT::SEARCH_OBJECT) {
+    fd_->object_hold_miss_count_ = 0;
   }
   /*******  Decide whether to replan path (stability heuristic) END *******/
 

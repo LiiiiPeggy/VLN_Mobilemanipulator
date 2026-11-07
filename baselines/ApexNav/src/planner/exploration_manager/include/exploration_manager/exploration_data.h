@@ -48,6 +48,9 @@ struct FSMData {
     escape_stucking_flag_ = false;
     escape_stucking_count_ = 0;
     stucking_points_.clear();
+    // ################################
+    object_hold_miss_count_ = 0;
+    // ################################
 
     local_pos_ = Eigen::Vector2d(0, 0);
   }
@@ -78,6 +81,11 @@ struct FSMData {
   Eigen::Vector2d escape_stucking_pos_;
   double escape_stucking_yaw_;
   std::vector<Eigen::Vector3d> stucking_points_;
+  // ################################
+  // Consecutive planNextBestPoint cycles that returned EXPLORATION while
+  // final_result_ was SEARCH_OBJECT (transient object-cloud miss).
+  // ################################
+  int object_hold_miss_count_;
 
   Eigen::Vector2d local_pos_;
   LocalTrajectory newest_traj_;  // Store latest planned trajectory

@@ -50,6 +50,13 @@ constexpr double MIN_SAFE_DISTANCE = 0.15;       // min safe distance to obstacl
 // Counters / thresholds
 constexpr int MAX_STUCKING_COUNT = 25;           // max consecutive stuck actions -> stop
 constexpr int MAX_STUCKING_NEXT_POS_COUNT = 14;  // times next_pos unchanged while stuck
+// ################################
+// Object-approach hold (Habitat FSM): when SEARCH_OBJECT loses high-conf
+// object cloud for a few replans, keep last approach goal instead of
+// immediately switching to frontier exploration. yr17 plan_seq 66→67.
+// ################################
+constexpr int MAX_OBJECT_HOLD_MISS = 12;
+constexpr double OBJECT_HOLD_MAX_DIST = 3.0;  // drop hold if farther from last goal
 
 // Cost weights
 constexpr double TARGET_WEIGHT = 150.0;
