@@ -1,0 +1,58 @@
+{
+  "task": "ObjectNav-HM3D-v2-val",
+  "robot_scale": 0.7,
+  "scale_tag": "scaled_robot_proxy_070",
+  "inflation_profile": "legacy018",
+  "max_steps": 50,
+  "max_explore_actions": 20,
+  "success_distance_m": 1.0,
+  "ppo_raise_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/ppo_raise_stage410d_z040.json",
+  "budget_note": "ab24_20261107_015625 used max_steps=50 / max_explore=20 (adapter smoke default). Official ApexNav ObjectNav max_episode_steps=500. Near-misses under B reached dtg\u22481.1\u20131.5m then explore_budget_exhausted \u2192 probe/fix round uses MAX_STEPS=150 MAX_EXPLORE_ACTIONS=100.",
+  "note": "Representative never-SEARCH B-class (HM3D label map fix).",
+  "episodes": [
+    {
+      "id": "yr17_plant_0",
+      "scene_filter": "yr17PDCnDDW",
+      "category": "plant",
+      "episode_id": "0",
+      "force_spawn_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_wide_yr17_openband_20261105_012302/start_pose.json"
+    },
+    {
+      "id": "ef36_tv_3",
+      "scene_filter": "eF36g7L6Z9M",
+      "category": "tv_monitor",
+      "episode_id": "3",
+      "force_spawn_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_wide_ef36_openband_20261105_124359/start_pose.json"
+    },
+    {
+      "id": "lt9_sofa_4",
+      "scene_filter": "LT9Jq6dN3Ea",
+      "category": "sofa",
+      "episode_id": "4",
+      "force_spawn_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_wide_lt9ep0_openband_20261105_124956/start_pose.json"
+    }
+  ],
+  "smoke": [
+    {
+      "id": "yr17_plant_0",
+      "scene_filter": "yr17PDCnDDW",
+      "category": "plant",
+      "episode_id": "0",
+      "force_spawn_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_wide_yr17_openband_20261105_012302/start_pose.json"
+    },
+    {
+      "id": "ef36_tv_3",
+      "scene_filter": "eF36g7L6Z9M",
+      "category": "tv_monitor",
+      "episode_id": "3",
+      "force_spawn_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_wide_ef36_openband_20261105_124359/start_pose.json"
+    },
+    {
+      "id": "lt9_sofa_4",
+      "scene_filter": "LT9Jq6dN3Ea",
+      "category": "sofa",
+      "episode_id": "4",
+      "force_spawn_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_wide_lt9ep0_openband_20261105_124956/start_pose.json"
+    }
+  ]
+}

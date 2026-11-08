@@ -958,6 +958,25 @@
 
 ---
 
+## 2026-11-08 从未 SEARCH：HM3D 类别映射修复
+
+**模块**：`apexnav_real_episode`（Ranger↔ApexNav 适配）
+
+**问题**：Hold 后 16/24 从未 `SEARCH_BEST`。审计显示 14/16 为 plant/sofa/tv_monitor：适配层试图 `from vlm.Labels import category_to_coco, id_to_name`，但 `Labels.py` 仅有 `HM3D_ID_TO_NAME`，ImportError 被吞 → 标签保持 HM3D 名 → `llm_answer_hm3d.txt` 键缺失 + YOLO COCO 不匹配 → `n_detections=0`。chair/bed/toilet 碰巧同名故能检。
+
+**分类**：B=14，D=`ef36_toilet_3`，E=`dd4b_toilet_0`；A/F=0。主阻断在类别映射，非笼统「未探索到」。
+
+**操作**：最小映射 `HM3D_ID_TO_NAME`（静态回退）；不改 Hold/F0/expand/denoise/置信/探索/预算。
+
+**实测**：代表 3 ep 均出检；2/3 进 SEARCH。同清单 24-ep：候选 10→24，SEARCH_BEST 8→13，SR_proxy 4→5，原成功保留，+`dd4b_plant_5`。
+
+**结论**：发现链路曾丢掉目标；映射修复后瓶颈转为有检不 SEARCH / SEARCH 近失。
+
+**相关**：`reports/discovery_label_map_20261108.md`
+
+
+---
+
 ## 2026-11-07 修复 SG-Nav / UniGoal 冒烟阻塞
 
 **模块**：SG-Nav、UniGoal

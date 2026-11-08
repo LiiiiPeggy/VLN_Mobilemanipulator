@@ -718,14 +718,39 @@ class ApexNavRangerBridge:
             rospy.sleep(1.0)
 
             label = ep["object_category"]
-            # Map HM3D category via ApexNav helpers if available
+            # ################################
+            # HM3D ObjectNav category → ApexNav detector / LLM label (COCO-style).
+            # Upstream habitat_evaluation maps via dataset category_to_mp3d_category_id
+            # + MP3D_ID_TO_NAME / HM3D_ID_TO_NAME. Labels.py only exports HM3D_ID_TO_NAME
+            # (no category_to_coco / id_to_name); the previous import was always
+            # ImportError-swallowed, so plant/sofa/tv_monitor stayed unmapped:
+            # YOLO never matched COCO classes, llm_answer_hm3d.txt key miss →
+            # n_detections=0 for the whole episode → never SEARCH.
+            # ################################
+            hm3d_object_category = str(label)
             try:
-                from vlm.Labels import category_to_coco, id_to_name  # type: ignore
+                from vlm.Labels import HM3D_ID_TO_NAME  # type: ignore
 
-                if label in category_to_coco:
-                    label = id_to_name.get(category_to_coco[label], label)
+                _hm3d_to_apex = {
+                    "chair": HM3D_ID_TO_NAME[0],
+                    "bed": HM3D_ID_TO_NAME[1],
+                    "plant": HM3D_ID_TO_NAME[2],
+                    "toilet": HM3D_ID_TO_NAME[3],
+                    "tv_monitor": HM3D_ID_TO_NAME[4],
+                    "sofa": HM3D_ID_TO_NAME[5],
+                }
             except Exception:
-                pass
+                _hm3d_to_apex = {
+                    "chair": "chair",
+                    "bed": "bed",
+                    "plant": "potted plant",
+                    "toilet": "toilet",
+                    "tv_monitor": "tv",
+                    "sofa": "couch",
+                }
+            label = _hm3d_to_apex.get(hm3d_object_category, hm3d_object_category)
+            label_mapped = label != hm3d_object_category
+            # ################################
 
             fusion_threshold = 0.35
             # LLM answer optional
@@ -747,7 +772,10 @@ class ApexNavRangerBridge:
                 json.dumps(
                     {
                         "object_category": ep["object_category"],
+                        "hm3d_object_category": hm3d_object_category,
                         "label": label,
+                        "label_mapped": label_mapped,
+                        "hm3d_to_apex": _hm3d_to_apex,
                         "room": room,
                         "llm_answer": llm_answer,
                         "fusion_threshold": fusion_threshold,

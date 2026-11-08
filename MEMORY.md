@@ -174,6 +174,10 @@ VLN_Mobilemanipulator/
 | ObjectHold：`SEARCH_OBJECT` 下高置信 object 云瞬时为空时，有界复用上一拍接近点（≤12 miss、≤3 m），避免立刻切 frontier | `exploration_fsm.cpp`；`MAX_OBJECT_HOLD_MISS` |
 | yr17 首次接近失败：seq67 无 Navigation Mode 日志→云空；非停止门控、非从未检测；Hold 后 yr17 SR_proxy 成功 | `reports/object_approach_hold_20261107.md` |
 | expand0.3+Hold 24-ep：SR_proxy 3/24→4/24；原成功保留；曾选中未完成 5→4；主剩余失败仍多为从未 SEARCH | `ab24_hold_20261107_231416` |
+| HM3D ObjectNav 六类须映射为 Apex 检测/LLM 标签：`plant→potted plant`、`tv_monitor→tv`、`sofa→couch`（与 `HM3D_ID_TO_NAME` 一致）；`Labels.py` **无** `category_to_coco`/`id_to_name` | `vlm/Labels.py`；`llm_answer_hm3d.txt`；`apexnav_real_episode` |
+| 未映射时 plant/sofa/tv_monitor：`read_answer` 键缺失→`llm_warn`；YOLO 不命中 COCO → 全剧 `n_detections=0` → 永不 SEARCH（类 B，Hold 批 14/16） | `reports/discovery_label_map_20261108.md` |
+| 映射修复 24-ep：有效候选 10→24；SEARCH_BEST 8→13；SR_proxy 4→5；原 4 成功保留；+`dd4b_plant_5`；explore_no_goal 16→11 | `ab24_labelmap_20261108_220204` vs Hold |
+| 映射后主剩余：有检/近义簇不进 SEARCH_BEST，或 SEARCH 后 `stop_not_near`（勿再改映射阈值） | 同上；tv 簇常 label≠0 |
 | 改 `path_searching` ABI 相关接口后须同步重编 `exploration_manager`（仅编前者会 segfault=infra_fail） | `adapters/habitat_rangercr10/README.md` |
 | Ranger ObjectNav 适配成功代理：`planner_stop` ∧ dtg≤1.0 m；官方 SPL / 净位移本路径不算（无 geodesic/位姿轨迹） | `summarize_startup_prior_e2e.py` |
 | 父 shell 污染 `FORCE_SPAWN_JSON` 会导致错场景；复测脚本须钉死路径 | `run_hy1_baseline_repeats.sh` |
