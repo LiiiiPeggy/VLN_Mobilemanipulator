@@ -178,6 +178,10 @@ VLN_Mobilemanipulator/
 | 未映射时 plant/sofa/tv_monitor：`read_answer` 键缺失→`llm_warn`；YOLO 不命中 COCO → 全剧 `n_detections=0` → 永不 SEARCH（类 B，Hold 批 14/16） | `reports/discovery_label_map_20261108.md` |
 | 映射修复 24-ep：有效候选 10→24；SEARCH_BEST 8→13；SR_proxy 4→5；原 4 成功保留；+`dd4b_plant_5`；explore_no_goal 16→11 | `ab24_labelmap_20261108_220204` vs Hold |
 | 映射后主剩余：有检/近义簇不进 SEARCH_BEST，或 SEARCH 后 `stop_not_near`（勿再改映射阈值） | 同上；tv 簇常 label≠0 |
+| ObjectNav 评估距离须对齐 Habitat：`DistanceToGoal.distance_to=VIEW_POINTS`；仅用 `goal.position` 会把已到 viewpoint 的大件家具误判为 stop_not_near | `habitat/.../objectnav.yaml`；`goal_distance` |
+| SR_proxy 仍为 `planner_stop ∧ dtg≤1.0`；dtg 改为最近 viewpoint 水平距后 LabelMap 同轨迹 5→8/24（评估修正，非策略增益） | `reports/stop_near_viewpoint_20261109.md` |
+| `get_object` 的 `label_indices`：0=目标类，>0=similar_answer 辅助；`ndet>0`≠目标类候选；SEARCH 成功口径用 SEARCH_BEST | `get_object_utils.py`；LabelMap 分类表 |
+| STOP 判据：底盘距接近点 `next_pos_` < 0.20（soft 0.45）；与 eval viewpoint/中心无关 | `exploration_fsm.cpp` REACH_DISTANCE |
 | 改 `path_searching` ABI 相关接口后须同步重编 `exploration_manager`（仅编前者会 segfault=infra_fail） | `adapters/habitat_rangercr10/README.md` |
 | Ranger ObjectNav 适配成功代理：`planner_stop` ∧ dtg≤1.0 m；官方 SPL / 净位移本路径不算（无 geodesic/位姿轨迹） | `summarize_startup_prior_e2e.py` |
 | 父 shell 污染 `FORCE_SPAWN_JSON` 会导致错场景；复测脚本须钉死路径 | `run_hy1_baseline_repeats.sh` |

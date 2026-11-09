@@ -958,6 +958,23 @@
 
 ---
 
+## 2026-11-09 stop_not_near：评估改为 VIEW_POINTS
+
+**模块**：`apexnav_real_episode.goal_distance`（仅评估）
+
+**问题**：LabelMap 后 8/24 `stop_not_near`。逐例显示底盘已贴近接近点；其中 3 例（k1cup_sofa_0/chair_0、dd4b_bed_1）到 Habitat `view_points` 已 ≤1.0 m，但到物体中心 1.25–1.77 m。适配层误用 POINT，而 Habitat ObjectNav 默认 `distance_to=VIEW_POINTS`。
+
+**其余 5 例**：错误物体/实例或 SEARCH_EXTREME 无 label=0（真失败，非口径问题）。
+
+**操作**：`goal_distance` 默认 VIEW_POINTS；保留 POINT 诊断字段；阈值仍 1.0 m；不改规划/选目标/STOP。离线重算 Hold/LabelMap 同轨迹。
+
+**结果**：LabelMap SR_proxy 记录 5/24 → 重算 **8/24**；原 5 成功保留；新增 3 为评估重分类。声明为评估修正，非策略增益。
+
+**相关**：`reports/stop_near_viewpoint_20261109.md`
+
+
+---
+
 ## 2026-11-08 从未 SEARCH：HM3D 类别映射修复
 
 **模块**：`apexnav_real_episode`（Ranger↔ApexNav 适配）

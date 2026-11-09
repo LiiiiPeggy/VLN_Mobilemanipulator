@@ -237,16 +237,66 @@ def hab_quat_yaw(rotation_xyzw_or_wxyz) -> float:
     return float(math.atan2(2 * (w * y + x * z), 1 - 2 * (y * y + z * z)))
 
 
-def goal_distance(base_xyz: np.ndarray, goals: List[dict]) -> float:
+def _horizontal_goal_distance(base_xyz: np.ndarray, positions: List) -> float:
+    """Min horizontal (xz) distance from chassis to a list of Habitat positions."""
     best = 1e9
-    for g in goals:
-        p = g.get("position")
-        if p is None:
+    for p in positions:
+        if p is None or len(p) < 3:
             continue
-        # habitat y-up: horizontal xz distance
-        d = math.hypot(base_xyz[0] - p[0], base_xyz[2] - p[2])
+        d = math.hypot(float(base_xyz[0]) - float(p[0]), float(base_xyz[2]) - float(p[2]))
         best = min(best, d)
     return best
+
+
+def goal_object_center_distance(base_xyz: np.ndarray, goals: List[dict]) -> float:
+    """Eval-only: distance to object-center positions (NOT Habitat ObjectNav default)."""
+    return _horizontal_goal_distance(
+        base_xyz, [g.get("position") for g in goals if isinstance(g, dict)]
+    )
+
+
+def goal_viewpoint_positions(goals: List[dict]) -> List:
+    """Collect ObjectNav goal view_points agent positions (Habitat DistanceToGoal)."""
+    pts = []
+    for g in goals:
+        if not isinstance(g, dict):
+            continue
+        for vp in g.get("view_points") or []:
+            p = None
+            if isinstance(vp, dict):
+                p = (vp.get("agent_state") or {}).get("position") or vp.get("position")
+            elif isinstance(vp, (list, tuple)) and vp:
+                # rare alternate encodings: (position, rotation) or bare xyz
+                if isinstance(vp[0], (list, tuple)) and len(vp[0]) >= 3:
+                    p = vp[0]
+                elif len(vp) >= 3 and not isinstance(vp[0], (list, tuple, dict)):
+                    p = vp
+            if p is not None:
+                pts.append(p)
+    return pts
+
+
+# ################################
+# Habitat ObjectNav DistanceToGoal defaults to distance_to=VIEW_POINTS (see
+# habitat/config/habitat/task/objectnav.yaml). Measuring only goal.position
+# (object center) falsely labels STOP-near-viewpoint sofa/bed/chair as
+# stop_not_near when the center is > success_distance away. Eval-only; never
+# fed to planner / object selection / STOP.
+# ################################
+def goal_distance(
+    base_xyz: np.ndarray, goals: List[dict], *, distance_to: str = "VIEW_POINTS"
+) -> float:
+    """Eval-only ObjectNav-style distance. Default matches Habitat VIEW_POINTS."""
+    if distance_to == "VIEW_POINTS":
+        vps = goal_viewpoint_positions(goals)
+        if vps:
+            return _horizontal_goal_distance(base_xyz, vps)
+        # Fall back if episode lacks view_points.
+        distance_to = "POINT"
+    if distance_to == "POINT":
+        return goal_object_center_distance(base_xyz, goals)
+    raise ValueError(f"Unsupported distance_to={distance_to!r}")
+# ################################
 
 
 class ApexNavRangerBridge:
@@ -1114,7 +1164,12 @@ class ApexNavRangerBridge:
                         traceback.format_exc()
                     )
 
-                dtg = goal_distance(self.env.base_xyz, ep["goals"])
+                # ################################
+                # Eval-only distances: VIEW_POINTS (Habitat default) + POINT diagnostic.
+                # ################################
+                dtg = goal_distance(self.env.base_xyz, ep["goals"], distance_to="VIEW_POINTS")
+                dtg_point = goal_distance(self.env.base_xyz, ep["goals"], distance_to="POINT")
+                # ################################
                 rec = {
                     "step": step,
                     "planner_action": action,
@@ -1129,6 +1184,8 @@ class ApexNavRangerBridge:
                     "itm_cosine": cosine,
                     "n_detections": len(score_list),
                     "distance_to_goal_eval_only": dtg,
+                    "distance_to_goal_point_eval_only": dtg_point,
+                    "distance_to_goal_mode": "VIEW_POINTS",
                     "map_stats": map_stats,
                     "base": {
                         "x": float(self.env.base_xyz[0]),
@@ -1179,10 +1236,12 @@ class ApexNavRangerBridge:
                     pass
 
         elapsed = time.time() - t0
-        # Evaluate (GT only for metrics)
+        # Evaluate (GT only for metrics; VIEW_POINTS matches Habitat ObjectNav)
         final_dtg = None
+        final_dtg_point = None
         if self.log:
             final_dtg = self.log[-1].get("distance_to_goal_eval_only")
+            final_dtg_point = self.log[-1].get("distance_to_goal_point_eval_only")
         map_ok = False
         map_final = {}
         if self.map_listener is not None:
@@ -1231,6 +1290,8 @@ class ApexNavRangerBridge:
             "ros_z_mode": "hab_y_minus_floor_y_agl",
             "first_plan_diag": self.first_plan_diag,
             "final_distance_to_goal_eval_only": final_dtg,
+            "final_distance_to_goal_point_eval_only": final_dtg_point,
+            "distance_to_goal_mode": "VIEW_POINTS",
             "success_claimed": False,  # never claim ObjectNav success without official evaluator
             "near_goal": bool(final_dtg is not None and final_dtg <= args.success_distance),
             "locomanip_commit": LOCOMANIP_COMMIT,
@@ -1239,7 +1300,7 @@ class ApexNavRangerBridge:
                 "LOOK_UP/DOWN are arm-joint adapted (±pitch via FK), not Habitat agent look.",
                 "Initial EE uses ARM_APEXNAV_INIT FK (height × robot_scale); runtime sensor_pose is full SE3.",
                 "ROS Z = Habitat AGL (hab_y - floor_y) so ApexNav map_ros height filter [0.28,1.18] matches furniture.",
-                "Goal distance is eval-only and not fed to planner.",
+                "Goal distance is eval-only (Habitat VIEW_POINTS; POINT kept as diagnostic) and not fed to planner.",
                 "URDF Z-up→Habitat Y-up via Ry(-90)*Rx(-90); wheels snapped to floor_y.",
                 "Init lookaround ≠ adaptive explore; explore starts after 26 FSM init actions.",
                 "Demo map panel uses ApexNav /grid_map/* (not Habitat GT).",
