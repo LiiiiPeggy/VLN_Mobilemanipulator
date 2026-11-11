@@ -994,6 +994,23 @@
 
 ---
 
+## 2026-11-09～11 ApexNav HM3D-v2 全量论文复现
+
+**模块**：原生 `habitat_evaluation.py`（非 Ranger 适配）
+
+**问题**：24-ep Ranger 清单不足以对照论文；需按 Table I 跑 HM3D-v2 val 全 1000 ep，并统计 `check_failure` 原因。
+
+**操作**：`vln-apexnav` + ROS `:11313`；`test_epi_num=-1 need_video=false`；输出 `hm3dv2_full_20261109_231528`；并行 `live_failures.md` 聚合 `record.txt`。
+
+**实测**：1000/1000 完成（~13.1 h）。SR **74.4%** / SPL **37.65%** / SoftSPL 40.31%（论文 76.2 / 38.0）。失败：false positive 144、stepout feasible 42、[stepout] FN 26、stucking 22、其余 <10。进程收尾 `Unexpected error`/`exit_code=1`，指标与 record 已完整。
+
+**结论**：基本复现成功（±2 pp）；残余差距主要由误认 STOP（false positive）主导，非协议漂移。
+
+**相关**：`reports/apexnav_hm3dv2_full_repro.md`
+
+
+---
+
 ## 2026-11-07 修复 SG-Nav / UniGoal 冒烟阻塞
 
 **模块**：SG-Nav、UniGoal

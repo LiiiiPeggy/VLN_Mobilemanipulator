@@ -1,0 +1,27 @@
+{
+  "paper_target": {
+    "dataset": "HM3D-v2 val",
+    "n_episodes": 1000,
+    "SR": 76.2,
+    "SPL": 38.0
+  },
+  "n_completed": 1000,
+  "n_success": 744,
+  "SR_pct": 74.4,
+  "final_running_sr_pct": 74.4,
+  "final_running_spl_pct": 37.65,
+  "failure_hist": {
+    "success": 744,
+    "[stepout] false negative": 26,
+    "stepout feasible": 42,
+    "false positive": 144,
+    "stucking": 22,
+    "[no frontier] false negative": 5,
+    "no frontier": 9,
+    "[stucking] false negative": 5,
+    "infeasible": 3
+  },
+  "exit_code": 1,
+  "wall_s": 47276,
+  "out_dir": "/media/ubuntu/D/VLN_shared/runs/ApexNav/hm3dv2_full_20261109_231528"
+}

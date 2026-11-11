@@ -1,0 +1,11 @@
+{
+  "success": 744,
+  "[stepout] false negative": 26,
+  "stepout feasible": 42,
+  "false positive": 144,
+  "stucking": 22,
+  "[no frontier] false negative": 5,
+  "no frontier": 9,
+  "[stucking] false negative": 5,
+  "infeasible": 3
+}

@@ -111,6 +111,7 @@ VLN_Mobilemanipulator/
 | VLFM=`BATCH_OK`（8/8 无崩溃；SR=25% SPL=0.1164；峰显存 19356 MiB） | `runs/VLFM/batch_8ep_status.md`；D `.../batch_20261101/VLFM/` |
 | MSGNav=`BATCH_OK`（8/8 无崩溃；SR_dist=37.5% SPL≈20.7%；峰显存 16507 MiB） | `runs/MSGNav/batch_8ep_status.md`；D `.../batch_20261101/MSGNav/` |
 | ApexNav=`BATCH_OK`（8/8 无崩溃；任务成功 6/8；峰显存 12912 MiB） | `runs/ApexNav/batch_8ep_status.md`；D `.../batch_20261101/ApexNav/metrics.csv`；VLM=`vlm.*` 非 `vlfm.vlm` |
+| ApexNav 原生 HM3D-v2 val **1000-ep 论文复现**：SR **74.4%** / SPL **37.65%**（论文 76.2 / 38.0；Δ −1.8 / −0.35 pp）；失败主因 **false positive 14.4%**（占失败 56%） | `reports/apexnav_hm3dv2_full_repro.md`；D `.../hm3dv2_full_20261109_231528`；墙钟 ~13.1 h；ROS `:11313` |
 | ApexNav 需 ROS1 Noetic + catkin planner；Jammy 上可用 Focal Noetic 文件树 + focal `.so`，但 `cv_bridge`/py3.8 boost 与 conda py3.9 不兼容 → 适配层手写 Image | 同 status；`habitat2ros/habitat_publisher.py` |
 | MSGNav 需 `ollama` 包（即使 `use_ollama:false` 也会 import） | 已 bake 进 `:msgnav-deps` |
 | MSGNav 可用 API 模型为 `gpt-5.6-sol`（`gpt-5.5` 404） | 容器内冒烟；密钥仅本地 `.env` |

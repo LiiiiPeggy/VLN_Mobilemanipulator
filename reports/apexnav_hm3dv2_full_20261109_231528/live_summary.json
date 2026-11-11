@@ -1,0 +1,177 @@
+{
+  "updated_at": "2026-11-11 01:07:14",
+  "paper_target": {
+    "dataset": "HM3D-v2 val",
+    "n_episodes": 1000,
+    "SR": 76.2,
+    "SPL": 38.0
+  },
+  "n_completed": 1000,
+  "n_success": 744,
+  "n_fail": 256,
+  "progress_pct": 100.0,
+  "SR_pct": 74.4,
+  "final_running_sr_pct": 74.4,
+  "final_running_spl_pct": 37.65,
+  "gap_sr_pp": -1.7999999999999972,
+  "gap_spl_pp": -0.3500000000000014,
+  "failure_hist": {
+    "success": 744,
+    "false positive": 144,
+    "stepout feasible": 42,
+    "[stepout] false negative": 26,
+    "stucking": 22,
+    "no frontier": 9,
+    "[no frontier] false negative": 5,
+    "[stucking] false negative": 5,
+    "infeasible": 3
+  },
+  "share_among_all_pct": {
+    "success": 74.4,
+    "false positive": 14.4,
+    "stepout feasible": 4.2,
+    "[stepout] false negative": 2.6,
+    "stucking": 2.2,
+    "no frontier": 0.9,
+    "[no frontier] false negative": 0.5,
+    "[stucking] false negative": 0.5,
+    "infeasible": 0.3
+  },
+  "share_among_fails_pct": {
+    "false positive": 56.25,
+    "stepout feasible": 16.41,
+    "[stepout] false negative": 10.16,
+    "stucking": 8.59,
+    "no frontier": 3.52,
+    "[no frontier] false negative": 1.95,
+    "[stucking] false negative": 1.95,
+    "infeasible": 1.17
+  },
+  "top_fail_by_label_reason": [
+    [
+      "couch::false positive",
+      31
+    ],
+    [
+      "potted plant::false positive",
+      28
+    ],
+    [
+      "tv::false positive",
+      25
+    ],
+    [
+      "bed::false positive",
+      24
+    ],
+    [
+      "chair::false positive",
+      20
+    ],
+    [
+      "tv::stepout feasible",
+      17
+    ],
+    [
+      "toilet::false positive",
+      16
+    ],
+    [
+      "potted plant::stucking",
+      13
+    ],
+    [
+      "potted plant::[stepout] false negative",
+      11
+    ],
+    [
+      "toilet::stepout feasible",
+      10
+    ],
+    [
+      "tv::[stepout] false negative",
+      9
+    ],
+    [
+      "potted plant::no frontier",
+      7
+    ],
+    [
+      "couch::stepout feasible",
+      5
+    ],
+    [
+      "chair::stepout feasible",
+      4
+    ],
+    [
+      "chair::[stepout] false negative",
+      3
+    ],
+    [
+      "toilet::stucking",
+      3
+    ],
+    [
+      "bed::stepout feasible",
+      3
+    ],
+    [
+      "chair::stucking",
+      3
+    ],
+    [
+      "couch::[stucking] false negative",
+      3
+    ],
+    [
+      "couch::[stepout] false negative",
+      3
+    ],
+    [
+      "potted plant::stepout feasible",
+      3
+    ],
+    [
+      "potted plant::[no frontier] false negative",
+      3
+    ],
+    [
+      "couch::stucking",
+      2
+    ],
+    [
+      "tv::[no frontier] false negative",
+      2
+    ],
+    [
+      "chair::[stucking] false negative",
+      2
+    ],
+    [
+      "tv::no frontier",
+      2
+    ],
+    [
+      "couch::infeasible",
+      2
+    ],
+    [
+      "tv::stucking",
+      1
+    ],
+    [
+      "chair::infeasible",
+      1
+    ]
+  ],
+  "label_counts": {
+    "chair": 195,
+    "couch": 187,
+    "toilet": 166,
+    "bed": 165,
+    "potted plant": 152,
+    "tv": 135
+  },
+  "out_dir": "/media/ubuntu/D/VLN_shared/runs/ApexNav/hm3dv2_full_20261109_231528"
+}
