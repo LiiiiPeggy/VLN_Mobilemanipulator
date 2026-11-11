@@ -62,6 +62,7 @@
 
 
 #include <ATen/ATen.h>
+#include "common.hpp"
 #include <THC/THCAtomics.cuh>
 #include <stdio.h>
 #include <math.h>

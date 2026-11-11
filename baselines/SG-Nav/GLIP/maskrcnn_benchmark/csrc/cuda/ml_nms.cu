@@ -2,7 +2,8 @@
 #include <ATen/ATen.h>
 #include <ATen/cuda/CUDAContext.h>
 
-#include <THC/THC.h>
+// VLN: #include <THC/THC.h>
+#include "common.hpp"
 #include <THC/THCDeviceUtils.cuh>
 
 #include <vector>
@@ -85,7 +86,7 @@ at::Tensor ml_nms_cuda(const at::Tensor boxes, float nms_overlap_thresh) {
 
   scalar_t* boxes_dev = boxes_sorted.data_ptr<scalar_t>();
 
-  THCState *state = at::globalContext().lazyInitCUDA(); // TODO replace with getTHCState
+  THCState *state = nullptr; // VLN adapt: THCState removed in PyTorch 2.x
 
   unsigned long long* mask_dev = NULL;
   //THCudaCheck(THCudaMalloc(state, (void**) &mask_dev,

@@ -1,26 +1,30 @@
-# SG-Nav ObjectNav smoke — SINGLE_EPISODE_OK
+# SG-Nav ObjectNav — 官方 navmesh 20ep：**18/20 中断**
 
-更新：2026-11-07 14:43（UTC+8）
+更新：2026-11-11 13:48（UTC+8）
 
-## 证据
+## 跑次
 
-- 运行：`runs/SG-Nav/smoke_20261107_143201_host/`（`driver.log`、`results.txt`；容器侧同 stamp 目录为 root 属主）
-- 启动：`scripts/run_sgnav_smoke.sh`（`SGNAV_NUM_EPISODES=1`, `SPLIT_L=0`, `SPLIT_R=1`）
-- 场景：MP3D `2azQ1b91cZZ`；goal=`cabinet`
-- 指标（1 ep）：`success=0.0`，`spl=0.0`，`softspl=0.0`，`distance_to_goal≈11.06`
+| 项 | 值 |
+|----|-----|
+| STAMP | `20261109_230909` |
+| 配置 | 20 ep，`SPLIT_L=0 SPLIT_R=1`，官方 `.navmesh`，LLM soft-fail |
+| 状态 | **STOPPED at 18/20**（日志止于 11-11 01:07；`vln-sgnav` 容器当前 **not running**） |
+| 日志 | `runs/SG-Nav/smoke_20261109_230909/driver.log` |
 
-## 本轮修复（相对此前 BLOCKED）
+## 已完成 18 ep 均值
 
-1. **BERT 离线**：GLIP / GroundingDINO / scenegraph 走 `BERT_BASE_UNCASED_PATH`
-2. **MP3D navmesh**：仅有 `.glb` 时 `geodesic_distance` 会 segfault → 已为 11 景重算 `.navmesh`（`scripts/build_mp3d_navmeshes.py`）
-3. **pytorch3d**：容器内安装 `0.7.4`（cu118 / torch 2.0.1）供 3D IoU
-4. **VLM `image_url`**：改为 OpenAI 兼容 `{"url": "data:..."}`；超时重试
-5. **冒烟 cap**：`SGNAV_NUM_EPISODES` + smoke 脚本 `pipefail`
+| 指标 | 本地 18ep | 论文 MP3D val |
+|------|-----------|---------------|
+| SR | **0.50**（9/18） | ≈0.402 |
+| SPL | **≈0.131** | ≈0.160 |
 
-## 论文对照（未宣称复现）
+单景 `2azQ1b91cZZ`；样本量仍小，且 LLM=luna ≠ 论文 GPT，**不能宣称复现**。
 
-| 协议 | 论文 | 本地 |
-|------|------|------|
-| MP3D ObjectNav val | SR≈40.2 / SPL≈16.0 | **1 ep smoke** success=0（不足统计） |
+## 成功 ep（success=1）
 
-下一步：小批量（如 20 ep / 11 景）再对照；官方 navmesh 与自算 navmesh 可能有 SPL 偏差。
+1, 2, 6, 8, 9, 11, 14, 15, 16（共 9）
+
+## 阻塞
+
+- 评测在 ep18 途中停下；容器已退出，需重启 `vln-sgnav` 后续跑剩余 / 重开完整 20ep。
+- model8 仍频繁 timeout（日志约 93 次），靠 soft-fail 撑过大部分。

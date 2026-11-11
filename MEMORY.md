@@ -70,8 +70,8 @@ VLN_Mobilemanipulator/
 | **ApexNav** | ObjectNav；target-centric fusion + 自适应探索 | conda `apexnav_environment.yaml`；torch 2.5.0（cu118/121/124） | **sim/lab 0.3.1** | compose → `vln-apexnav` | **BATCH_OK**；VLM=`vlm.*` 多端口；ROS Noetic planner |
 | **MSGNav** | ObjectNav / GOAT-Bench；多模态 3D scene graph | Python 3.9；torch 2.0.1+cu118；open-clip；ultralytics | **sim 0.2.5**；vendored `habitat-lab/` | compose → `vln-habitat025:msgnav-deps` | **BATCH_OK**；需 LLM API（`gpt-5.6-sol`） |
 | **APRR** | OVMM / Home-Robot 系 | 依赖 Facebook `home-robot` + Habitat challenge 镜像文档 | 随 home-robot / habitat-lab 子树 | compose → `vln-lite`（审计用）；完整栈仍参考官方 challenge 镜像 | 子模块未完全初始化；评测脚本 `runb.sh` / `run_rl.sh` |
-| **SG-Nav** | ObjectNav；在线 3D scene graph → LLM | Python 3.9；habitat-sim 0.2.4；GLIP / GroundingDINO / SAM | **sim 0.2.4**；vendored `habitat-lab/` | compose 暂挂 `vln-habitat025`（**版本待改**） | **必须**用 `tools/agent.py` 覆盖 habitat-sim 的 `agent/agent.py` |
-| **UniGoal** | 统一 goal（image/text；object 仍在完善） | Python 3.8；sim/lab 0.2.3；Grounded-SAM；detectron2；pytorch3d | **sim/lab 0.2.3**；`third_party/habitat-lab` | compose 暂挂 `vln-habitat025`（**版本待改**） | 与 SG-Nav 同组作者；接口相近但版本更旧 |
+| **SG-Nav** | ObjectNav；在线 3D scene graph → LLM | Python 3.9；habitat-sim 0.2.4；GLIP / GroundingDINO / SAM | **sim 0.2.4**；vendored `habitat-lab/` | compose → `vln-sgnav`（habitat025 族） | **必须**用 `tools/agent.py` 覆盖 habitat-sim 的 `agent/agent.py`；MP3D 须**官方** `.navmesh` |
+| **UniGoal** | 统一 goal（image/text；object 仍在完善） | Python 3.8；sim/lab 0.2.3；Grounded-SAM；detectron2；pytorch3d | **sim/lab 0.2.3**；`third_party/habitat-lab` | compose → `vln-unigoal` | 与 SG-Nav 同组作者；接口相近但版本更旧；论文主任务偏 HM3D IIN |
 
 ### Habitat 版本互斥（重要）
 
@@ -85,8 +85,8 @@ VLN_Mobilemanipulator/
 - **ApexNav**（BATCH_OK）：`scripts/run_apexnav_batch8.sh` → ROS + `python -m vlm.detector/itm/segmentor.*`（**不是** `vlfm.vlm`）+ `habitat_evaluation.py --dataset hm3dv2 test_epi_num=0..7`；镜像 `:single-ep-deps`=`50e76a268b26`
 - **MSGNav**（BATCH_OK）：`scripts/run_msgnav_batch8.sh` → `run_hm3d_evaluation.py -cf cfg/eval_hm3d_batch8.yaml --specific 0..7`；密钥仅 `baselines/MSGNav/.env`；`--specific` 时场景列表排序且跳过 shuffle
 - **APRR**：`bash runb.sh` / `bash run_rl.sh`
-- **SG-Nav**：`SG_Nav.py` + `configs/challenge_objectnav2021.local.rgbd.yaml`；MP3D **val 11 景**已够用（不扩全库；不考虑跨楼层集）
-- **UniGoal**：`python main.py --goal_type {ins-image|text}`；数据：HM3D + IIN v3 + text-goal（见下）
+- **SG-Nav**：`scripts/run_sgnav_smoke.sh` / `launch_sgnav_20ep_official.sh`；`SGNAV_NUM_EPISODES`；MP3D **val 11 景**+官方 `mp3d_habitat` navmesh（不扩全库）
+- **UniGoal**：`scripts/run_unigoal_smoke.sh`；`python main.py --goal_type {ins-image|text}`；数据：HM3D + IIN v3 + text-goal（见下）
 
 ## 6. 移动机械臂 VLN 适配——接口约束（预先遵守）
 
@@ -114,12 +114,17 @@ VLN_Mobilemanipulator/
 | ApexNav 原生 HM3D-v2 val **1000-ep 论文复现**：SR **74.4%** / SPL **37.65%**（论文 76.2 / 38.0；Δ −1.8 / −0.35 pp）；失败主因 **false positive 14.4%**（占失败 56%） | `reports/apexnav_hm3dv2_full_repro.md`；D `.../hm3dv2_full_20261109_231528`；墙钟 ~13.1 h；ROS `:11313` |
 | ApexNav 需 ROS1 Noetic + catkin planner；Jammy 上可用 Focal Noetic 文件树 + focal `.so`，但 `cv_bridge`/py3.8 boost 与 conda py3.9 不兼容 → 适配层手写 Image | 同 status；`habitat2ros/habitat_publisher.py` |
 | MSGNav 需 `ollama` 包（即使 `use_ollama:false` 也会 import） | 已 bake 进 `:msgnav-deps` |
-| MSGNav 可用 API 模型为 `gpt-5.6-sol`（`gpt-5.5` 404） | 容器内冒烟；密钥仅本地 `.env` |
+| MSGNav 可用 API：`gpt-5.6-luna`（当前默认示例）/ 曾验 `gpt-5.6-sol`；`gpt-5.5` 404；论文对照需 **gpt-4o**（无密钥则暂停） | 容器冒烟；密钥仅本地 `.env` |
+| MSGNav luna **20ep**：SR_dist **50%** / SPL **16.90**（非论文全量；usage 记账仍异常） | `runs/MSGNav/luna_20ep_status.md`；D `.../MSGNav_luna_20ep/` |
 | ObjectNav HM3D v2 的 `.json.gz` 需解压为 plain JSON 才可被 MSGNav `json.load` | `.../objectnav/hm3d/v2/val/content_json` |
 | open3d 与 pydantic v1：需 `dash<3` | VLFM habitat024 commit 镜像 |
 | UniGoal `val_text.json.gz` 的 `episodes=[]` 为设计；文本在 `attribute_data`，episode 来自 IIN；`goal_key`=`{scene}_{goal_object_id}` 与 attrs **1000/1000** 对齐 | `datasets/textnav/` + `instance_imagenav/`；代码 `instanceimagegoal_env.py` |
 | IIN 磁盘目录名 `instance_imagenav_hm3d_v3`；UniGoal 期望 `hm3d/v3/` → 接线时软链 | `reports/manual_downloads.md` |
-| 共享公开大数据无强制待下载项；MP3D 维持 val 11 景 | `reports/manual_downloads.md`（2026-11-02） |
+| UniGoal=`SINGLE_EPISODE_OK（弱）`：luna smoke120 `succ=0,spl=0`；批量/论文复现未开 | `runs/UniGoal/smoke_1ep_status.md`；`luna_smoke120/` |
+| 共享公开大数据：MP3D 维持 val 11 景；**官方** `mp3d_habitat.zip`（含 `.navmesh`）已装；自算 navmesh **勿用**（已删） | `reports/manual_downloads.md`；`scene_datasets/mp3d/` |
+| SG-Nav=`SINGLE_EPISODE_OK`；官方 navmesh 20ep 跑到 **18/20** 中断（18ep SR=0.50 / SPL≈0.131；LLM=luna ≠ 论文 GPT） | `runs/SG-Nav/smoke_status.md`；STAMP `20261109_230909` |
+| SG-Nav/UniGoal VLM：OpenAI 兼容 `image_url` 必须 `{"url":"data:..."}`；model8 易超时 → 重试 + soft-fail | `scenegraph.py`；UniGoal `src/utils/llm.py` |
+| SG-Nav 容器需 `pytorch3d==0.7.4`；GLIP CUDA 去 THC（`common.hpp`） | `vln-sgnav`；`GLIP/.../cuda/*.cu` |
 | Ranger+CR10 适配落在 `adapters/habitat_rangercr10/`，不改 baseline 默认配置 | 目录 + compose `vln-rangercr10:bullet` |
 | LocoManip 钉扎 `rangercr10-teleop` @ **`ec5fd65`（stage 4.10d）**；PPO `stage410d_ppo/model_5999.pt`；obs=117 act=8 hist=3 @10Hz；stage45j 仅历史对照 | `constants.py`；`VERSION_stage410d.json`；MuJoCo `teleop_eval` |
 | 现网 VLN 镜像均 `built_with_bullet=False`；URDF 需专用 bullet 构建 | `habitat_sim.built_with_bullet` |
@@ -226,9 +231,10 @@ VLN_Mobilemanipulator/
 |------|------|----------|
 | Habitat 小版本分裂 | 见 §4 | 一 baseline 一环境 |
 | SG-Nav/UniGoal 挂错镜像 | 文档要 0.2.4 / 0.2.3，compose 暂用 habitat025 | 专用镜像或改映射 |
-| MP3D 仅 `.glb` | ObjectNav `DISTANCE_TO_GOAL` → `pathfinder.geodesic_distance` 无 navmesh 会 **segfault** | `scripts/build_mp3d_navmeshes.py` 按 agent r=0.18/h=0.88 重算并落盘 `{id}.navmesh`（自算≠官方，SPL 可能偏差） |
+| MP3D 无 `.navmesh` | ObjectNav `DISTANCE_TO_GOAL` → `geodesic_distance` **segfault** | **优先**官方 `mp3d_habitat` 资产；自算脚本仅应急且 SPL 不可与论文直接比 |
 | model8 VLM `image_url` | 传字符串会被网关/兼容层打回 502/超时；OpenAI 兼容需 `{"url":"data:..."}` | UniGoal `src/utils/llm.py`、SG-Nav `scenegraph.py`（对齐 MSGNav） |
 | SG-Nav 缺 pytorch3d | `compute_3d_iou_accuracte_batch` import 失败 | 容器 `pytorch3d==0.7.4`（py39/cu118/torch2.0.1） |
+| model8 长评测超时 | SG-Nav/UniGoal 长时间卡死或反复 502 | `OPENAI_CALL_RETRIES` + `SGNAV_LLM_SOFT_FAIL=1`；勿当论文 LLM |
 | MSGNav open_clip 预训练 | `ViT-H-14-quickgelu`/`dfn5b` 需 HF 大权重；直连常失败 | `HF_ENDPOINT=hf-mirror.com` + D 盘 `HF_HOME` 预拉 |
 | `docker compose --force-recreate` | 清掉未 bake 的 pip 层 | 用 `docker commit` tag（如 `:msgnav-deps`）或写入 Dockerfile |
 | APRR 子模块不全 | data / detection 未拉全 | 按需补齐 |

@@ -101,14 +101,23 @@ def call_openai_api(sys_prompt, contents) -> Optional[str]:
     ]
     while retry_count < max_tries:
         try:
+            ################################
+            # Adapter: record token usage for cost probes
+            _model = GPT_MODEL if API_MODE == "gpt" else QWEN_MODEL
             completion = client.chat.completions.create(
-                model=GPT_MODEL if API_MODE == "gpt" else QWEN_MODEL,
+                model=_model,
                 messages=message_text,
                 temperature=0.7,
                 max_tokens=4096,
                 top_p=0.95,
                 presence_penalty=0,
             )
+            try:
+                from src.api_usage import record_completion
+                record_completion(_model, completion)
+            except Exception:
+                pass
+            ################################
             return completion.choices[0].message.content
         except openai.RateLimitError as e:
             print("Rate limit error, waiting for 60s")
@@ -117,6 +126,16 @@ def call_openai_api(sys_prompt, contents) -> Optional[str]:
             continue
         except Exception as e:
             print("Error: ", e)
+            ################################
+            try:
+                from src.api_usage import record_completion
+                record_completion(
+                    GPT_MODEL if API_MODE == "gpt" else QWEN_MODEL,
+                    error=str(e),
+                )
+            except Exception:
+                pass
+            ################################
             time.sleep(60)
             retry_count += 1
             continue
@@ -133,16 +152,25 @@ def call_openai_api_sg(sys_prompt, contents) -> Optional[str]:
     ]
     while retry_count < max_tries:
         try:
+            ################################
+            # Adapter: record token usage for cost probes
+            _model = GPT_MODEL if API_MODE == "gpt" else os.getenv(
+                "QWEN_SG_MODEL", "qwen3-235b-a22b-instruct-2507"
+            )
             completion = client.chat.completions.create(
-                model=GPT_MODEL if API_MODE == "gpt" else os.getenv(
-                    "QWEN_SG_MODEL", "qwen3-235b-a22b-instruct-2507"
-                ),
+                model=_model,
                 messages=message_text,
                 temperature=0.7,
                 max_tokens=4096,
                 top_p=0.95,
                 presence_penalty=0,
             )
+            try:
+                from src.api_usage import record_completion
+                record_completion(_model, completion)
+            except Exception:
+                pass
+            ################################
             return completion.choices[0].message.content
         except openai.RateLimitError as e:
             print("Rate limit error, waiting for 60s")

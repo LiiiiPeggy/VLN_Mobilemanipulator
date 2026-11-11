@@ -4,7 +4,8 @@
 #include <ATen/ATen.h>
 #include <ATen/cuda/CUDAContext.h>
 
-#include <THC/THC.h>
+// VLN: #include <THC/THC.h>
+#include "common.hpp"
 #include <THC/THCDeviceUtils.cuh>
 
 #include <vector>

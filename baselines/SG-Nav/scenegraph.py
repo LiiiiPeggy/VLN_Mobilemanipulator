@@ -802,10 +802,11 @@ Object pair(s):
             )
         return self._openai_client
 
-    def _openai_call_with_retry(self, fn):
+    def _openai_call_with_retry(self, fn, soft_default=None):
         import time
-        retries = int(os.getenv("OPENAI_CALL_RETRIES", "8"))
+        retries = int(os.getenv("OPENAI_CALL_RETRIES", "12"))
         backoff = float(os.getenv("OPENAI_RETRY_BACKOFF", "8.0"))
+        soft = os.getenv("SGNAV_LLM_SOFT_FAIL", "1").strip() not in ("0", "false", "False")
         last = None
         for i in range(retries):
             try:
@@ -821,7 +822,18 @@ Object pair(s):
                 if i + 1 >= retries:
                     break
                 time.sleep(wait)
+        # ################################
+        # VLN adapt: soft-fail keeps long eval alive under model8 timeouts
+        # ################################
+        if soft:
+            print(
+                f"[sgnav llm/vlm] soft-fail after {retries} attempts: {last}; "
+                f"return default={soft_default!r}",
+                flush=True,
+            )
+            return soft_default if soft_default is not None else ""
         raise last
+        # ################################
 
     def get_llm_response(self, prompt):
         if self.llm_backend == "ollama":
@@ -843,7 +855,7 @@ Object pair(s):
             )
             return chat_completion.choices[0].message.content
 
-        return self._openai_call_with_retry(_do)
+        return self._openai_call_with_retry(_do, soft_default="")
 
     def get_vlm_response(self, prompt, image):
         # JPEG + OpenAI-compat image_url={"url": data:...} (MSGNav-compatible)
@@ -889,7 +901,7 @@ Object pair(s):
             )
             return chat_completion.choices[0].message.content
 
-        return self._openai_call_with_retry(_do)
+        return self._openai_call_with_retry(_do, soft_default="")
     # ################################
         
     def find_modes(self, lst):  

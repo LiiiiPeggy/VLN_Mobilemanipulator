@@ -1032,3 +1032,30 @@
 **结论**：两边主阻塞已解除；论文指标仍需批量/长步数评测。自算 navmesh 可能使 SPL 与官方不完全可比。
 
 **相关**：`runs/SG-Nav/smoke_status.md`、`runs/UniGoal/smoke_1ep_status.md`
+
+
+---
+
+## 2026-11-09～11 SG-Nav 换官方 navmesh + 20ep；MSGNav/UniGoal 优先级
+
+**模块**：SG-Nav、MSGNav、UniGoal、数据资产
+
+**问题**：
+1. 自算 navmesh 与论文 SPL 不可比；用户要求删除并改用官方 `mp3d_habitat`。
+2. SG-Nav 20ep 需可复现评测入口；model8 luna 超时频繁。
+3. MSGNav gpt-4o 无密钥；UniGoal 仅弱 smoke，优先级让给 SG-Nav。
+
+**操作**：
+- 删除自算 `.navmesh`；安装官方 `mp3d_habitat` 到 `scene_datasets/mp3d/`（val 11）。
+- SG-Nav：`SGNAV_LLM_SOFT_FAIL`、重试加重；`launch_sgnav_20ep_official.sh`；跑次 STAMP `20261109_230909`。
+- MSGNav：luna 20ep 已完成并记 status；gpt-4o 跑次 **BLOCKED**；默认示例模型切 luna。
+- UniGoal：维持 1ep 弱 smoke，未开批量。
+
+**实测**：
+- SG-Nav：官方 navmesh 下跑到 **18/20** 中断（容器随后退出）；18ep 均值 SR=**0.50** / SPL≈**0.131**（论文 ≈40.2 / 16.0；LLM≠GPT，**非复现宣称**）。
+- MSGNav luna 20ep：SR_dist 50% / SPL 16.90（`luna_20ep_status.md`）。
+- UniGoal：未继续。
+
+**结论**：SG-Nav 主路径已切到官方 navmesh；收尾 20ep 与 UniGoal 批量仍待做。MSGNav 论文对照等 gpt-4o。
+
+**相关**：`runs/SG-Nav/smoke_status.md`；`runs/MSGNav/luna_20ep_status.md`；`PROGRESS.md`

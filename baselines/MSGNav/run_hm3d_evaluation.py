@@ -322,6 +322,20 @@ def main(cfg, start_ratio=0.0, end_ratio=1.0, specific = None):
                         scene.all_depths[obs_file_name] = depth
                         scene.all_cam_poses[obs_file_name] = cam_pose
                         scene.all_obs_point[obs_file_name] = tsdf_planner.habitat2voxel(pts)
+                        ################################
+                        # Adapter (demo video): persist egocentric RGB when visualization is on.
+                        # Main heading is the last angle in all_angles; keep all views under rgb_views/.
+                        if cfg.save_visualization:
+                            _rgb_dir = os.path.join(episode_dir, "rgb_views")
+                            os.makedirs(_rgb_dir, exist_ok=True)
+                            _frame = np.asarray(annotated_rgb[..., :3]).astype(np.uint8)
+                            plt.imsave(
+                                os.path.join(
+                                    _rgb_dir, f"{cnt_step:04d}_view{view_idx}.png"
+                                ),
+                                _frame,
+                            )
+                        ################################
                         rgb_egocentric_views.append(
                             resize_image(rgb, cfg.prompt_h, cfg.prompt_w)
                         )

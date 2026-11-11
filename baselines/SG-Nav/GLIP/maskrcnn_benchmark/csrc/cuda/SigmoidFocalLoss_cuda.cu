@@ -5,7 +5,8 @@
 #include <ATen/ATen.h>
 #include <ATen/cuda/CUDAContext.h>
 
-#include <THC/THC.h>
+// VLN: #include <THC/THC.h>
+#include "common.hpp"
 #include <THC/THCAtomics.cuh>
 #include <THC/THCDeviceUtils.cuh>
 
@@ -117,7 +118,7 @@ at::Tensor SigmoidFocalLoss_forward_cuda(
   auto losses_size = num_samples * logits.size(1);
   cudaStream_t stream = at::cuda::getCurrentCUDAStream();
 
-  dim3 grid(std::min(THCCeilDiv(losses_size, 512L), 4096L));
+  dim3 grid(std::min(THCCeilDiv(static_cast<int64_t>(losses_size), static_cast<int64_t>(512)), 4096L));
   dim3 block(512);
 
   if (losses.numel() == 0) {
@@ -161,7 +162,7 @@ at::Tensor SigmoidFocalLoss_backward_cuda(
   auto d_logits_size = num_samples * logits.size(1);
   cudaStream_t stream = at::cuda::getCurrentCUDAStream();
 
-  dim3 grid(std::min(THCCeilDiv(d_logits_size, 512L), 4096L));
+  dim3 grid(std::min(THCCeilDiv(static_cast<int64_t>(d_logits_size), static_cast<int64_t>(512)), 4096L));
   dim3 block(512);
 
   if (d_logits.numel() == 0) {

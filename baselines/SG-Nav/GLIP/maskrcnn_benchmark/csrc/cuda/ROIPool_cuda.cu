@@ -2,7 +2,8 @@
 #include <ATen/ATen.h>
 #include <ATen/cuda/CUDAContext.h>
 
-#include <THC/THC.h>
+// VLN: #include <THC/THC.h>
+#include "common.hpp"
 #include <THC/THCAtomics.cuh>
 #include <THC/THCDeviceUtils.cuh>
 
@@ -126,7 +127,7 @@ std::tuple<at::Tensor, at::Tensor> ROIPool_forward_cuda(const at::Tensor& input,
 
   cudaStream_t stream = at::cuda::getCurrentCUDAStream();
 
-  dim3 grid(std::min(THCCeilDiv(output_size, 512L), 4096L));
+  dim3 grid(std::min(THCCeilDiv(static_cast<int64_t>(output_size), static_cast<int64_t>(512)), 4096L));
   dim3 block(512);
 
   if (output.numel() == 0) {
@@ -173,7 +174,7 @@ at::Tensor ROIPool_backward_cuda(const at::Tensor& grad,
 
   cudaStream_t stream = at::cuda::getCurrentCUDAStream();
 
-  dim3 grid(std::min(THCCeilDiv(grad.numel(), 512L), 4096L));
+  dim3 grid(std::min(THCCeilDiv(static_cast<int64_t>(grad.numel()), static_cast<int64_t>(512)), 4096L));
   dim3 block(512);
 
   // handle possibly empty gradients
