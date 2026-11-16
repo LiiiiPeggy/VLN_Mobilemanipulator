@@ -1,0 +1,8 @@
+category,n,success,sr_proxy,wrong_stop,no_search_best,explore_no_goal_after_search,other_fail,has_label0,has_search_best
+bed,2,2,1.0,0,0,0,0,2,2
+chair,5,4,0.8,1,0,0,0,5,5
+plant,6,1,0.1667,1,4,0,0,4,2
+sofa,4,1,0.25,2,1,0,0,3,3
+toilet,3,0,0.0,1,1,1,0,1,1
+tv_monitor,4,0,0.0,0,4,0,0,1,0
+__ALL_micro__,24,8,0.3333,5,10,1,0,16,13

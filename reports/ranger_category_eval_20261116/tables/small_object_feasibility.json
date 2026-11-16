@@ -1,0 +1,191 @@
+{
+  "objectnav_goal_categories": {
+    "bed": 165,
+    "toilet": 166,
+    "tv_monitor": 135,
+    "chair": 195,
+    "sofa": 187,
+    "plant": 152
+  },
+  "objectnav_has_cup_goal": false,
+  "semantic_cup_like_label_counts": {
+    "coffee mug": 5,
+    "cup": 7,
+    "mug": 6,
+    "pen cup": 2
+  },
+  "semantic_small_like_top": [
+    [
+      "book",
+      419
+    ],
+    [
+      "vase",
+      72
+    ],
+    [
+      "glass",
+      58
+    ],
+    [
+      "flower vase",
+      49
+    ],
+    [
+      "bottle",
+      43
+    ],
+    [
+      "bowl",
+      37
+    ],
+    [
+      "telephone",
+      27
+    ],
+    [
+      "plate",
+      27
+    ],
+    [
+      "window glass",
+      24
+    ],
+    [
+      "bottle of detergent",
+      17
+    ],
+    [
+      "remote control",
+      15
+    ],
+    [
+      "bowl of fruit",
+      13
+    ],
+    [
+      "soap bottle",
+      11
+    ],
+    [
+      "bottle of soap",
+      10
+    ],
+    [
+      "book rack",
+      7
+    ],
+    [
+      "cup",
+      7
+    ],
+    [
+      "decorative plate",
+      6
+    ],
+    [
+      "mug",
+      6
+    ],
+    [
+      "sliding glass door",
+      5
+    ],
+    [
+      "coffee mug",
+      5
+    ],
+    [
+      "laptop",
+      5
+    ],
+    [
+      "wine bottle",
+      5
+    ],
+    [
+      "fruit bowl",
+      4
+    ],
+    [
+      "shower glass",
+      4
+    ],
+    [
+      "sauna bowl",
+      4
+    ],
+    [
+      "bathroom glass",
+      3
+    ],
+    [
+      "decorative bowl",
+      2
+    ],
+    [
+      "stained glass",
+      2
+    ],
+    [
+      "pen cup",
+      2
+    ],
+    [
+      "cook book",
+      2
+    ]
+  ],
+  "n_objectnav_scenes_with_cup_like_semantics": 8,
+  "cup_like_scenes": [
+    "CrMo8WxCyVb",
+    "TEEsavR23oF",
+    "VBzV5z6i1WS",
+    "a8BtkwhxdRV",
+    "bxsVRursffK",
+    "q5QZSEeHe5g",
+    "svBbv1Pavdk",
+    "wcojb4TFT35"
+  ],
+  "per_scene_cup_like": {
+    "CrMo8WxCyVb": {
+      "coffee mug": 4
+    },
+    "TEEsavR23oF": {
+      "coffee mug": 1
+    },
+    "VBzV5z6i1WS": {
+      "cup": 3
+    },
+    "a8BtkwhxdRV": {
+      "mug": 2
+    },
+    "bxsVRursffK": {
+      "cup": 2
+    },
+    "q5QZSEeHe5g": {
+      "pen cup": 1
+    },
+    "svBbv1Pavdk": {
+      "mug": 3
+    },
+    "wcojb4TFT35": {
+      "pen cup": 1,
+      "mug": 1,
+      "cup": 2
+    }
+  },
+  "evaluability": {
+    "has_mesh_geometry": true,
+    "has_objectnav_episode_goals_viewpoints": false,
+    "has_official_success_protocol_for_cup": false,
+    "verdict": "NOT_TASK_READY: semantic instances exist in a minority of val scenes, but HM3D ObjectNav v2 provides neither cup goals nor view_points. Do not treat adding a category string as a new task. A separate minimal data-construction proposal is required (instance IDs, view_points or EE confirmation envelope, spawn checks)."
+  },
+  "minimal_data_construction_if_needed": [
+    "Enumerate semantic instance IDs for cup/mug in selected scenes (read-only).",
+    "Define evaluable goal: either hand-authored view_points near instance, or an EE/camera observability envelope \u2014 not base-only ObjectNav radius alone.",
+    "Do not insert foreign meshes into HM3D; prefer existing semantic geometry.",
+    "Keep cup tasks out of the 120-ep ObjectNav independent list until goals exist.",
+    "Observation-condition labels (height/occlusion/ambiguity) must be annotatable on the same instances before claiming arm benefit."
+  ]
+}

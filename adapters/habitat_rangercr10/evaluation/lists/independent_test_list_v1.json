@@ -1,0 +1,4161 @@
+{
+  "name": "ranger_independent_hm3d_objectnav_v1",
+  "created": "2026-11-16",
+  "task": "ObjectNav-HM3D-v2-val",
+  "robot_scale": 0.7,
+  "scale_tag": "scaled_robot_proxy_070",
+  "success_distance_m": 1.0,
+  "distance_to": "VIEW_POINTS",
+  "spl": "N/A_no_matched_geodesic_for_ranger_footprint",
+  "per_category_target": 20,
+  "n_selected": 120,
+  "category_notes": {
+    "chair": {
+      "target": 20,
+      "selected": 20,
+      "shortfall": 0,
+      "unique_scenes": 20,
+      "unique_instances": 20
+    },
+    "bed": {
+      "target": 20,
+      "selected": 20,
+      "shortfall": 0,
+      "unique_scenes": 20,
+      "unique_instances": 20
+    },
+    "sofa": {
+      "target": 20,
+      "selected": 20,
+      "shortfall": 0,
+      "unique_scenes": 20,
+      "unique_instances": 20
+    },
+    "plant": {
+      "target": 20,
+      "selected": 20,
+      "shortfall": 0,
+      "unique_scenes": 20,
+      "unique_instances": 20
+    },
+    "toilet": {
+      "target": 20,
+      "selected": 20,
+      "shortfall": 0,
+      "unique_scenes": 20,
+      "unique_instances": 20
+    },
+    "tv_monitor": {
+      "target": 20,
+      "selected": 20,
+      "shortfall": 0,
+      "unique_scenes": 20,
+      "unique_instances": 20
+    }
+  },
+  "selection_rules": [
+    "Up to N episodes per concrete category (chair/bed/sofa/plant/toilet/tv_monitor).",
+    "Do not duplicate the same (scene, category, closest_goal_object_id).",
+    "Do not pad by repeating instances when shortfall remains.",
+    "Prefer scenes outside the 24-ep development set when possible.",
+    "force_spawn_json left null until spawn validation (independent of algo score).",
+    "large_furniture is a report grouping only; not double-counted in micro SR.",
+    "cup/small-object is NOT in ObjectNav goals; see small_object_feasibility.md."
+  ],
+  "overlap_with_dev24": {
+    "dev24_n": 24,
+    "dev24_scenes": [
+      "Dd4bFSTQ8gi",
+      "HY1NcmCgn3n",
+      "LT9Jq6dN3Ea",
+      "eF36g7L6Z9M",
+      "k1cupFYWXJ6",
+      "yr17PDCnDDW"
+    ],
+    "n_episode_key_overlap": 0,
+    "n_scene_overlap": 0,
+    "note": "Independent list is not claimed scene-disjoint from dev24; overlaps are recorded."
+  },
+  "episodes": [
+    {
+      "scene_filter": "svBbv1Pavdk",
+      "category": "chair",
+      "episode_id": "0",
+      "closest_goal_object_id": 274,
+      "geodesic_distance": 5.94153,
+      "euclidean_distance": 3.21896,
+      "n_view_points": 708,
+      "dataset_start_position": [
+        4.39009,
+        0.02755,
+        6.4486
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.26181,
+        0,
+        0.96512
+      ],
+      "goal_position": [
+        6.7831,
+        0.41706,
+        2.23792
+      ],
+      "object_name": "chair_274",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "svBbv1Pavdk_chair_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "cvZr5TUy5C5",
+      "category": "chair",
+      "episode_id": "1",
+      "closest_goal_object_id": 621,
+      "geodesic_distance": 1.84669,
+      "euclidean_distance": 1.50853,
+      "n_view_points": 646,
+      "dataset_start_position": [
+        2.20218,
+        -3.02784,
+        3.4345
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.58875,
+        0,
+        -0.80831
+      ],
+      "goal_position": [
+        1.02225,
+        -2.5911,
+        6.18946
+      ],
+      "object_name": "armchair_621",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "cvZr5TUy5C5_chair_1",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "ziup5kvtCCR",
+      "category": "chair",
+      "episode_id": "0",
+      "closest_goal_object_id": 16,
+      "geodesic_distance": 5.01825,
+      "euclidean_distance": 4.76534,
+      "n_view_points": 578,
+      "dataset_start_position": [
+        4.53709,
+        0.02122,
+        -0.59369
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.28562,
+        0,
+        0.95834
+      ],
+      "goal_position": [
+        -0.23046,
+        0.40304,
+        3.75196
+      ],
+      "object_name": "armchair_16",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "ziup5kvtCCR_chair_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "VBzV5z6i1WS",
+      "category": "chair",
+      "episode_id": "1",
+      "closest_goal_object_id": 517,
+      "geodesic_distance": 1.15497,
+      "euclidean_distance": 1.07635,
+      "n_view_points": 561,
+      "dataset_start_position": [
+        7.62878,
+        0.04544,
+        -5.50917
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.94978,
+        0,
+        -0.31291
+      ],
+      "goal_position": [
+        5.11156,
+        0.52168,
+        -6.3345
+      ],
+      "object_name": "sofa chair_517",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "VBzV5z6i1WS_chair_1",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "q3zU7Yy5E5s",
+      "category": "chair",
+      "episode_id": "0",
+      "closest_goal_object_id": 118,
+      "geodesic_distance": 3.77841,
+      "euclidean_distance": 3.35805,
+      "n_view_points": 556,
+      "dataset_start_position": [
+        -9.55236,
+        0.03522,
+        -2.28177
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.90295,
+        0,
+        -0.42975
+      ],
+      "goal_position": [
+        -6.44847,
+        0.42282,
+        0.36072
+      ],
+      "object_name": "armchair_118",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "q3zU7Yy5E5s_chair_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "wcojb4TFT35",
+      "category": "chair",
+      "episode_id": "2",
+      "closest_goal_object_id": 428,
+      "geodesic_distance": 4.2754,
+      "euclidean_distance": 3.99659,
+      "n_view_points": 494,
+      "dataset_start_position": [
+        1.4114,
+        0.04492,
+        -12.56338
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.86033,
+        0,
+        0.50973
+      ],
+      "goal_position": [
+        -2.8242,
+        0.4501,
+        -8.8267
+      ],
+      "object_name": "armchair_428",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "wcojb4TFT35_chair_2",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "DYehNKdT76V",
+      "category": "chair",
+      "episode_id": "0",
+      "closest_goal_object_id": 178,
+      "geodesic_distance": 3.73984,
+      "euclidean_distance": 3.14453,
+      "n_view_points": 453,
+      "dataset_start_position": [
+        -7.56827,
+        0.03651,
+        -2.74846
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.6585,
+        0,
+        -0.75258
+      ],
+      "goal_position": [
+        -4.65765,
+        0.4425,
+        -4.93401
+      ],
+      "object_name": "armchair_178",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "DYehNKdT76V_chair_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "Nfvxx8J5NCo",
+      "category": "chair",
+      "episode_id": "3",
+      "closest_goal_object_id": 210,
+      "geodesic_distance": 3.05054,
+      "euclidean_distance": 2.70283,
+      "n_view_points": 443,
+      "dataset_start_position": [
+        -2.38982,
+        0.03086,
+        0.14805
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.39833,
+        0,
+        0.91724
+      ],
+      "goal_position": [
+        -4.33732,
+        0.58148,
+        -3.37193
+      ],
+      "object_name": "office chair_210",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "Nfvxx8J5NCo_chair_3",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "h1zeeAwLh9Z",
+      "category": "chair",
+      "episode_id": "2",
+      "closest_goal_object_id": 150,
+      "geodesic_distance": 3.46071,
+      "euclidean_distance": 2.26636,
+      "n_view_points": 440,
+      "dataset_start_position": [
+        -0.27959,
+        0.04902,
+        -0.46727
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.10002,
+        0,
+        -0.99499
+      ],
+      "goal_position": [
+        -1.85933,
+        0.49134,
+        -2.29216
+      ],
+      "object_name": "armchair_150",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "h1zeeAwLh9Z_chair_2",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "5cdEh9F2hJL",
+      "category": "chair",
+      "episode_id": "1",
+      "closest_goal_object_id": 260,
+      "geodesic_distance": 3.02676,
+      "euclidean_distance": 2.82438,
+      "n_view_points": 427,
+      "dataset_start_position": [
+        9.45158,
+        0.0184,
+        -0.98265
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.77981,
+        0,
+        -0.62602
+      ],
+      "goal_position": [
+        7.7828,
+        0.50886,
+        2.63909
+      ],
+      "object_name": "dining chair_260",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "5cdEh9F2hJL_chair_1",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "bxsVRursffK",
+      "category": "chair",
+      "episode_id": "0",
+      "closest_goal_object_id": 318,
+      "geodesic_distance": 4.19995,
+      "euclidean_distance": 3.94048,
+      "n_view_points": 414,
+      "dataset_start_position": [
+        -8.67101,
+        -3.07533,
+        -4.48505
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.36425,
+        0,
+        -0.9313
+      ],
+      "goal_position": [
+        -4.57213,
+        -2.65734,
+        -0.91396
+      ],
+      "object_name": "dining chair_318",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "bxsVRursffK_chair_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "a8BtkwhxdRV",
+      "category": "chair",
+      "episode_id": "1",
+      "closest_goal_object_id": 622,
+      "geodesic_distance": 1.25826,
+      "euclidean_distance": 1.18675,
+      "n_view_points": 384,
+      "dataset_start_position": [
+        0.27,
+        -1.80919,
+        -0.82524
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.8948,
+        0,
+        -0.44647
+      ],
+      "goal_position": [
+        -2.1217,
+        -1.33215,
+        0.13581
+      ],
+      "object_name": "chair_622",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "a8BtkwhxdRV_chair_1",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "p53SfW6mjZe",
+      "category": "chair",
+      "episode_id": "0",
+      "closest_goal_object_id": 397,
+      "geodesic_distance": 4.36524,
+      "euclidean_distance": 4.12008,
+      "n_view_points": 365,
+      "dataset_start_position": [
+        -6.48358,
+        0.00481,
+        5.51606
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.59596,
+        0,
+        0.80301
+      ],
+      "goal_position": [
+        -1.14767,
+        0.43976,
+        5.69878
+      ],
+      "object_name": "dining chair_397",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "p53SfW6mjZe_chair_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "mv2HUxq3B53",
+      "category": "chair",
+      "episode_id": "3",
+      "closest_goal_object_id": 97,
+      "geodesic_distance": 7.62546,
+      "euclidean_distance": 6.79785,
+      "n_view_points": 360,
+      "dataset_start_position": [
+        10.40147,
+        0.05035,
+        -2.16336
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.53288,
+        0,
+        0.84619
+      ],
+      "goal_position": [
+        4.90138,
+        0.45286,
+        4.0536
+      ],
+      "object_name": "chair_97",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "mv2HUxq3B53_chair_3",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "BAbdmeyTvMZ",
+      "category": "chair",
+      "episode_id": "1",
+      "closest_goal_object_id": 131,
+      "geodesic_distance": 4.49623,
+      "euclidean_distance": 3.88447,
+      "n_view_points": 351,
+      "dataset_start_position": [
+        8.58732,
+        0.01564,
+        5.42242
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.97259,
+        0,
+        -0.23251
+      ],
+      "goal_position": [
+        5.39182,
+        0.53182,
+        1.2432
+      ],
+      "object_name": "chair_131",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "BAbdmeyTvMZ_chair_1",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "TEEsavR23oF",
+      "category": "chair",
+      "episode_id": "4",
+      "closest_goal_object_id": 318,
+      "geodesic_distance": 1.05396,
+      "euclidean_distance": 0.93814,
+      "n_view_points": 336,
+      "dataset_start_position": [
+        -5.01021,
+        0.01338,
+        -0.57456
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.88199,
+        0,
+        -0.47126
+      ],
+      "goal_position": [
+        -4.9469,
+        0.47657,
+        -2.11414
+      ],
+      "object_name": "chair_318",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "TEEsavR23oF_chair_4",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "bCPU9suPUw9",
+      "category": "chair",
+      "episode_id": "2",
+      "closest_goal_object_id": 344,
+      "geodesic_distance": 3.19006,
+      "euclidean_distance": 2.36387,
+      "n_view_points": 332,
+      "dataset_start_position": [
+        -0.04582,
+        -2.66978,
+        0.65313
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.92887,
+        0,
+        0.37041
+      ],
+      "goal_position": [
+        3.26639,
+        -2.16005,
+        1.81431
+      ],
+      "object_name": "armchair_344",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "bCPU9suPUw9_chair_2",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "6s7QHgap2fW",
+      "category": "chair",
+      "episode_id": "0",
+      "closest_goal_object_id": 253,
+      "geodesic_distance": 5.29849,
+      "euclidean_distance": 4.88419,
+      "n_view_points": 331,
+      "dataset_start_position": [
+        6.25356,
+        2.84944,
+        -3.22954
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.61451,
+        0,
+        -0.78891
+      ],
+      "goal_position": [
+        0.59482,
+        3.23739,
+        -0.38878
+      ],
+      "object_name": "armchair_253",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "6s7QHgap2fW_chair_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "QaLdnwvtxbs",
+      "category": "chair",
+      "episode_id": "0",
+      "closest_goal_object_id": 174,
+      "geodesic_distance": 3.96403,
+      "euclidean_distance": 3.6301,
+      "n_view_points": 328,
+      "dataset_start_position": [
+        -4.85719,
+        0.03574,
+        -1.92986
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.54604,
+        0,
+        0.83776
+      ],
+      "goal_position": [
+        -1.04082,
+        0.45564,
+        1.38194
+      ],
+      "object_name": "chair_174",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "QaLdnwvtxbs_chair_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "zt1RVoi7PcG",
+      "category": "chair",
+      "episode_id": "0",
+      "closest_goal_object_id": 730,
+      "geodesic_distance": 1.57754,
+      "euclidean_distance": 1.47562,
+      "n_view_points": 295,
+      "dataset_start_position": [
+        -0.27738,
+        -3.03706,
+        1.46204
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.98398,
+        0,
+        -0.17828
+      ],
+      "goal_position": [
+        -1.91882,
+        -2.52858,
+        3.48
+      ],
+      "object_name": "chair_730",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "zt1RVoi7PcG_chair_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "GLAQ4DNUx5U",
+      "category": "bed",
+      "episode_id": "2",
+      "closest_goal_object_id": 618,
+      "geodesic_distance": 3.17073,
+      "euclidean_distance": 2.8115,
+      "n_view_points": 929,
+      "dataset_start_position": [
+        -3.27051,
+        1.20711,
+        7.39412
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.85086,
+        0,
+        0.52539
+      ],
+      "goal_position": [
+        -0.00384,
+        1.51937,
+        3.29281
+      ],
+      "object_name": "bed_618",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "GLAQ4DNUx5U_bed_2",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "y9hTuugGdiq",
+      "category": "bed",
+      "episode_id": "3",
+      "closest_goal_object_id": 26,
+      "geodesic_distance": 3.21211,
+      "euclidean_distance": 2.67798,
+      "n_view_points": 817,
+      "dataset_start_position": [
+        -0.72297,
+        3.16139,
+        -0.29969
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.16647,
+        0,
+        0.98605
+      ],
+      "goal_position": [
+        0.56234,
+        3.73183,
+        4.56588
+      ],
+      "object_name": "bed_26",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "y9hTuugGdiq_bed_3",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "CrMo8WxCyVb",
+      "category": "bed",
+      "episode_id": "1",
+      "closest_goal_object_id": 72,
+      "geodesic_distance": 3.40472,
+      "euclidean_distance": 2.47881,
+      "n_view_points": 807,
+      "dataset_start_position": [
+        -2.85415,
+        0.01869,
+        2.61563
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.99472,
+        0,
+        0.10266
+      ],
+      "goal_position": [
+        -6.38531,
+        1.05097,
+        1.88177
+      ],
+      "object_name": "bed_72",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "CrMo8WxCyVb_bed_1",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "BAbdmeyTvMZ",
+      "category": "bed",
+      "episode_id": "5",
+      "closest_goal_object_id": 113,
+      "geodesic_distance": 2.33395,
+      "euclidean_distance": 2.1552,
+      "n_view_points": 773,
+      "dataset_start_position": [
+        3.99174,
+        0.04521,
+        1.07885
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.26088,
+        0,
+        0.96537
+      ],
+      "goal_position": [
+        8.33823,
+        1.13163,
+        1.44113
+      ],
+      "object_name": "bed_113",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "BAbdmeyTvMZ_bed_5",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "h1zeeAwLh9Z",
+      "category": "bed",
+      "episode_id": "1",
+      "closest_goal_object_id": 628,
+      "geodesic_distance": 6.78115,
+      "euclidean_distance": 5.63535,
+      "n_view_points": 757,
+      "dataset_start_position": [
+        9.89318,
+        2.49902,
+        -1.82384
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.15774,
+        0,
+        -0.98748
+      ],
+      "goal_position": [
+        7.41441,
+        3.1382,
+        -8.24816
+      ],
+      "object_name": "bed_628",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "h1zeeAwLh9Z_bed_1",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "4ok3usBNeis",
+      "category": "bed",
+      "episode_id": "2",
+      "closest_goal_object_id": 417,
+      "geodesic_distance": 8.0774,
+      "euclidean_distance": 6.97831,
+      "n_view_points": 746,
+      "dataset_start_position": [
+        8.89683,
+        2.06447,
+        0.4201
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.87987,
+        0,
+        -0.47522
+      ],
+      "goal_position": [
+        0.50089,
+        2.40923,
+        0.75756
+      ],
+      "object_name": "bed_417",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "4ok3usBNeis_bed_2",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "p53SfW6mjZe",
+      "category": "bed",
+      "episode_id": "4",
+      "closest_goal_object_id": 194,
+      "geodesic_distance": 8.65511,
+      "euclidean_distance": 6.51852,
+      "n_view_points": 744,
+      "dataset_start_position": [
+        -6.64836,
+        0.00481,
+        6.06404
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.89761,
+        0,
+        0.44079
+      ],
+      "goal_position": [
+        -14.06525,
+        0.64305,
+        4.28752
+      ],
+      "object_name": "bed_194",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "p53SfW6mjZe_bed_4",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "bxsVRursffK",
+      "category": "bed",
+      "episode_id": "0",
+      "closest_goal_object_id": 91,
+      "geodesic_distance": 4.19596,
+      "euclidean_distance": 3.64097,
+      "n_view_points": 722,
+      "dataset_start_position": [
+        -2.12554,
+        0.07468,
+        -5.93795
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.57527,
+        0,
+        -0.81797
+      ],
+      "goal_position": [
+        -1.01817,
+        0.75205,
+        -0.44268
+      ],
+      "object_name": "bed_91",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "bxsVRursffK_bed_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "5cdEh9F2hJL",
+      "category": "bed",
+      "episode_id": "0",
+      "closest_goal_object_id": 176,
+      "geodesic_distance": 4.42319,
+      "euclidean_distance": 4.14789,
+      "n_view_points": 678,
+      "dataset_start_position": [
+        -5.67455,
+        0.08406,
+        3.85452
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.1066,
+        0,
+        -0.9943
+      ],
+      "goal_position": [
+        0.44663,
+        0.72263,
+        3.52791
+      ],
+      "object_name": "bed_176",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "5cdEh9F2hJL_bed_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "6s7QHgap2fW",
+      "category": "bed",
+      "episode_id": "0",
+      "closest_goal_object_id": 252,
+      "geodesic_distance": 1.17592,
+      "euclidean_distance": 0.94479,
+      "n_view_points": 669,
+      "dataset_start_position": [
+        4.1776,
+        2.84944,
+        -0.74142
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.98969,
+        0,
+        -0.1432
+      ],
+      "goal_position": [
+        2.44947,
+        3.34836,
+        -2.4631
+      ],
+      "object_name": "bed_252",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "6s7QHgap2fW_bed_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "TEEsavR23oF",
+      "category": "bed",
+      "episode_id": "0",
+      "closest_goal_object_id": 516,
+      "geodesic_distance": 10.7966,
+      "euclidean_distance": 10.09612,
+      "n_view_points": 668,
+      "dataset_start_position": [
+        -9.17427,
+        0.01338,
+        -1.29954
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.84723,
+        0,
+        0.53123
+      ],
+      "goal_position": [
+        1.7875,
+        0.81575,
+        -7.53384
+      ],
+      "object_name": "bed_516",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "TEEsavR23oF_bed_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "cvZr5TUy5C5",
+      "category": "bed",
+      "episode_id": "0",
+      "closest_goal_object_id": 342,
+      "geodesic_distance": 3.01223,
+      "euclidean_distance": 2.49934,
+      "n_view_points": 666,
+      "dataset_start_position": [
+        -9.29607,
+        3.07216,
+        2.58785
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.32936,
+        0,
+        -0.94421
+      ],
+      "goal_position": [
+        -5.66157,
+        3.98741,
+        6.21743
+      ],
+      "object_name": "bed_342",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "cvZr5TUy5C5_bed_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "ziup5kvtCCR",
+      "category": "bed",
+      "episode_id": "1",
+      "closest_goal_object_id": 164,
+      "geodesic_distance": 1.55505,
+      "euclidean_distance": 1.0683,
+      "n_view_points": 665,
+      "dataset_start_position": [
+        -3.60716,
+        0.02122,
+        2.77696
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.85387,
+        0,
+        0.52049
+      ],
+      "goal_position": [
+        -2.57276,
+        0.79158,
+        5.86095
+      ],
+      "object_name": "bed_164",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "ziup5kvtCCR_bed_1",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "QaLdnwvtxbs",
+      "category": "bed",
+      "episode_id": "1",
+      "closest_goal_object_id": 20,
+      "geodesic_distance": 5.50588,
+      "euclidean_distance": 3.87768,
+      "n_view_points": 641,
+      "dataset_start_position": [
+        1.73861,
+        0.03574,
+        2.28409
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.92321,
+        0,
+        -0.3843
+      ],
+      "goal_position": [
+        5.53368,
+        0.67629,
+        0.21397
+      ],
+      "object_name": "bed_20",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "QaLdnwvtxbs_bed_1",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "bCPU9suPUw9",
+      "category": "bed",
+      "episode_id": "2",
+      "closest_goal_object_id": 71,
+      "geodesic_distance": 1.14684,
+      "euclidean_distance": 0.98717,
+      "n_view_points": 609,
+      "dataset_start_position": [
+        0.77066,
+        2.88022,
+        1.54056
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.99921,
+        0,
+        0.03982
+      ],
+      "goal_position": [
+        1.25548,
+        3.28303,
+        -1.12685
+      ],
+      "object_name": "bed_71",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "bCPU9suPUw9_bed_2",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "Nfvxx8J5NCo",
+      "category": "bed",
+      "episode_id": "1",
+      "closest_goal_object_id": 110,
+      "geodesic_distance": 3.87065,
+      "euclidean_distance": 3.00928,
+      "n_view_points": 575,
+      "dataset_start_position": [
+        -13.88638,
+        0.05421,
+        1.82929
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.3417,
+        0,
+        -0.93981
+      ],
+      "goal_position": [
+        -13.50572,
+        0.80356,
+        5.03756
+      ],
+      "object_name": "bed_110",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "Nfvxx8J5NCo_bed_1",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "q5QZSEeHe5g",
+      "category": "bed",
+      "episode_id": "0",
+      "closest_goal_object_id": 540,
+      "geodesic_distance": 7.17069,
+      "euclidean_distance": 6.86438,
+      "n_view_points": 562,
+      "dataset_start_position": [
+        6.31059,
+        0.05388,
+        1.96543
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.43326,
+        0,
+        -0.90127
+      ],
+      "goal_position": [
+        1.54284,
+        0.45551,
+        -4.88371
+      ],
+      "object_name": "bed_540",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "q5QZSEeHe5g_bed_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "mv2HUxq3B53",
+      "category": "bed",
+      "episode_id": "0",
+      "closest_goal_object_id": 552,
+      "geodesic_distance": 3.55099,
+      "euclidean_distance": 2.48021,
+      "n_view_points": 549,
+      "dataset_start_position": [
+        1.39429,
+        0.00035,
+        10.22993
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.97301,
+        0,
+        0.23075
+      ],
+      "goal_position": [
+        2.39935,
+        1.13335,
+        14.82003
+      ],
+      "object_name": "bed_552",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "mv2HUxq3B53_bed_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "wcojb4TFT35",
+      "category": "bed",
+      "episode_id": "1",
+      "closest_goal_object_id": 310,
+      "geodesic_distance": 2.73977,
+      "euclidean_distance": 2.20877,
+      "n_view_points": 537,
+      "dataset_start_position": [
+        1.62683,
+        2.49492,
+        -15.02184
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.712,
+        0,
+        -0.70218
+      ],
+      "goal_position": [
+        -1.32721,
+        2.82694,
+        -17.69433
+      ],
+      "object_name": "bed_310",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "wcojb4TFT35_bed_1",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "svBbv1Pavdk",
+      "category": "bed",
+      "episode_id": "0",
+      "closest_goal_object_id": 144,
+      "geodesic_distance": 5.50728,
+      "euclidean_distance": 2.45512,
+      "n_view_points": 524,
+      "dataset_start_position": [
+        8.61117,
+        0.02755,
+        2.9802
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.92715,
+        0,
+        -0.37468
+      ],
+      "goal_position": [
+        9.30879,
+        0.39098,
+        6.4817
+      ],
+      "object_name": "bed_144",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "svBbv1Pavdk_bed_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "Nfvxx8J5NCo",
+      "category": "sofa",
+      "episode_id": "0",
+      "closest_goal_object_id": 34,
+      "geodesic_distance": 10.32692,
+      "euclidean_distance": 3.52054,
+      "n_view_points": 1425,
+      "dataset_start_position": [
+        -5.2247,
+        0.03086,
+        -2.59347
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.61262,
+        0,
+        -0.79038
+      ],
+      "goal_position": [
+        -10.74877,
+        0.46443,
+        -2.56287
+      ],
+      "object_name": "couch_34",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "Nfvxx8J5NCo_sofa_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "cvZr5TUy5C5",
+      "category": "sofa",
+      "episode_id": "0",
+      "closest_goal_object_id": 709,
+      "geodesic_distance": 4.16372,
+      "euclidean_distance": 3.72808,
+      "n_view_points": 1365,
+      "dataset_start_position": [
+        -3.86376,
+        -3.02784,
+        3.41253
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.58886,
+        0,
+        -0.80824
+      ],
+      "goal_position": [
+        -8.68924,
+        -2.605,
+        8.09097
+      ],
+      "object_name": "couch_709",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "cvZr5TUy5C5_sofa_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "mv2HUxq3B53",
+      "category": "sofa",
+      "episode_id": "0",
+      "closest_goal_object_id": 84,
+      "geodesic_distance": 9.42959,
+      "euclidean_distance": 7.63032,
+      "n_view_points": 1332,
+      "dataset_start_position": [
+        -5.44086,
+        0.01207,
+        6.31782
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.60764,
+        0,
+        -0.79421
+      ],
+      "goal_position": [
+        3.89104,
+        0.48495,
+        7.55614
+      ],
+      "object_name": "couch_84",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "mv2HUxq3B53_sofa_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "ziup5kvtCCR",
+      "category": "sofa",
+      "episode_id": "0",
+      "closest_goal_object_id": 40,
+      "geodesic_distance": 9.30293,
+      "euclidean_distance": 6.61483,
+      "n_view_points": 1246,
+      "dataset_start_position": [
+        -6.00971,
+        0.02122,
+        5.68779
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.33762,
+        0,
+        0.94128
+      ],
+      "goal_position": [
+        1.73032,
+        0.3679,
+        5.45585
+      ],
+      "object_name": "sofa_40",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "ziup5kvtCCR_sofa_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "bxsVRursffK",
+      "category": "sofa",
+      "episode_id": "0",
+      "closest_goal_object_id": 325,
+      "geodesic_distance": 2.076,
+      "euclidean_distance": 1.76875,
+      "n_view_points": 1061,
+      "dataset_start_position": [
+        -7.84435,
+        -3.02532,
+        -5.29995
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.18353,
+        0,
+        0.98301
+      ],
+      "goal_position": [
+        -7.96508,
+        -2.66408,
+        -1.66341
+      ],
+      "object_name": "l-shaped sofa_325",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "bxsVRursffK_sofa_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "5cdEh9F2hJL",
+      "category": "sofa",
+      "episode_id": "1",
+      "closest_goal_object_id": 243,
+      "geodesic_distance": 5.7649,
+      "euclidean_distance": 4.23205,
+      "n_view_points": 1012,
+      "dataset_start_position": [
+        -1.38868,
+        0.0184,
+        3.88602
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.26597,
+        0,
+        0.96398
+      ],
+      "goal_position": [
+        4.50048,
+        0.48973,
+        4.54839
+      ],
+      "object_name": "l-shaped sofa_243",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "5cdEh9F2hJL_sofa_1",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "y9hTuugGdiq",
+      "category": "sofa",
+      "episode_id": "0",
+      "closest_goal_object_id": 228,
+      "geodesic_distance": 8.93151,
+      "euclidean_distance": 6.96946,
+      "n_view_points": 963,
+      "dataset_start_position": [
+        -4.44908,
+        0.01139,
+        1.50325
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.41255,
+        0,
+        -0.91093
+      ],
+      "goal_position": [
+        4.87166,
+        0.40273,
+        0.02588
+      ],
+      "object_name": "sofa_228",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "y9hTuugGdiq_sofa_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "bCPU9suPUw9",
+      "category": "sofa",
+      "episode_id": "1",
+      "closest_goal_object_id": 207,
+      "geodesic_distance": 4.75251,
+      "euclidean_distance": 4.22491,
+      "n_view_points": 916,
+      "dataset_start_position": [
+        -0.95856,
+        0.06824,
+        -0.2272
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.98568,
+        0,
+        -0.16863
+      ],
+      "goal_position": [
+        6.17136,
+        0.49611,
+        -0.97383
+      ],
+      "object_name": "couch_207",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "bCPU9suPUw9_sofa_1",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "GLAQ4DNUx5U",
+      "category": "sofa",
+      "episode_id": "0",
+      "closest_goal_object_id": 432,
+      "geodesic_distance": 9.49325,
+      "euclidean_distance": 6.05671,
+      "n_view_points": 861,
+      "dataset_start_position": [
+        -1.51051,
+        -1.59289,
+        5.03157
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.56198,
+        0,
+        0.82715
+      ],
+      "goal_position": [
+        -9.39836,
+        -1.12913,
+        4.53704
+      ],
+      "object_name": "couch_432",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "GLAQ4DNUx5U_sofa_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "q5QZSEeHe5g",
+      "category": "sofa",
+      "episode_id": "2",
+      "closest_goal_object_id": 936,
+      "geodesic_distance": 3.17036,
+      "euclidean_distance": 2.5803,
+      "n_view_points": 762,
+      "dataset_start_position": [
+        4.79189,
+        0.01965,
+        -2.11943
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.59515,
+        0,
+        -0.80362
+      ],
+      "goal_position": [
+        1.37339,
+        0.47559,
+        0.96206
+      ],
+      "object_name": "sofa_936",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "q5QZSEeHe5g_sofa_2",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "DYehNKdT76V",
+      "category": "sofa",
+      "episode_id": "0",
+      "closest_goal_object_id": 180,
+      "geodesic_distance": 6.38754,
+      "euclidean_distance": 3.36277,
+      "n_view_points": 701,
+      "dataset_start_position": [
+        -7.0394,
+        0.03651,
+        -2.57708
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.55319,
+        0,
+        0.83305
+      ],
+      "goal_position": [
+        -2.55789,
+        0.43083,
+        -2.79738
+      ],
+      "object_name": "couch_180",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "DYehNKdT76V_sofa_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "BAbdmeyTvMZ",
+      "category": "sofa",
+      "episode_id": "0",
+      "closest_goal_object_id": 204,
+      "geodesic_distance": 7.11238,
+      "euclidean_distance": 4.92365,
+      "n_view_points": 652,
+      "dataset_start_position": [
+        -2.69112,
+        0.03937,
+        0.22078
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.16462,
+        0,
+        0.98636
+      ],
+      "goal_position": [
+        2.50866,
+        0.51281,
+        3.07824
+      ],
+      "object_name": "couch_204",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "BAbdmeyTvMZ_sofa_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "p53SfW6mjZe",
+      "category": "sofa",
+      "episode_id": "4",
+      "closest_goal_object_id": 440,
+      "geodesic_distance": 15.77346,
+      "euclidean_distance": 13.50235,
+      "n_view_points": 633,
+      "dataset_start_position": [
+        -13.15486,
+        0.00481,
+        6.05744
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.52361,
+        0,
+        -0.85196
+      ],
+      "goal_position": [
+        1.66307,
+        0.43319,
+        4.77577
+      ],
+      "object_name": "couch_440",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "p53SfW6mjZe_sofa_4",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "QaLdnwvtxbs",
+      "category": "sofa",
+      "episode_id": "1",
+      "closest_goal_object_id": 185,
+      "geodesic_distance": 3.83591,
+      "euclidean_distance": 3.4248,
+      "n_view_points": 625,
+      "dataset_start_position": [
+        -3.37374,
+        0.03574,
+        -3.73804
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.40081,
+        0,
+        0.91616
+      ],
+      "goal_position": [
+        -3.96799,
+        0.48175,
+        1.87042
+      ],
+      "object_name": "sofa_185",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "QaLdnwvtxbs_sofa_1",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "4ok3usBNeis",
+      "category": "sofa",
+      "episode_id": "3",
+      "closest_goal_object_id": 269,
+      "geodesic_distance": 7.59323,
+      "euclidean_distance": 6.30494,
+      "n_view_points": 600,
+      "dataset_start_position": [
+        0.38946,
+        2.06447,
+        -0.7569
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.25591,
+        0,
+        -0.9667
+      ],
+      "goal_position": [
+        6.78317,
+        2.4709,
+        0.84202
+      ],
+      "object_name": "couch_269",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "4ok3usBNeis_sofa_3",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "h1zeeAwLh9Z",
+      "category": "sofa",
+      "episode_id": "0",
+      "closest_goal_object_id": 440,
+      "geodesic_distance": 5.59606,
+      "euclidean_distance": 4.66058,
+      "n_view_points": 534,
+      "dataset_start_position": [
+        8.48671,
+        0.00411,
+        -2.68714
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.98753,
+        0,
+        0.1574
+      ],
+      "goal_position": [
+        7.49617,
+        0.46113,
+        -8.75111
+      ],
+      "object_name": "couch_440",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "h1zeeAwLh9Z_sofa_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "TEEsavR23oF",
+      "category": "sofa",
+      "episode_id": "0",
+      "closest_goal_object_id": 275,
+      "geodesic_distance": 6.36856,
+      "euclidean_distance": 5.65569,
+      "n_view_points": 519,
+      "dataset_start_position": [
+        -1.75738,
+        0.01338,
+        -1.11783
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.99364,
+        0,
+        0.11261
+      ],
+      "goal_position": [
+        -9.24927,
+        0.51143,
+        -3.26289
+      ],
+      "object_name": "couch_275",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "TEEsavR23oF_sofa_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "zt1RVoi7PcG",
+      "category": "sofa",
+      "episode_id": "0",
+      "closest_goal_object_id": 675,
+      "geodesic_distance": 6.1935,
+      "euclidean_distance": 3.1299,
+      "n_view_points": 509,
+      "dataset_start_position": [
+        -4.48322,
+        -3.03706,
+        3.22512
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.3784,
+        0,
+        0.92564
+      ],
+      "goal_position": [
+        -3.11354,
+        -2.60259,
+        1.59086
+      ],
+      "object_name": "couch_675",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "zt1RVoi7PcG_sofa_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "wcojb4TFT35",
+      "category": "sofa",
+      "episode_id": "0",
+      "closest_goal_object_id": 340,
+      "geodesic_distance": 3.50401,
+      "euclidean_distance": 3.24885,
+      "n_view_points": 503,
+      "dataset_start_position": [
+        -1.14506,
+        -0.00508,
+        -6.21265
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.99971,
+        0,
+        -0.02395
+      ],
+      "goal_position": [
+        1.08263,
+        0.43984,
+        -1.49369
+      ],
+      "object_name": "sofa_340",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "wcojb4TFT35_sofa_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "q3zU7Yy5E5s",
+      "category": "sofa",
+      "episode_id": "0",
+      "closest_goal_object_id": 213,
+      "geodesic_distance": 3.61262,
+      "euclidean_distance": 3.29613,
+      "n_view_points": 489,
+      "dataset_start_position": [
+        -8.64774,
+        0.03522,
+        -1.29331
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.56887,
+        0,
+        0.82243
+      ],
+      "goal_position": [
+        -4.43009,
+        0.37681,
+        2.01178
+      ],
+      "object_name": "l-shaped sofa_213",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "q3zU7Yy5E5s_sofa_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "bCPU9suPUw9",
+      "category": "plant",
+      "episode_id": "0",
+      "closest_goal_object_id": 200,
+      "geodesic_distance": 6.99669,
+      "euclidean_distance": 5.90115,
+      "n_view_points": 506,
+      "dataset_start_position": [
+        -0.33546,
+        0.03289,
+        -0.88074
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.82993,
+        0,
+        -0.55786
+      ],
+      "goal_position": [
+        6.41163,
+        0.6904,
+        0.28581
+      ],
+      "object_name": "flower_200",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "bCPU9suPUw9_plant_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "h1zeeAwLh9Z",
+      "category": "plant",
+      "episode_id": "3",
+      "closest_goal_object_id": 185,
+      "geodesic_distance": 3.07563,
+      "euclidean_distance": 2.45186,
+      "n_view_points": 231,
+      "dataset_start_position": [
+        6.56412,
+        -0.00098,
+        -2.77164
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.35563,
+        0,
+        -0.93463
+      ],
+      "goal_position": [
+        8.51003,
+        0.84381,
+        0.05677
+      ],
+      "object_name": "decorative plant_185",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "h1zeeAwLh9Z_plant_3",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "5cdEh9F2hJL",
+      "category": "plant",
+      "episode_id": "0",
+      "closest_goal_object_id": 206,
+      "geodesic_distance": 2.50524,
+      "euclidean_distance": 2.17021,
+      "n_view_points": 221,
+      "dataset_start_position": [
+        5.45024,
+        0.0184,
+        -1.42015
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.85804,
+        0,
+        0.51358
+      ],
+      "goal_position": [
+        2.84042,
+        0.45527,
+        -0.65669
+      ],
+      "object_name": "flower vase_206",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "5cdEh9F2hJL_plant_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "ziup5kvtCCR",
+      "category": "plant",
+      "episode_id": "3",
+      "closest_goal_object_id": 46,
+      "geodesic_distance": 5.36384,
+      "euclidean_distance": 4.20424,
+      "n_view_points": 210,
+      "dataset_start_position": [
+        4.87566,
+        0.02122,
+        2.34776
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.54167,
+        0,
+        0.84059
+      ],
+      "goal_position": [
+        4.4102,
+        0.78457,
+        7.844
+      ],
+      "object_name": "plant_46",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "ziup5kvtCCR_plant_3",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "q5QZSEeHe5g",
+      "category": "plant",
+      "episode_id": "0",
+      "closest_goal_object_id": 1444,
+      "geodesic_distance": 3.9067,
+      "euclidean_distance": 3.25111,
+      "n_view_points": 189,
+      "dataset_start_position": [
+        2.01261,
+        -2.44804,
+        -0.07063
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.99464,
+        0,
+        -0.10344
+      ],
+      "goal_position": [
+        3.5525,
+        -0.96767,
+        -4.32417
+      ],
+      "object_name": "plant_1444",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "q5QZSEeHe5g_plant_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "mv2HUxq3B53",
+      "category": "plant",
+      "episode_id": "3",
+      "closest_goal_object_id": 288,
+      "geodesic_distance": 5.57746,
+      "euclidean_distance": 4.53144,
+      "n_view_points": 187,
+      "dataset_start_position": [
+        8.23724,
+        0.05035,
+        0.84078
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.52509,
+        0,
+        -0.85104
+      ],
+      "goal_position": [
+        3.40196,
+        1.4545,
+        -2.27661
+      ],
+      "object_name": "flower vase_288",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "mv2HUxq3B53_plant_3",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "XB4GS9ShBRE",
+      "category": "plant",
+      "episode_id": "2",
+      "closest_goal_object_id": 257,
+      "geodesic_distance": 3.64712,
+      "euclidean_distance": 3.22778,
+      "n_view_points": 132,
+      "dataset_start_position": [
+        -3.33144,
+        -0.00387,
+        -2.44868
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.99724,
+        0,
+        -0.07427
+      ],
+      "goal_position": [
+        0.94583,
+        0.88165,
+        -1.74969
+      ],
+      "object_name": "flower_257",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "XB4GS9ShBRE_plant_2",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "a8BtkwhxdRV",
+      "category": "plant",
+      "episode_id": "0",
+      "closest_goal_object_id": 412,
+      "geodesic_distance": 3.16993,
+      "euclidean_distance": 2.68689,
+      "n_view_points": 131,
+      "dataset_start_position": [
+        -1.76536,
+        -1.80919,
+        0.97585
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.73491,
+        0,
+        -0.67816
+      ],
+      "goal_position": [
+        0.62701,
+        -1.06872,
+        4.14101
+      ],
+      "object_name": "plant_412",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "a8BtkwhxdRV_plant_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "7MXmsvcQjpJ",
+      "category": "plant",
+      "episode_id": "2",
+      "closest_goal_object_id": 1554,
+      "geodesic_distance": 2.3886,
+      "euclidean_distance": 2.04842,
+      "n_view_points": 130,
+      "dataset_start_position": [
+        0.75961,
+        -4.09177,
+        -2.96806
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.92613,
+        0,
+        -0.37721
+      ],
+      "goal_position": [
+        3.25915,
+        -4.15952,
+        -0.73923
+      ],
+      "object_name": "flowerpot_1554",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "7MXmsvcQjpJ_plant_2",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "y9hTuugGdiq",
+      "category": "plant",
+      "episode_id": "0",
+      "closest_goal_object_id": 473,
+      "geodesic_distance": 1.47844,
+      "euclidean_distance": 1.37755,
+      "n_view_points": 123,
+      "dataset_start_position": [
+        -4.0732,
+        0.06139,
+        3.16669
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.86834,
+        0,
+        -0.49597
+      ],
+      "goal_position": [
+        -6.32788,
+        0.94292,
+        2.50482
+      ],
+      "object_name": "plant_473",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "y9hTuugGdiq_plant_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "svBbv1Pavdk",
+      "category": "plant",
+      "episode_id": "0",
+      "closest_goal_object_id": 169,
+      "geodesic_distance": 3.63633,
+      "euclidean_distance": 3.25061,
+      "n_view_points": 110,
+      "dataset_start_position": [
+        8.46186,
+        0.02755,
+        4.47831
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.99116,
+        0,
+        -0.1327
+      ],
+      "goal_position": [
+        4.50234,
+        1.25558,
+        5.42363
+      ],
+      "object_name": "plant_169",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "svBbv1Pavdk_plant_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "VBzV5z6i1WS",
+      "category": "plant",
+      "episode_id": "0",
+      "closest_goal_object_id": 551,
+      "geodesic_distance": 6.00582,
+      "euclidean_distance": 3.89584,
+      "n_view_points": 109,
+      "dataset_start_position": [
+        5.59504,
+        0.04654,
+        -8.37816
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.86356,
+        0,
+        0.50425
+      ],
+      "goal_position": [
+        8.13641,
+        1.09787,
+        -3.92246
+      ],
+      "object_name": "plant_551",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "VBzV5z6i1WS_plant_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "DYehNKdT76V",
+      "category": "plant",
+      "episode_id": "1",
+      "closest_goal_object_id": 129,
+      "geodesic_distance": 8.13734,
+      "euclidean_distance": 6.40101,
+      "n_view_points": 96,
+      "dataset_start_position": [
+        -7.05474,
+        3.33651,
+        -3.00376
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.9713,
+        0,
+        -0.23785
+      ],
+      "goal_position": [
+        -0.54117,
+        4.26021,
+        -4.59445
+      ],
+      "object_name": "flower_129",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "DYehNKdT76V_plant_1",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "6s7QHgap2fW",
+      "category": "plant",
+      "episode_id": "1",
+      "closest_goal_object_id": 546,
+      "geodesic_distance": 3.27472,
+      "euclidean_distance": 2.811,
+      "n_view_points": 87,
+      "dataset_start_position": [
+        6.77117,
+        2.84944,
+        -2.42017
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.99991,
+        0,
+        -0.01358
+      ],
+      "goal_position": [
+        4.6345,
+        4.22534,
+        0.40805
+      ],
+      "object_name": "decorative plant_546",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "6s7QHgap2fW_plant_1",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "bxsVRursffK",
+      "category": "plant",
+      "episode_id": "1",
+      "closest_goal_object_id": 89,
+      "geodesic_distance": 7.25667,
+      "euclidean_distance": 6.34295,
+      "n_view_points": 87,
+      "dataset_start_position": [
+        -7.55038,
+        0.02468,
+        -4.73312
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.53064,
+        0,
+        0.8476
+      ],
+      "goal_position": [
+        -2.43335,
+        0.75271,
+        0.32158
+      ],
+      "object_name": "plant_89",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "bxsVRursffK_plant_1",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "CrMo8WxCyVb",
+      "category": "plant",
+      "episode_id": "0",
+      "closest_goal_object_id": 226,
+      "geodesic_distance": 10.12112,
+      "euclidean_distance": 6.51494,
+      "n_view_points": 85,
+      "dataset_start_position": [
+        -0.60579,
+        0.05006,
+        0.41335
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.598,
+        0,
+        0.8015
+      ],
+      "goal_position": [
+        -2.83994,
+        1.16206,
+        7.50502
+      ],
+      "object_name": "flower vase_226",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "CrMo8WxCyVb_plant_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "zt1RVoi7PcG",
+      "category": "plant",
+      "episode_id": "1",
+      "closest_goal_object_id": 210,
+      "geodesic_distance": 6.76394,
+      "euclidean_distance": 3.09006,
+      "n_view_points": 74,
+      "dataset_start_position": [
+        0.21289,
+        0.02656,
+        1.88484
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.64631,
+        0,
+        0.76307
+      ],
+      "goal_position": [
+        -1.9863,
+        1.69392,
+        3.41466
+      ],
+      "object_name": "flower_210",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "zt1RVoi7PcG_plant_1",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "mL8ThkuaVTM",
+      "category": "plant",
+      "episode_id": "1",
+      "closest_goal_object_id": 309,
+      "geodesic_distance": 5.11099,
+      "euclidean_distance": 1.90542,
+      "n_view_points": 71,
+      "dataset_start_position": [
+        4.24923,
+        -2.66091,
+        1.36407
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.37352,
+        0,
+        -0.92762
+      ],
+      "goal_position": [
+        5.02054,
+        -1.83869,
+        0.73543
+      ],
+      "object_name": "flower_309",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "mL8ThkuaVTM_plant_1",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "cvZr5TUy5C5",
+      "category": "plant",
+      "episode_id": "4",
+      "closest_goal_object_id": 469,
+      "geodesic_distance": 7.07664,
+      "euclidean_distance": 6.32922,
+      "n_view_points": 46,
+      "dataset_start_position": [
+        -2.48727,
+        0.02216,
+        3.0372
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.8455,
+        0,
+        -0.53397
+      ],
+      "goal_position": [
+        -5.78987,
+        1.22714,
+        10.16187
+      ],
+      "object_name": "plant_469",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "cvZr5TUy5C5_plant_4",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "TEEsavR23oF",
+      "category": "plant",
+      "episode_id": "0",
+      "closest_goal_object_id": 184,
+      "geodesic_distance": 6.51303,
+      "euclidean_distance": 5.63248,
+      "n_view_points": 23,
+      "dataset_start_position": [
+        -3.90176,
+        3.15867,
+        -5.96602
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.49767,
+        0,
+        0.86737
+      ],
+      "goal_position": [
+        -6.3462,
+        3.70006,
+        0.3609
+      ],
+      "object_name": "plant_184",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "TEEsavR23oF_plant_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "DYehNKdT76V",
+      "category": "toilet",
+      "episode_id": "2",
+      "closest_goal_object_id": 115,
+      "geodesic_distance": 7.43055,
+      "euclidean_distance": 5.50537,
+      "n_view_points": 232,
+      "dataset_start_position": [
+        -0.09753,
+        3.33651,
+        0.12194
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.77124,
+        0,
+        0.63655
+      ],
+      "goal_position": [
+        0.47002,
+        3.53615,
+        -4.73861
+      ],
+      "object_name": "toilet_115",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "DYehNKdT76V_toilet_2",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "5cdEh9F2hJL",
+      "category": "toilet",
+      "episode_id": "0",
+      "closest_goal_object_id": 36,
+      "geodesic_distance": 6.31834,
+      "euclidean_distance": 4.98133,
+      "n_view_points": 208,
+      "dataset_start_position": [
+        0.64372,
+        0.0184,
+        1.29522
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.47859,
+        0,
+        0.87804
+      ],
+      "goal_position": [
+        -4.8894,
+        0.56354,
+        3.58303
+      ],
+      "object_name": "toilet_36",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "5cdEh9F2hJL_toilet_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "QaLdnwvtxbs",
+      "category": "toilet",
+      "episode_id": "0",
+      "closest_goal_object_id": 237,
+      "geodesic_distance": 12.71795,
+      "euclidean_distance": 7.82345,
+      "n_view_points": 171,
+      "dataset_start_position": [
+        4.12628,
+        0.03574,
+        -2.56601
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.61554,
+        0,
+        -0.78811
+      ],
+      "goal_position": [
+        -2.7613,
+        0.3936,
+        -5.09019
+      ],
+      "object_name": "toilet_237",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "QaLdnwvtxbs_toilet_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "BAbdmeyTvMZ",
+      "category": "toilet",
+      "episode_id": "3",
+      "closest_goal_object_id": 172,
+      "geodesic_distance": 5.16777,
+      "euclidean_distance": 4.77139,
+      "n_view_points": 161,
+      "dataset_start_position": [
+        6.09868,
+        0.04521,
+        1.16722
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.94163,
+        0,
+        -0.33666
+      ],
+      "goal_position": [
+        7.65822,
+        0.36423,
+        5.5772
+      ],
+      "object_name": "toilet_172",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "BAbdmeyTvMZ_toilet_3",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "mL8ThkuaVTM",
+      "category": "toilet",
+      "episode_id": "3",
+      "closest_goal_object_id": 356,
+      "geodesic_distance": 2.27785,
+      "euclidean_distance": 1.33928,
+      "n_view_points": 158,
+      "dataset_start_position": [
+        5.42008,
+        -2.67601,
+        -1.18072
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.87927,
+        0,
+        0.47632
+      ],
+      "goal_position": [
+        3.45454,
+        -2.34207,
+        0.44093
+      ],
+      "object_name": "toilet_356",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "mL8ThkuaVTM_toilet_3",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "bxsVRursffK",
+      "category": "toilet",
+      "episode_id": "4",
+      "closest_goal_object_id": 27,
+      "geodesic_distance": 1.54675,
+      "euclidean_distance": 1.27872,
+      "n_view_points": 151,
+      "dataset_start_position": [
+        -1.28184,
+        0.07468,
+        -2.58279
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.73665,
+        0,
+        0.67627
+      ],
+      "goal_position": [
+        -1.75521,
+        0.4945,
+        -4.7759
+      ],
+      "object_name": "toilet_27",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "bxsVRursffK_toilet_4",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "wcojb4TFT35",
+      "category": "toilet",
+      "episode_id": "4",
+      "closest_goal_object_id": 270,
+      "geodesic_distance": 3.03209,
+      "euclidean_distance": 2.42215,
+      "n_view_points": 151,
+      "dataset_start_position": [
+        -0.16001,
+        2.49492,
+        -15.39207
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.42174,
+        0,
+        0.90672
+      ],
+      "goal_position": [
+        0.87317,
+        2.78981,
+        -14.74806
+      ],
+      "object_name": "toilet_270",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "wcojb4TFT35_toilet_4",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "svBbv1Pavdk",
+      "category": "toilet",
+      "episode_id": "0",
+      "closest_goal_object_id": 41,
+      "geodesic_distance": 7.03914,
+      "euclidean_distance": 3.81939,
+      "n_view_points": 141,
+      "dataset_start_position": [
+        0.24855,
+        0.02755,
+        -0.67307
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.44866,
+        0,
+        -0.8937
+      ],
+      "goal_position": [
+        2.70994,
+        0.40972,
+        -2.57168
+      ],
+      "object_name": "toilet_41",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "svBbv1Pavdk_toilet_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "a8BtkwhxdRV",
+      "category": "toilet",
+      "episode_id": "3",
+      "closest_goal_object_id": 18,
+      "geodesic_distance": 5.35664,
+      "euclidean_distance": 4.6883,
+      "n_view_points": 134,
+      "dataset_start_position": [
+        -1.33522,
+        1.04081,
+        4.04746
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.82332,
+        0,
+        0.56758
+      ],
+      "goal_position": [
+        -5.0814,
+        1.2968,
+        8.12395
+      ],
+      "object_name": "toilet_18",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "a8BtkwhxdRV_toilet_3",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "mv2HUxq3B53",
+      "category": "toilet",
+      "episode_id": "0",
+      "closest_goal_object_id": 368,
+      "geodesic_distance": 11.05456,
+      "euclidean_distance": 10.5055,
+      "n_view_points": 120,
+      "dataset_start_position": [
+        -9.96276,
+        0.05035,
+        13.94692
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.14948,
+        0,
+        0.98877
+      ],
+      "goal_position": [
+        0.64986,
+        0.44736,
+        8.44947
+      ],
+      "object_name": "toilet_368",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "mv2HUxq3B53_toilet_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "cvZr5TUy5C5",
+      "category": "toilet",
+      "episode_id": "2",
+      "closest_goal_object_id": 858,
+      "geodesic_distance": 3.11462,
+      "euclidean_distance": 2.93862,
+      "n_view_points": 109,
+      "dataset_start_position": [
+        -8.09466,
+        -3.00506,
+        6.09817
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.99649,
+        0,
+        0.08367
+      ],
+      "goal_position": [
+        -8.68018,
+        -2.65009,
+        2.31846
+      ],
+      "object_name": "toilet_858",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "cvZr5TUy5C5_toilet_2",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "p53SfW6mjZe",
+      "category": "toilet",
+      "episode_id": "0",
+      "closest_goal_object_id": 714,
+      "geodesic_distance": 8.95788,
+      "euclidean_distance": 7.3229,
+      "n_view_points": 104,
+      "dataset_start_position": [
+        -6.99339,
+        -3.09519,
+        2.63565
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.97739,
+        0,
+        0.21143
+      ],
+      "goal_position": [
+        0.63114,
+        -2.7463,
+        6.20419
+      ],
+      "object_name": "toilet_714",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "p53SfW6mjZe_toilet_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "CrMo8WxCyVb",
+      "category": "toilet",
+      "episode_id": "0",
+      "closest_goal_object_id": 246,
+      "geodesic_distance": 3.67527,
+      "euclidean_distance": 2.42526,
+      "n_view_points": 98,
+      "dataset_start_position": [
+        -6.14266,
+        0.05006,
+        8.09788
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.21429,
+        0,
+        -0.97677
+      ],
+      "goal_position": [
+        -2.92909,
+        0.36404,
+        9.4499
+      ],
+      "object_name": "toilet_246",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "CrMo8WxCyVb_toilet_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "qyAac8rV8Zk",
+      "category": "toilet",
+      "episode_id": "1",
+      "closest_goal_object_id": 160,
+      "geodesic_distance": 4.09595,
+      "euclidean_distance": 3.54687,
+      "n_view_points": 93,
+      "dataset_start_position": [
+        0.3899,
+        3.0692,
+        2.26472
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.93099,
+        0,
+        0.36504
+      ],
+      "goal_position": [
+        -3.41314,
+        3.3895,
+        1.18826
+      ],
+      "object_name": "toilet_160",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "qyAac8rV8Zk_toilet_1",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "y9hTuugGdiq",
+      "category": "toilet",
+      "episode_id": "2",
+      "closest_goal_object_id": 411,
+      "geodesic_distance": 1.44604,
+      "euclidean_distance": 1.26779,
+      "n_view_points": 88,
+      "dataset_start_position": [
+        -10.53523,
+        0.053,
+        3.33769
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.54834,
+        0,
+        -0.83625
+      ],
+      "goal_position": [
+        -11.05167,
+        0.30687,
+        5.5001
+      ],
+      "object_name": "toilet_411",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "y9hTuugGdiq_toilet_2",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "ziup5kvtCCR",
+      "category": "toilet",
+      "episode_id": "0",
+      "closest_goal_object_id": 243,
+      "geodesic_distance": 13.06063,
+      "euclidean_distance": 12.20059,
+      "n_view_points": 83,
+      "dataset_start_position": [
+        5.63454,
+        0.02122,
+        6.10924
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.48706,
+        0,
+        -0.87337
+      ],
+      "goal_position": [
+        -7.13827,
+        0.34792,
+        2.71408
+      ],
+      "object_name": "toilet_243",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "ziup5kvtCCR_toilet_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "TEEsavR23oF",
+      "category": "toilet",
+      "episode_id": "2",
+      "closest_goal_object_id": 389,
+      "geodesic_distance": 6.18151,
+      "euclidean_distance": 4.58356,
+      "n_view_points": 82,
+      "dataset_start_position": [
+        -0.2826,
+        0.01338,
+        -6.54213
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.97997,
+        0,
+        0.19917
+      ],
+      "goal_position": [
+        -4.85591,
+        0.30209,
+        -4.01625
+      ],
+      "object_name": "toilet seat_389",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "TEEsavR23oF_toilet_2",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "q3zU7Yy5E5s",
+      "category": "toilet",
+      "episode_id": "1",
+      "closest_goal_object_id": 72,
+      "geodesic_distance": 4.78727,
+      "euclidean_distance": 2.7129,
+      "n_view_points": 82,
+      "dataset_start_position": [
+        -7.27496,
+        0.03522,
+        0.13321
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.99971,
+        0,
+        0.02411
+      ],
+      "goal_position": [
+        -6.05357,
+        0.35505,
+        -3.22553
+      ],
+      "object_name": "toilet_72",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "q3zU7Yy5E5s_toilet_1",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "h1zeeAwLh9Z",
+      "category": "toilet",
+      "episode_id": "0",
+      "closest_goal_object_id": 116,
+      "geodesic_distance": 6.51144,
+      "euclidean_distance": 5.18476,
+      "n_view_points": 79,
+      "dataset_start_position": [
+        5.28639,
+        -0.00098,
+        -4.0787
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.94956,
+        0,
+        -0.31358
+      ],
+      "goal_position": [
+        1.18242,
+        0.23945,
+        -5.65803
+      ],
+      "object_name": "toilet_116",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "h1zeeAwLh9Z_toilet_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "bCPU9suPUw9",
+      "category": "toilet",
+      "episode_id": "1",
+      "closest_goal_object_id": 115,
+      "geodesic_distance": 4.7248,
+      "euclidean_distance": 4.34303,
+      "n_view_points": 75,
+      "dataset_start_position": [
+        6.09682,
+        2.88022,
+        -0.36853
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.09027,
+        0,
+        0.99592
+      ],
+      "goal_position": [
+        1.55883,
+        3.25821,
+        3.03092
+      ],
+      "object_name": "toilet_115",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "bCPU9suPUw9_toilet_1",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "wcojb4TFT35",
+      "category": "tv_monitor",
+      "episode_id": "0",
+      "closest_goal_object_id": 349,
+      "geodesic_distance": 3.51717,
+      "euclidean_distance": 3.24668,
+      "n_view_points": 364,
+      "dataset_start_position": [
+        0.87524,
+        0.04492,
+        -3.08679
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.99169,
+        0,
+        0.12867
+      ],
+      "goal_position": [
+        -0.18259,
+        1.83738,
+        0.92899
+      ],
+      "object_name": "tv_349",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "wcojb4TFT35_tv_monitor_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "GLAQ4DNUx5U",
+      "category": "tv_monitor",
+      "episode_id": "3",
+      "closest_goal_object_id": 603,
+      "geodesic_distance": 4.40633,
+      "euclidean_distance": 4.09182,
+      "n_view_points": 356,
+      "dataset_start_position": [
+        1.24442,
+        1.20711,
+        1.09174
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.78747,
+        0,
+        0.61635
+      ],
+      "goal_position": [
+        -0.07933,
+        2.40964,
+        5.88824
+      ],
+      "object_name": "tv_603",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "GLAQ4DNUx5U_tv_monitor_3",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "cvZr5TUy5C5",
+      "category": "tv_monitor",
+      "episode_id": "1",
+      "closest_goal_object_id": 624,
+      "geodesic_distance": 2.37297,
+      "euclidean_distance": 1.77655,
+      "n_view_points": 309,
+      "dataset_start_position": [
+        0.70645,
+        -2.98616,
+        7.02898
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.55686,
+        0,
+        -0.8306
+      ],
+      "goal_position": [
+        0.45459,
+        -1.93918,
+        4.42781
+      ],
+      "object_name": "tv_624",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "cvZr5TUy5C5_tv_monitor_1",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "zt1RVoi7PcG",
+      "category": "tv_monitor",
+      "episode_id": "1",
+      "closest_goal_object_id": 681,
+      "geodesic_distance": 3.629,
+      "euclidean_distance": 3.38396,
+      "n_view_points": 283,
+      "dataset_start_position": [
+        -0.2042,
+        -3.03706,
+        2.9751
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.97598,
+        0,
+        -0.21788
+      ],
+      "goal_position": [
+        -3.04441,
+        -2.14264,
+        -0.80331
+      ],
+      "object_name": "tv_681",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "zt1RVoi7PcG_tv_monitor_1",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "y9hTuugGdiq",
+      "category": "tv_monitor",
+      "episode_id": "1",
+      "closest_goal_object_id": 246,
+      "geodesic_distance": 6.76307,
+      "euclidean_distance": 5.55458,
+      "n_view_points": 279,
+      "dataset_start_position": [
+        -0.58655,
+        0.01139,
+        3.10241
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.87712,
+        0,
+        -0.48027
+      ],
+      "goal_position": [
+        5.63006,
+        1.88861,
+        5.18929
+      ],
+      "object_name": "tv_246",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "y9hTuugGdiq_tv_monitor_1",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "Nfvxx8J5NCo",
+      "category": "tv_monitor",
+      "episode_id": "1",
+      "closest_goal_object_id": 125,
+      "geodesic_distance": 2.99315,
+      "euclidean_distance": 1.48966,
+      "n_view_points": 275,
+      "dataset_start_position": [
+        -12.21713,
+        0.03385,
+        1.89419
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.17443,
+        0,
+        0.98467
+      ],
+      "goal_position": [
+        -13.49503,
+        1.31853,
+        2.56068
+      ],
+      "object_name": "tv_125",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "Nfvxx8J5NCo_tv_monitor_1",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "qyAac8rV8Zk",
+      "category": "tv_monitor",
+      "episode_id": "1",
+      "closest_goal_object_id": 318,
+      "geodesic_distance": 3.23351,
+      "euclidean_distance": 2.7367,
+      "n_view_points": 268,
+      "dataset_start_position": [
+        -7.83451,
+        0.0192,
+        4.0881
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.15503,
+        0,
+        0.98791
+      ],
+      "goal_position": [
+        -5.22721,
+        0.50753,
+        0.76657
+      ],
+      "object_name": "tv_318",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "qyAac8rV8Zk_tv_monitor_1",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "QaLdnwvtxbs",
+      "category": "tv_monitor",
+      "episode_id": "4",
+      "closest_goal_object_id": 196,
+      "geodesic_distance": 5.92438,
+      "euclidean_distance": 4.62273,
+      "n_view_points": 260,
+      "dataset_start_position": [
+        -1.37257,
+        0.03574,
+        2.55938
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.02469,
+        0,
+        0.9997
+      ],
+      "goal_position": [
+        -6.29783,
+        1.13596,
+        1.24395
+      ],
+      "object_name": "tv_196",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "QaLdnwvtxbs_tv_monitor_4",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "BAbdmeyTvMZ",
+      "category": "tv_monitor",
+      "episode_id": "1",
+      "closest_goal_object_id": 30,
+      "geodesic_distance": 9.74153,
+      "euclidean_distance": 8.55588,
+      "n_view_points": 252,
+      "dataset_start_position": [
+        -4.73232,
+        0.04521,
+        4.85252
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.4879,
+        0,
+        0.8729
+      ],
+      "goal_position": [
+        1.62149,
+        1.86245,
+        8.40402
+      ],
+      "object_name": "tv_30",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "BAbdmeyTvMZ_tv_monitor_1",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "ziup5kvtCCR",
+      "category": "tv_monitor",
+      "episode_id": "1",
+      "closest_goal_object_id": 179,
+      "geodesic_distance": 2.26756,
+      "euclidean_distance": 2.05746,
+      "n_view_points": 245,
+      "dataset_start_position": [
+        -2.36747,
+        0.02122,
+        7.45864
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.34416,
+        0,
+        0.93891
+      ],
+      "goal_position": [
+        -4.71986,
+        1.77995,
+        5.11938
+      ],
+      "object_name": "tv_179",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "ziup5kvtCCR_tv_monitor_1",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "4ok3usBNeis",
+      "category": "tv_monitor",
+      "episode_id": "0",
+      "closest_goal_object_id": 283,
+      "geodesic_distance": 11.69069,
+      "euclidean_distance": 8.12728,
+      "n_view_points": 239,
+      "dataset_start_position": [
+        0.5709,
+        2.06447,
+        -0.90863
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.92366,
+        0,
+        -0.38321
+      ],
+      "goal_position": [
+        9.52654,
+        3.04642,
+        -0.81572
+      ],
+      "object_name": "tv_283",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "4ok3usBNeis_tv_monitor_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "mv2HUxq3B53",
+      "category": "tv_monitor",
+      "episode_id": "1",
+      "closest_goal_object_id": 563,
+      "geodesic_distance": 20.88908,
+      "euclidean_distance": 13.11003,
+      "n_view_points": 225,
+      "dataset_start_position": [
+        9.63105,
+        0.0448,
+        0.85239
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.4287,
+        0,
+        0.90345
+      ],
+      "goal_position": [
+        4.34915,
+        1.15814,
+        11.9563
+      ],
+      "object_name": "tv_563",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "mv2HUxq3B53_tv_monitor_1",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "svBbv1Pavdk",
+      "category": "tv_monitor",
+      "episode_id": "0",
+      "closest_goal_object_id": 287,
+      "geodesic_distance": 1.44544,
+      "euclidean_distance": 1.29097,
+      "n_view_points": 210,
+      "dataset_start_position": [
+        5.99951,
+        0.02755,
+        1.84321
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.96257,
+        0,
+        -0.27104
+      ],
+      "goal_position": [
+        7.89641,
+        0.81608,
+        3.67615
+      ],
+      "object_name": "tv_287",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "svBbv1Pavdk_tv_monitor_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "q5QZSEeHe5g",
+      "category": "tv_monitor",
+      "episode_id": "1",
+      "closest_goal_object_id": 953,
+      "geodesic_distance": 2.87029,
+      "euclidean_distance": 2.05075,
+      "n_view_points": 204,
+      "dataset_start_position": [
+        4.85056,
+        0.05388,
+        0.55376
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.90491,
+        0,
+        0.4256
+      ],
+      "goal_position": [
+        3.27613,
+        1.55794,
+        2.93184
+      ],
+      "object_name": "tv_953",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "q5QZSEeHe5g_tv_monitor_1",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "TEEsavR23oF",
+      "category": "tv_monitor",
+      "episode_id": "1",
+      "closest_goal_object_id": 10,
+      "geodesic_distance": 7.67453,
+      "euclidean_distance": 4.04812,
+      "n_view_points": 173,
+      "dataset_start_position": [
+        -4.47672,
+        3.11338,
+        -2.18269
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.28283,
+        0,
+        -0.95917
+      ],
+      "goal_position": [
+        -0.15094,
+        4.30008,
+        -4.8529
+      ],
+      "object_name": "tv_10",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "TEEsavR23oF_tv_monitor_1",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "MHPLjHsuG27",
+      "category": "tv_monitor",
+      "episode_id": "1",
+      "closest_goal_object_id": 524,
+      "geodesic_distance": 7.00322,
+      "euclidean_distance": 5.5221,
+      "n_view_points": 159,
+      "dataset_start_position": [
+        1.54563,
+        1.23606,
+        -0.3823
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.16216,
+        0,
+        -0.98677
+      ],
+      "goal_position": [
+        0.1953,
+        2.93511,
+        6.40961
+      ],
+      "object_name": "tv_524",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "MHPLjHsuG27_tv_monitor_1",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "a8BtkwhxdRV",
+      "category": "tv_monitor",
+      "episode_id": "2",
+      "closest_goal_object_id": 245,
+      "geodesic_distance": 1.68857,
+      "euclidean_distance": 1.58131,
+      "n_view_points": 156,
+      "dataset_start_position": [
+        2.48665,
+        1.04081,
+        2.22875
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.92828,
+        0,
+        -0.37189
+      ],
+      "goal_position": [
+        1.86922,
+        2.38066,
+        0.10021
+      ],
+      "object_name": "tv_245",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "a8BtkwhxdRV_tv_monitor_2",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "p53SfW6mjZe",
+      "category": "tv_monitor",
+      "episode_id": "0",
+      "closest_goal_object_id": 435,
+      "geodesic_distance": 8.33287,
+      "euclidean_distance": 7.89406,
+      "n_view_points": 135,
+      "dataset_start_position": [
+        -1.6403,
+        0.00481,
+        0.96707
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.95747,
+        0,
+        -0.28855
+      ],
+      "goal_position": [
+        5.6618,
+        1.31908,
+        6.58237
+      ],
+      "object_name": "tv_435",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "p53SfW6mjZe_tv_monitor_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "6s7QHgap2fW",
+      "category": "tv_monitor",
+      "episode_id": "0",
+      "closest_goal_object_id": 34,
+      "geodesic_distance": 10.43937,
+      "euclidean_distance": 4.53374,
+      "n_view_points": 132,
+      "dataset_start_position": [
+        1.24805,
+        0.01379,
+        -0.7318
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.96593,
+        0,
+        -0.25882
+      ],
+      "goal_position": [
+        4.28649,
+        0.91723,
+        -1.28622
+      ],
+      "object_name": "tv_34",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "6s7QHgap2fW_tv_monitor_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    },
+    {
+      "scene_filter": "5cdEh9F2hJL",
+      "category": "tv_monitor",
+      "episode_id": "0",
+      "closest_goal_object_id": 353,
+      "geodesic_distance": 10.87323,
+      "euclidean_distance": 9.92078,
+      "n_view_points": 121,
+      "dataset_start_position": [
+        6.72834,
+        0.0184,
+        3.9248
+      ],
+      "dataset_start_rotation": [
+        0,
+        0.19632,
+        0,
+        0.98054
+      ],
+      "goal_position": [
+        11.58012,
+        1.09246,
+        -6.08612
+      ],
+      "object_name": "monitor_353",
+      "room_name": null,
+      "group_large_furniture": "large_furniture",
+      "spawn_status": "pending_validation",
+      "force_spawn_json": null,
+      "id": "5cdEh9F2hJL_tv_monitor_0",
+      "overlaps_dev24_episode": false,
+      "overlaps_dev24_scene": false,
+      "list_role": "independent_test"
+    }
+  ]
+}

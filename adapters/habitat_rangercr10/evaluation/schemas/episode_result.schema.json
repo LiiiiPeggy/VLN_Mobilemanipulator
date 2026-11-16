@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ranger_category_eval_episode_result",
+  "title": "Ranger category-eval episode result",
+  "type": "object",
+  "required": [
+    "episode_list_id",
+    "scene",
+    "category",
+    "episode_id",
+    "robot_scale",
+    "camera_mode",
+    "spawn_status",
+    "run_status",
+    "sr_proxy"
+  ],
+  "properties": {
+    "episode_list_id": { "type": "string" },
+    "scene": { "type": "string" },
+    "category": { "type": "string" },
+    "episode_id": { "type": ["string", "integer"] },
+    "robot_scale": { "type": "number" },
+    "scale_tag": { "type": "string" },
+    "camera_mode": {
+      "type": "string",
+      "enum": ["fixed_gimbal", "rule_arm_obs", "active_arm_obs", "other"]
+    },
+    "code_git_sha": { "type": "string" },
+    "config_id": { "type": "string" },
+    "spawn_status": {
+      "type": "string",
+      "enum": ["ok", "invalid", "skipped", "pending_validation"]
+    },
+    "run_status": {
+      "type": "string",
+      "enum": ["ok", "timeout", "crash", "abort"]
+    },
+    "termination": { "type": "string" },
+    "dtg_viewpoint": { "type": ["number", "null"] },
+    "sr_proxy": { "type": "boolean" },
+    "fail_bucket": { "type": ["string", "null"] },
+    "entered_search_best": { "type": ["boolean", "null"] },
+    "n_steps": { "type": ["integer", "null"] },
+    "elapsed_sec": { "type": ["number", "null"] },
+    "forward_m": { "type": ["number", "null"] },
+    "n_effective_observations": { "type": ["integer", "null"] },
+    "n_arm_motions": { "type": ["integer", "null"] },
+    "arm_motion_time_sec": { "type": ["number", "null"] },
+    "exec_collision_or_fault": { "type": ["boolean", "string", "null"] },
+    "goal_height_bin": { "type": ["string", "null"] },
+    "apparent_scale_bin": { "type": ["string", "null"] },
+    "occlusion_bin": { "type": ["string", "null"] },
+    "multi_instance_ambiguity": { "type": ["boolean", "null"] },
+    "control_unoccluded": { "type": ["boolean", "null"] },
+    "detection_precision": {
+      "type": ["number", "null"],
+      "description": "Separate from navigation SR_proxy; do not conflate."
+    },
+    "seed_repeat_of": {
+      "type": ["string", "null"],
+      "description": "If set, this row is a seed repeat, not an independent scene."
+    }
+  },
+  "additionalProperties": true
+}
