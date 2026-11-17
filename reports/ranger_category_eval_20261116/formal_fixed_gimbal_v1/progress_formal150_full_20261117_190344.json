@@ -1,10 +1,10 @@
 {
-  "ts_utc": "2026-11-17T22:27:01.294476+00:00",
+  "ts_utc": "2026-11-17T23:28:01.962835+00:00",
   "batch_id": "formal150_full_20261117_190344",
   "n_jobs": 109,
-  "n_done": 75,
-  "n_remaining": 34,
-  "current_episode_list_id": "6s7QHgap2fW_plant_1",
+  "n_done": 80,
+  "n_remaining": 29,
+  "current_episode_list_id": "QaLdnwvtxbs_toilet_0",
   "done_ids": [
     "svBbv1Pavdk_chair_0",
     "svBbv1Pavdk_bed_0",
@@ -80,7 +80,12 @@
     "bCPU9suPUw9_sofa_1",
     "bCPU9suPUw9_plant_0",
     "bCPU9suPUw9_toilet_1",
-    "6s7QHgap2fW_bed_0"
+    "6s7QHgap2fW_bed_0",
+    "6s7QHgap2fW_plant_1",
+    "6s7QHgap2fW_tv_monitor_0",
+    "QaLdnwvtxbs_chair_0",
+    "QaLdnwvtxbs_bed_1",
+    "QaLdnwvtxbs_sofa_1"
   ],
-  "pct": 68.80733944954129
+  "pct": 73.39449541284404
 }
