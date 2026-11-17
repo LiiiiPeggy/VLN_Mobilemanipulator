@@ -1,0 +1,6766 @@
+{
+  "name": "independent_valid_only_v1",
+  "source_validity": "/home/ubuntu/locomani/VLN_Mobilemanipulator/reports/ranger_category_eval_20261116/lists/independent_list_validity_v1.json",
+  "n": 109,
+  "episodes": [
+    {
+      "id": "svBbv1Pavdk_chair_0",
+      "scene_filter": "svBbv1Pavdk",
+      "category": "chair",
+      "episode_id": "0",
+      "closest_goal_object_id": 274,
+      "n_view_points": 708,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 4.8231024742126465,
+        "z": 6.198599815368652,
+        "yaw": 0.5297945407606881,
+        "floor_y": 0.02755,
+        "base_y": 0.3368708373713493,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389832496643066,
+          -0.07466614246368408,
+          0.29042568802833557
+        ],
+        "optical_pos_world": [
+          5.0815863609313965,
+          0.6272965669631958,
+          6.787718296051025
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "svBbv1Pavdk_bed_0",
+      "scene_filter": "svBbv1Pavdk",
+      "category": "bed",
+      "episode_id": "0",
+      "closest_goal_object_id": 144,
+      "n_view_points": 524,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 7.918349742889404,
+        "z": 2.580199956893921,
+        "yaw": -2.3734808929836517,
+        "floor_y": 0.02755,
+        "base_y": 0.33687081501960753,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389832496643066,
+          -0.07466602325439453,
+          0.29042547941207886
+        ],
+        "optical_pos_world": [
+          7.528099536895752,
+          0.6272963285446167,
+          2.068751573562622
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "svBbv1Pavdk_plant_0",
+      "scene_filter": "svBbv1Pavdk",
+      "category": "plant",
+      "episode_id": "0",
+      "closest_goal_object_id": 169,
+      "n_view_points": 110,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 8.211859703063965,
+        "z": 4.911322593688965,
+        "yaw": -2.875410449652934,
+        "floor_y": 0.02755,
+        "base_y": 0.33687081501960753,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389827728271484,
+          -0.07466650009155273,
+          0.29042547941207886
+        ],
+        "optical_pos_world": [
+          8.115812301635742,
+          0.6272963285446167,
+          4.27520227432251
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "svBbv1Pavdk_toilet_0",
+      "scene_filter": "svBbv1Pavdk",
+      "category": "toilet",
+      "episode_id": "0",
+      "closest_goal_object_id": 41,
+      "n_view_points": 141,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 0.24854999780654907,
+        "z": 0.5269299745559692,
+        "yaw": -0.9305294328780521,
+        "floor_y": 0.02755,
+        "base_y": 0.33687078521728514,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389836072921753,
+          -0.07466655969619751,
+          0.290425568819046
+        ],
+        "optical_pos_world": [
+          -0.3084806799888611,
+          0.6272963285446167,
+          0.8487869501113892
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "svBbv1Pavdk_tv_monitor_0",
+      "scene_filter": "svBbv1Pavdk",
+      "category": "tv_monitor",
+      "episode_id": "0",
+      "closest_goal_object_id": 287,
+      "n_view_points": 210,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 4.96027946472168,
+        "z": 2.4432098865509033,
+        "yaw": -2.5926489943348647,
+        "floor_y": 0.02755,
+        "base_y": 0.33687079266786574,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389837265014648,
+          -0.07466673851013184,
+          0.2904256284236908
+        ],
+        "optical_pos_world": [
+          4.690562725067139,
+          0.6272964477539062,
+          1.8591480255126953
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "cvZr5TUy5C5_bed_0",
+      "scene_filter": "cvZr5TUy5C5",
+      "category": "bed",
+      "episode_id": "0",
+      "closest_goal_object_id": 342,
+      "n_view_points": 666,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -8.256839752197266,
+        "z": 1.9878499507904053,
+        "yaw": -0.6712542284590786,
+        "floor_y": 3.07216,
+        "base_y": 3.381480738220214,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.638984203338623,
+          -0.07466650009155273,
+          0.29042553901672363
+        ],
+        "optical_pos_world": [
+          -8.712735176086426,
+          3.6719062328338623,
+          2.4417612552642822
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "cvZr5TUy5C5_sofa_0",
+      "scene_filter": "cvZr5TUy5C5",
+      "category": "sofa",
+      "episode_id": "0",
+      "closest_goal_object_id": 709,
+      "n_view_points": 1365,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -3.863759994506836,
+        "z": 3.912529945373535,
+        "yaw": -1.259297053872094,
+        "floor_y": -3.02784,
+        "base_y": -2.7185193333053586,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.638984203338623,
+          -0.07466673851013184,
+          0.29042530059814453
+        ],
+        "optical_pos_world": [
+          -4.494877338409424,
+          -2.4280941486358643,
+          4.037296295166016
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "cvZr5TUy5C5_plant_4",
+      "scene_filter": "cvZr5TUy5C5",
+      "category": "plant",
+      "episode_id": "4",
+      "closest_goal_object_id": 469,
+      "n_view_points": 46,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -2.054257392883301,
+        "z": 2.7871999740600586,
+        "yaw": -2.015005632784472,
+        "floor_y": 0.02216,
+        "base_y": 0.3314807918643951,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389833688735962,
+          -0.07466626167297363,
+          0.29042574763298035
+        ],
+        "optical_pos_world": [
+          -2.5991406440734863,
+          0.6219065189361572,
+          2.445180654525757
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "cvZr5TUy5C5_toilet_2",
+      "scene_filter": "cvZr5TUy5C5",
+      "category": "toilet",
+      "episode_id": "2",
+      "closest_goal_object_id": 858,
+      "n_view_points": 109,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -6.894659996032715,
+        "z": 6.098169803619385,
+        "yaw": 2.974055029461873,
+        "floor_y": -3.00506,
+        "base_y": -2.6957390972137447,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389837265014648,
+          -0.07466650009155273,
+          0.29042530059814453
+        ],
+        "optical_pos_world": [
+          -6.714485168457031,
+          -2.405313730239868,
+          5.480583667755127
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "cvZr5TUy5C5_tv_monitor_1",
+      "scene_filter": "cvZr5TUy5C5",
+      "category": "tv_monitor",
+      "episode_id": "1",
+      "closest_goal_object_id": 624,
+      "n_view_points": 309,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 1.9064500331878662,
+        "z": 7.028979778289795,
+        "yaw": -1.181198540702036,
+        "floor_y": -2.98616,
+        "base_y": -2.676839170837402,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389833688735962,
+          -0.07466602325439453,
+          0.29042553901672363
+        ],
+        "optical_pos_world": [
+          1.2869914770126343,
+          -2.38641357421875,
+          7.202605247497559
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "ziup5kvtCCR_chair_0",
+      "scene_filter": "ziup5kvtCCR",
+      "category": "chair",
+      "episode_id": "0",
+      "closest_goal_object_id": 16,
+      "n_view_points": 578,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 5.576320648193359,
+        "z": 0.006310000084340572,
+        "yaw": 0.5793052201197672,
+        "floor_y": 0.02122,
+        "base_y": 0.3305407894158363,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389832496643066,
+          -0.07466697692871094,
+          0.29042550921440125
+        ],
+        "optical_pos_world": [
+          5.863642692565918,
+          0.6209663152694702,
+          0.5819146633148193
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "ziup5kvtCCR_bed_1",
+      "scene_filter": "ziup5kvtCCR",
+      "category": "bed",
+      "episode_id": "1",
+      "closest_goal_object_id": 164,
+      "n_view_points": 665,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -3.6071600914001465,
+        "z": 3.9769599437713623,
+        "yaw": 2.046748953569823,
+        "floor_y": 0.02122,
+        "base_y": 0.3305408043169975,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389832496643066,
+          -0.07466650009155273,
+          0.2904256284236908
+        ],
+        "optical_pos_world": [
+          -3.0049843788146973,
+          0.6209664344787598,
+          3.7505550384521484
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "ziup5kvtCCR_sofa_0",
+      "scene_filter": "ziup5kvtCCR",
+      "category": "sofa",
+      "episode_id": "0",
+      "closest_goal_object_id": 40,
+      "n_view_points": 1246,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -6.00970983505249,
+        "z": 6.1877899169921875,
+        "yaw": 0.6887732634378219,
+        "floor_y": 0.02122,
+        "base_y": 0.3305407894158363,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.638984203338623,
+          -0.07466506958007812,
+          0.2904256284236908
+        ],
+        "optical_pos_world": [
+          -5.661221027374268,
+          0.6209664344787598,
+          6.7285590171813965
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "ziup5kvtCCR_plant_3",
+      "scene_filter": "ziup5kvtCCR",
+      "category": "plant",
+      "episode_id": "3",
+      "closest_goal_object_id": 46,
+      "n_view_points": 210,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 5.308672904968262,
+        "z": 2.597759962081909,
+        "yaw": 1.1448445258174096,
+        "floor_y": 0.02122,
+        "base_y": 0.3305407968664169,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389832496643066,
+          -0.07466627657413483,
+          0.2904255986213684
+        ],
+        "optical_pos_world": [
+          5.8597092628479,
+          0.6209664344787598,
+          2.929774522781372
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "ziup5kvtCCR_toilet_0",
+      "scene_filter": "ziup5kvtCCR",
+      "category": "toilet",
+      "episode_id": "0",
+      "closest_goal_object_id": 243,
+      "n_view_points": 83,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 6.434539794921875,
+        "z": 6.1092400550842285,
+        "yaw": -1.0174413706092005,
+        "floor_y": 0.02122,
+        "base_y": 0.3305408043169975,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389830112457275,
+          -0.07466602325439453,
+          0.29042547941207886
+        ],
+        "optical_pos_world": [
+          5.851674556732178,
+          0.6209663152694702,
+          6.38153076171875
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "ziup5kvtCCR_tv_monitor_1",
+      "scene_filter": "ziup5kvtCCR",
+      "category": "tv_monitor",
+      "episode_id": "1",
+      "closest_goal_object_id": 179,
+      "n_view_points": 245,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -2.8674700260162354,
+        "z": 7.458640098571777,
+        "yaw": 0.7026874362952406,
+        "floor_y": 0.02122,
+        "base_y": 0.3305407819652557,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389837265014648,
+          -0.07466697692871094,
+          0.290425568819046
+        ],
+        "optical_pos_world": [
+          -2.5114924907684326,
+          0.6209663152694702,
+          7.994508743286133
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "VBzV5z6i1WS_chair_1",
+      "scene_filter": "VBzV5z6i1WS",
+      "category": "chair",
+      "episode_id": "1",
+      "closest_goal_object_id": 517,
+      "n_view_points": 561,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 7.2287797927856445,
+        "z": -4.816349506378174,
+        "yaw": -2.505077070597062,
+        "floor_y": 0.04544,
+        "base_y": 0.3547607651591301,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.638983964920044,
+          -0.07466602325439453,
+          0.290425568819046
+        ],
+        "optical_pos_world": [
+          6.9090142250061035,
+          0.6451863050460815,
+          -5.374583721160889
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "VBzV5z6i1WS_plant_0",
+      "scene_filter": "VBzV5z6i1WS",
+      "category": "plant",
+      "episode_id": "0",
+      "closest_goal_object_id": 551,
+      "n_view_points": 109,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 6.0950398445129395,
+        "z": -8.37816047668457,
+        "yaw": 2.08457189039574,
+        "floor_y": 0.04654,
+        "base_y": 0.3558607949733734,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389837265014648,
+          -0.07466650009155273,
+          0.2904253602027893
+        ],
+        "optical_pos_world": [
+          6.688223838806152,
+          0.646286129951477,
+          -8.627174377441406
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "wcojb4TFT35_chair_2",
+      "scene_filter": "wcojb4TFT35",
+      "category": "chair",
+      "episode_id": "2",
+      "closest_goal_object_id": 428,
+      "n_view_points": 494,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 1.4113999605178833,
+        "z": -13.76338005065918,
+        "yaw": 2.0718395988231686,
+        "floor_y": 0.04492,
+        "base_y": 0.35424082150697705,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.638984203338623,
+          -0.07466697692871094,
+          0.29042568802833557
+        ],
+        "optical_pos_world": [
+          2.007707118988037,
+          0.6446665525436401,
+          -14.004820823669434
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "wcojb4TFT35_bed_1",
+      "scene_filter": "wcojb4TFT35",
+      "category": "bed",
+      "episode_id": "1",
+      "closest_goal_object_id": 310,
+      "n_view_points": 537,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 1.626829981803894,
+        "z": -15.821840286254883,
+        "yaw": -1.5846847626830958,
+        "floor_y": 2.49492,
+        "base_y": 2.8042408378982544,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389834880828857,
+          -0.07466697692871094,
+          0.29042530059814453
+        ],
+        "optical_pos_world": [
+          0.9889451265335083,
+          3.0946662425994873,
+          -15.905374526977539
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "wcojb4TFT35_sofa_0",
+      "scene_filter": "wcojb4TFT35",
+      "category": "sofa",
+      "episode_id": "0",
+      "closest_goal_object_id": 340,
+      "n_view_points": 503,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 0.05494000017642975,
+        "z": -6.212649822235107,
+        "yaw": -3.093687619567512,
+        "floor_y": -0.00508,
+        "base_y": 0.3042408155465126,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389837265014648,
+          -0.07466650009155273,
+          0.29042553901672363
+        ],
+        "optical_pos_world": [
+          0.09892196953296661,
+          0.5946663618087769,
+          -6.854475975036621
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "wcojb4TFT35_toilet_4",
+      "scene_filter": "wcojb4TFT35",
+      "category": "toilet",
+      "episode_id": "4",
+      "closest_goal_object_id": 270,
+      "n_view_points": 151,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -0.5930227041244507,
+        "z": -15.642069816589355,
+        "yaw": 0.8707286880440127,
+        "floor_y": 2.49492,
+        "base_y": 2.804240718688965,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389837265014648,
+          -0.07466602325439453,
+          0.29042530059814453
+        ],
+        "optical_pos_world": [
+          -0.15243390202522278,
+          3.094666004180908,
+          -15.173287391662598
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "wcojb4TFT35_tv_monitor_0",
+      "scene_filter": "wcojb4TFT35",
+      "category": "tv_monitor",
+      "episode_id": "0",
+      "closest_goal_object_id": 349,
+      "n_view_points": 364,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 0.8752400279045105,
+        "z": -3.8867900371551514,
+        "yaw": 2.8835391594380435,
+        "floor_y": 0.04492,
+        "base_y": 0.35424078425407407,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389830112457275,
+          -0.07466679811477661,
+          0.29042550921440125
+        ],
+        "optical_pos_world": [
+          1.1105022430419922,
+          0.644666314125061,
+          -4.485560417175293
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "DYehNKdT76V_chair_0",
+      "scene_filter": "DYehNKdT76V",
+      "category": "chair",
+      "episode_id": "0",
+      "closest_goal_object_id": 178,
+      "n_view_points": 453,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -7.168270111083984,
+        "z": -3.4412803649902344,
+        "yaw": -1.4376476266651426,
+        "floor_y": 0.03651,
+        "base_y": 0.3458308052277565,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389827728271484,
+          -0.07466650009155273,
+          0.2904256582260132
+        ],
+        "optical_pos_world": [
+          -7.811509609222412,
+          0.6362564563751221,
+          -3.430457353591919
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "DYehNKdT76V_sofa_0",
+      "scene_filter": "DYehNKdT76V",
+      "category": "sofa",
+      "episode_id": "0",
+      "closest_goal_object_id": 180,
+      "n_view_points": 701,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -7.289400100708008,
+        "z": -3.0100927352905273,
+        "yaw": 1.1723751433749834,
+        "floor_y": 0.03651,
+        "base_y": 0.3458308052277565,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389837265014648,
+          -0.07466650009155273,
+          0.2904256582260132
+        ],
+        "optical_pos_world": [
+          -6.729433059692383,
+          0.6362564563751221,
+          -2.6933720111846924
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "DYehNKdT76V_plant_1",
+      "scene_filter": "DYehNKdT76V",
+      "category": "plant",
+      "episode_id": "1",
+      "closest_goal_object_id": 129,
+      "n_view_points": 96,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -7.054739952087402,
+        "z": -3.0037600994110107,
+        "yaw": -2.6612865966697465,
+        "floor_y": 3.33651,
+        "base_y": 3.6458308633422853,
+        "adapted_episode": false,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389837265014648,
+          -0.07466602325439453,
+          0.29042553901672363
+        ],
+        "optical_pos_world": [
+          -7.283764839172363,
+          3.9362564086914062,
+          -3.6049447059631348
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "DYehNKdT76V_toilet_2",
+      "scene_filter": "DYehNKdT76V",
+      "category": "toilet",
+      "episode_id": "2",
+      "closest_goal_object_id": 115,
+      "n_view_points": 232,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -0.09752999991178513,
+        "z": 0.1219400018453598,
+        "yaw": 1.7615721371530333,
+        "floor_y": 3.33651,
+        "base_y": 3.6458308633422853,
+        "adapted_episode": false,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389835476875305,
+          -0.0746663436293602,
+          0.29042530059814453
+        ],
+        "optical_pos_world": [
+          0.5440189838409424,
+          3.936256170272827,
+          0.0740872323513031
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "Nfvxx8J5NCo_chair_3",
+      "scene_filter": "Nfvxx8J5NCo",
+      "category": "chair",
+      "episode_id": "3",
+      "closest_goal_object_id": 210,
+      "n_view_points": 443,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -1.956807255744934,
+        "z": -0.10194999724626541,
+        "yaw": 0.8193897153028259,
+        "floor_y": 0.03086,
+        "base_y": 0.340180802795887,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.638983428478241,
+          -0.07466650009155273,
+          0.29042553901672363
+        ],
+        "optical_pos_world": [
+          -1.5408557653427124,
+          0.6306063532829285,
+          0.38882413506507874
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "Nfvxx8J5NCo_bed_1",
+      "scene_filter": "Nfvxx8J5NCo",
+      "category": "bed",
+      "episode_id": "1",
+      "closest_goal_object_id": 110,
+      "n_view_points": 575,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -14.686380386352539,
+        "z": 1.8292900323867798,
+        "yaw": -0.6974508452336299,
+        "floor_y": 0.05421,
+        "base_y": 0.3635308094835281,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389827728271484,
+          -0.07466506958007812,
+          0.2904256284236908
+        ],
+        "optical_pos_world": [
+          -15.154006958007812,
+          0.653956413269043,
+          2.271103858947754
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "Nfvxx8J5NCo_sofa_0",
+      "scene_filter": "Nfvxx8J5NCo",
+      "category": "sofa",
+      "episode_id": "0",
+      "closest_goal_object_id": 34,
+      "n_view_points": 1425,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -5.224699974060059,
+        "z": -2.5934700965881348,
+        "yaw": -1.3187431775484695,
+        "floor_y": 0.03086,
+        "base_y": 0.3401808325982094,
+        "adapted_episode": false,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389832496643066,
+          -0.07466602325439453,
+          0.2904255986213684
+        ],
+        "optical_pos_world": [
+          -5.862113952636719,
+          0.6306064128875732,
+          -2.5064191818237305
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "Nfvxx8J5NCo_tv_monitor_1",
+      "scene_filter": "Nfvxx8J5NCo",
+      "category": "tv_monitor",
+      "episode_id": "1",
+      "closest_goal_object_id": 125,
+      "n_view_points": 275,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -11.817130088806152,
+        "z": 1.2013696432113647,
+        "yaw": 0.3506538668329905,
+        "floor_y": 0.03385,
+        "base_y": 0.34317076564311977,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389832496643066,
+          -0.07466602325439453,
+          0.2904255986213684
+        ],
+        "optical_pos_world": [
+          -11.667754173278809,
+          0.6335963606834412,
+          1.8271183967590332
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "h1zeeAwLh9Z_chair_2",
+      "scene_filter": "h1zeeAwLh9Z",
+      "category": "chair",
+      "episode_id": "2",
+      "closest_goal_object_id": 150,
+      "n_view_points": 440,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 0.15342269837856293,
+        "z": -0.21727000176906586,
+        "yaw": -0.20037594038984777,
+        "floor_y": 0.04902,
+        "base_y": 0.3583407944583893,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.638983428478241,
+          -0.0746663361787796,
+          0.2904253602027893
+        ],
+        "optical_pos_world": [
+          -0.04693153500556946,
+          0.6487661600112915,
+          0.39406710863113403
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "h1zeeAwLh9Z_bed_1",
+      "scene_filter": "h1zeeAwLh9Z",
+      "category": "bed",
+      "episode_id": "1",
+      "closest_goal_object_id": 628,
+      "n_view_points": 757,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 9.200359344482422,
+        "z": -1.423840045928955,
+        "yaw": -0.31680295644441325,
+        "floor_y": 2.49902,
+        "base_y": 2.8083407288932793,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389837265014648,
+          -0.07466697692871094,
+          0.29042553901672363
+        ],
+        "optical_pos_world": [
+          8.93034553527832,
+          3.098766326904297,
+          -0.8399155735969543
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "h1zeeAwLh9Z_sofa_0",
+      "scene_filter": "h1zeeAwLh9Z",
+      "category": "sofa",
+      "episode_id": "0",
+      "closest_goal_object_id": 440,
+      "n_view_points": 534,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 8.986709594726562,
+        "z": -2.6871399879455566,
+        "yaw": 2.8254735155683313,
+        "floor_y": 0.00411,
+        "base_y": 0.3134307845568657,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389832496643066,
+          -0.07466650009155273,
+          0.2904256284236908
+        ],
+        "optical_pos_world": [
+          9.25632381439209,
+          0.6038564443588257,
+          -3.2712485790252686
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "h1zeeAwLh9Z_plant_3",
+      "scene_filter": "h1zeeAwLh9Z",
+      "category": "plant",
+      "episode_id": "3",
+      "closest_goal_object_id": 185,
+      "n_view_points": 231,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 5.5248894691467285,
+        "z": -3.3716399669647217,
+        "yaw": -0.7271777801692954,
+        "floor_y": -0.00098,
+        "base_y": 0.3083408183002472,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389832496643066,
+          -0.07466638088226318,
+          0.2904256582260132
+        ],
+        "optical_pos_world": [
+          5.044336795806885,
+          0.5987664461135864,
+          -2.943920850753784
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "h1zeeAwLh9Z_toilet_0",
+      "scene_filter": "h1zeeAwLh9Z",
+      "category": "toilet",
+      "episode_id": "0",
+      "closest_goal_object_id": 116,
+      "n_view_points": 79,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 5.2863898277282715,
+        "z": -3.578700065612793,
+        "yaw": -2.5036678004242194,
+        "floor_y": -0.00098,
+        "base_y": 0.3083407959485054,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389832496643066,
+          -0.07466602325439453,
+          0.2904255986213684
+        ],
+        "optical_pos_world": [
+          4.9658379554748535,
+          0.5987663865089417,
+          -4.136482238769531
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "5cdEh9F2hJL_chair_1",
+      "scene_filter": "5cdEh9F2hJL",
+      "category": "chair",
+      "episode_id": "1",
+      "closest_goal_object_id": 260,
+      "n_view_points": 427,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 10.49081039428711,
+        "z": -0.3826499879360199,
+        "yaw": -1.788723247208688,
+        "floor_y": 0.0184,
+        "base_y": 0.32772078952074046,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389827728271484,
+          -0.07466602325439453,
+          0.29042553901672363
+        ],
+        "optical_pos_world": [
+          9.883084297180176,
+          0.6181463003158569,
+          -0.593701958656311
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "5cdEh9F2hJL_bed_0",
+      "scene_filter": "5cdEh9F2hJL",
+      "category": "bed",
+      "episode_id": "0",
+      "closest_goal_object_id": 176,
+      "n_view_points": 678,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -5.6745500564575195,
+        "z": 3.0545198917388916,
+        "yaw": -0.21360545017830354,
+        "floor_y": 0.08406,
+        "base_y": 0.3933808047270775,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389832496643066,
+          -0.07466602325439453,
+          0.290425568819046
+        ],
+        "optical_pos_world": [
+          -5.882973670959473,
+          0.6838063597679138,
+          3.6631529331207275
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "5cdEh9F2hJL_sofa_1",
+      "scene_filter": "5cdEh9F2hJL",
+      "category": "sofa",
+      "episode_id": "1",
+      "closest_goal_object_id": 243,
+      "n_view_points": 1012,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -1.3886799812316895,
+        "z": 4.386020183563232,
+        "yaw": 0.5384194562398341,
+        "floor_y": 0.0184,
+        "base_y": 0.32772080442190166,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389834880828857,
+          -0.07466626167297363,
+          0.290425568819046
+        ],
+        "optical_pos_world": [
+          -1.1251246929168701,
+          0.6181463599205017,
+          4.972887992858887
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "5cdEh9F2hJL_plant_0",
+      "scene_filter": "5cdEh9F2hJL",
+      "category": "plant",
+      "episode_id": "0",
+      "closest_goal_object_id": 206,
+      "n_view_points": 221,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 5.850240230560303,
+        "z": -2.1129703521728516,
+        "yaw": 2.0628845060567187,
+        "floor_y": 0.0184,
+        "base_y": 0.32772081187248225,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389832496643066,
+          -0.07466620206832886,
+          0.290425568819046
+        ],
+        "optical_pos_world": [
+          6.448684215545654,
+          0.6181464195251465,
+          -2.349062204360962
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "5cdEh9F2hJL_toilet_0",
+      "scene_filter": "5cdEh9F2hJL",
+      "category": "toilet",
+      "episode_id": "0",
+      "closest_goal_object_id": 36,
+      "n_view_points": 208,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 1.8437199592590332,
+        "z": 1.2952200174331665,
+        "yaw": 0.9980970890777094,
+        "floor_y": 0.0184,
+        "base_y": 0.32772082677364345,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389837265014648,
+          -0.07466661930084229,
+          0.29042547941207886
+        ],
+        "optical_pos_world": [
+          2.3402862548828125,
+          0.6181463003158569,
+          1.704239845275879
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "5cdEh9F2hJL_tv_monitor_0",
+      "scene_filter": "5cdEh9F2hJL",
+      "category": "tv_monitor",
+      "episode_id": "0",
+      "closest_goal_object_id": 353,
+      "n_view_points": 121,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 6.728340148925781,
+        "z": 4.724800109863281,
+        "yaw": 0.3952069759504005,
+        "floor_y": 0.0184,
+        "base_y": 0.32772081932306285,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.638984203338623,
+          -0.07466650009155273,
+          0.2904258072376251
+        ],
+        "optical_pos_world": [
+          6.905437469482422,
+          0.6181466579437256,
+          5.343276023864746
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "bxsVRursffK_bed_0",
+      "scene_filter": "bxsVRursffK",
+      "category": "bed",
+      "episode_id": "0",
+      "closest_goal_object_id": 91,
+      "n_view_points": 722,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -1.3255399465560913,
+        "z": -5.937950134277344,
+        "yaw": -1.2258708910306115,
+        "floor_y": 0.07468,
+        "base_y": 0.38400082277774805,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389833092689514,
+          -0.07466697692871094,
+          0.29042553901672363
+        ],
+        "optical_pos_world": [
+          -1.952134370803833,
+          0.6744263172149658,
+          -5.79216194152832
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "bxsVRursffK_sofa_0",
+      "scene_filter": "bxsVRursffK",
+      "category": "sofa",
+      "episode_id": "0",
+      "closest_goal_object_id": 325,
+      "n_view_points": 1061,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -8.644350051879883,
+        "z": -5.299950122833252,
+        "yaw": 0.3691510977475225,
+        "floor_y": -3.02532,
+        "base_y": -2.7159991444396967,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389827728271484,
+          -0.07466650009155273,
+          0.29042553901672363
+        ],
+        "optical_pos_world": [
+          -8.483426094055176,
+          -2.4255735874176025,
+          -4.677071571350098
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "bxsVRursffK_plant_1",
+      "scene_filter": "bxsVRursffK",
+      "category": "plant",
+      "episode_id": "1",
+      "closest_goal_object_id": 89,
+      "n_view_points": 87,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -7.800380229949951,
+        "z": -4.300107479095459,
+        "yaw": 1.1187121748756623,
+        "floor_y": 0.02468,
+        "base_y": 0.3340007795643806,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389837265014648,
+          -0.07466620206832886,
+          0.290425568819046
+        ],
+        "optical_pos_world": [
+          -7.258206844329834,
+          0.6244263648986816,
+          -3.953807830810547
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "bxsVRursffK_toilet_4",
+      "scene_filter": "bxsVRursffK",
+      "category": "toilet",
+      "episode_id": "4",
+      "closest_goal_object_id": 27,
+      "n_view_points": 151,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -1.0318399667739868,
+        "z": -2.149777412414551,
+        "yaw": 1.6562071036589872,
+        "floor_y": 0.07468,
+        "base_y": 0.38400077807426447,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.638983428478241,
+          -0.07466650009155273,
+          0.29042553901672363
+        ],
+        "optical_pos_world": [
+          -0.388816237449646,
+          0.6744263172149658,
+          -2.1298928260803223
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "a8BtkwhxdRV_chair_1",
+      "scene_filter": "a8BtkwhxdRV",
+      "category": "chair",
+      "episode_id": "1",
+      "closest_goal_object_id": 622,
+      "n_view_points": 384,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -0.12999999523162842,
+        "z": -0.1324196755886078,
+        "yaw": -2.2159630664878853,
+        "floor_y": -1.80919,
+        "base_y": -1.4998692405128482,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.638983428478241,
+          -0.07466645538806915,
+          0.2904254198074341
+        ],
+        "optical_pos_world": [
+          -0.5956481695175171,
+          -1.2094438076019287,
+          -0.5763192176818848
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "a8BtkwhxdRV_plant_0",
+      "scene_filter": "a8BtkwhxdRV",
+      "category": "plant",
+      "episode_id": "0",
+      "closest_goal_object_id": 412,
+      "n_view_points": 131,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -0.5653600096702576,
+        "z": 0.975849986076355,
+        "yaw": -1.6510684686042885,
+        "floor_y": -1.80919,
+        "base_y": -1.499869151105881,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.638983428478241,
+          -0.07466638088226318,
+          0.29042553901672363
+        ],
+        "optical_pos_world": [
+          -1.196298599243164,
+          -1.2094435691833496,
+          0.8501865267753601
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "a8BtkwhxdRV_toilet_3",
+      "scene_filter": "a8BtkwhxdRV",
+      "category": "toilet",
+      "episode_id": "3",
+      "closest_goal_object_id": 18,
+      "n_view_points": 134,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -1.3352199792861938,
+        "z": 3.5474600791931152,
+        "yaw": 1.9344702450523346,
+        "floor_y": 1.04081,
+        "base_y": 1.3501308012104034,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389834880828857,
+          -0.07466626167297363,
+          0.29042530059814453
+        ],
+        "optical_pos_world": [
+          -0.7114688754081726,
+          1.6405560970306396,
+          3.3899497985839844
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "a8BtkwhxdRV_tv_monitor_2",
+      "scene_filter": "a8BtkwhxdRV",
+      "category": "tv_monitor",
+      "episode_id": "2",
+      "closest_goal_object_id": 245,
+      "n_view_points": 156,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 1.44741952419281,
+        "z": 1.628749966621399,
+        "yaw": -2.3795106780066755,
+        "floor_y": 1.04081,
+        "base_y": 1.3501308012104034,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389834880828857,
+          -0.07466638088226318,
+          0.29042530059814453
+        ],
+        "optical_pos_world": [
+          1.0602604150772095,
+          1.6405560970306396,
+          1.114957332611084
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "p53SfW6mjZe_bed_4",
+      "scene_filter": "p53SfW6mjZe",
+      "category": "bed",
+      "episode_id": "4",
+      "closest_goal_object_id": 194,
+      "n_view_points": 744,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -6.398359775543213,
+        "z": 5.6310272216796875,
+        "yaw": 2.228634862582724,
+        "floor_y": 0.00481,
+        "base_y": 0.3141308502650261,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389837265014648,
+          -0.07466739416122437,
+          0.290425568819046
+        ],
+        "optical_pos_world": [
+          -5.84706974029541,
+          0.6045564413070679,
+          5.29943323135376
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "p53SfW6mjZe_sofa_4",
+      "scene_filter": "p53SfW6mjZe",
+      "category": "sofa",
+      "episode_id": "4",
+      "closest_goal_object_id": 440,
+      "n_view_points": 633,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -12.55486011505127,
+        "z": 5.018209457397461,
+        "yaw": -1.102166424498379,
+        "floor_y": 0.00481,
+        "base_y": 0.3141307832098007,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389837265014648,
+          -0.07466650009155273,
+          0.2904256284236908
+        ],
+        "optical_pos_world": [
+          -13.15867805480957,
+          0.6045564413070679,
+          5.240199089050293
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "p53SfW6mjZe_toilet_0",
+      "scene_filter": "p53SfW6mjZe",
+      "category": "toilet",
+      "episode_id": "0",
+      "closest_goal_object_id": 714,
+      "n_view_points": 104,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -6.56037712097168,
+        "z": 2.3856499195098877,
+        "yaw": 2.7155131770527268,
+        "floor_y": -3.09519,
+        "base_y": -2.7858691542053227,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389832496643066,
+          -0.07466650009155273,
+          0.29042577743530273
+        ],
+        "optical_pos_world": [
+          -6.228291988372803,
+          -2.495443344116211,
+          1.8346561193466187
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "p53SfW6mjZe_tv_monitor_0",
+      "scene_filter": "p53SfW6mjZe",
+      "category": "tv_monitor",
+      "episode_id": "0",
+      "closest_goal_object_id": 435,
+      "n_view_points": 135,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -1.2403000593185425,
+        "z": 1.6598902940750122,
+        "yaw": -2.5561769592080226,
+        "floor_y": 0.00481,
+        "base_y": 0.3141308279132843,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389837265014648,
+          -0.07466650009155273,
+          0.29042553901672363
+        ],
+        "optical_pos_world": [
+          -1.5311347246170044,
+          0.6045563817024231,
+          1.0860519409179688
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "mv2HUxq3B53_bed_0",
+      "scene_filter": "mv2HUxq3B53",
+      "category": "bed",
+      "episode_id": "0",
+      "closest_goal_object_id": 552,
+      "n_view_points": 549,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 0.19428999722003937,
+        "z": 10.22992992401123,
+        "yaw": 2.675891723742444,
+        "floor_y": 0.00035,
+        "base_y": 0.30967079711437223,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389846801757812,
+          -0.07466554641723633,
+          0.29042553901672363
+        ],
+        "optical_pos_world": [
+          0.5479398369789124,
+          0.6000963449478149,
+          9.692521095275879
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "mv2HUxq3B53_sofa_0",
+      "scene_filter": "mv2HUxq3B53",
+      "category": "sofa",
+      "episode_id": "0",
+      "closest_goal_object_id": 84,
+      "n_view_points": 1332,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -5.190859794616699,
+        "z": 6.750832557678223,
+        "yaw": -1.306170587209431,
+        "floor_y": 0.01207,
+        "base_y": 0.3213908011698723,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389837265014648,
+          -0.07466650009155273,
+          0.29042553901672363
+        ],
+        "optical_pos_world": [
+          -5.82712984085083,
+          0.6118163466453552,
+          6.845890045166016
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "mv2HUxq3B53_plant_3",
+      "scene_filter": "mv2HUxq3B53",
+      "category": "plant",
+      "episode_id": "3",
+      "closest_goal_object_id": 288,
+      "n_view_points": 187,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 8.737239837646484,
+        "z": 0.8407800197601318,
+        "yaw": -1.1056385656141625,
+        "floor_y": 0.05035,
+        "base_y": 0.3596708328771592,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389837265014648,
+          -0.07466650009155273,
+          0.2904255986213684
+        ],
+        "optical_pos_world": [
+          8.132655143737793,
+          0.6500964164733887,
+          1.0606716871261597
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "mv2HUxq3B53_toilet_0",
+      "scene_filter": "mv2HUxq3B53",
+      "category": "toilet",
+      "episode_id": "0",
+      "closest_goal_object_id": 368,
+      "n_view_points": 120,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -9.462759971618652,
+        "z": 13.946920394897461,
+        "yaw": 0.30008618583443614,
+        "floor_y": 0.05035,
+        "base_y": 0.3596707881736756,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389837265014648,
+          -0.07466506958007812,
+          0.290425568819046
+        ],
+        "optical_pos_world": [
+          -9.345203399658203,
+          0.6500963568687439,
+          14.57942008972168
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "mv2HUxq3B53_tv_monitor_1",
+      "scene_filter": "mv2HUxq3B53",
+      "category": "tv_monitor",
+      "episode_id": "1",
+      "closest_goal_object_id": 563,
+      "n_view_points": 225,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 9.381050109863281,
+        "z": 1.2854026556015015,
+        "yaw": 0.8861083810432291,
+        "floor_y": 0.0448,
+        "base_y": 0.3541208121585846,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389837265014648,
+          -0.07466602325439453,
+          0.29042568802833557
+        ],
+        "optical_pos_world": [
+          9.82879638671875,
+          0.6445465087890625,
+          1.7473535537719727
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "BAbdmeyTvMZ_chair_1",
+      "scene_filter": "BAbdmeyTvMZ",
+      "category": "chair",
+      "episode_id": "1",
+      "closest_goal_object_id": 131,
+      "n_view_points": 351,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 7.9873199462890625,
+        "z": 6.461650371551514,
+        "yaw": -2.6722720317097073,
+        "floor_y": 0.01564,
+        "base_y": 0.32496079057455063,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389827728271484,
+          -0.07466697692871094,
+          0.290425568819046
+        ],
+        "optical_pos_world": [
+          7.764914035797119,
+          0.6153863668441772,
+          5.8579864501953125
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "BAbdmeyTvMZ_bed_5",
+      "scene_filter": "BAbdmeyTvMZ",
+      "category": "bed",
+      "episode_id": "5",
+      "closest_goal_object_id": 113,
+      "n_view_points": 773,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 4.391739845275879,
+        "z": 0.3860296905040741,
+        "yaw": 0.5278667567515845,
+        "floor_y": 0.04521,
+        "base_y": 0.3545308310604095,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389834880828857,
+          -0.07466602325439453,
+          0.2904258072376251
+        ],
+        "optical_pos_world": [
+          4.649087905883789,
+          0.644956648349762,
+          0.9756456613540649
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "BAbdmeyTvMZ_sofa_0",
+      "scene_filter": "BAbdmeyTvMZ",
+      "category": "sofa",
+      "episode_id": "0",
+      "closest_goal_object_id": 204,
+      "n_view_points": 652,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -3.2911200523376465,
+        "z": 1.2600104808807373,
+        "yaw": 0.330746400368195,
+        "floor_y": 0.03937,
+        "base_y": 0.3486908231401443,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389837265014648,
+          -0.07466626167297363,
+          0.29042577743530273
+        ],
+        "optical_pos_world": [
+          -3.1542301177978516,
+          0.639116644859314,
+          1.8886091709136963
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "BAbdmeyTvMZ_toilet_3",
+      "scene_filter": "BAbdmeyTvMZ",
+      "category": "toilet",
+      "episode_id": "3",
+      "closest_goal_object_id": 172,
+      "n_view_points": 161,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 6.348680019378662,
+        "z": 0.734207272529602,
+        "yaw": -2.454864440198664,
+        "floor_y": 0.04521,
+        "base_y": 0.3545307789063453,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.638983964920044,
+          -0.07466602325439453,
+          0.290425568819046
+        ],
+        "optical_pos_world": [
+          6.001298904418945,
+          0.6449563503265381,
+          0.1927262544631958
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "BAbdmeyTvMZ_tv_monitor_1",
+      "scene_filter": "BAbdmeyTvMZ",
+      "category": "tv_monitor",
+      "episode_id": "1",
+      "closest_goal_object_id": 30,
+      "n_view_points": 252,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -5.425140380859375,
+        "z": 5.2525200843811035,
+        "yaw": 1.019364951657821,
+        "floor_y": 0.04521,
+        "base_y": 0.3545307789063453,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389832496643066,
+          -0.07466697692871094,
+          0.290425568819046
+        ],
+        "optical_pos_world": [
+          -4.919988632202148,
+          0.6449563503265381,
+          5.650887489318848
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "TEEsavR23oF_chair_4",
+      "scene_filter": "TEEsavR23oF",
+      "category": "chair",
+      "episode_id": "4",
+      "closest_goal_object_id": 318,
+      "n_view_points": 336,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -5.443222522735596,
+        "z": -0.3245599865913391,
+        "yaw": -2.160144574838159,
+        "floor_y": 0.01338,
+        "base_y": 0.3227008343052864,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389837265014648,
+          -0.07466650009155273,
+          0.29042553901672363
+        ],
+        "optical_pos_world": [
+          -5.932910442352295,
+          0.6131263971328735,
+          -0.7417900562286377
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "TEEsavR23oF_bed_0",
+      "scene_filter": "TEEsavR23oF",
+      "category": "bed",
+      "episode_id": "0",
+      "closest_goal_object_id": 516,
+      "n_view_points": 668,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -9.174269676208496,
+        "z": -2.0995399951934814,
+        "yaw": 2.0214953412475527,
+        "floor_y": 0.01338,
+        "base_y": 0.3227008343052864,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389837265014648,
+          -0.07466650009155273,
+          0.29042547941207886
+        ],
+        "optical_pos_world": [
+          -8.566568374633789,
+          0.613126277923584,
+          -2.3106675148010254
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "TEEsavR23oF_sofa_0",
+      "scene_filter": "TEEsavR23oF",
+      "category": "sofa",
+      "episode_id": "0",
+      "closest_goal_object_id": 275,
+      "n_view_points": 519,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -1.7573800086975098,
+        "z": -2.3178300857543945,
+        "yaw": 2.9158944064588135,
+        "floor_y": 0.01338,
+        "base_y": 0.3227007821512222,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389837265014648,
+          -0.07466650009155273,
+          0.29042547941207886
+        ],
+        "optical_pos_world": [
+          -1.5416109561920166,
+          0.613126277923584,
+          -2.923898696899414
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "TEEsavR23oF_plant_0",
+      "scene_filter": "TEEsavR23oF",
+      "category": "plant",
+      "episode_id": "0",
+      "closest_goal_object_id": 184,
+      "n_view_points": 23,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -3.9017601013183594,
+        "z": -5.466020107269287,
+        "yaw": 1.0418225924358504,
+        "floor_y": 3.15867,
+        "base_y": 3.4679908522033687,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389832496643066,
+          -0.07466673851013184,
+          0.29042553901672363
+        ],
+        "optical_pos_world": [
+          -3.3877899646759033,
+          3.7584164142608643,
+          -5.079096794128418
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "TEEsavR23oF_toilet_2",
+      "scene_filter": "TEEsavR23oF",
+      "category": "toilet",
+      "episode_id": "2",
+      "closest_goal_object_id": 389,
+      "n_view_points": 82,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 0.11739999800920486,
+        "z": -5.84930944442749,
+        "yaw": 2.7405767666525156,
+        "floor_y": 0.01338,
+        "base_y": 0.3227008268547058,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389832496643066,
+          -0.07466650009155273,
+          0.2904253304004669
+        ],
+        "optical_pos_world": [
+          0.43557241559028625,
+          0.6131261587142944,
+          -6.40845251083374
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "TEEsavR23oF_tv_monitor_1",
+      "scene_filter": "TEEsavR23oF",
+      "category": "tv_monitor",
+      "episode_id": "1",
+      "closest_goal_object_id": 10,
+      "n_view_points": 173,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -4.976719856262207,
+        "z": -2.182689905166626,
+        "yaw": -0.5734865718185392,
+        "floor_y": 3.11338,
+        "base_y": 3.422700838775634,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389837265014648,
+          -0.07466650009155273,
+          0.29042530059814453
+        ],
+        "optical_pos_world": [
+          -5.386130332946777,
+          3.7131261825561523,
+          -1.686445713043213
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "bCPU9suPUw9_bed_2",
+      "scene_filter": "bCPU9suPUw9",
+      "category": "bed",
+      "episode_id": "2",
+      "closest_goal_object_id": 71,
+      "n_view_points": 609,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 0.17066000401973724,
+        "z": 0.5013295412063599,
+        "yaw": 3.061932339125824,
+        "floor_y": 2.88022,
+        "base_y": 3.1895408766174316,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389834880828857,
+          -0.07466647028923035,
+          0.29042553901672363
+        ],
+        "optical_pos_world": [
+          0.29593753814697266,
+          3.479966402053833,
+          -0.12968593835830688
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "bCPU9suPUw9_sofa_1",
+      "scene_filter": "bCPU9suPUw9",
+      "category": "sofa",
+      "episode_id": "1",
+      "closest_goal_object_id": 207,
+      "n_view_points": 916,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -0.26573967933654785,
+        "z": -0.6272000074386597,
+        "yaw": -2.8027140289154344,
+        "floor_y": 0.06824,
+        "base_y": 0.3775608053684234,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389833688735962,
+          -0.07466645538806915,
+          0.2904253900051117
+        ],
+        "optical_pos_world": [
+          -0.4077366590499878,
+          0.6679861545562744,
+          -1.254664421081543
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "bCPU9suPUw9_plant_0",
+      "scene_filter": "bCPU9suPUw9",
+      "category": "plant",
+      "episode_id": "0",
+      "closest_goal_object_id": 200,
+      "n_view_points": 506,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 0.09755270183086395,
+        "z": -0.6307399868965149,
+        "yaw": -1.9579691167601414,
+        "floor_y": 0.03289,
+        "base_y": 0.3422108324170112,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389835476875305,
+          -0.07466655969619751,
+          0.29042544960975647
+        ],
+        "optical_pos_world": [
+          -0.4659414291381836,
+          0.632636308670044,
+          -0.9411420226097107
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "bCPU9suPUw9_toilet_1",
+      "scene_filter": "bCPU9suPUw9",
+      "category": "toilet",
+      "episode_id": "1",
+      "closest_goal_object_id": 115,
+      "n_view_points": 75,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 6.596819877624512,
+        "z": -0.3685300052165985,
+        "yaw": 0.18078657133720252,
+        "floor_y": 2.88022,
+        "base_y": 3.1895408766174316,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389836668968201,
+          -0.07466602325439453,
+          0.29042577743530273
+        ],
+        "optical_pos_world": [
+          6.6382622718811035,
+          3.479966640472412,
+          0.27346500754356384
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "6s7QHgap2fW_bed_0",
+      "scene_filter": "6s7QHgap2fW",
+      "category": "bed",
+      "episode_id": "0",
+      "closest_goal_object_id": 252,
+      "n_view_points": 669,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 4.177599906921387,
+        "z": -0.24142000079154968,
+        "yaw": -2.8542014824855104,
+        "floor_y": 2.84944,
+        "base_y": 3.1587607325553893,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.638983428478241,
+          -0.07466650009155273,
+          0.29042530059814453
+        ],
+        "optical_pos_world": [
+          4.0680832862854,
+          3.449186086654663,
+          -0.8753608465194702
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "6s7QHgap2fW_plant_1",
+      "scene_filter": "6s7QHgap2fW",
+      "category": "plant",
+      "episode_id": "1",
+      "closest_goal_object_id": 546,
+      "n_view_points": 87,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 6.771170139312744,
+        "z": -2.4201700687408447,
+        "yaw": -3.1144319989759994,
+        "floor_y": 2.84944,
+        "base_y": 3.158760792160034,
+        "adapted_episode": false,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389834880828857,
+          -0.07466650009155273,
+          0.29042530059814453
+        ],
+        "optical_pos_world": [
+          6.828455924987793,
+          3.449186086654663,
+          -3.060945510864258
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "6s7QHgap2fW_tv_monitor_0",
+      "scene_filter": "6s7QHgap2fW",
+      "category": "tv_monitor",
+      "episode_id": "0",
+      "closest_goal_object_id": 34,
+      "n_view_points": 132,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 1.8480499982833862,
+        "z": -1.7710304260253906,
+        "yaw": -2.617998472320965,
+        "floor_y": 0.01379,
+        "base_y": 0.323110786151886,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389831304550171,
+          -0.07466626167297363,
+          0.29042550921440125
+        ],
+        "optical_pos_world": [
+          1.593224048614502,
+          0.6135362982749939,
+          -2.3617403507232666
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "QaLdnwvtxbs_chair_0",
+      "scene_filter": "QaLdnwvtxbs",
+      "category": "chair",
+      "episode_id": "0",
+      "closest_goal_object_id": 174,
+      "n_view_points": 328,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -5.896420478820801,
+        "z": -2.529860019683838,
+        "yaw": 1.1552604348758855,
+        "floor_y": 0.03574,
+        "base_y": 0.3450607955336571,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389832496643066,
+          -0.07466650009155273,
+          0.29042550921440125
+        ],
+        "optical_pos_world": [
+          -5.34195613861084,
+          0.6354863047599792,
+          -2.2036027908325195
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "QaLdnwvtxbs_bed_1",
+      "scene_filter": "QaLdnwvtxbs",
+      "category": "bed",
+      "episode_id": "1",
+      "closest_goal_object_id": 20,
+      "n_view_points": 641,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 0.6993795037269592,
+        "z": 2.884089946746826,
+        "yaw": -2.3526972949422555,
+        "floor_y": 0.03574,
+        "base_y": 0.3450607880830765,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389832496643066,
+          -0.07466626167297363,
+          0.290425568819046
+        ],
+        "optical_pos_world": [
+          0.29858487844467163,
+          0.635486364364624,
+          2.38086199760437
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "QaLdnwvtxbs_sofa_1",
+      "scene_filter": "QaLdnwvtxbs",
+      "category": "sofa",
+      "episode_id": "1",
+      "closest_goal_object_id": 185,
+      "n_view_points": 625,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -3.6237399578094482,
+        "z": -4.171052932739258,
+        "yaw": 0.8248009455649535,
+        "floor_y": 0.03574,
+        "base_y": 0.3450607880830765,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389832496643066,
+          -0.07466644048690796,
+          0.2904256284236908
+        ],
+        "optical_pos_world": [
+          -3.205138921737671,
+          0.6354864239692688,
+          -3.682537078857422
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "QaLdnwvtxbs_toilet_0",
+      "scene_filter": "QaLdnwvtxbs",
+      "category": "toilet",
+      "episode_id": "0",
+      "closest_goal_object_id": 237,
+      "n_view_points": 171,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 4.126279830932617,
+        "z": -1.3660099506378174,
+        "yaw": -1.3261432397661623,
+        "floor_y": 0.03574,
+        "base_y": 0.3450608104348183,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389837265014648,
+          -0.0746663510799408,
+          0.29042544960975647
+        ],
+        "optical_pos_world": [
+          3.488238573074341,
+          0.6354862451553345,
+          -1.283678412437439
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "QaLdnwvtxbs_tv_monitor_4",
+      "scene_filter": "QaLdnwvtxbs",
+      "category": "tv_monitor",
+      "episode_id": "4",
+      "closest_goal_object_id": 196,
+      "n_view_points": 260,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -0.6797496676445007,
+        "z": 2.9593799114227295,
+        "yaw": 0.04938525728314511,
+        "floor_y": 0.03574,
+        "base_y": 0.3450607880830765,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.638983964920044,
+          -0.07466644048690796,
+          0.2904256582260132
+        ],
+        "optical_pos_world": [
+          -0.7227815389633179,
+          0.6354864835739136,
+          3.6012706756591797
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "zt1RVoi7PcG_chair_0",
+      "scene_filter": "zt1RVoi7PcG",
+      "category": "chair",
+      "episode_id": "0",
+      "closest_goal_object_id": 730,
+      "n_view_points": 295,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -1.3166104555130005,
+        "z": 0.8620399832725525,
+        "yaw": -2.7831165255699015,
+        "floor_y": -3.03706,
+        "base_y": -2.727739205932617,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389836072921753,
+          -0.07466650009155273,
+          0.29042506217956543
+        ],
+        "optical_pos_world": [
+          -1.4708762168884277,
+          -2.437314033508301,
+          0.2374783754348755
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "zt1RVoi7PcG_sofa_0",
+      "scene_filter": "zt1RVoi7PcG",
+      "category": "sofa",
+      "episode_id": "0",
+      "closest_goal_object_id": 675,
+      "n_view_points": 509,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -4.0832200050354,
+        "z": 3.917940378189087,
+        "yaw": 0.7761331337521102,
+        "floor_y": -3.03706,
+        "base_y": -2.7277390867233273,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.638983964920044,
+          -0.07466602325439453,
+          0.29042530059814453
+        ],
+        "optical_pos_world": [
+          -3.6888794898986816,
+          -2.4373137950897217,
+          4.426242351531982
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "zt1RVoi7PcG_plant_1",
+      "scene_filter": "zt1RVoi7PcG",
+      "category": "plant",
+      "episode_id": "1",
+      "closest_goal_object_id": 210,
+      "n_view_points": 74,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 0.21288999915122986,
+        "z": 2.684839963912964,
+        "yaw": 1.4054764985299257,
+        "floor_y": 0.02656,
+        "base_y": 0.33588079936265947,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389834880828857,
+          -0.07466626167297363,
+          0.2904256284236908
+        ],
+        "optical_pos_world": [
+          0.8308737277984619,
+          0.626306414604187,
+          2.8636443614959717
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "zt1RVoi7PcG_tv_monitor_1",
+      "scene_filter": "zt1RVoi7PcG",
+      "category": "tv_monitor",
+      "episode_id": "1",
+      "closest_goal_object_id": 681,
+      "n_view_points": 283,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 0.04580000042915344,
+        "z": 3.4081127643585205,
+        "yaw": -2.7023147537786905,
+        "floor_y": -3.03706,
+        "base_y": -2.7277393251419064,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389834880828857,
+          -0.07466638088226318,
+          0.29042577743530273
+        ],
+        "optical_pos_world": [
+          -0.15837319195270538,
+          -2.4373135566711426,
+          2.7980403900146484
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "GLAQ4DNUx5U_bed_2",
+      "scene_filter": "GLAQ4DNUx5U",
+      "category": "bed",
+      "episode_id": "2",
+      "closest_goal_object_id": 618,
+      "n_view_points": 929,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -3.6705100536346436,
+        "z": 6.701299667358398,
+        "yaw": 2.03524189656699,
+        "floor_y": 1.20711,
+        "base_y": 1.5164308334922785,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389837265014648,
+          -0.07466554641723633,
+          0.29042553901672363
+        ],
+        "optical_pos_world": [
+          -3.0657691955566406,
+          1.806856393814087,
+          6.481837749481201
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "GLAQ4DNUx5U_sofa_0",
+      "scene_filter": "GLAQ4DNUx5U",
+      "category": "sofa",
+      "episode_id": "0",
+      "closest_goal_object_id": 432,
+      "n_view_points": 861,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -1.510509967803955,
+        "z": 6.231569766998291,
+        "yaw": 1.1935548967990515,
+        "floor_y": -1.59289,
+        "base_y": -1.2835692022705079,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389837265014648,
+          -0.07466650009155273,
+          0.29042547941207886
+        ],
+        "optical_pos_world": [
+          -0.9439607858657837,
+          -0.9931437373161316,
+          6.536360263824463
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "GLAQ4DNUx5U_tv_monitor_3",
+      "scene_filter": "GLAQ4DNUx5U",
+      "category": "tv_monitor",
+      "episode_id": "3",
+      "closest_goal_object_id": 603,
+      "n_view_points": 356,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 0.8114073276519775,
+        "z": 1.3417400121688843,
+        "yaw": 1.8133878776525105,
+        "floor_y": 1.20711,
+        "base_y": 1.5164307738876337,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389834880828857,
+          -0.07466638088226318,
+          0.29042530059814453
+        ],
+        "optical_pos_world": [
+          1.4496169090270996,
+          1.8068560361862183,
+          1.2607240676879883
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "y9hTuugGdiq_bed_3",
+      "scene_filter": "y9hTuugGdiq",
+      "category": "bed",
+      "episode_id": "3",
+      "closest_goal_object_id": 26,
+      "n_view_points": 817,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -1.7622004747390747,
+        "z": 0.3003099858760834,
+        "yaw": 0.33449834684739876,
+        "floor_y": 3.16139,
+        "base_y": 3.4707107958793637,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389836072921753,
+          -0.07466614246368408,
+          0.29042553901672363
+        ],
+        "optical_pos_world": [
+          -1.622952938079834,
+          3.761136293411255,
+          0.9283905029296875
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "y9hTuugGdiq_sofa_0",
+      "scene_filter": "y9hTuugGdiq",
+      "category": "sofa",
+      "episode_id": "0",
+      "closest_goal_object_id": 228,
+      "n_view_points": 963,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -4.882092475891113,
+        "z": 1.253250002861023,
+        "yaw": -0.850500532370243,
+        "floor_y": 0.01139,
+        "base_y": 0.3207108525037765,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389837265014648,
+          -0.07466673851013184,
+          0.29042547941207886
+        ],
+        "optical_pos_world": [
+          -5.411610126495361,
+          0.6111363172531128,
+          1.618607759475708
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "y9hTuugGdiq_plant_0",
+      "scene_filter": "y9hTuugGdiq",
+      "category": "plant",
+      "episode_id": "0",
+      "closest_goal_object_id": 473,
+      "n_view_points": 123,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -3.573199987411499,
+        "z": 3.1666901111602783,
+        "yaw": -2.1036904078389047,
+        "floor_y": 0.06139,
+        "base_y": 0.37071080631017683,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389833688735962,
+          -0.07466650009155273,
+          0.2904255986213684
+        ],
+        "optical_pos_world": [
+          -4.085649490356445,
+          0.6611363887786865,
+          2.7777552604675293
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "y9hTuugGdiq_toilet_2",
+      "scene_filter": "y9hTuugGdiq",
+      "category": "toilet",
+      "episode_id": "2",
+      "closest_goal_object_id": 411,
+      "n_view_points": 88,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -10.13523006439209,
+        "z": 2.644869565963745,
+        "yaw": -1.160753407308615,
+        "floor_y": 0.053,
+        "base_y": 0.36232081766605373,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.638981819152832,
+          -0.07466602325439453,
+          0.29042544960975647
+        ],
+        "optical_pos_world": [
+          -10.751008033752441,
+          0.6527462601661682,
+          2.831122398376465
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "y9hTuugGdiq_tv_monitor_1",
+      "scene_filter": "y9hTuugGdiq",
+      "category": "tv_monitor",
+      "episode_id": "1",
+      "closest_goal_object_id": 246,
+      "n_view_points": 279,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -0.08654999732971191,
+        "z": 3.102410078048706,
+        "yaw": -2.1396659163842986,
+        "floor_y": 0.01139,
+        "base_y": 0.3207108152508735,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389834880828857,
+          -0.07466650009155273,
+          0.2904255986213684
+        ],
+        "optical_pos_world": [
+          -0.5846788883209229,
+          0.6111364364624023,
+          2.6952950954437256
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "CrMo8WxCyVb_bed_1",
+      "scene_filter": "CrMo8WxCyVb",
+      "category": "bed",
+      "episode_id": "1",
+      "closest_goal_object_id": 72,
+      "n_view_points": 807,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -2.6041500568389893,
+        "z": 2.1826171875,
+        "yaw": 2.935912423128823,
+        "floor_y": 0.01869,
+        "base_y": 0.32801076182127,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389832496643066,
+          -0.07466673851013184,
+          0.2904256582260132
+        ],
+        "optical_pos_world": [
+          -2.4005556106567383,
+          0.6184364557266235,
+          1.5723516941070557
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "CrMo8WxCyVb_plant_0",
+      "scene_filter": "CrMo8WxCyVb",
+      "category": "plant",
+      "episode_id": "0",
+      "closest_goal_object_id": 226,
+      "n_view_points": 85,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -0.6057900190353394,
+        "z": -0.7866500020027161,
+        "yaw": 1.2820082191514708,
+        "floor_y": 0.05006,
+        "base_y": 0.3593808009719849,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389834880828857,
+          -0.07466644048690796,
+          0.2904256284236908
+        ],
+        "optical_pos_world": [
+          -0.014531373977661133,
+          0.6498064398765564,
+          -0.5330988764762878
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "CrMo8WxCyVb_toilet_0",
+      "scene_filter": "CrMo8WxCyVb",
+      "category": "toilet",
+      "episode_id": "0",
+      "closest_goal_object_id": 246,
+      "n_view_points": 98,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -5.342659950256348,
+        "z": 8.097880363464355,
+        "yaw": -0.4319297401674628,
+        "floor_y": 0.05006,
+        "base_y": 0.3593807935214043,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389827728271484,
+          -0.07466697692871094,
+          0.2904255986213684
+        ],
+        "optical_pos_world": [
+          -5.6779632568359375,
+          0.6498063802719116,
+          8.646921157836914
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "4ok3usBNeis_sofa_3",
+      "scene_filter": "4ok3usBNeis",
+      "category": "sofa",
+      "episode_id": "3",
+      "closest_goal_object_id": 269,
+      "n_view_points": 600,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 0.8224726915359497,
+        "z": -0.5069000124931335,
+        "yaw": -0.5175775927804808,
+        "floor_y": 2.06447,
+        "base_y": 2.3737908227348328,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389834880828857,
+          -0.07466632127761841,
+          0.29042530059814453
+        ],
+        "optical_pos_world": [
+          0.4414321482181549,
+          2.6642160415649414,
+          0.011446475982666016
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "4ok3usBNeis_tv_monitor_0",
+      "scene_filter": "4ok3usBNeis",
+      "category": "tv_monitor",
+      "episode_id": "0",
+      "closest_goal_object_id": 283,
+      "n_view_points": 239,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 1.0039126873016357,
+        "z": -0.6586300134658813,
+        "yaw": -2.3550518673685596,
+        "floor_y": 2.06447,
+        "base_y": 2.3737908823394775,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389836072921753,
+          -0.07466650009155273,
+          0.29042530059814453
+        ],
+        "optical_pos_world": [
+          0.6043038368225098,
+          2.6642162799835205,
+          -1.1628005504608154
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "q5QZSEeHe5g_bed_0",
+      "scene_filter": "q5QZSEeHe5g",
+      "category": "bed",
+      "episode_id": "0",
+      "closest_goal_object_id": 540,
+      "n_view_points": 562,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 6.310589790344238,
+        "z": 0.7654299736022949,
+        "yaw": -0.8962140878643642,
+        "floor_y": 0.05388,
+        "base_y": 0.36320079681396483,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389846801757812,
+          -0.07466697692871094,
+          0.29042553901672363
+        ],
+        "optical_pos_world": [
+          5.764928340911865,
+          0.6536263227462769,
+          1.1062088012695312
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "q5QZSEeHe5g_sofa_2",
+      "scene_filter": "q5QZSEeHe5g",
+      "category": "sofa",
+      "episode_id": "2",
+      "closest_goal_object_id": 936,
+      "n_view_points": 762,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 5.59188985824585,
+        "z": -2.1194300651550293,
+        "yaw": -1.2749064478376624,
+        "floor_y": 0.01965,
+        "base_y": 0.3289707844543457,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389832496643066,
+          -0.07466626167297363,
+          0.29042547941207886
+        ],
+        "optical_pos_world": [
+          4.958902835845947,
+          0.6193962693214417,
+          -2.0045297145843506
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "q5QZSEeHe5g_plant_0",
+      "scene_filter": "q5QZSEeHe5g",
+      "category": "plant",
+      "episode_id": "0",
+      "closest_goal_object_id": 1444,
+      "n_view_points": 189,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 2.612610101699829,
+        "z": 0.9686005115509033,
+        "yaw": -2.9343445881222325,
+        "floor_y": -2.44804,
+        "base_y": -2.138719233551026,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389835476875305,
+          -0.07466650009155273,
+          0.29042506217956543
+        ],
+        "optical_pos_world": [
+          2.55419659614563,
+          -1.8482942581176758,
+          0.32792675495147705
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "q5QZSEeHe5g_tv_monitor_1",
+      "scene_filter": "q5QZSEeHe5g",
+      "category": "tv_monitor",
+      "episode_id": "1",
+      "closest_goal_object_id": 953,
+      "n_view_points": 204,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 4.850560188293457,
+        "z": 0.05375999957323074,
+        "yaw": 2.2623398512558315,
+        "floor_y": 0.05388,
+        "base_y": 0.36320078936338424,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389837265014648,
+          -0.07466650009155273,
+          0.29042550921440125
+        ],
+        "optical_pos_world": [
+          5.39036226272583,
+          0.6536263227462769,
+          -0.2962242364883423
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "XB4GS9ShBRE_plant_2",
+      "scene_filter": "XB4GS9ShBRE",
+      "category": "plant",
+      "episode_id": "2",
+      "closest_goal_object_id": 257,
+      "n_view_points": 132,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -3.331439971923828,
+        "z": -1.94868004322052,
+        "yaw": -2.992916567532602,
+        "floor_y": -0.00387,
+        "base_y": 0.30545078501224515,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389837265014648,
+          -0.07466650009155273,
+          0.290425568819046
+        ],
+        "optical_pos_world": [
+          -3.3522491455078125,
+          0.5958763360977173,
+          -2.5916748046875
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "mL8ThkuaVTM_plant_1",
+      "scene_filter": "mL8ThkuaVTM",
+      "category": "plant",
+      "episode_id": "1",
+      "closest_goal_object_id": 309,
+      "n_view_points": 71,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 3.8162171840667725,
+        "z": 1.1140700578689575,
+        "yaw": -0.7656004221537656,
+        "floor_y": -2.66091,
+        "base_y": -2.3515892299652097,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389833688735962,
+          -0.07466650009155273,
+          0.29042553901672363
+        ],
+        "optical_pos_world": [
+          3.3195886611938477,
+          -2.0611636638641357,
+          1.5230138301849365
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "mL8ThkuaVTM_toilet_3",
+      "scene_filter": "mL8ThkuaVTM",
+      "category": "toilet",
+      "episode_id": "3",
+      "closest_goal_object_id": 356,
+      "n_view_points": 158,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 5.420080184936523,
+        "z": -0.38071998953819275,
+        "yaw": 2.14865846324907,
+        "floor_y": -2.67601,
+        "base_y": -2.366689225387574,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389832496643066,
+          -0.07466602325439453,
+          0.29042553901672363
+        ],
+        "optical_pos_world": [
+          5.996098518371582,
+          -2.076263666152954,
+          -0.6672119498252869
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "qyAac8rV8Zk_toilet_1",
+      "scene_filter": "qyAac8rV8Zk",
+      "category": "toilet",
+      "episode_id": "1",
+      "closest_goal_object_id": 160,
+      "n_view_points": 93,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 1.0827202796936035,
+        "z": 2.664720058441162,
+        "yaw": 2.394237454558327,
+        "floor_y": 3.0692,
+        "base_y": 3.3785208503532407,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389830112457275,
+          -0.07466650009155273,
+          0.29042577743530273
+        ],
+        "optical_pos_world": [
+          1.5718048810958862,
+          3.6689467430114746,
+          2.24678373336792
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "qyAac8rV8Zk_tv_monitor_1",
+      "scene_filter": "qyAac8rV8Zk",
+      "category": "tv_monitor",
+      "episode_id": "1",
+      "closest_goal_object_id": 318,
+      "n_view_points": 268,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": -9.034509658813477,
+        "z": 4.088099956512451,
+        "yaw": 0.3113157108967672,
+        "floor_y": 0.0192,
+        "base_y": 0.3285208145904541,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389836072921753,
+          -0.07466506958007812,
+          0.2904256582260132
+        ],
+        "optical_pos_world": [
+          -8.909857749938965,
+          0.6189464330673218,
+          4.719239234924316
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "MHPLjHsuG27_tv_monitor_1",
+      "scene_filter": "MHPLjHsuG27",
+      "category": "tv_monitor",
+      "episode_id": "1",
+      "closest_goal_object_id": 524,
+      "n_view_points": 159,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 0.3456299901008606,
+        "z": -0.3822999894618988,
+        "yaw": -0.3257601634410413,
+        "floor_y": 1.23606,
+        "base_y": 1.545380792150497,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389834880828857,
+          -0.07466632127761841,
+          0.2904254198074341
+        ],
+        "optical_pos_world": [
+          0.0703972578048706,
+          1.8358062505722046,
+          0.19918254017829895
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    }
+  ],
+  "note": "Subset for formal runs; original 120 list unchanged."
+}

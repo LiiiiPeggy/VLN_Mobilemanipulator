@@ -251,7 +251,9 @@ def main() -> int:
         out["paired"] = paired_compare(rows, _load_rows(args.paired_with), id_key=args.id_key)
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(out, indent=2) + "\n")
-    print(f"wrote {args.out} micro_sr={out['micro_sr']:.4f} n={out['n']}")
+    n = out.get("n_scored", out.get("n"))
+    ms = out.get("micro_sr")
+    print(f"wrote {args.out} micro_sr={ms} n_scored={n}")
     return 0
 
 

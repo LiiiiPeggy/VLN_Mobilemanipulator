@@ -1,0 +1,10 @@
+{
+  "batch_id": "smoke2_formal150_20261117_102531",
+  "code_git_sha_shell": "de39709e8f859169e8c7761f377b3a07e4811a26",
+  "note": "shell SHA is checkout hint; ingest prefers summary/run_config values",
+  "max_steps": 150,
+  "max_explore_actions": 100,
+  "camera_mode": "fixed_base_gimbal",
+  "n_jobs": 2,
+  "validity": "reports/ranger_category_eval_20261116/lists/independent_list_validity_v1_post.json"
+}

@@ -1,39 +1,38 @@
-# Ranger 分类评测（接 bb89842 执行基线）
+# Ranger 分类评测（接 bb89842）
 
-评测代码：`adapters/habitat_rangercr10/evaluation/`  
-执行基线 SHA：**bb89842**（`kinematic_collision_v1.1` + `fixed_base_gimbal`）  
-**未**修改 A 核心执行文件 / 公共 MEMORY。
+评测：`adapters/habitat_rangercr10/evaluation/` · 报告目录：本目录  
+执行基线：**bb89842**（`kinematic_collision_v1.1` + `fixed_base_gimbal`）  
+评测提交：`464b962` / `de39709`（及后续 formal launcher 修复）
 
-## 结论（当前证据）
+## 结论（优先）
 
-1. **历史 8/24** 仅归档诊断；**不能**用其 tv/plant 分布解释新协议失败。  
-2. **短预算 50 步批（合并 recovery）**：micro SR_proxy **0/24**；主失败为 **budget_exhausted (22)** + wrong_stop (2)；初始穿透 4。  
-3. **near_goal=5**：其中 **4 例 moved_m=0** → 是「出生点已近」或静止近目标，**不是**「成功接近未停」。仅 `dd4b_plant_5` 有平移(1.6 m)且进过 SEARCH_BEST，仍无 STOP。  
-4. **120 清单有效性**：冒烟 2 例 → 1 valid / 1 invalid(初始穿透)；全量检查进行中（按场景复用 env）。不强凑 120。  
-5. 观测高度/遮挡/歧义：**unknown**（无标注证据）。杯子任务 / 主动臂策略：**本轮不做**。
+1. **短预算 50 步（合并 recovery）**：SR_proxy **0/24**；失败主因是 **budget_exhausted**，不是历史 LabelMap 的 tv/plant 分布。  
+2. **near_goal=5**：其中 **4 例 moved_m=0** → 禁止说「成功接近未停」；仅 1 例有平移且 SEARCH_BEST，仍无 STOP。  
+3. **120 清单有效性**：**109 valid / 11 invalid**（不强凑）。无效主因：整机初始穿透 10 + adapted_start 失败/断言。  
+4. 观测分层仍 **unknown**；杯子/主动臂 **未做**。  
+5. 正式 **150/100** 在 smoke/全量 valid 上运行中或待接续；结果进 `formal_fixed_gimbal_v1/`。
 
-## 归档
+## 归档与表
 
-| ID | 路径 | 说明 |
-|----|------|------|
-| hist 8/24 | `archives/00_hist_labelmap_vp_8of24.json` | 旧协议诊断 |
-| short50 | `archives/01_short50_exec_gimbal.json` | 新执行器短预算 + recovery 合并 |
-| near_goal 表 | `tables/near_goal_5_detail.md` | 分列解释 |
-| 短预算记账 | `tables/short50_accounting.json` | spawn/run/fail 分账 |
-
-## 冻结与字段
-
-- `protocols/freeze_protocol_v1.md`（建议正式预算 150/100）  
-- `protocols/field_requests_for_cursor_a.md`（一次性：git_sha、max_steps 等写入 run 产物）  
-- `protocols/replacement_policy_v1.md`
-
-## 正式评测状态
-
-| 步骤 | 状态 |
+| 产物 | 路径 |
 |------|------|
-| 日志接入与统计修正 | **done** |
-| 120 有效性表 | **running / partial** → `lists/independent_list_validity_v1.json` |
-| 接口冒烟（valid 子集） | 待有效性表 |
-| 正式 150/100 全有效清单 | 待有效性 + 与 A 确认预算字段落盘 |
+| 旧 8/24 归档 | `archives/00_hist_labelmap_vp_8of24.json` |
+| short50 归档 | `archives/01_short50_exec_gimbal.json` |
+| near_goal 表 | `tables/near_goal_5_detail.md` |
+| short50 记账 | `tables/short50_accounting.json` |
+| 有效性表 | `lists/independent_list_validity_v1.md` |
+| valid-only | `lists/independent_valid_only_v1.json`（n=109） |
+| 冻结协议 | `../adapters/.../protocols/freeze_protocol_v1.md` |
+| 给 A 字段 | `../adapters/.../protocols/field_requests_for_cursor_a.md` |
 
-SPL=N/A；SR_proxy 与 near_goal 分列。
+## 正式跑
+
+```bash
+# smoke
+SMOKE_N=2 MAX_STEPS=150 MAX_EXPLORE_ACTIONS=100 \
+  bash adapters/habitat_rangercr10/evaluation/scripts/run_formal_independent_eval.sh
+
+# full valid (host + docker)
+SMOKE_N=0 MAX_STEPS=150 MAX_EXPLORE_ACTIONS=100 \
+  bash adapters/habitat_rangercr10/evaluation/scripts/run_formal_independent_eval.sh
+```

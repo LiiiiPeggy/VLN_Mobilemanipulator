@@ -1,0 +1,92 @@
+{
+  "n_rows": 2,
+  "n_scored": 0,
+  "n_success_unknown": 2,
+  "success": 0,
+  "micro_sr": NaN,
+  "micro_sr_wilson95": [
+    NaN,
+    NaN
+  ],
+  "macro_sr": NaN,
+  "by_category": [
+    {
+      "category": "bed",
+      "group": "large_furniture",
+      "n_rows": 1,
+      "n_scored": 0,
+      "n_success_unknown": 1,
+      "success": 0,
+      "sr": NaN,
+      "sr_wilson95": [
+        NaN,
+        NaN
+      ],
+      "wrong_stop": 0,
+      "wrong_stop_rate": 0.0,
+      "fail_bucket_counts": {
+        "null": 1
+      },
+      "run_status_counts": {
+        "missing_summary": 1
+      },
+      "mean_n_steps": null,
+      "mean_elapsed_sec": null,
+      "mean_forward_m": null,
+      "mean_arm_motions": null,
+      "mean_effective_observations": null,
+      "n_blocked_exec_sum": 0,
+      "n_truncated_exec_sum": 0
+    },
+    {
+      "category": "chair",
+      "group": "large_furniture",
+      "n_rows": 1,
+      "n_scored": 0,
+      "n_success_unknown": 1,
+      "success": 0,
+      "sr": NaN,
+      "sr_wilson95": [
+        NaN,
+        NaN
+      ],
+      "wrong_stop": 0,
+      "wrong_stop_rate": 0.0,
+      "fail_bucket_counts": {
+        "null": 1
+      },
+      "run_status_counts": {
+        "missing_summary": 1
+      },
+      "mean_n_steps": null,
+      "mean_elapsed_sec": null,
+      "mean_forward_m": null,
+      "mean_arm_motions": null,
+      "mean_effective_observations": null,
+      "n_blocked_exec_sum": 0,
+      "n_truncated_exec_sum": 0
+    }
+  ],
+  "by_group_report_only": [
+    {
+      "group": "large_furniture",
+      "n_scored": 0,
+      "success": 0,
+      "sr_micro_in_group": NaN,
+      "sr_wilson95": [
+        NaN,
+        NaN
+      ],
+      "note": "grouping_only_do_not_add_to_overall_with_subcats"
+    }
+  ],
+  "by_strata": null,
+  "metrics_notes": [
+    "SR_proxy uses VIEW_POINTS; missing success fields stay unknown (not false).",
+    "near_goal is reported separately and is not SR_proxy.",
+    "Do not call detection precision 'accuracy' interchangeably with SR.",
+    "SPL is N/A unless a footprint-matched geodesic exists.",
+    "Repeat seeds must be flagged; not independent scenes for CI interpretation.",
+    "camera_mode for ApexNav baseline A must be fixed_base_gimbal (+ simulated_gimbal)."
+  ]
+}
