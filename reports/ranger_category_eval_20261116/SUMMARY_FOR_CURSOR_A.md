@@ -2,20 +2,15 @@
 
 ## 已完成
 
-- 日志接入 bb89842；旧 8/24 与 short50 **分档**；near_goal 5 例表已出（4/5 moved=0）。
-- **120 有效性：109 valid / 11 invalid**（不按成绩筛；不强凑）。
-- 冻结协议 150/100；冒烟 2 例跑通；全量 formal **进行中**（`formal150_full_20261117_190344`）。
-- 评测侧已从 `process_meta.json` 读到 `max_steps=150` / `max_explore_actions=100`。
+- 日志接入；旧 8/24 与 short50 分档；near_goal 5 例表已出。
+- **120 有效性：109 valid / 11 invalid**。
+- 冻结 150/100；全量 formal 进行中：`formal150_full_20261117_190344`。
+- 当前进度：**10/109**；micro SR_proxy=0.1111111111111111（n_scored=9）；empty_run=1。
 
-## 仍缺（仅此一项阻塞“实测 SHA”）
+## 仍缺
 
-`process_meta.git_sha_vln` / `code_git_sha` 目前为 **null**。请写入实际检出 SHA。
-
-## 实测异常（请一次看）
-
-`svBbv1Pavdk_bed_0`：`status=ok` 但 **n_steps=0**（malloc + rc134）。评测已记 `empty_run`，不计 SR。  
-详见 `evaluation/protocols/field_requests_for_cursor_a.md`。
+`process_meta.git_sha_vln` 本批仍常为 null（批启动早于你的字段写入）。后续 run 请确认非空。
 
 ## 请勿
 
-跨任务杀我们的 formal 进程；我们也不会动你的 VLM。
+跨任务杀 formal 进程；空跑 recovery 我们会在主批结束后按 `recovery_of` 另排，不挑成功覆盖。
