@@ -1,32 +1,37 @@
-# 给 Cursor A 的日志 / 接口字段需求（短清单）
+# 给 Cursor A 的一次性字段需求（请勿让 B 改核心执行文件）
 
-评测侧 **不**改 `kinematic_demo.py` / `apexnav_real_episode.py` / 传感器发布。缺字段时由 A 接入。
+评测侧只读 `summary.json` / `steps.jsonl` / `native_diag` / `camera_mode.json` / `initial_penetration.json`。  
+下列字段在 **bb89842** 跑出的 short50 批中仍常缺失或只能从外壳脚本猜测——请 A 在写 summary/meta 时补齐。
 
-## 必须（ApexNav 基线 A 可汇总）
+## 必须写入 run 产物（summary.json 或 run_config.json）
 
-| 字段 | 类型 | 说明 |
-|------|------|------|
-| `episode_list_id` | str | 与清单 `id` 一致 |
-| `scene` / `category` / `episode_id` | str | |
-| `robot_scale` / `scale_tag` | float/str | 须含 `0.7` / `scaled_robot_proxy_070` |
-| `camera_mode` | str | 建议枚举：`fixed_gimbal`（A）/ `rule_arm_obs`（B）/ `active_arm_obs`（C） |
-| `code_git_sha` / `config_id` | str | 冻结版本 |
-| `spawn_status` | str | `ok` / `invalid` / `skipped` |
-| `run_status` | str | `ok` / `timeout` / `crash` / `abort` |
-| `termination` | str | 含 `planner_stop` 等 |
-| `dtg_viewpoint` | float | VIEW_POINTS 水平距 |
-| `sr_proxy` | bool | `planner_stop ∧ dtg_viewpoint≤1.0` |
-| `fail_bucket` 或可推导字段 | str | 至少能区分 wrong_stop / no_search_best / other |
-| `n_steps` / `elapsed_sec` / `forward_m` | num | |
-| `n_init_lookaround` / `n_effective_observations` | int | 有效观测次数需有明确定义 |
-| `entered_search_best` | bool | |
-| `n_arm_motions` / `arm_motion_time_sec` | num | A 可为 0 |
-| `exec_collision_or_fault` | bool/str | 碰撞/异常 |
+| 字段 | 说明 |
+|------|------|
+| `code_git_sha` / `git_sha_vln` | 实际检出 SHA（如 bb89842…），**禁止**只在 batch shell 写死 |
+| `max_steps` | 本次进程真实 argparse 值 |
+| `max_explore_actions` | 同上 |
+| `executor_version` | 已有；请保持与 `execution_collision.EXECUTOR_VERSION` 一致 |
+| `camera_mode` | 必须能读到 `fixed_base_gimbal` |
+| `simulated_gimbal` | bool |
+| `n_init_lookaround_actions` / `n_explore_planner_actions` | 已有则保持 |
+| `final_distance_to_goal_eval_only` | 已有 |
+| `dtg_min`（新）或保证 steps 含全程 dtg | 评测可自算；若 steps 截断请给 min |
+| `sum_moved_m`（新，可选） | 否则评测从 `exec.moved_m` 求和；缺 moved_m 时保持 null |
+| `termination` | 真实终止语义 |
+| `initial_penetration.initial_penetration` | 已有 |
+| `status` | ok/timeout/crash/abort |
 
-## 可选（观测条件分层；可后标）
+## STOP / SEARCH
 
-`goal_height_bin`, `apparent_scale_bin`, `occlusion_bin`, `multi_instance_ambiguity`, `control_unoccluded`
+- STOP：继续在 `steps[].exec.action_name=="STOP"` 或 `raw_action==0` 落盘（评测已按此解析，不使用 step&lt;26 猜测）。  
+- SEARCH：继续写 `native_diag/native_plan_diag.jsonl` 的 `result`（如 `SEARCH_BEST_OBJECT`）。
 
-## 输出约定
+## 不要做的
 
-每 episode 一份 JSON 或 JSONL 一行，字段稳定即可；评测脚本：`scripts/summarize_category_metrics.py`。
+- 不要让评测脚本改 `kinematic_demo.py` / `apexnav_real_episode.py`。  
+- 不要把 missing 字段在外壳 jsonl 里填成 false/0 冒充实测。  
+- 不要按 SR 删 episode。
+
+## 预算对齐（建议）
+
+正式独立评测：`MAX_STEPS=150`，`MAX_EXPLORE_ACTIONS=100`；写入上述配置字段后评测侧只读实测值。

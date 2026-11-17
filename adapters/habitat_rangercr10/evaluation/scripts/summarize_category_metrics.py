@@ -36,14 +36,15 @@ GROUP_OF = {
 }
 
 
-def _success(row: dict) -> bool:
-    if "sr_proxy" in row:
-        return bool(row["sr_proxy"])
-    if "sr_proxy_viewpoint" in row:
-        return bool(row["sr_proxy_viewpoint"])
-    if "objectnav_success_proxy" in row:
-        return bool(row["objectnav_success_proxy"])
-    return bool(row.get("success"))
+def _success(row: dict):
+    """Return True/False, or None if success field is missing (do NOT coerce to False)."""
+    for key in ("sr_proxy", "sr_proxy_viewpoint", "objectnav_success_proxy", "success"):
+        if key in row:
+            val = row[key]
+            if val is None:
+                return None
+            return bool(val)
+    return None
 
 
 def _load_rows(path: Path):
@@ -69,46 +70,62 @@ def summarize(rows, strata_key: str | None = None):
     cat_stats = []
     for cat in sorted(by_cat):
         xs = by_cat[cat]
-        s = sum(1 for x in xs if _success(x))
-        n = len(xs)
+        known = [x for x in xs if _success(x) is not None]
+        unknown = len(xs) - len(known)
+        s = sum(1 for x in known if _success(x) is True)
+        n = len(known)
         p, lo, hi = wilson_ci(s, n)
-        wrong_stop = sum(
-            1
-            for x in xs
-            if (x.get("fail_bucket") == "wrong_stop")
-            or (
-                x.get("termination") == "planner_stop"
-                and not _success(x)
-            )
-        )
+        wrong_stop = sum(1 for x in xs if x.get("fail_bucket") == "wrong_stop")
         cat_stats.append(
             {
                 "category": cat,
                 "group": GROUP_OF.get(cat, "other"),
-                "n": n,
+                "n_rows": len(xs),
+                "n_scored": n,
+                "n_success_unknown": unknown,
                 "success": s,
                 "sr": p,
                 "sr_wilson95": [lo, hi],
                 "wrong_stop": wrong_stop,
-                "wrong_stop_rate": (wrong_stop / n) if n else float("nan"),
-                "mean_n_steps": _mean([x.get("n_steps") for x in xs]),
+                "wrong_stop_rate": (wrong_stop / len(xs)) if xs else float("nan"),
+                "fail_bucket_counts": dict(
+                    __import__("collections").Counter(x.get("fail_bucket") for x in xs)
+                ),
+                "run_status_counts": dict(
+                    __import__("collections").Counter(x.get("run_status") for x in xs)
+                ),
+                "mean_n_steps": _mean(
+                    [x.get("n_steps_observed", x.get("n_steps")) for x in xs]
+                ),
                 "mean_elapsed_sec": _mean([x.get("elapsed_sec") for x in xs]),
-                "mean_forward_m": _mean([x.get("forward_m") for x in xs]),
+                "mean_forward_m": _mean(
+                    [x.get("sum_moved_m", x.get("forward_m")) for x in xs]
+                ),
                 "mean_arm_motions": _mean([x.get("n_arm_motions") for x in xs]),
                 "mean_effective_observations": _mean(
                     [x.get("n_effective_observations") for x in xs]
                 ),
+                "n_blocked_exec_sum": sum(
+                    int(x["n_blocked_exec"])
+                    for x in xs
+                    if x.get("n_blocked_exec") is not None
+                ),
+                "n_truncated_exec_sum": sum(
+                    int(x["n_truncated_exec"])
+                    for x in xs
+                    if x.get("n_truncated_exec") is not None
+                ),
             }
         )
 
-    # micro over concrete rows only (exclude unknown cats from micro if desired)
+    # micro over concrete rows with known success only
     concrete_rows = [r for r in rows if r.get("category") in CONCRETE] or list(rows)
-    s = sum(1 for r in concrete_rows if _success(r))
-    n = len(concrete_rows)
+    known = [r for r in concrete_rows if _success(r) is not None]
+    s = sum(1 for r in known if _success(r) is True)
+    n = len(known)
     p, lo, hi = wilson_ci(s, n)
 
-    # macro: unweighted mean of per-category SR for cats with n>0 in CONCRETE
-    concrete_stats = [c for c in cat_stats if c["category"] in CONCRETE]
+    concrete_stats = [c for c in cat_stats if c["category"] in CONCRETE and c["n_scored"] > 0]
     macro = (
         sum(c["sr"] for c in concrete_stats) / len(concrete_stats)
         if concrete_stats
@@ -121,14 +138,13 @@ def summarize(rows, strata_key: str | None = None):
         groups[c["group"]].append(c)
     group_stats = []
     for g, cs in sorted(groups.items()):
-        # micro within group
-        gn = sum(c["n"] for c in cs)
+        gn = sum(c["n_scored"] for c in cs)
         gs = sum(c["success"] for c in cs)
         gp, glo, ghi = wilson_ci(gs, gn)
         group_stats.append(
             {
                 "group": g,
-                "n": gn,
+                "n_scored": gn,
                 "success": gs,
                 "sr_micro_in_group": gp,
                 "sr_wilson95": [glo, ghi],
@@ -137,23 +153,35 @@ def summarize(rows, strata_key: str | None = None):
         )
 
     strata = None
+    # strata: skip rows with unknown success for SR; still count unknowns
     if strata_key:
-        strata = defaultdict(lambda: {"n": 0, "success": 0})
+        strata = defaultdict(lambda: {"n_rows": 0, "n_scored": 0, "success": 0, "n_unknown": 0})
         for r in rows:
             k = str(r.get(strata_key, "unknown"))
-            strata[k]["n"] += 1
-            strata[k]["success"] += int(_success(r))
+            strata[k]["n_rows"] += 1
+            suc = _success(r)
+            if suc is None:
+                strata[k]["n_unknown"] += 1
+            else:
+                strata[k]["n_scored"] += 1
+                strata[k]["success"] += int(suc)
         strata = {
             k: {
                 **v,
-                "sr": v["success"] / v["n"] if v["n"] else float("nan"),
-                "sr_wilson95": list(wilson_ci(v["success"], v["n"])[1:]),
+                "sr": (v["success"] / v["n_scored"]) if v["n_scored"] else None,
+                "sr_wilson95": (
+                    list(wilson_ci(v["success"], v["n_scored"])[1:])
+                    if v["n_scored"]
+                    else None
+                ),
             }
             for k, v in strata.items()
         }
 
     return {
-        "n": n,
+        "n_rows": len(concrete_rows),
+        "n_scored": n,
+        "n_success_unknown": len(concrete_rows) - n,
         "success": s,
         "micro_sr": p,
         "micro_sr_wilson95": [lo, hi],
@@ -162,10 +190,12 @@ def summarize(rows, strata_key: str | None = None):
         "by_group_report_only": group_stats,
         "by_strata": strata,
         "metrics_notes": [
-            "SR_proxy uses VIEW_POINTS horizontal distance when logged as such.",
+            "SR_proxy uses VIEW_POINTS; missing success fields stay unknown (not false).",
+            "near_goal is reported separately and is not SR_proxy.",
             "Do not call detection precision 'accuracy' interchangeably with SR.",
             "SPL is N/A unless a footprint-matched geodesic exists.",
             "Repeat seeds must be flagged; not independent scenes for CI interpretation.",
+            "camera_mode for ApexNav baseline A must be fixed_base_gimbal (+ simulated_gimbal).",
         ],
     }
 
@@ -180,17 +210,29 @@ def paired_compare(rows_a, rows_b, id_key="episode_list_id"):
     a = {r[id_key]: _success(r) for r in rows_a if id_key in r}
     b = {r[id_key]: _success(r) for r in rows_b if id_key in r}
     ids = sorted(set(a) & set(b))
-    both = sum(1 for i in ids if a[i] and b[i])
-    a_only = sum(1 for i in ids if a[i] and not b[i])
-    b_only = sum(1 for i in ids if b[i] and not a[i])
-    neither = sum(1 for i in ids if (not a[i]) and (not b[i]))
+    scored_ids = [i for i in ids if a[i] is not None and b[i] is not None]
+    unknown_pair = [i for i in ids if i not in scored_ids]
+    both = sum(1 for i in scored_ids if a[i] and b[i])
+    a_only = sum(1 for i in scored_ids if a[i] and not b[i])
+    b_only = sum(1 for i in scored_ids if b[i] and not a[i])
+    neither = sum(1 for i in scored_ids if (not a[i]) and (not b[i]))
+    dup_a = [i for i, c in __import__("collections").Counter(r.get(id_key) for r in rows_a).items() if c > 1]
+    dup_b = [i for i, c in __import__("collections").Counter(r.get(id_key) for r in rows_b).items() if c > 1]
     return {
-        "n_paired": len(ids),
+        "n_id_overlap": len(ids),
+        "n_paired_scored": len(scored_ids),
+        "unknown_or_missing_success_ids": unknown_pair,
+        "duplicate_ids_a": dup_a,
+        "duplicate_ids_b": dup_b,
+        "missing_in_b": sorted(set(a) - set(b)),
+        "missing_in_a": sorted(set(b) - set(a)),
         "both_success": both,
         "a_only": a_only,
         "b_only": b_only,
         "neither": neither,
-        "delta_sr": ((both + b_only) - (both + a_only)) / len(ids) if ids else float("nan"),
+        "delta_sr": (
+            ((both + b_only) - (both + a_only)) / len(scored_ids) if scored_ids else None
+        ),
     }
 
 

@@ -1,0 +1,231 @@
+{
+  "n_list": 24,
+  "n_merged": 24,
+  "run_status": {
+    "ok": 24
+  },
+  "spawn_status": {
+    "ok": 20,
+    "invalid_initial_penetration": 4
+  },
+  "fail_bucket": {
+    "budget_exhausted": 22,
+    "wrong_stop": 2
+  },
+  "n_sr_true": 0,
+  "n_sr_false": 24,
+  "n_sr_unknown": 0,
+  "n_near_goal": 5,
+  "n_initial_penetration": 4,
+  "n_missing_summary_unrecovered": 0,
+  "sum_moved_m_known": 14.750000000000002,
+  "sum_blocked_known": 681,
+  "sum_truncated_known": 29,
+  "metrics_on_scored_ok_rows": {
+    "n_rows": 24,
+    "n_scored": 24,
+    "n_success_unknown": 0,
+    "success": 0,
+    "micro_sr": 0.0,
+    "micro_sr_wilson95": [
+      1.3877787807814457e-17,
+      0.13797620467498017
+    ],
+    "macro_sr": 0.0,
+    "by_category": [
+      {
+        "category": "bed",
+        "group": "large_furniture",
+        "n_rows": 2,
+        "n_scored": 2,
+        "n_success_unknown": 0,
+        "success": 0,
+        "sr": 0.0,
+        "sr_wilson95": [
+          0.0,
+          0.6576197724933469
+        ],
+        "wrong_stop": 0,
+        "wrong_stop_rate": 0.0,
+        "fail_bucket_counts": {
+          "budget_exhausted": 2
+        },
+        "run_status_counts": {
+          "ok": 2
+        },
+        "mean_n_steps": 50.0,
+        "mean_elapsed_sec": 89.25175726413727,
+        "mean_forward_m": 0.37500000000000006,
+        "mean_arm_motions": null,
+        "mean_effective_observations": null,
+        "n_blocked_exec_sum": 40,
+        "n_truncated_exec_sum": 1
+      },
+      {
+        "category": "chair",
+        "group": "large_furniture",
+        "n_rows": 5,
+        "n_scored": 5,
+        "n_success_unknown": 0,
+        "success": 0,
+        "sr": 0.0,
+        "sr_wilson95": [
+          0.0,
+          0.43448246478317476
+        ],
+        "wrong_stop": 0,
+        "wrong_stop_rate": 0.0,
+        "fail_bucket_counts": {
+          "budget_exhausted": 5
+        },
+        "run_status_counts": {
+          "ok": 5
+        },
+        "mean_n_steps": 50.0,
+        "mean_elapsed_sec": 119.09232220649719,
+        "mean_forward_m": 0.7500000000000002,
+        "mean_arm_motions": null,
+        "mean_effective_observations": null,
+        "n_blocked_exec_sum": 160,
+        "n_truncated_exec_sum": 3
+      },
+      {
+        "category": "plant",
+        "group": "large_furniture",
+        "n_rows": 6,
+        "n_scored": 6,
+        "n_success_unknown": 0,
+        "success": 0,
+        "sr": 0.0,
+        "sr_wilson95": [
+          0.0,
+          0.39033428790216534
+        ],
+        "wrong_stop": 1,
+        "wrong_stop_rate": 0.16666666666666666,
+        "fail_bucket_counts": {
+          "budget_exhausted": 5,
+          "wrong_stop": 1
+        },
+        "run_status_counts": {
+          "ok": 6
+        },
+        "mean_n_steps": 44.5,
+        "mean_elapsed_sec": 121.96058563391368,
+        "mean_forward_m": 0.7388888888888899,
+        "mean_arm_motions": null,
+        "mean_effective_observations": null,
+        "n_blocked_exec_sum": 136,
+        "n_truncated_exec_sum": 12
+      },
+      {
+        "category": "sofa",
+        "group": "large_furniture",
+        "n_rows": 4,
+        "n_scored": 4,
+        "n_success_unknown": 0,
+        "success": 0,
+        "sr": 0.0,
+        "sr_wilson95": [
+          0.0,
+          0.4898908364545973
+        ],
+        "wrong_stop": 1,
+        "wrong_stop_rate": 0.25,
+        "fail_bucket_counts": {
+          "budget_exhausted": 3,
+          "wrong_stop": 1
+        },
+        "run_status_counts": {
+          "ok": 4
+        },
+        "mean_n_steps": 41.5,
+        "mean_elapsed_sec": 90.11085021495819,
+        "mean_forward_m": 0.0,
+        "mean_arm_motions": null,
+        "mean_effective_observations": null,
+        "n_blocked_exec_sum": 137,
+        "n_truncated_exec_sum": 3
+      },
+      {
+        "category": "toilet",
+        "group": "large_furniture",
+        "n_rows": 3,
+        "n_scored": 3,
+        "n_success_unknown": 0,
+        "success": 0,
+        "sr": 0.0,
+        "sr_wilson95": [
+          0.0,
+          0.5614970317550455
+        ],
+        "wrong_stop": 0,
+        "wrong_stop_rate": 0.0,
+        "fail_bucket_counts": {
+          "budget_exhausted": 3
+        },
+        "run_status_counts": {
+          "ok": 3
+        },
+        "mean_n_steps": 50.0,
+        "mean_elapsed_sec": 83.26916480064392,
+        "mean_forward_m": 0.3333333333333333,
+        "mean_arm_motions": null,
+        "mean_effective_observations": null,
+        "n_blocked_exec_sum": 88,
+        "n_truncated_exec_sum": 2
+      },
+      {
+        "category": "tv_monitor",
+        "group": "large_furniture",
+        "n_rows": 4,
+        "n_scored": 4,
+        "n_success_unknown": 0,
+        "success": 0,
+        "sr": 0.0,
+        "sr_wilson95": [
+          0.0,
+          0.4898908364545973
+        ],
+        "wrong_stop": 0,
+        "wrong_stop_rate": 0.0,
+        "fail_bucket_counts": {
+          "budget_exhausted": 4
+        },
+        "run_status_counts": {
+          "ok": 4
+        },
+        "mean_n_steps": 50.0,
+        "mean_elapsed_sec": 114.96190822124481,
+        "mean_forward_m": 1.2041666666666653,
+        "mean_arm_motions": null,
+        "mean_effective_observations": null,
+        "n_blocked_exec_sum": 120,
+        "n_truncated_exec_sum": 8
+      }
+    ],
+    "by_group_report_only": [
+      {
+        "group": "large_furniture",
+        "n_scored": 24,
+        "success": 0,
+        "sr_micro_in_group": 0.0,
+        "sr_wilson95": [
+          1.3877787807814457e-17,
+          0.13797620467498017
+        ],
+        "note": "grouping_only_do_not_add_to_overall_with_subcats"
+      }
+    ],
+    "by_strata": null,
+    "metrics_notes": [
+      "SR_proxy uses VIEW_POINTS; missing success fields stay unknown (not false).",
+      "near_goal is reported separately and is not SR_proxy.",
+      "Do not call detection precision 'accuracy' interchangeably with SR.",
+      "SPL is N/A unless a footprint-matched geodesic exists.",
+      "Repeat seeds must be flagged; not independent scenes for CI interpretation.",
+      "camera_mode for ApexNav baseline A must be fixed_base_gimbal (+ simulated_gimbal)."
+    ]
+  },
+  "note": "Do not equate near_goal with approach success; zero moved_m near_goal \u2260 successful approach."
+}

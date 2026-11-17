@@ -1,0 +1,142 @@
+{
+  "list_name": "ranger_independent_hm3d_objectnav_v1",
+  "list_path": "/workspace/VLN_Mobilemanipulator/adapters/habitat_rangercr10/evaluation/lists/independent_test_list_v1.json",
+  "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+  "robot_scale": 0.7,
+  "camera_mode_required": "fixed_base_gimbal",
+  "replacement_policy": "none",
+  "note": "Deployability only. Original list retained. Invalid samples not dropped from the list file; status recorded here. Do not filter by SR/SEARCH/visibility.",
+  "n_checked": 2,
+  "counts": {
+    "valid": 1,
+    "invalid": 1,
+    "pending": 0
+  },
+  "elapsed_sec": 342.10486793518066,
+  "episodes": [
+    {
+      "id": "svBbv1Pavdk_chair_0",
+      "scene_filter": "svBbv1Pavdk",
+      "category": "chair",
+      "episode_id": "0",
+      "closest_goal_object_id": 274,
+      "n_view_points": 708,
+      "status": "valid",
+      "reasons": [
+        "ok_scene_goal_spawn_camera_no_init_pen"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": false,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 4.8231024742126465,
+        "z": 6.198599815368652,
+        "yaw": 0.5297945407606881,
+        "floor_y": 0.02755,
+        "base_y": 0.3368708373713493,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389832496643066,
+          -0.07466614246368408,
+          0.29042568802833557
+        ],
+        "optical_pos_world": [
+          5.0815863609313965,
+          0.6272965669631958,
+          6.787718296051025
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": false,
+        "robot_env": 0,
+        "min_robot_env_distance": null
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    },
+    {
+      "id": "cvZr5TUy5C5_chair_1",
+      "scene_filter": "cvZr5TUy5C5",
+      "category": "chair",
+      "episode_id": "1",
+      "closest_goal_object_id": 621,
+      "n_view_points": 646,
+      "status": "invalid",
+      "reasons": [
+        "initial_robot_env_penetration"
+      ],
+      "executor_version": "kinematic_collision_v1.1",
+      "camera_mode": "fixed_base_gimbal",
+      "simulated_gimbal": true,
+      "robot_scale": 0.7,
+      "initial_penetration": true,
+      "spawn_source": "find_adapted_start",
+      "code_git_sha": "bb898421b12bef2bbda2295a0e0e50e8f1e875f0",
+      "spawn": {
+        "x": 3.241410493850708,
+        "z": 4.0345001220703125,
+        "yaw": -1.2590212109421923,
+        "floor_y": -3.02784,
+        "base_y": -2.7185190948867795,
+        "adapted_episode": true,
+        "ok": true
+      },
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389834880828857,
+          -0.07466650009155273,
+          0.29042553901672363
+        ],
+        "optical_pos_world": [
+          2.610328197479248,
+          -2.428093671798706,
+          4.159440517425537
+        ]
+      },
+      "initial_penetration_detail": {
+        "blocking": true,
+        "robot_env": 1,
+        "min_robot_env_distance": -0.05014955997467041
+      },
+      "log_hooks": {
+        "has_report_initial_penetration": true,
+        "has_camera_mode_json_fields": true,
+        "executor_version": "kinematic_collision_v1.1"
+      }
+    }
+  ]
+}

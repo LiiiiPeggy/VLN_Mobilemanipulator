@@ -1,0 +1,10 @@
+{
+  "archive_id": "hist_labelmap_vp_recompute_20261109",
+  "role": "development_diagnosis_only",
+  "not_for_new_protocol_failure_attribution": true,
+  "note": "Pre-fix 8/24 VIEW_POINTS recompute. May include penetration. tv/plant failure mix MUST NOT be used as primary causal attribution for kinematic_collision_v1.1 / fixed_base_gimbal.",
+  "micro_sr_proxy": 0.3333333333333333,
+  "n": 24,
+  "success": 8,
+  "source": "/home/ubuntu/locomani/VLN_Mobilemanipulator/reports/ranger_category_eval_20261116/tables/dev24_category_diag.json"
+}
