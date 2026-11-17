@@ -1,0 +1,112 @@
+{
+  "freeze_note": "Cursor A handoff field sample for independent eval ingest. camera_mode is fixed_base_gimbal (not fixed_gimbal alias).",
+  "code_git_sha": "PENDING_COMMIT_AFTER_v1.2",
+  "executor_version": "kinematic_collision_v1.2",
+  "camera_mode": "fixed_base_gimbal",
+  "simulated_gimbal": true,
+  "robot_scale": 0.7,
+  "scale_tag": "scaled_robot_proxy_070",
+  "max_steps": 150,
+  "max_explore_actions": 100,
+  "budget_label": "protocol_budget_MAX_STEPS_150_EXPLORE_100",
+  "spawn_status": "ok | invalid_initial_penetration",
+  "termination_examples": [
+    "planner_stop",
+    "step_budget_exhausted",
+    "explore_budget_exhausted"
+  ],
+  "sr_proxy_rule": "has STOP action at ANY phase AND dtg_viewpoint at that STOP <= 1.0; near_goal alone is NOT success",
+  "summary_fields": {
+    "max_steps": 150,
+    "max_explore_actions": 100,
+    "effective_budget": {
+      "max_steps": 150,
+      "max_explore_actions": 100,
+      "n_init_lookaround_actions": 26,
+      "n_explore_planner_actions": 100,
+      "n_blocked_recovery": 0,
+      "termination": "step_budget_exhausted"
+    },
+    "final_distance_to_goal_eval_only": 1.23,
+    "distance_to_goal_mode": "VIEW_POINTS",
+    "near_goal": false,
+    "sum_moved_m": 3.5,
+    "sum_abs_yaw_delta": 4.2,
+    "n_blocked_exec": 12,
+    "n_truncated_exec": 3,
+    "n_blocked_recovery": 2,
+    "spawn_status": "ok",
+    "camera_mode": "fixed_base_gimbal",
+    "simulated_gimbal": true,
+    "executor_version": "kinematic_collision_v1.2"
+  },
+  "step_exec_blocked_sample": {
+    "action_name": "TURN_LEFT",
+    "blocked": true,
+    "executed": false,
+    "truncated": false,
+    "block_reason": "robot_env_collision",
+    "moved_m": 0.0,
+    "yaw_delta": 0.0,
+    "blocked_sample": 1,
+    "start_contacts": {"blocking": false, "robot_env": 0, "wheel_support": 8},
+    "first_blocking_contacts": {
+      "blocking": true,
+      "robot_env": 2,
+      "robot_env_links": ["base_link"],
+      "details": [
+        {
+          "kind": "robot_env",
+          "robot_link": "base_link",
+          "other_object": "stage_static",
+          "position_xyz": [0.1, 0.2, 0.3],
+          "normal_on_b_xyz": [0.9, 0.1, 0.0],
+          "distance": -0.02,
+          "upright": false,
+          "vs_stage": true
+        }
+      ]
+    },
+    "committed_contacts": {"blocking": false, "robot_env": 0, "wheel_support": 8},
+    "blocking_evidence": {
+      "start_contacts": {},
+      "first_blocking_contacts": {},
+      "committed_contacts": {},
+      "blocked_sample": 1,
+      "candidate_pose": {"x": 0.0, "z": 0.0, "yaw": 1.0},
+      "action_hint": "TURN_LEFT"
+    }
+  },
+  "process_meta_fields": {
+    "git_sha_vln": "PENDING",
+    "code_git_sha": "PENDING",
+    "max_steps": 150,
+    "max_explore_actions": 100,
+    "camera_mode": "fixed_base_gimbal",
+    "executor_version": "kinematic_collision_v1.2"
+  },
+  "batch_row_additions": [
+    "budget_label",
+    "max_steps",
+    "max_explore_actions",
+    "has_stop_action",
+    "stop_steps",
+    "dtg_initial",
+    "dtg_min",
+    "sum_abs_yaw_delta",
+    "spawn_status",
+    "n_blocked_recovery",
+    "effective_budget"
+  ],
+  "known_short50_baseline": {
+    "batches": ["ab24b_20261116_224229", "ab24b_rec_20261117_071620"],
+    "budget_label": "short_budget_MAX_STEPS_50",
+    "sr_proxy": "0/24 (corrected any-phase still 0; 2 wrong_stop far)",
+    "near_goal": 5,
+    "taxonomy": {
+      "invalid_spawn_init_pen": 4,
+      "zero_trans_exec_stall": 10,
+      "moved_ok": 10
+    }
+  }
+}

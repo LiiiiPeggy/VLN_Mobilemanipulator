@@ -3,6 +3,10 @@
 # Deployment baseline batch: robot_scale=0.7, camera_mode=fixed_base_gimbal,
 # F0+expand0.3, denoise=none, ObjectHold/LabelMap unchanged, NO PPO.
 # New execution protocol — not causally comparable to pre-fix trajectories.
+#
+# Budget labels:
+#   MAX_STEPS=50  → short_budget (explore budget rarely binds after 26 init)
+#   MAX_STEPS=150 / MAX_EXPLORE_ACTIONS=100 → protocol budget (do not mix)
 # ################################
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/../../.." && pwd)"
@@ -16,10 +20,28 @@ GPU="${GPU:-0}"
 PROFILE="${INFLATION_PROFILE:-legacy018}"
 BATCH_ID="${BATCH_ID:-$(date +%Y%m%d_%H%M%S)}"
 CAMERA_MODE="${CAMERA_MODE:-fixed_base_gimbal}"
+# ################################
+# VLN adapt: refuse to start if Cursor B formal eval holds the shared ROS/GPU.
+# ################################
+FORMAL_LOCK="${FORMAL_LOCK:-$ROOT/reports/ranger_category_eval_20261116/formal_fixed_gimbal_v1/latest_full_pid.txt}"
+if [[ "${IGNORE_FORMAL_LOCK:-0}" != "1" && -f "$FORMAL_LOCK" ]]; then
+  _fp=$(cat "$FORMAL_LOCK" 2>/dev/null || true)
+  if [[ -n "${_fp:-}" ]] && kill -0 "$_fp" 2>/dev/null; then
+    echo "[baseline] BLOCKED: Cursor B formal eval pid=$_fp still running ($FORMAL_LOCK)."
+    echo "[baseline] Queue this batch; do not pkill shared ROS. Set IGNORE_FORMAL_LOCK=1 to override."
+    exit 75
+  fi
+fi
+if [[ "$MAX_STEPS" -le 50 ]]; then
+  BUDGET_LABEL="short_budget_MAX_STEPS_${MAX_STEPS}"
+else
+  BUDGET_LABEL="protocol_budget_MAX_STEPS_${MAX_STEPS}_EXPLORE_${MAX_EXPLORE_ACTIONS}"
+fi
 
 mkdir -p "$REPORT_DIR" "$OUT_ROOT"
 SUMMARY="$REPORT_DIR/batch_${BATCH_ID}.jsonl"
 : > "$SUMMARY"
+echo "$BUDGET_LABEL" > "$REPORT_DIR/budget_label_${BATCH_ID}.txt"
 
 python3 - <<'PY' "$LIST" "$SMOKE_ONLY" >"$REPORT_DIR/_jobs_${BATCH_ID}.tsv"
 import json, sys
@@ -37,12 +59,23 @@ for ep in eps:
     ]))
 PY
 
-echo "[baseline] jobs=$(wc -l <"$REPORT_DIR/_jobs_${BATCH_ID}.tsv") camera=$CAMERA_MODE summary=$SUMMARY"
+echo "[baseline] jobs=$(wc -l <"$REPORT_DIR/_jobs_${BATCH_ID}.tsv") camera=$CAMERA_MODE budget=$BUDGET_LABEL summary=$SUMMARY"
 
 while IFS=$'\t' read -r EP_ID SCENE CAT EP FORCE; do
   TAG="$EP_ID"
   RUN_ID="execgimbal_${BATCH_ID}_${TAG}"
   echo "===== $RUN_ID ====="
+  # ################################
+  # Only clear OUR ros master port leftovers; never touch foreign compose stacks.
+  # Re-check formal lock each episode so we do not clobber a newly started B run.
+  # ################################
+  if [[ "${IGNORE_FORMAL_LOCK:-0}" != "1" && -f "$FORMAL_LOCK" ]]; then
+    _fp=$(cat "$FORMAL_LOCK" 2>/dev/null || true)
+    if [[ -n "${_fp:-}" ]] && kill -0 "$_fp" 2>/dev/null; then
+      echo "[baseline] STOP mid-batch: formal eval pid=$_fp acquired lock"
+      exit 75
+    fi
+  fi
   docker exec -u root vln-rangercr10 bash -lc \
     'pkill -9 -f "roscore -p 11312" 2>/dev/null; pkill -9 -f exploration_node 2>/dev/null; sleep 1; true' || true
   set +e
@@ -73,7 +106,10 @@ row = {
     "robot_scale": 0.7,
     "scale_tag": "scaled_robot_proxy_070",
     "camera_mode": "$CAMERA_MODE",
-    "executor_version": "kinematic_collision_v1.1",
+    "budget_label": "$BUDGET_LABEL",
+    "max_steps": int("$MAX_STEPS"),
+    "max_explore_actions": int("$MAX_EXPLORE_ACTIONS"),
+    "executor_version": "kinematic_collision_v1.2",
     "startup_prior_mode": "initial_footprint",
     "startup_prior_expand_m": 0.3,
     "obstacle_denoise": "none",
@@ -87,39 +123,59 @@ if sum_p.is_file():
     sp = run / "steps.jsonl"
     if sp.is_file():
         steps = [json.loads(l) for l in sp.read_text().splitlines() if l.strip()]
-    expl = [st for st in steps if st.get("phase") == "explore_planner"]
     blocked = sum(1 for st in steps if (st.get("exec") or {}).get("blocked"))
     truncated = sum(1 for st in steps if (st.get("exec") or {}).get("truncated"))
     moved = [float((st.get("exec") or {}).get("moved_m") or 0) for st in steps]
+    yaw = [abs(float((st.get("exec") or {}).get("yaw_delta") or 0)) for st in steps]
+    # ################################
+    # STOP by real action evidence — ANY phase. Do not require explore_planner.
+    # near_goal alone is never success.
+    # ################################
+    stop_steps = []
+    for st in steps:
+        ex = st.get("exec") or {}
+        name = ex.get("action_name") or st.get("planner_action_name")
+        raw = ex.get("raw_action") if ex.get("raw_action") is not None else st.get("planner_action")
+        if name == "STOP" or raw == 0:
+            stop_steps.append({
+                "step": st.get("step"),
+                "phase": st.get("phase"),
+                "dtg": st.get("distance_to_goal_eval_only"),
+            })
+    sr = False
+    for rec in reversed(stop_steps):
+        if rec["dtg"] is not None and float(rec["dtg"]) <= 1.0:
+            sr = True
+            break
+    dtgs = [float(st["distance_to_goal_eval_only"]) for st in steps if st.get("distance_to_goal_eval_only") is not None]
     row.update({
         "status": s.get("status"),
         "termination": s.get("termination"),
         "n_steps": s.get("n_steps"),
+        "n_init": s.get("n_init_lookaround_actions"),
         "n_explore": s.get("n_explore_planner_actions"),
         "near_goal": s.get("near_goal"),
         "final_dtg": s.get("final_distance_to_goal_eval_only"),
+        "dtg_initial": dtgs[0] if dtgs else None,
+        "dtg_min": min(dtgs) if dtgs else None,
         "camera_mode_summary": s.get("camera_mode"),
         "simulated_gimbal": s.get("simulated_gimbal"),
         "executor_version_run": s.get("executor_version"),
         "initial_penetration": (s.get("initial_penetration") or {}).get("initial_penetration"),
+        "spawn_status": s.get("spawn_status"),
         "n_blocked_exec": blocked,
         "n_truncated_exec": truncated,
-        "sum_moved_m": sum(moved),
-        "planner_stop": any(
-            (st.get("exec") or {}).get("action_name") == "STOP"
-            or (st.get("raw_action") == 0)
-            for st in expl
-        ),
+        "n_blocked_recovery": s.get("n_blocked_recovery"),
+        "sum_moved_m": sum(moved) if moved else s.get("sum_moved_m"),
+        "sum_abs_yaw_delta": sum(yaw) if yaw else s.get("sum_abs_yaw_delta"),
+        "has_stop_action": bool(stop_steps),
+        "stop_steps": stop_steps or None,
+        "planner_stop": bool(stop_steps) or s.get("termination") == "planner_stop",
+        "sr_proxy": sr,
+        "max_steps_summary": s.get("max_steps"),
+        "max_explore_summary": s.get("max_explore_actions"),
+        "effective_budget": s.get("effective_budget"),
     })
-    # SR_proxy from explore STOP near goal if present in step logs
-    sr = False
-    for st in expl:
-        ex = st.get("exec") or {}
-        if ex.get("action_name") == "STOP" or st.get("raw_action") == 0:
-            dtg = st.get("distance_to_goal_eval_only")
-            if dtg is not None and float(dtg) <= 1.0:
-                sr = True
-    row["sr_proxy"] = sr
 else:
     row["status"] = "missing_summary"
 print(json.dumps(row), flush=True)
@@ -127,4 +183,4 @@ PY
 done <"$REPORT_DIR/_jobs_${BATCH_ID}.tsv"
 
 echo "$BATCH_ID" >"$REPORT_DIR/latest_batch_id.txt"
-echo "[baseline] done batch=$BATCH_ID summary=$SUMMARY"
+echo "[baseline] done batch=$BATCH_ID budget=$BUDGET_LABEL summary=$SUMMARY"
