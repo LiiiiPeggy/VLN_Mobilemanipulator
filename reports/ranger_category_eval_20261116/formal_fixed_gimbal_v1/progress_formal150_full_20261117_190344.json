@@ -1,10 +1,10 @@
 {
-  "ts_utc": "2026-11-17T20:21:56.659708+00:00",
+  "ts_utc": "2026-11-17T20:50:10.147507+00:00",
   "batch_id": "formal150_full_20261117_190344",
   "n_jobs": 109,
-  "n_done": 62,
-  "n_remaining": 47,
-  "current_episode_list_id": "BAbdmeyTvMZ_toilet_3",
+  "n_done": 64,
+  "n_remaining": 45,
+  "current_episode_list_id": "TEEsavR23oF_chair_4",
   "done_ids": [
     "svBbv1Pavdk_chair_0",
     "svBbv1Pavdk_bed_0",
@@ -67,7 +67,9 @@
     "mv2HUxq3B53_tv_monitor_1",
     "BAbdmeyTvMZ_chair_1",
     "BAbdmeyTvMZ_bed_5",
-    "BAbdmeyTvMZ_sofa_0"
+    "BAbdmeyTvMZ_sofa_0",
+    "BAbdmeyTvMZ_toilet_3",
+    "BAbdmeyTvMZ_tv_monitor_1"
   ],
-  "pct": 56.88073394495413
+  "pct": 58.71559633027523
 }
