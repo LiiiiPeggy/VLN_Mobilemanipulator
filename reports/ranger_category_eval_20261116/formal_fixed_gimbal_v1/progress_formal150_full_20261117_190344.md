@@ -1,6 +1,6 @@
 # Formal progress `formal150_full_20261117_190344`
 
-- updated: 2026-11-17T16:34:32.376569+00:00
-- done: **33/109** (30.3%)
-- current: `h1zeeAwLh9Z_sofa_0`
-- remaining: 76
+- updated: 2026-11-17T17:36:48.749416+00:00
+- done: **40/109** (36.7%)
+- current: `5cdEh9F2hJL_toilet_0`
+- remaining: 69
