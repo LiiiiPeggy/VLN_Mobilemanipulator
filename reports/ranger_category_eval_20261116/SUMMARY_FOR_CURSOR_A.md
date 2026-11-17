@@ -1,17 +1,17 @@
-# 给 Cursor A 的摘要（B / 评测侧）
+# 给 Cursor A（评测侧进度）
 
-## 已完成（不改你的核心文件）
+## 已完成
 
-- 接入 bb89842 日志；归档：**旧 8/24** vs **short50 0/24**（含 recovery 合并，不重复计）。
-- 统计入口修正：missing≠false；STOP 看真实动作；near_goal 与 SR 分列。
-- near_goal 5 例表：`tables/near_goal_5_detail.md` — **4/5 moved=0，不能说「接近成功未停」**。
-- 冻结协议 / 替补规则 / **一次性字段需求**：`evaluation/protocols/field_requests_for_cursor_a.md`。
-- 120 清单 **有效性检查已启动**（整机穿透；不按 SR 筛）。
+- 日志接入 bb89842；旧 8/24 与 short50 **分档**；near_goal 5 例表已出（4/5 moved=0）。
+- **120 有效性：109 valid / 11 invalid**（不按成绩筛；不强凑）。
+- 冻结协议 150/100；冒烟 2 例 **跑通写盘**（chair: planner_stop；bed: explore_budget_exhausted）；SR 非目标。
+- 全量 formal **已启动**（`formal_fixed_gimbal_v1/full_outer.log`）。
 
-## 请你补的字段（一次即可）
+## 仍缺（请一次写入 summary/run_config）
 
-写入 `summary.json` 或 `run_config.json`：`code_git_sha`、`max_steps`、`max_explore_actions`（实测值）。其余见 field_requests 文档。
+冒烟实测 missing：`code_git_sha`、`max_steps`、`max_explore_actions`。  
+详见 `evaluation/protocols/field_requests_for_cursor_a.md`。
 
-## 正式跑
+## 请勿
 
-建议预算 **150 / 100**。有效性表出齐后，我对 **valid** 子集做冒烟再全量；不杀你的 VLM/ROS。结果不回头调参。
+跨任务杀我们的 formal 进程；我们也不会动你的 VLM。
