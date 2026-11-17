@@ -1,43 +1,43 @@
 {
   "summary_metrics": {
-    "n_rows": 57,
-    "n_scored": 56,
+    "n_rows": 62,
+    "n_scored": 61,
     "n_success_unknown": 1,
-    "success": 14,
-    "micro_sr": 0.25,
+    "success": 15,
+    "micro_sr": 0.2459016393442623,
     "micro_sr_wilson95": [
-      0.15517054688270684,
-      0.376926421476675
+      0.1550665770122629,
+      0.3668442410998928
     ],
-    "macro_sr": 0.25833333333333336,
+    "macro_sr": 0.25067340067340066,
     "by_category": [
       {
         "category": "bed",
         "group": "large_furniture",
-        "n_rows": 10,
-        "n_scored": 9,
+        "n_rows": 11,
+        "n_scored": 10,
         "n_success_unknown": 1,
         "success": 4,
-        "sr": 0.4444444444444444,
+        "sr": 0.4,
         "sr_wilson95": [
-          0.18877852109766458,
-          0.7333487065045069
+          0.16818032970623614,
+          0.6873262302663417
         ],
         "wrong_stop": 4,
-        "wrong_stop_rate": 0.4,
+        "wrong_stop_rate": 0.36363636363636365,
         "fail_bucket_counts": {
           "empty_run": 1,
           "wrong_stop": 4,
           "ok_success_proxy": 4,
-          "explore_budget_exhausted": 1
+          "explore_budget_exhausted": 2
         },
         "run_status_counts": {
           "empty_run": 1,
-          "ok": 9
+          "ok": 10
         },
-        "mean_n_steps": 64.0,
-        "mean_elapsed_sec": 451.4911167383194,
-        "mean_forward_m": 3.802777777777777,
+        "mean_n_steps": 69.63636363636364,
+        "mean_elapsed_sec": 505.5409133867784,
+        "mean_forward_m": 4.272499999999999,
         "mean_arm_motions": null,
         "mean_effective_observations": null,
         "n_blocked_exec_sum": 154,
@@ -46,28 +46,28 @@
       {
         "category": "chair",
         "group": "large_furniture",
-        "n_rows": 9,
-        "n_scored": 9,
+        "n_rows": 10,
+        "n_scored": 10,
         "n_success_unknown": 0,
-        "success": 5,
-        "sr": 0.5555555555555556,
+        "success": 6,
+        "sr": 0.6,
         "sr_wilson95": [
-          0.2666512934954931,
-          0.8112214789023354
+          0.31267376973365824,
+          0.8318196702937638
         ],
         "wrong_stop": 0,
         "wrong_stop_rate": 0.0,
         "fail_bucket_counts": {
           "no_stop": 1,
-          "ok_success_proxy": 5,
+          "ok_success_proxy": 6,
           "explore_budget_exhausted": 3
         },
         "run_status_counts": {
-          "ok": 9
+          "ok": 10
         },
-        "mean_n_steps": 97.11111111111111,
-        "mean_elapsed_sec": 541.0523546006945,
-        "mean_forward_m": 7.2777777777777795,
+        "mean_n_steps": 95.5,
+        "mean_elapsed_sec": 530.9722141504287,
+        "mean_forward_m": 7.325000000000001,
         "mean_arm_motions": null,
         "mean_effective_observations": null,
         "n_blocked_exec_sum": 68,
@@ -106,28 +106,28 @@
       {
         "category": "sofa",
         "group": "large_furniture",
-        "n_rows": 10,
-        "n_scored": 10,
+        "n_rows": 11,
+        "n_scored": 11,
         "n_success_unknown": 0,
         "success": 2,
-        "sr": 0.2,
+        "sr": 0.18181818181818182,
         "sr_wilson95": [
-          0.05668215145437519,
-          0.5098375284633583
+          0.05136768974608513,
+          0.4769805619608442
         ],
-        "wrong_stop": 7,
-        "wrong_stop_rate": 0.7,
+        "wrong_stop": 8,
+        "wrong_stop_rate": 0.7272727272727273,
         "fail_bucket_counts": {
-          "wrong_stop": 7,
+          "wrong_stop": 8,
           "explore_budget_exhausted": 1,
           "ok_success_proxy": 2
         },
         "run_status_counts": {
-          "ok": 10
+          "ok": 11
         },
-        "mean_n_steps": 66.3,
-        "mean_elapsed_sec": 400.8086283445358,
-        "mean_forward_m": 2.360833333333333,
+        "mean_n_steps": 64.18181818181819,
+        "mean_elapsed_sec": 403.6423589966514,
+        "mean_forward_m": 2.237121212121212,
         "mean_arm_motions": null,
         "mean_effective_observations": null,
         "n_blocked_exec_sum": 309,
@@ -136,27 +136,27 @@
       {
         "category": "toilet",
         "group": "large_furniture",
-        "n_rows": 10,
-        "n_scored": 10,
+        "n_rows": 11,
+        "n_scored": 11,
         "n_success_unknown": 0,
         "success": 0,
         "sr": 0.0,
         "sr_wilson95": [
           0.0,
-          0.2775327998628892
+          0.2588329669680317
         ],
         "wrong_stop": 3,
-        "wrong_stop_rate": 0.3,
+        "wrong_stop_rate": 0.2727272727272727,
         "fail_bucket_counts": {
-          "explore_budget_exhausted": 7,
+          "explore_budget_exhausted": 8,
           "wrong_stop": 3
         },
         "run_status_counts": {
-          "ok": 10
+          "ok": 11
         },
-        "mean_n_steps": 108.5,
-        "mean_elapsed_sec": 511.12378964424136,
-        "mean_forward_m": 3.190833333333333,
+        "mean_n_steps": 110.0909090909091,
+        "mean_elapsed_sec": 526.3234413537112,
+        "mean_forward_m": 3.878030303030303,
         "mean_arm_motions": null,
         "mean_effective_observations": null,
         "n_blocked_exec_sum": 640,
@@ -165,28 +165,28 @@
       {
         "category": "tv_monitor",
         "group": "large_furniture",
-        "n_rows": 8,
-        "n_scored": 8,
+        "n_rows": 9,
+        "n_scored": 9,
         "n_success_unknown": 0,
         "success": 2,
-        "sr": 0.25,
+        "sr": 0.2222222222222222,
         "sr_wilson95": [
-          0.071479212752109,
-          0.5907245696898311
+          0.06322510711784673,
+          0.5474110308930111
         ],
         "wrong_stop": 4,
-        "wrong_stop_rate": 0.5,
+        "wrong_stop_rate": 0.4444444444444444,
         "fail_bucket_counts": {
           "wrong_stop": 4,
           "ok_success_proxy": 2,
-          "explore_budget_exhausted": 2
+          "explore_budget_exhausted": 3
         },
         "run_status_counts": {
-          "ok": 8
+          "ok": 9
         },
-        "mean_n_steps": 75.25,
-        "mean_elapsed_sec": 554.643802344799,
-        "mean_forward_m": 2.8750000000000004,
+        "mean_n_steps": 80.88888888888889,
+        "mean_elapsed_sec": 561.9443736076355,
+        "mean_forward_m": 3.8055555555555554,
         "mean_arm_motions": null,
         "mean_effective_observations": null,
         "n_blocked_exec_sum": 262,
@@ -196,12 +196,12 @@
     "by_group_report_only": [
       {
         "group": "large_furniture",
-        "n_scored": 56,
-        "success": 14,
-        "sr_micro_in_group": 0.25,
+        "n_scored": 61,
+        "success": 15,
+        "sr_micro_in_group": 0.2459016393442623,
         "sr_wilson95": [
-          0.15517054688270684,
-          0.376926421476675
+          0.1550665770122629,
+          0.3668442410998928
         ],
         "note": "grouping_only_do_not_add_to_overall_with_subcats"
       }
@@ -225,57 +225,57 @@
     "n_invalid_spawn": 11,
     "n_pending_validity": 0,
     "n_valid_scheduled": 109,
-    "n_rows_ingested": 57,
-    "n_unique_episode_ids": 57,
+    "n_rows_ingested": 62,
+    "n_unique_episode_ids": 62,
     "duplicate_episode_ids": [],
     "run_status_counts": {
-      "ok": 56,
+      "ok": 61,
       "empty_run": 1
     },
     "termination_counts": {
       "completed_without_stop": 2,
-      "planner_stop": 36,
-      "explore_budget_exhausted": 19
+      "planner_stop": 38,
+      "explore_budget_exhausted": 22
     },
     "fail_bucket_counts": {
       "no_stop": 1,
       "empty_run": 1,
-      "wrong_stop": 22,
-      "explore_budget_exhausted": 19,
-      "ok_success_proxy": 14
+      "wrong_stop": 23,
+      "explore_budget_exhausted": 22,
+      "ok_success_proxy": 15
     },
     "n_run_fail": 1,
     "n_empty_run": 1,
-    "n_wrong_stop": 22,
-    "n_no_search": 37,
+    "n_wrong_stop": 23,
+    "n_no_search": 40,
     "n_exec_stalled": 0,
-    "n_budget_exhausted": 19,
-    "n_near_goal_true": 17,
-    "n_sr_proxy_true": 14,
-    "mean_sum_moved_m": 3.656696428571429,
-    "mean_n_init_lookaround": 25.54385964912281,
-    "mean_n_explore": 61.49122807017544,
-    "mean_n_steps": 87.03508771929825,
+    "n_budget_exhausted": 22,
+    "n_near_goal_true": 19,
+    "n_sr_proxy_true": 15,
+    "mean_sum_moved_m": 4.000409836065574,
+    "mean_n_init_lookaround": 25.580645161290324,
+    "mean_n_explore": 62.53225806451613,
+    "mean_n_steps": 88.11290322580645,
     "sum_blocked_exec": 2009,
     "sum_truncated_exec": 92,
-    "mean_elapsed_sec": 514.869051983482,
-    "sum_elapsed_sec": 29347.53596305847,
+    "mean_elapsed_sec": 525.2334574307165,
+    "sum_elapsed_sec": 32564.474360704422,
     "missing_field_histogram": {
-      "code_git_sha": 57,
+      "code_git_sha": 62,
       "sum_moved_m": 1,
       "entered_search_best": 1,
       "has_stop_action": 1,
       "dtg_min": 1
     },
     "camera_mode_counts": {
-      "fixed_base_gimbal": 57
+      "fixed_base_gimbal": 62
     },
     "simulated_gimbal_counts": {
-      "true": 57
+      "true": 62
     },
     "executor_version_counts": {
       "kinematic_collision_v1.1": 2,
-      "kinematic_collision_v1.2": 55
+      "kinematic_collision_v1.2": 60
     },
     "goal_height_bin": "unknown",
     "occlusion_bin": "unknown",
@@ -299,42 +299,42 @@
   "by_category_detail": [
     {
       "category": "bed",
-      "n": 10,
+      "n": 11,
       "success": 4,
-      "n_scored": 9,
-      "sr_proxy": 0.4444444444444444,
+      "n_scored": 10,
+      "sr_proxy": 0.4,
       "sr_wilson95": [
-        0.18877852109766458,
-        0.7333487065045069
+        0.16818032970623614,
+        0.6873262302663417
       ],
-      "near_goal_true": 4,
+      "near_goal_true": 5,
       "fail_bucket_counts": {
         "empty_run": 1,
         "wrong_stop": 4,
         "ok_success_proxy": 4,
-        "explore_budget_exhausted": 1
+        "explore_budget_exhausted": 2
       },
-      "mean_sum_moved_m": 3.802777777777777,
-      "mean_elapsed_sec": 451.4911167383194
+      "mean_sum_moved_m": 4.272499999999999,
+      "mean_elapsed_sec": 505.5409133867784
     },
     {
       "category": "chair",
-      "n": 9,
-      "success": 5,
-      "n_scored": 9,
-      "sr_proxy": 0.5555555555555556,
+      "n": 10,
+      "success": 6,
+      "n_scored": 10,
+      "sr_proxy": 0.6,
       "sr_wilson95": [
-        0.2666512934954931,
-        0.8112214789023354
+        0.31267376973365824,
+        0.8318196702937638
       ],
-      "near_goal_true": 7,
+      "near_goal_true": 8,
       "fail_bucket_counts": {
         "no_stop": 1,
-        "ok_success_proxy": 5,
+        "ok_success_proxy": 6,
         "explore_budget_exhausted": 3
       },
-      "mean_sum_moved_m": 7.2777777777777795,
-      "mean_elapsed_sec": 541.0523546006945
+      "mean_sum_moved_m": 7.325000000000001,
+      "mean_elapsed_sec": 530.9722141504287
     },
     {
       "category": "plant",
@@ -357,59 +357,59 @@
     },
     {
       "category": "sofa",
-      "n": 10,
+      "n": 11,
       "success": 2,
-      "n_scored": 10,
-      "sr_proxy": 0.2,
+      "n_scored": 11,
+      "sr_proxy": 0.18181818181818182,
       "sr_wilson95": [
-        0.05668215145437519,
-        0.5098375284633583
+        0.05136768974608513,
+        0.4769805619608442
       ],
       "near_goal_true": 2,
       "fail_bucket_counts": {
-        "wrong_stop": 7,
+        "wrong_stop": 8,
         "explore_budget_exhausted": 1,
         "ok_success_proxy": 2
       },
-      "mean_sum_moved_m": 2.360833333333333,
-      "mean_elapsed_sec": 400.8086283445358
+      "mean_sum_moved_m": 2.237121212121212,
+      "mean_elapsed_sec": 403.6423589966514
     },
     {
       "category": "toilet",
-      "n": 10,
+      "n": 11,
       "success": 0,
-      "n_scored": 10,
+      "n_scored": 11,
       "sr_proxy": 0.0,
       "sr_wilson95": [
         0.0,
-        0.2775327998628892
+        0.2588329669680317
       ],
       "near_goal_true": 0,
       "fail_bucket_counts": {
-        "explore_budget_exhausted": 7,
+        "explore_budget_exhausted": 8,
         "wrong_stop": 3
       },
-      "mean_sum_moved_m": 3.190833333333333,
-      "mean_elapsed_sec": 511.12378964424136
+      "mean_sum_moved_m": 3.878030303030303,
+      "mean_elapsed_sec": 526.3234413537112
     },
     {
       "category": "tv_monitor",
-      "n": 8,
+      "n": 9,
       "success": 2,
-      "n_scored": 8,
-      "sr_proxy": 0.25,
+      "n_scored": 9,
+      "sr_proxy": 0.2222222222222222,
       "sr_wilson95": [
-        0.071479212752109,
-        0.5907245696898311
+        0.06322510711784673,
+        0.5474110308930111
       ],
       "near_goal_true": 3,
       "fail_bucket_counts": {
         "wrong_stop": 4,
         "ok_success_proxy": 2,
-        "explore_budget_exhausted": 2
+        "explore_budget_exhausted": 3
       },
-      "mean_sum_moved_m": 2.8750000000000004,
-      "mean_elapsed_sec": 554.643802344799
+      "mean_sum_moved_m": 3.8055555555555554,
+      "mean_elapsed_sec": 561.9443736076355
     }
   ],
   "notes": [

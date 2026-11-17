@@ -2,27 +2,27 @@
 
 - list original: 120
 - validity: {'valid': 109, 'invalid': 11}
-- ingested unique: 57 / rows 57
-- micro SR_proxy: 0.25 (n_scored=56, wilson=[0.15517054688270684, 0.376926421476675])
-- macro SR_proxy: 0.25833333333333336
-- near_goal true: 17 (reported separately)
-- wrong_stop / no_search / stalled / budget: 22 / 37 / 0 / 19
+- ingested unique: 62 / rows 62
+- micro SR_proxy: 0.2459016393442623 (n_scored=61, wilson=[0.1550665770122629, 0.3668442410998928])
+- macro SR_proxy: 0.25067340067340066
+- near_goal true: 19 (reported separately)
+- wrong_stop / no_search / stalled / budget: 23 / 40 / 0 / 22
 - blocked/truncated exec sum: 2009 / 92
-- mean moved_m / steps / elapsed_s: 3.656696428571429 / 87.03508771929825 / 514.869051983482
-- camera_mode / simulated_gimbal / executor: {'fixed_base_gimbal': 57} / {True: 57} / {'kinematic_collision_v1.1': 2, 'kinematic_collision_v1.2': 55}
-- missing fields: {'code_git_sha': 57, 'sum_moved_m': 1, 'entered_search_best': 1, 'has_stop_action': 1, 'dtg_min': 1}
+- mean moved_m / steps / elapsed_s: 4.000409836065574 / 88.11290322580645 / 525.2334574307165
+- camera_mode / simulated_gimbal / executor: {'fixed_base_gimbal': 62} / {True: 62} / {'kinematic_collision_v1.1': 2, 'kinematic_collision_v1.2': 60}
+- missing fields: {'code_git_sha': 62, 'sum_moved_m': 1, 'entered_search_best': 1, 'has_stop_action': 1, 'dtg_min': 1}
 - SPL: N/A; height/occlusion/ambiguity: unknown
 
 ## Per category
 
 | category | success/n | SR_proxy | Wilson95 | near_goal | fail buckets |
 |---|---:|---:|---|---:|---|
-| bed | 4/9 | 0.4444 | [0.18877852109766458, 0.7333487065045069] | 4 | {'empty_run': 1, 'wrong_stop': 4, 'ok_success_proxy': 4, 'explore_budget_exhausted': 1} |
-| chair | 5/9 | 0.5556 | [0.2666512934954931, 0.8112214789023354] | 7 | {'no_stop': 1, 'ok_success_proxy': 5, 'explore_budget_exhausted': 3} |
+| bed | 4/10 | 0.4000 | [0.16818032970623614, 0.6873262302663417] | 5 | {'empty_run': 1, 'wrong_stop': 4, 'ok_success_proxy': 4, 'explore_budget_exhausted': 2} |
+| chair | 6/10 | 0.6000 | [0.31267376973365824, 0.8318196702937638] | 8 | {'no_stop': 1, 'ok_success_proxy': 6, 'explore_budget_exhausted': 3} |
 | plant | 1/10 | 0.1000 | [0.017876213095072868, 0.4041500267952385] | 1 | {'wrong_stop': 4, 'explore_budget_exhausted': 5, 'ok_success_proxy': 1} |
-| sofa | 2/10 | 0.2000 | [0.05668215145437519, 0.5098375284633583] | 2 | {'wrong_stop': 7, 'explore_budget_exhausted': 1, 'ok_success_proxy': 2} |
-| toilet | 0/10 | 0.0000 | [0.0, 0.2775327998628892] | 0 | {'explore_budget_exhausted': 7, 'wrong_stop': 3} |
-| tv_monitor | 2/8 | 0.2500 | [0.071479212752109, 0.5907245696898311] | 3 | {'wrong_stop': 4, 'ok_success_proxy': 2, 'explore_budget_exhausted': 2} |
+| sofa | 2/11 | 0.1818 | [0.05136768974608513, 0.4769805619608442] | 2 | {'wrong_stop': 8, 'explore_budget_exhausted': 1, 'ok_success_proxy': 2} |
+| toilet | 0/11 | 0.0000 | [0.0, 0.2588329669680317] | 0 | {'explore_budget_exhausted': 8, 'wrong_stop': 3} |
+| tv_monitor | 2/9 | 0.2222 | [0.06322510711784673, 0.5474110308930111] | 3 | {'wrong_stop': 4, 'ok_success_proxy': 2, 'explore_budget_exhausted': 3} |
 
 ## Notes
 - SR_proxy ≠ near_goal; moved_m=0 near_goal is NOT successful approach.
