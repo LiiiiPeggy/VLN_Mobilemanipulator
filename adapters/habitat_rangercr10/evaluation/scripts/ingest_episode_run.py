@@ -72,6 +72,19 @@ def ingest_run(
         run_status = "unknown_status"
     else:
         run_status = str(status)
+    # ################################
+    # VLN adapt: n_steps==0 with status=ok is not a scored success path
+    # (e.g. ROS conflict / early cleanup). Keep summary fields; demote run_status.
+    # ################################
+    n_steps_probe = _get(summary, "n_steps")
+    if (
+        run_status == "ok"
+        and n_steps_probe is not MISSING
+        and n_steps_probe is not None
+        and int(n_steps_probe) == 0
+        and len(steps) == 0
+    ):
+        run_status = "empty_run"
 
     # distances from steps (eval-only VIEW_POINTS field)
     dtgs = [
@@ -157,11 +170,14 @@ def ingest_run(
     if simulated_gimbal is MISSING:
         simulated_gimbal = _get(cam, "simulated_gimbal")
 
-    # Budget / SHA: only from run artifacts (summary notes/config files), else null
+    # ################################
+    # VLN adapt: budget/SHA only from run artifacts (incl. process_meta), never shell-only
+    # ################################
     max_steps_cfg = MISSING
     max_explore_cfg = MISSING
     code_git_sha = MISSING
     for cand in (
+        run_dir / "process_meta.json",
         run_dir / "run_config.json",
         run_dir / "args.json",
         run_dir / "meta.json",
@@ -169,12 +185,15 @@ def ingest_run(
         meta = _read_json(cand)
         if not meta:
             continue
-        if max_steps_cfg is MISSING:
-            max_steps_cfg = meta.get("max_steps", MISSING)
-        if max_explore_cfg is MISSING:
-            max_explore_cfg = meta.get("max_explore_actions", MISSING)
+        if max_steps_cfg is MISSING and meta.get("max_steps") is not None:
+            max_steps_cfg = meta.get("max_steps")
+        if max_explore_cfg is MISSING and meta.get("max_explore_actions") is not None:
+            max_explore_cfg = meta.get("max_explore_actions")
         if code_git_sha is MISSING:
-            code_git_sha = meta.get("git_sha_vln") or meta.get("code_git_sha") or MISSING
+            sha = meta.get("git_sha_vln") or meta.get("code_git_sha")
+            if sha:  # empty/null stays missing — do not coerce
+                code_git_sha = sha
+    # ################################
     # effective budget from observed steps if file incomplete
     n_steps = _get(summary, "n_steps")
     if n_steps is MISSING and steps:
@@ -182,7 +201,9 @@ def ingest_run(
     n_explore = _get(summary, "n_explore_planner_actions")
     n_init = _get(summary, "n_init_lookaround_actions")
 
-    # fail bucket (only when run ok and sr known false)
+    # ################################
+    # VLN adapt: fail bucket from real termination / STOP / SEARCH / stall evidence
+    # ################################
     fail_bucket = MISSING
     if run_status == "ok" and sr_proxy is False:
         if term == "step_budget_exhausted":
@@ -191,6 +212,8 @@ def ingest_run(
             fail_bucket = "explore_budget_exhausted"
         elif has_stop_action is True:
             fail_bucket = "wrong_stop"
+        elif term in ("completed_without_stop", "no_stop"):
+            fail_bucket = "no_stop"
         elif entered_search_best is False:
             fail_bucket = "no_search_best"
         elif sum_moved_m is not MISSING and sum_moved_m == 0.0 and blocked not in (MISSING, 0):
@@ -199,6 +222,11 @@ def ingest_run(
             fail_bucket = "other_fail"
     elif run_status == "ok" and sr_proxy is True:
         fail_bucket = "ok_success_proxy"
+    elif run_status == "empty_run":
+        fail_bucket = "empty_run"
+    elif run_status in ("timeout", "crash", "abort", "missing_summary"):
+        fail_bucket = f"run_{run_status}"
+    # ################################
 
     spawn_status = MISSING
     if init_pen_flag is True:

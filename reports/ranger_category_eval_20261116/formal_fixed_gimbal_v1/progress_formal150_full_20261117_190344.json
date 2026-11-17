@@ -1,0 +1,13 @@
+{
+  "ts_utc": "2026-11-17T11:31:54.237848+00:00",
+  "batch_id": "formal150_full_20261117_190344",
+  "n_jobs": 109,
+  "n_done": 2,
+  "n_remaining": 107,
+  "current_episode_list_id": "svBbv1Pavdk_plant_0",
+  "done_ids": [
+    "svBbv1Pavdk_chair_0",
+    "svBbv1Pavdk_bed_0"
+  ],
+  "pct": 1.834862385321101
+}

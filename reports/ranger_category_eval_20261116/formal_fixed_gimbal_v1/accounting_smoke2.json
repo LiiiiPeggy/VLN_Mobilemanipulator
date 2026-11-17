@@ -1,0 +1,208 @@
+{
+  "summary_metrics": {
+    "n_rows": 2,
+    "n_scored": 2,
+    "n_success_unknown": 0,
+    "success": 0,
+    "micro_sr": 0.0,
+    "micro_sr_wilson95": [
+      0.0,
+      0.6576197724933469
+    ],
+    "macro_sr": 0.0,
+    "by_category": [
+      {
+        "category": "bed",
+        "group": "large_furniture",
+        "n_rows": 1,
+        "n_scored": 1,
+        "n_success_unknown": 0,
+        "success": 0,
+        "sr": 0.0,
+        "sr_wilson95": [
+          0.0,
+          0.7934506856227626
+        ],
+        "wrong_stop": 0,
+        "wrong_stop_rate": 0.0,
+        "fail_bucket_counts": {
+          "explore_budget_exhausted": 1
+        },
+        "run_status_counts": {
+          "ok": 1
+        },
+        "mean_n_steps": 126.0,
+        "mean_elapsed_sec": 1461.717708826065,
+        "mean_forward_m": 0.8416666666666657,
+        "mean_arm_motions": null,
+        "mean_effective_observations": null,
+        "n_blocked_exec_sum": 111,
+        "n_truncated_exec_sum": 6
+      },
+      {
+        "category": "chair",
+        "group": "large_furniture",
+        "n_rows": 1,
+        "n_scored": 1,
+        "n_success_unknown": 0,
+        "success": 0,
+        "sr": 0.0,
+        "sr_wilson95": [
+          0.0,
+          0.7934506856227626
+        ],
+        "wrong_stop": 1,
+        "wrong_stop_rate": 1.0,
+        "fail_bucket_counts": {
+          "wrong_stop": 1
+        },
+        "run_status_counts": {
+          "ok": 1
+        },
+        "mean_n_steps": 104.0,
+        "mean_elapsed_sec": 560.2046325206757,
+        "mean_forward_m": 7.750000000000004,
+        "mean_arm_motions": null,
+        "mean_effective_observations": null,
+        "n_blocked_exec_sum": 0,
+        "n_truncated_exec_sum": 0
+      }
+    ],
+    "by_group_report_only": [
+      {
+        "group": "large_furniture",
+        "n_scored": 2,
+        "success": 0,
+        "sr_micro_in_group": 0.0,
+        "sr_wilson95": [
+          0.0,
+          0.6576197724933469
+        ],
+        "note": "grouping_only_do_not_add_to_overall_with_subcats"
+      }
+    ],
+    "by_strata": null,
+    "metrics_notes": [
+      "SR_proxy uses VIEW_POINTS; missing success fields stay unknown (not false).",
+      "near_goal is reported separately and is not SR_proxy.",
+      "Do not call detection precision 'accuracy' interchangeably with SR.",
+      "SPL is N/A unless a footprint-matched geodesic exists.",
+      "Repeat seeds must be flagged; not independent scenes for CI interpretation.",
+      "camera_mode for ApexNav baseline A must be fixed_base_gimbal (+ simulated_gimbal)."
+    ]
+  },
+  "accounting": {
+    "n_list_original": 120,
+    "validity_status_counts": {
+      "valid": 109,
+      "invalid": 11
+    },
+    "n_invalid_spawn": 11,
+    "n_pending_validity": 0,
+    "n_valid_scheduled": 109,
+    "n_rows_ingested": 2,
+    "n_unique_episode_ids": 2,
+    "duplicate_episode_ids": [],
+    "run_status_counts": {
+      "ok": 2
+    },
+    "termination_counts": {
+      "planner_stop": 1,
+      "explore_budget_exhausted": 1
+    },
+    "fail_bucket_counts": {
+      "wrong_stop": 1,
+      "explore_budget_exhausted": 1
+    },
+    "n_run_fail": 0,
+    "n_wrong_stop": 1,
+    "n_no_search": 1,
+    "n_exec_stalled": 0,
+    "n_budget_exhausted": 1,
+    "n_near_goal_true": 0,
+    "n_sr_proxy_true": 0,
+    "mean_sum_moved_m": 4.295833333333335,
+    "mean_n_init_lookaround": 26.0,
+    "mean_n_explore": 89.0,
+    "mean_n_steps": 115.0,
+    "sum_blocked_exec": 111,
+    "sum_truncated_exec": 6,
+    "mean_elapsed_sec": 1010.9611706733704,
+    "sum_elapsed_sec": 2021.9223413467407,
+    "missing_field_histogram": {
+      "code_git_sha": 2,
+      "max_steps_config": 2,
+      "max_explore_actions_config": 2
+    },
+    "camera_mode_counts": {
+      "fixed_base_gimbal": 2
+    },
+    "simulated_gimbal_counts": {
+      "true": 2
+    },
+    "executor_version_counts": {
+      "kinematic_collision_v1.1": 2
+    },
+    "goal_height_bin": "unknown",
+    "occlusion_bin": "unknown",
+    "multi_instance_ambiguity": "unknown",
+    "spl": "N/A",
+    "invalid_spawn_ids": [
+      "cvZr5TUy5C5_chair_1",
+      "q3zU7Yy5E5s_chair_0",
+      "q3zU7Yy5E5s_sofa_0",
+      "q3zU7Yy5E5s_toilet_1",
+      "bxsVRursffK_chair_0",
+      "p53SfW6mjZe_chair_0",
+      "mv2HUxq3B53_chair_3",
+      "bCPU9suPUw9_chair_2",
+      "6s7QHgap2fW_chair_0",
+      "4ok3usBNeis_bed_2",
+      "7MXmsvcQjpJ_plant_2"
+    ],
+    "pending_ids": []
+  },
+  "by_category_detail": [
+    {
+      "category": "bed",
+      "n": 1,
+      "success": 0,
+      "n_scored": 1,
+      "sr_proxy": 0.0,
+      "sr_wilson95": [
+        0.0,
+        0.7934506856227626
+      ],
+      "near_goal_true": 0,
+      "fail_bucket_counts": {
+        "explore_budget_exhausted": 1
+      },
+      "mean_sum_moved_m": 0.8416666666666657,
+      "mean_elapsed_sec": 1461.717708826065
+    },
+    {
+      "category": "chair",
+      "n": 1,
+      "success": 0,
+      "n_scored": 1,
+      "sr_proxy": 0.0,
+      "sr_wilson95": [
+        0.0,
+        0.7934506856227626
+      ],
+      "near_goal_true": 0,
+      "fail_bucket_counts": {
+        "wrong_stop": 1
+      },
+      "mean_sum_moved_m": 7.750000000000004,
+      "mean_elapsed_sec": 560.2046325206757
+    }
+  ],
+  "notes": [
+    "SR_proxy \u2260 near_goal; moved_m=0 near_goal is NOT successful approach.",
+    "Invalid spawn counted from validity table, not from SR filter.",
+    "SPL=N/A without footprint-matched geodesic.",
+    "Observation height / occlusion / instance ambiguity = unknown without evidence.",
+    "Cup / active-arm strategy not in this freeze."
+  ]
+}

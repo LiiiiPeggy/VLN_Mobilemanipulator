@@ -296,8 +296,8 @@
       "simulated_gimbal": true,
       "executor_version": "kinematic_collision_v1.1",
       "code_git_sha": null,
-      "max_steps_config": null,
-      "max_explore_actions_config": null,
+      "max_steps_config": 50,
+      "max_explore_actions_config": 100,
       "n_steps_observed": 50,
       "n_init_lookaround_observed": 26,
       "n_explore_observed": 24,
@@ -329,9 +329,7 @@
       "multi_instance_ambiguity": "unknown",
       "spl": "N/A",
       "missing_fields": [
-        "code_git_sha",
-        "max_steps_config",
-        "max_explore_actions_config"
+        "code_git_sha"
       ],
       "shell_rc": 0,
       "recovery_flag": false,
@@ -354,8 +352,8 @@
       "simulated_gimbal": true,
       "executor_version": "kinematic_collision_v1.1",
       "code_git_sha": null,
-      "max_steps_config": null,
-      "max_explore_actions_config": null,
+      "max_steps_config": 50,
+      "max_explore_actions_config": 100,
       "n_steps_observed": 50,
       "n_init_lookaround_observed": 26,
       "n_explore_observed": 24,
@@ -387,9 +385,7 @@
       "multi_instance_ambiguity": "unknown",
       "spl": "N/A",
       "missing_fields": [
-        "code_git_sha",
-        "max_steps_config",
-        "max_explore_actions_config"
+        "code_git_sha"
       ],
       "shell_rc": 0,
       "recovery_flag": false,
@@ -412,8 +408,8 @@
       "simulated_gimbal": true,
       "executor_version": "kinematic_collision_v1.1",
       "code_git_sha": null,
-      "max_steps_config": null,
-      "max_explore_actions_config": null,
+      "max_steps_config": 50,
+      "max_explore_actions_config": 100,
       "n_steps_observed": 50,
       "n_init_lookaround_observed": 26,
       "n_explore_observed": 24,
@@ -445,9 +441,7 @@
       "multi_instance_ambiguity": "unknown",
       "spl": "N/A",
       "missing_fields": [
-        "code_git_sha",
-        "max_steps_config",
-        "max_explore_actions_config"
+        "code_git_sha"
       ],
       "shell_rc": 0,
       "recovery_flag": false,
@@ -470,8 +464,8 @@
       "simulated_gimbal": true,
       "executor_version": "kinematic_collision_v1.1",
       "code_git_sha": null,
-      "max_steps_config": null,
-      "max_explore_actions_config": null,
+      "max_steps_config": 50,
+      "max_explore_actions_config": 100,
       "n_steps_observed": 50,
       "n_init_lookaround_observed": 26,
       "n_explore_observed": 24,
@@ -503,9 +497,7 @@
       "multi_instance_ambiguity": "unknown",
       "spl": "N/A",
       "missing_fields": [
-        "code_git_sha",
-        "max_steps_config",
-        "max_explore_actions_config"
+        "code_git_sha"
       ],
       "shell_rc": 0,
       "recovery_flag": false,
@@ -528,8 +520,8 @@
       "simulated_gimbal": true,
       "executor_version": "kinematic_collision_v1.1",
       "code_git_sha": null,
-      "max_steps_config": null,
-      "max_explore_actions_config": null,
+      "max_steps_config": 50,
+      "max_explore_actions_config": 100,
       "n_steps_observed": 50,
       "n_init_lookaround_observed": 26,
       "n_explore_observed": 24,
@@ -561,9 +553,7 @@
       "multi_instance_ambiguity": "unknown",
       "spl": "N/A",
       "missing_fields": [
-        "code_git_sha",
-        "max_steps_config",
-        "max_explore_actions_config"
+        "code_git_sha"
       ],
       "shell_rc": 0,
       "recovery_flag": true,
@@ -587,8 +577,8 @@
       "simulated_gimbal": true,
       "executor_version": "kinematic_collision_v1.1",
       "code_git_sha": null,
-      "max_steps_config": null,
-      "max_explore_actions_config": null,
+      "max_steps_config": 50,
+      "max_explore_actions_config": 100,
       "n_steps_observed": 50,
       "n_init_lookaround_observed": 26,
       "n_explore_observed": 24,
@@ -620,9 +610,7 @@
       "multi_instance_ambiguity": "unknown",
       "spl": "N/A",
       "missing_fields": [
-        "code_git_sha",
-        "max_steps_config",
-        "max_explore_actions_config"
+        "code_git_sha"
       ],
       "shell_rc": 0,
       "recovery_flag": true,
@@ -646,8 +634,8 @@
       "simulated_gimbal": true,
       "executor_version": "kinematic_collision_v1.1",
       "code_git_sha": null,
-      "max_steps_config": null,
-      "max_explore_actions_config": null,
+      "max_steps_config": 50,
+      "max_explore_actions_config": 100,
       "n_steps_observed": 50,
       "n_init_lookaround_observed": 26,
       "n_explore_observed": 24,
@@ -679,9 +667,7 @@
       "multi_instance_ambiguity": "unknown",
       "spl": "N/A",
       "missing_fields": [
-        "code_git_sha",
-        "max_steps_config",
-        "max_explore_actions_config"
+        "code_git_sha"
       ],
       "shell_rc": 0,
       "recovery_flag": true,
@@ -705,8 +691,8 @@
       "simulated_gimbal": true,
       "executor_version": "kinematic_collision_v1.1",
       "code_git_sha": null,
-      "max_steps_config": null,
-      "max_explore_actions_config": null,
+      "max_steps_config": 50,
+      "max_explore_actions_config": 100,
       "n_steps_observed": 50,
       "n_init_lookaround_observed": 26,
       "n_explore_observed": 24,
@@ -738,9 +724,7 @@
       "multi_instance_ambiguity": "unknown",
       "spl": "N/A",
       "missing_fields": [
-        "code_git_sha",
-        "max_steps_config",
-        "max_explore_actions_config"
+        "code_git_sha"
       ],
       "shell_rc": 0,
       "recovery_flag": true,
@@ -764,8 +748,8 @@
       "simulated_gimbal": true,
       "executor_version": "kinematic_collision_v1.1",
       "code_git_sha": null,
-      "max_steps_config": null,
-      "max_explore_actions_config": null,
+      "max_steps_config": 50,
+      "max_explore_actions_config": 100,
       "n_steps_observed": 50,
       "n_init_lookaround_observed": 26,
       "n_explore_observed": 24,
@@ -797,9 +781,7 @@
       "multi_instance_ambiguity": "unknown",
       "spl": "N/A",
       "missing_fields": [
-        "code_git_sha",
-        "max_steps_config",
-        "max_explore_actions_config"
+        "code_git_sha"
       ],
       "shell_rc": 0,
       "recovery_flag": true,
@@ -823,8 +805,8 @@
       "simulated_gimbal": true,
       "executor_version": "kinematic_collision_v1.1",
       "code_git_sha": null,
-      "max_steps_config": null,
-      "max_explore_actions_config": null,
+      "max_steps_config": 50,
+      "max_explore_actions_config": 100,
       "n_steps_observed": 50,
       "n_init_lookaround_observed": 26,
       "n_explore_observed": 24,
@@ -856,9 +838,7 @@
       "multi_instance_ambiguity": "unknown",
       "spl": "N/A",
       "missing_fields": [
-        "code_git_sha",
-        "max_steps_config",
-        "max_explore_actions_config"
+        "code_git_sha"
       ],
       "shell_rc": 0,
       "recovery_flag": true,
@@ -882,8 +862,8 @@
       "simulated_gimbal": true,
       "executor_version": "kinematic_collision_v1.1",
       "code_git_sha": null,
-      "max_steps_config": null,
-      "max_explore_actions_config": null,
+      "max_steps_config": 50,
+      "max_explore_actions_config": 100,
       "n_steps_observed": 50,
       "n_init_lookaround_observed": 26,
       "n_explore_observed": 24,
@@ -915,9 +895,7 @@
       "multi_instance_ambiguity": "unknown",
       "spl": "N/A",
       "missing_fields": [
-        "code_git_sha",
-        "max_steps_config",
-        "max_explore_actions_config"
+        "code_git_sha"
       ],
       "shell_rc": 0,
       "recovery_flag": true,
@@ -941,8 +919,8 @@
       "simulated_gimbal": true,
       "executor_version": "kinematic_collision_v1.1",
       "code_git_sha": null,
-      "max_steps_config": null,
-      "max_explore_actions_config": null,
+      "max_steps_config": 50,
+      "max_explore_actions_config": 100,
       "n_steps_observed": 50,
       "n_init_lookaround_observed": 26,
       "n_explore_observed": 24,
@@ -974,9 +952,7 @@
       "multi_instance_ambiguity": "unknown",
       "spl": "N/A",
       "missing_fields": [
-        "code_git_sha",
-        "max_steps_config",
-        "max_explore_actions_config"
+        "code_git_sha"
       ],
       "shell_rc": 0,
       "recovery_flag": true,
@@ -1000,8 +976,8 @@
       "simulated_gimbal": true,
       "executor_version": "kinematic_collision_v1.1",
       "code_git_sha": null,
-      "max_steps_config": null,
-      "max_explore_actions_config": null,
+      "max_steps_config": 50,
+      "max_explore_actions_config": 100,
       "n_steps_observed": 50,
       "n_init_lookaround_observed": 26,
       "n_explore_observed": 24,
@@ -1033,9 +1009,7 @@
       "multi_instance_ambiguity": "unknown",
       "spl": "N/A",
       "missing_fields": [
-        "code_git_sha",
-        "max_steps_config",
-        "max_explore_actions_config"
+        "code_git_sha"
       ],
       "shell_rc": 0,
       "recovery_flag": true,
@@ -1059,8 +1033,8 @@
       "simulated_gimbal": true,
       "executor_version": "kinematic_collision_v1.1",
       "code_git_sha": null,
-      "max_steps_config": null,
-      "max_explore_actions_config": null,
+      "max_steps_config": 50,
+      "max_explore_actions_config": 100,
       "n_steps_observed": 50,
       "n_init_lookaround_observed": 26,
       "n_explore_observed": 24,
@@ -1092,9 +1066,7 @@
       "multi_instance_ambiguity": "unknown",
       "spl": "N/A",
       "missing_fields": [
-        "code_git_sha",
-        "max_steps_config",
-        "max_explore_actions_config"
+        "code_git_sha"
       ],
       "shell_rc": 0,
       "recovery_flag": true,
@@ -1118,8 +1090,8 @@
       "simulated_gimbal": true,
       "executor_version": "kinematic_collision_v1.1",
       "code_git_sha": null,
-      "max_steps_config": null,
-      "max_explore_actions_config": null,
+      "max_steps_config": 50,
+      "max_explore_actions_config": 100,
       "n_steps_observed": 50,
       "n_init_lookaround_observed": 26,
       "n_explore_observed": 24,
@@ -1151,9 +1123,7 @@
       "multi_instance_ambiguity": "unknown",
       "spl": "N/A",
       "missing_fields": [
-        "code_git_sha",
-        "max_steps_config",
-        "max_explore_actions_config"
+        "code_git_sha"
       ],
       "shell_rc": 0,
       "recovery_flag": true,
@@ -1177,8 +1147,8 @@
       "simulated_gimbal": true,
       "executor_version": "kinematic_collision_v1.1",
       "code_git_sha": null,
-      "max_steps_config": null,
-      "max_explore_actions_config": null,
+      "max_steps_config": 50,
+      "max_explore_actions_config": 100,
       "n_steps_observed": 50,
       "n_init_lookaround_observed": 26,
       "n_explore_observed": 24,
@@ -1210,9 +1180,7 @@
       "multi_instance_ambiguity": "unknown",
       "spl": "N/A",
       "missing_fields": [
-        "code_git_sha",
-        "max_steps_config",
-        "max_explore_actions_config"
+        "code_git_sha"
       ],
       "shell_rc": 0,
       "recovery_flag": true,
@@ -1236,8 +1204,8 @@
       "simulated_gimbal": true,
       "executor_version": "kinematic_collision_v1.1",
       "code_git_sha": null,
-      "max_steps_config": null,
-      "max_explore_actions_config": null,
+      "max_steps_config": 50,
+      "max_explore_actions_config": 100,
       "n_steps_observed": 50,
       "n_init_lookaround_observed": 26,
       "n_explore_observed": 24,
@@ -1269,9 +1237,7 @@
       "multi_instance_ambiguity": "unknown",
       "spl": "N/A",
       "missing_fields": [
-        "code_git_sha",
-        "max_steps_config",
-        "max_explore_actions_config"
+        "code_git_sha"
       ],
       "shell_rc": 0,
       "recovery_flag": true,
@@ -1295,8 +1261,8 @@
       "simulated_gimbal": true,
       "executor_version": "kinematic_collision_v1.1",
       "code_git_sha": null,
-      "max_steps_config": null,
-      "max_explore_actions_config": null,
+      "max_steps_config": 50,
+      "max_explore_actions_config": 100,
       "n_steps_observed": 50,
       "n_init_lookaround_observed": 26,
       "n_explore_observed": 24,
@@ -1328,9 +1294,7 @@
       "multi_instance_ambiguity": "unknown",
       "spl": "N/A",
       "missing_fields": [
-        "code_git_sha",
-        "max_steps_config",
-        "max_explore_actions_config"
+        "code_git_sha"
       ],
       "shell_rc": 0,
       "recovery_flag": true,
@@ -1354,8 +1318,8 @@
       "simulated_gimbal": true,
       "executor_version": "kinematic_collision_v1.1",
       "code_git_sha": null,
-      "max_steps_config": null,
-      "max_explore_actions_config": null,
+      "max_steps_config": 50,
+      "max_explore_actions_config": 100,
       "n_steps_observed": 50,
       "n_init_lookaround_observed": 26,
       "n_explore_observed": 24,
@@ -1387,9 +1351,7 @@
       "multi_instance_ambiguity": "unknown",
       "spl": "N/A",
       "missing_fields": [
-        "code_git_sha",
-        "max_steps_config",
-        "max_explore_actions_config"
+        "code_git_sha"
       ],
       "shell_rc": 0,
       "recovery_flag": true,
@@ -1413,8 +1375,8 @@
       "simulated_gimbal": true,
       "executor_version": "kinematic_collision_v1.1",
       "code_git_sha": null,
-      "max_steps_config": null,
-      "max_explore_actions_config": null,
+      "max_steps_config": 50,
+      "max_explore_actions_config": 100,
       "n_steps_observed": 50,
       "n_init_lookaround_observed": 26,
       "n_explore_observed": 24,
@@ -1446,9 +1408,7 @@
       "multi_instance_ambiguity": "unknown",
       "spl": "N/A",
       "missing_fields": [
-        "code_git_sha",
-        "max_steps_config",
-        "max_explore_actions_config"
+        "code_git_sha"
       ],
       "shell_rc": 0,
       "recovery_flag": true,
@@ -1472,8 +1432,8 @@
       "simulated_gimbal": true,
       "executor_version": "kinematic_collision_v1.1",
       "code_git_sha": null,
-      "max_steps_config": null,
-      "max_explore_actions_config": null,
+      "max_steps_config": 50,
+      "max_explore_actions_config": 100,
       "n_steps_observed": 50,
       "n_init_lookaround_observed": 26,
       "n_explore_observed": 24,
@@ -1506,8 +1466,6 @@
       "spl": "N/A",
       "missing_fields": [
         "code_git_sha",
-        "max_steps_config",
-        "max_explore_actions_config",
         "entered_search_best"
       ],
       "shell_rc": 0,
@@ -1531,8 +1489,8 @@
       "simulated_gimbal": true,
       "executor_version": "kinematic_collision_v1.1",
       "code_git_sha": null,
-      "max_steps_config": null,
-      "max_explore_actions_config": null,
+      "max_steps_config": 50,
+      "max_explore_actions_config": 100,
       "n_steps_observed": 17,
       "n_init_lookaround_observed": 17,
       "n_explore_observed": 0,
@@ -1570,9 +1528,7 @@
       "multi_instance_ambiguity": "unknown",
       "spl": "N/A",
       "missing_fields": [
-        "code_git_sha",
-        "max_steps_config",
-        "max_explore_actions_config"
+        "code_git_sha"
       ],
       "shell_rc": 0,
       "recovery_flag": false,
@@ -1595,8 +1551,8 @@
       "simulated_gimbal": true,
       "executor_version": "kinematic_collision_v1.1",
       "code_git_sha": null,
-      "max_steps_config": null,
-      "max_explore_actions_config": null,
+      "max_steps_config": 50,
+      "max_explore_actions_config": 100,
       "n_steps_observed": 16,
       "n_init_lookaround_observed": 16,
       "n_explore_observed": 0,
@@ -1635,8 +1591,6 @@
       "spl": "N/A",
       "missing_fields": [
         "code_git_sha",
-        "max_steps_config",
-        "max_explore_actions_config",
         "entered_search_best"
       ],
       "shell_rc": 0,
@@ -1660,8 +1614,8 @@
       "simulated_gimbal": true,
       "executor_version": "kinematic_collision_v1.1",
       "code_git_sha": null,
-      "max_steps_config": null,
-      "max_explore_actions_config": null,
+      "max_steps_config": 50,
+      "max_explore_actions_config": 100,
       "n_steps_observed": 50,
       "n_init_lookaround_observed": 26,
       "n_explore_observed": 24,
@@ -1693,9 +1647,7 @@
       "multi_instance_ambiguity": "unknown",
       "spl": "N/A",
       "missing_fields": [
-        "code_git_sha",
-        "max_steps_config",
-        "max_explore_actions_config"
+        "code_git_sha"
       ],
       "shell_rc": 0,
       "recovery_flag": true,
@@ -1784,8 +1736,8 @@
       "simulated_gimbal": true,
       "executor_version": "kinematic_collision_v1.1",
       "code_git_sha": null,
-      "max_steps_config": null,
-      "max_explore_actions_config": null,
+      "max_steps_config": 50,
+      "max_explore_actions_config": 100,
       "n_steps_observed": 50,
       "n_init_lookaround_observed": 26,
       "n_explore_observed": 24,
@@ -1817,9 +1769,7 @@
       "multi_instance_ambiguity": "unknown",
       "spl": "N/A",
       "missing_fields": [
-        "code_git_sha",
-        "max_steps_config",
-        "max_explore_actions_config"
+        "code_git_sha"
       ],
       "shell_rc": 0,
       "recovery_flag": false,
@@ -1842,8 +1792,8 @@
       "simulated_gimbal": true,
       "executor_version": "kinematic_collision_v1.1",
       "code_git_sha": null,
-      "max_steps_config": null,
-      "max_explore_actions_config": null,
+      "max_steps_config": 50,
+      "max_explore_actions_config": 100,
       "n_steps_observed": 50,
       "n_init_lookaround_observed": 26,
       "n_explore_observed": 24,
@@ -1875,9 +1825,7 @@
       "multi_instance_ambiguity": "unknown",
       "spl": "N/A",
       "missing_fields": [
-        "code_git_sha",
-        "max_steps_config",
-        "max_explore_actions_config"
+        "code_git_sha"
       ],
       "shell_rc": 0,
       "recovery_flag": false,
@@ -1963,8 +1911,8 @@
       "simulated_gimbal": true,
       "executor_version": "kinematic_collision_v1.1",
       "code_git_sha": null,
-      "max_steps_config": null,
-      "max_explore_actions_config": null,
+      "max_steps_config": 50,
+      "max_explore_actions_config": 100,
       "n_steps_observed": 27,
       "n_init_lookaround_observed": 26,
       "n_explore_observed": 1,
@@ -2003,8 +1951,6 @@
       "spl": "N/A",
       "missing_fields": [
         "code_git_sha",
-        "max_steps_config",
-        "max_explore_actions_config",
         "entered_search_best"
       ],
       "shell_rc": 0,
@@ -2028,8 +1974,8 @@
       "simulated_gimbal": true,
       "executor_version": "kinematic_collision_v1.1",
       "code_git_sha": null,
-      "max_steps_config": null,
-      "max_explore_actions_config": null,
+      "max_steps_config": 50,
+      "max_explore_actions_config": 100,
       "n_steps_observed": 47,
       "n_init_lookaround_observed": 26,
       "n_explore_observed": 21,
@@ -2054,16 +2000,14 @@
       "n_search_any": 0,
       "initial_penetration": false,
       "elapsed_sec": 101.97680926322937,
-      "fail_bucket": "no_search_best",
+      "fail_bucket": "no_stop",
       "goal_height_bin": "unknown",
       "apparent_scale_bin": "unknown",
       "occlusion_bin": "unknown",
       "multi_instance_ambiguity": "unknown",
       "spl": "N/A",
       "missing_fields": [
-        "code_git_sha",
-        "max_steps_config",
-        "max_explore_actions_config"
+        "code_git_sha"
       ],
       "shell_rc": 0,
       "recovery_flag": false,
@@ -2086,8 +2030,8 @@
       "simulated_gimbal": true,
       "executor_version": "kinematic_collision_v1.1",
       "code_git_sha": null,
-      "max_steps_config": null,
-      "max_explore_actions_config": null,
+      "max_steps_config": 50,
+      "max_explore_actions_config": 100,
       "n_steps_observed": 17,
       "n_init_lookaround_observed": 17,
       "n_explore_observed": 0,
@@ -2125,9 +2069,7 @@
       "multi_instance_ambiguity": "unknown",
       "spl": "N/A",
       "missing_fields": [
-        "code_git_sha",
-        "max_steps_config",
-        "max_explore_actions_config"
+        "code_git_sha"
       ],
       "shell_rc": 0,
       "recovery_flag": false,
