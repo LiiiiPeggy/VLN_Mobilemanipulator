@@ -84,8 +84,8 @@
     }
   },
   "process_meta_fields": {
-    "git_sha_vln": "PENDING",
-    "code_git_sha": "PENDING",
+    "git_sha_vln": "cef07d7",
+    "code_git_sha": "cef07d7",
     "max_steps": 150,
     "max_explore_actions": 100,
     "camera_mode": "fixed_base_gimbal",
