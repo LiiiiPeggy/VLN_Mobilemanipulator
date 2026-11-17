@@ -345,6 +345,18 @@ class ApexNavRangerBridge:
         self.floor_y = 0.0
         self._first_plan_diag_done = False
         self.first_plan_diag: Optional[dict] = None
+        # ################################
+        # VLN adapt: bounded exec failure feedback (no native ApexNav blocked topic).
+        # Consecutive identical fully-blocked base actions → force LOOK / opposite
+        # turn so planner gets a new observation. Extra recovery counts as this step.
+        # ################################
+        self._consec_blocked_same = 0
+        self._last_blocked_action: Optional[int] = None
+        self.n_blocked_recovery = 0
+        self.sum_moved_m = 0.0
+        self.sum_abs_yaw_delta = 0.0
+        self.n_blocked_exec = 0
+        self.n_truncated_exec = 0
 
     def _callbacks(self):
         def on_action(msg):
@@ -481,7 +493,11 @@ class ApexNavRangerBridge:
         if action == ACTION.MOVE_FORWARD:
             nx = x + FORWARD_M * math.sin(yaw)
             nz = z + FORWARD_M * math.cos(yaw)
-            res = probe_base_motion(self.env, nx, nz, yaw)
+            # ################################
+            res = probe_base_motion(
+                self.env, nx, nz, yaw, action_hint="MOVE_FORWARD"
+            )
+            # ################################
             info.update(
                 {
                     "executed": bool(res.get("executed")),
@@ -489,7 +505,12 @@ class ApexNavRangerBridge:
                     "truncated": bool(res.get("truncated")),
                     "block_reason": res.get("block_reason"),
                     "moved_m": res.get("moved_m"),
+                    "yaw_delta": res.get("yaw_delta"),
                     "collision": res.get("contacts"),
+                    "start_contacts": res.get("start_contacts"),
+                    "first_blocking_contacts": res.get("first_blocking_contacts"),
+                    "committed_contacts": res.get("committed_contacts"),
+                    "blocking_evidence": res.get("blocking_evidence"),
                     "motion_probe": {
                         k: res.get(k)
                         for k in (
@@ -507,7 +528,11 @@ class ApexNavRangerBridge:
             )
             info["upright"] = self.env.upright_diagnostics()
         elif action == ACTION.TURN_LEFT:
-            res = probe_base_motion(self.env, x, z, yaw + TURN_RAD)
+            # ################################
+            res = probe_base_motion(
+                self.env, x, z, yaw + TURN_RAD, action_hint="TURN_LEFT"
+            )
+            # ################################
             info.update(
                 {
                     "executed": bool(res.get("executed")),
@@ -517,6 +542,10 @@ class ApexNavRangerBridge:
                     "moved_m": res.get("moved_m"),
                     "yaw_delta": res.get("yaw_delta"),
                     "collision": res.get("contacts"),
+                    "start_contacts": res.get("start_contacts"),
+                    "first_blocking_contacts": res.get("first_blocking_contacts"),
+                    "committed_contacts": res.get("committed_contacts"),
+                    "blocking_evidence": res.get("blocking_evidence"),
                     "motion_probe": {
                         k: res.get(k)
                         for k in (
@@ -533,7 +562,11 @@ class ApexNavRangerBridge:
             )
             info["upright"] = self.env.upright_diagnostics()
         elif action == ACTION.TURN_RIGHT:
-            res = probe_base_motion(self.env, x, z, yaw - TURN_RAD)
+            # ################################
+            res = probe_base_motion(
+                self.env, x, z, yaw - TURN_RAD, action_hint="TURN_RIGHT"
+            )
+            # ################################
             info.update(
                 {
                     "executed": bool(res.get("executed")),
@@ -543,6 +576,10 @@ class ApexNavRangerBridge:
                     "moved_m": res.get("moved_m"),
                     "yaw_delta": res.get("yaw_delta"),
                     "collision": res.get("contacts"),
+                    "start_contacts": res.get("start_contacts"),
+                    "first_blocking_contacts": res.get("first_blocking_contacts"),
+                    "committed_contacts": res.get("committed_contacts"),
+                    "blocking_evidence": res.get("blocking_evidence"),
                     "motion_probe": {
                         k: res.get(k)
                         for k in (
@@ -596,7 +633,9 @@ class ApexNavRangerBridge:
                 q = self.env.arm_q.copy()
                 delta = 0.60 if action == ACTION.TURN_UP else -0.60
                 q[2] = float(np.clip(q[2] + delta, -2.86, 2.86))
-                res = probe_arm_motion(self.env, q)
+                # ################################
+                res = probe_arm_motion(self.env, q, action_hint=f"LOOK_{direction.upper()}_ARM")
+                # ################################
                 after_f = self.env.camera_forward_hab()
                 cosang = float(np.clip(np.dot(before["forward"], after_f), -1, 1))
                 info.update(
@@ -606,6 +645,10 @@ class ApexNavRangerBridge:
                         "truncated": bool(res.get("truncated")),
                         "block_reason": res.get("block_reason"),
                         "collision": res.get("contacts"),
+                        "start_contacts": res.get("start_contacts"),
+                        "first_blocking_contacts": res.get("first_blocking_contacts"),
+                        "committed_contacts": res.get("committed_contacts"),
+                        "blocking_evidence": res.get("blocking_evidence"),
                         "pitch_delta_rad": float(math.acos(cosang)),
                         "look_equivalence": "arm_joint3_adapted_not_habitat_look",
                         "look_joint": "cr10_joint3",
@@ -1104,8 +1147,46 @@ class ApexNavRangerBridge:
                 action = int(self.global_action)
                 self.global_action = None
                 # ################################
+                # VLN adapt: bounded failure feedback — if planner re-requests the
+                # same fully-blocked base action ≥3 times, spend this step on a
+                # recovery LOOK (gimbal) / opposite turn so obs changes. Counts
+                # against max_steps / max_explore like any other action.
+                # ################################
+                recovery_meta: Optional[Dict[str, Any]] = None
+                BASE_ACTS = {ACTION.MOVE_FORWARD, ACTION.TURN_LEFT, ACTION.TURN_RIGHT}
+                if (
+                    action in BASE_ACTS
+                    and self._last_blocked_action == action
+                    and self._consec_blocked_same >= 3
+                ):
+                    requested = int(action)
+                    if getattr(self.env, "camera_mode", "") == CAMERA_MODE_FIXED_BASE_GIMBAL:
+                        action = ACTION.TURN_DOWN
+                        recovery_kind = "gimbal_look_down"
+                    elif requested == ACTION.TURN_LEFT:
+                        action = ACTION.TURN_RIGHT
+                        recovery_kind = "opposite_turn"
+                    elif requested == ACTION.TURN_RIGHT:
+                        action = ACTION.TURN_LEFT
+                        recovery_kind = "opposite_turn"
+                    else:
+                        action = ACTION.TURN_LEFT
+                        recovery_kind = "forced_turn_left"
+                    recovery_meta = {
+                        "blocked_recovery": True,
+                        "requested_action": ACTION_NAME.get(requested, str(requested)),
+                        "recovery_action": ACTION_NAME.get(action, str(action)),
+                        "recovery_kind": recovery_kind,
+                        "consec_blocked_before": int(self._consec_blocked_same),
+                    }
+                    self.n_blocked_recovery += 1
+                    self._consec_blocked_same = 0
+                    self._last_blocked_action = None
+                # ################################
                 # ApexNav exploration_fsm: first 26 plan actions = init lookaround;
                 # subsequent actions come from callActionPlanner() (real explore).
+                # Phase label is FSM bookkeeping only — STOP detection must NOT
+                # require phase==explore_planner (see batch/ingest).
                 # ################################
                 phase = (
                     "init_lookaround"
@@ -1140,6 +1221,36 @@ class ApexNavRangerBridge:
 
                 _pub_int(state_pub, HABITAT_STATE.ACTION_EXEC)
                 exec_info = self._execute_action(action)
+                if recovery_meta is not None:
+                    exec_info["blocked_recovery"] = recovery_meta
+                    exec_info["requested_action"] = recovery_meta["requested_action"]
+                    exec_info["action_name"] = recovery_meta["recovery_action"]
+                # ################################
+                # Track consecutive full rejects (no motion). Truncation resets
+                # the streak because the committed pose did change.
+                # ACTION_FINISH only means the handler finished — not that the
+                # requested yaw/translation completed.
+                # ################################
+                fully_blocked = bool(
+                    exec_info.get("blocked")
+                    and not exec_info.get("executed")
+                    and not exec_info.get("truncated")
+                )
+                if fully_blocked and action in BASE_ACTS and recovery_meta is None:
+                    if self._last_blocked_action == action:
+                        self._consec_blocked_same += 1
+                    else:
+                        self._consec_blocked_same = 1
+                        self._last_blocked_action = action
+                else:
+                    self._consec_blocked_same = 0
+                    self._last_blocked_action = None
+                if exec_info.get("blocked"):
+                    self.n_blocked_exec += 1
+                if exec_info.get("truncated"):
+                    self.n_truncated_exec += 1
+                self.sum_moved_m += float(exec_info.get("moved_m") or 0.0)
+                self.sum_abs_yaw_delta += abs(float(exec_info.get("yaw_delta") or 0.0))
 
                 # new observation after motion
                 ee = self.env.observe_ee_only()
@@ -1401,6 +1512,15 @@ class ApexNavRangerBridge:
             map_ok = bool(self.map_listener.has_map())
             map_final = self.map_listener.stats()
         entered_explore = self.n_explore_actions > 0
+        # ################################
+        # VLN adapt: budget + motion + spawn fields for Cursor B ingest.
+        # ################################
+        init_pen = getattr(self, "_initial_penetration", None) or {}
+        spawn_status = (
+            "invalid_initial_penetration"
+            if bool(init_pen.get("initial_penetration"))
+            else ("ok" if init_pen else None)
+        )
         summary = {
             "status": status,
             "run_id": self.run_id,
@@ -1416,6 +1536,22 @@ class ApexNavRangerBridge:
             "n_explore_planner_actions": self.n_explore_actions,
             "entered_callActionPlanner": entered_explore,
             "apexnav_init_lookaround_budget": APEXNAV_INIT_LOOKAROUND_ACTIONS,
+            "max_steps": int(getattr(args, "max_steps", 0) or 0),
+            "max_explore_actions": int(getattr(args, "max_explore_actions", 0) or 0),
+            "effective_budget": {
+                "max_steps": int(getattr(args, "max_steps", 0) or 0),
+                "max_explore_actions": int(getattr(args, "max_explore_actions", 0) or 0),
+                "n_init_lookaround_actions": self.n_init_actions,
+                "n_explore_planner_actions": self.n_explore_actions,
+                "n_blocked_recovery": self.n_blocked_recovery,
+                "termination": self.termination,
+            },
+            "sum_moved_m": float(self.sum_moved_m),
+            "sum_abs_yaw_delta": float(self.sum_abs_yaw_delta),
+            "n_blocked_exec": int(self.n_blocked_exec),
+            "n_truncated_exec": int(self.n_truncated_exec),
+            "n_blocked_recovery": int(self.n_blocked_recovery),
+            "spawn_status": spawn_status,
             "spawn": self.spawn_info,
             "adapted_episode": bool(
                 self.spawn_info.get("adapted_episode") if self.spawn_info else False
@@ -1456,13 +1592,18 @@ class ApexNavRangerBridge:
             "initial_penetration": getattr(self, "_initial_penetration", None),
             "camera_runtime": camera_mode_summary(self.env) if self.env else None,
             "notes": [
-                "Executor kinematic_collision_v1: probe/commit robot–env contacts; wheel–floor allowed.",
+                "Executor kinematic_collision_v1.2: probe/commit; start/first_blocking/committed contacts logged.",
+                "Wheel support requires upright normal; vs_stage alone does not exempt side hits.",
                 "ApexNav primary camera_mode=fixed_base_gimbal (simulated_gimbal); LOOK does not move optical center.",
                 "legacy_arm_look keeps joint3 LOOK for old-result review only.",
                 "F0/expand affect map query only — do not exempt execution collision.",
                 "Initial EE uses ARM_APEXNAV_INIT FK (height × robot_scale); runtime sensor_pose is full SE3.",
                 "ROS Z = Habitat AGL (hab_y - floor_y) so ApexNav map_ros height filter [0.28,1.18] matches furniture.",
                 "Goal distance is eval-only (Habitat VIEW_POINTS; POINT kept as diagnostic) and not fed to planner.",
+                "near_goal is distance diagnostic only — never auto-STOP or success.",
+                "ACTION_FINISH means handler done, not that requested yaw/translation completed.",
+                "Blocked-recovery LOOK/opposite-turn after 3 identical full rejects; counts against budget.",
+                "Initial penetration → spawn_status=invalid_initial_penetration; do not enlarge contact tolerance.",
                 "URDF Z-up→Habitat Y-up via Ry(-90)*Rx(-90); wheels snapped to floor_y.",
                 "Init lookaround ≠ adaptive explore; explore starts after 26 FSM init actions.",
                 "Demo map panel uses ApexNav /grid_map/* (not Habitat GT).",
@@ -1529,11 +1670,17 @@ class ApexNavRangerBridge:
                     "ppo_raise_json": getattr(args, "ppo_raise_json", None),
                     "max_steps": getattr(args, "max_steps", None),
                     "max_explore_actions": getattr(args, "max_explore_actions", None),
+                    "camera_mode": getattr(args, "camera_mode", None),
+                    "executor_version": EXECUTOR_VERSION,
+                    "code_git_sha": _git_sha(repo_root),
                     "seed_note": "episode+force_spawn pin pose; Habitat RNG seed not separately pinned",
                     "pipeline_depth_frames": pipe_n,
                     "plan_diag_n": plan_n,
                     "yaw_step_deg_expected": 30,
                     "inflation_profile_env": os.environ.get("INFLATION_PROFILE", ""),
+                    "n_blocked_recovery": self.n_blocked_recovery,
+                    "sum_moved_m": self.sum_moved_m,
+                    "sum_abs_yaw_delta": self.sum_abs_yaw_delta,
                 },
                 indent=2,
             )
