@@ -5,6 +5,9 @@ Simulation-only gate: rejects/truncates kinematic teleports that put the robot
 into the scene. Does NOT feed scene geometry or goal GT to the planner.
 Wheel–floor support contacts are allowed; robot–environment contacts are not.
 Discrete sampling can miss obstacles thinner than the sample step.
+
+v1.2: save start / first_blocking / committed contact evidence on reject;
+      tighten wheel-support (require upright normal; vs_stage alone is not enough).
 ################################
 """
 
@@ -19,7 +22,7 @@ import numpy as np
 # ################################
 # Executor protocol version (reported in summary / Cursor B handoff).
 # ################################
-EXECUTOR_VERSION = "kinematic_collision_v1.1"
+EXECUTOR_VERSION = "kinematic_collision_v1.2"
 
 WHEEL_LINK_NAMES = frozenset(
     {"fr_wheel_link", "fl_wheel_link", "rl_wheel_link", "rr_wheel_link"}
@@ -36,6 +39,8 @@ SUPPORT_HEIGHT_BAND_FACTOR = 1.8
 SUPPORT_NORMAL_Y_MIN = 0.45
 # Stage / static mesh object_id in Habitat is typically 0.
 STAGE_OBJECT_IDS = frozenset({0, -1})
+# Cap detailed contact records per query (logs stay bounded).
+MAX_CONTACT_DETAILS = 12
 
 
 @dataclass
@@ -47,6 +52,10 @@ class ContactClassCounts:
     total: int = 0
     robot_env_links: List[str] = field(default_factory=list)
     min_robot_env_distance: Optional[float] = None
+    # ################################
+    # VLN adapt: per-contact evidence for audits (not fed to planner).
+    # ################################
+    details: List[Dict[str, Any]] = field(default_factory=list)
 
     def as_dict(self) -> Dict[str, Any]:
         return {
@@ -58,6 +67,7 @@ class ContactClassCounts:
             "robot_env_links": sorted(set(self.robot_env_links)),
             "min_robot_env_distance": self.min_robot_env_distance,
             "blocking": self.robot_env > 0,
+            "details": list(self.details),
         }
 
 
@@ -66,6 +76,26 @@ def _link_name(env, link_id: int) -> str:
         if int(lid) == int(link_id):
             return str(name)
     return f"link_{int(link_id)}"
+
+
+def _object_label(env, object_id: int) -> str:
+    """Best-effort scene object name; never required for adjudication."""
+    oid = int(object_id)
+    if oid in STAGE_OBJECT_IDS:
+        return "stage_static"
+    try:
+        rom = env.sim.get_rigid_object_manager()
+        if rom.get_library_has_id(oid):
+            return str(rom.get_object_handle_by_id(oid))
+    except Exception:
+        pass
+    try:
+        names = getattr(env.sim, "semantic_scene", None)
+        if names is not None:
+            return f"object_id_{oid}"
+    except Exception:
+        pass
+    return f"object_id_{oid}"
 
 
 def classify_contacts(env) -> ContactClassCounts:
@@ -105,17 +135,39 @@ def classify_contacts(env) -> ContactClassCounts:
         shallow = dist >= -SUPPORT_MAX_PENETRATION_M
         other_id = b if a == rid else a
         vs_stage = int(other_id) in STAGE_OBJECT_IDS
+        other_name = _object_label(env, other_id)
         # ################################
-        # Wheel–floor / wheel–stage near the tire plane counts as support even if
-        # the contact normal is slightly tilted (kinematic rest penetration).
+        # Wheel–floor support: require upright normal. vs_stage alone must NOT
+        # reclassify low side hits (wall foot / furniture side / step riser) as
+        # support. Stage + upright + near_floor + shallow = floor support.
         # ################################
-        if is_wheel and near_floor and shallow and (upright or vs_stage):
+        is_support = bool(is_wheel and near_floor and shallow and upright)
+        kind = "wheel_support" if is_support else "robot_env"
+        if is_support:
             out.wheel_support += 1
-            continue
-        out.robot_env += 1
-        out.robot_env_links.append(name)
-        if out.min_robot_env_distance is None or dist < out.min_robot_env_distance:
-            out.min_robot_env_distance = dist
+        else:
+            out.robot_env += 1
+            out.robot_env_links.append(name)
+            if out.min_robot_env_distance is None or dist < out.min_robot_env_distance:
+                out.min_robot_env_distance = dist
+        if len(out.details) < MAX_CONTACT_DETAILS:
+            out.details.append(
+                {
+                    "kind": kind,
+                    "robot_link": name,
+                    "other_object_id": int(other_id),
+                    "other_object": other_name,
+                    "vs_stage": bool(vs_stage),
+                    "position_xyz": [float(pos[0]), float(pos[1]), float(pos[2])],
+                    "normal_on_b_xyz": [float(n[i]) if n.shape[0] > i else 0.0 for i in range(3)],
+                    "normal_y_abs": float(n_y),
+                    "distance": float(dist),
+                    "near_floor": bool(near_floor),
+                    "upright": bool(upright),
+                    "shallow": bool(shallow),
+                    "is_wheel": bool(is_wheel),
+                }
+            )
     return out
 
 
@@ -172,6 +224,30 @@ def _place_base(env, x: float, z: float, yaw: float, y: float, floor_y: float) -
     )
 
 
+def _pose_dict(x: float, z: float, yaw: float) -> Dict[str, float]:
+    return {"x": float(x), "z": float(z), "yaw": float(yaw)}
+
+
+def _blocking_evidence(
+    *,
+    start_contacts: Dict[str, Any],
+    first_blocking_contacts: Optional[Dict[str, Any]],
+    committed_contacts: Dict[str, Any],
+    blocked_sample: Optional[int],
+    candidate_pose: Dict[str, float],
+    action_hint: Optional[str] = None,
+) -> Dict[str, Any]:
+    """Bundle start / first_blocking / committed contacts for failed probes."""
+    return {
+        "start_contacts": start_contacts,
+        "first_blocking_contacts": first_blocking_contacts,
+        "committed_contacts": committed_contacts,
+        "blocked_sample": blocked_sample,
+        "candidate_pose": candidate_pose,
+        "action_hint": action_hint,
+    }
+
+
 def probe_base_motion(
     env,
     x1: float,
@@ -180,16 +256,20 @@ def probe_base_motion(
     *,
     trans_step_m: float = DEFAULT_TRANS_STEP_M,
     yaw_step_rad: float = DEFAULT_YAW_STEP_RAD,
+    action_hint: Optional[str] = None,
 ) -> Dict[str, Any]:
     """Try base SE(2) motion with intermediate samples; commit last clear pose.
 
     Probe vs commit: on failure restores the pre-call snapshot. Does not publish
-    observations.
+    observations. On reject/truncate, contacts are split into start /
+    first_blocking / committed (committed may equal start on full reject).
     """
     snap = snapshot_state(env)
     x0, y0, z0 = float(snap["base_xyz"][0]), float(snap["base_xyz"][1]), float(snap["base_xyz"][2])
     yaw0 = float(snap["base_yaw"])
     floor_y = float(snap["floor_y"])
+    start_contacts = query_blocking(env)
+    candidate = _pose_dict(x1, z1, yaw1)
 
     dx, dz = float(x1) - x0, float(z1) - z0
     dist = math.hypot(dx, dz)
@@ -199,8 +279,9 @@ def probe_base_motion(
     n = max(n_trans, n_yaw, 1)
 
     last_valid = (x0, z0, yaw0)
-    last_diag = query_blocking(env)
+    last_diag = start_contacts
     blocked_at = None
+    first_blocking = None
     samples: List[Dict[str, Any]] = []
     for i in range(1, n + 1):
         t = i / float(n)
@@ -222,6 +303,10 @@ def probe_base_motion(
         )
         if diag["blocking"]:
             blocked_at = i
+            # ################################
+            # Capture contacts AT the first blocking sample before restore.
+            # ################################
+            first_blocking = diag
             break
         last_valid = (xi, zi, yawi)
         last_diag = diag
@@ -240,6 +325,17 @@ def probe_base_motion(
             "moved_m": math.hypot(last_valid[0] - x0, last_valid[1] - z0),
             "yaw_delta": (last_valid[2] - yaw0 + math.pi) % (2.0 * math.pi) - math.pi,
             "contacts": last_diag,
+            "start_contacts": start_contacts,
+            "first_blocking_contacts": None,
+            "committed_contacts": last_diag,
+            "blocking_evidence": _blocking_evidence(
+                start_contacts=start_contacts,
+                first_blocking_contacts=None,
+                committed_contacts=last_diag,
+                blocked_sample=None,
+                candidate_pose=candidate,
+                action_hint=action_hint,
+            ),
             "samples_preview": samples[:3] + samples[-2:],
             "executor_version": EXECUTOR_VERSION,
         }
@@ -247,6 +343,7 @@ def probe_base_motion(
     # Restore then commit last valid (may equal start → full reject)
     restore_state(env, snap)
     if last_valid == (x0, z0, yaw0):
+        committed = start_contacts
         return {
             "ok": False,
             "truncated": False,
@@ -258,7 +355,21 @@ def probe_base_motion(
             "yaw_step_rad": yaw_step_rad,
             "moved_m": 0.0,
             "yaw_delta": 0.0,
-            "contacts": last_diag if blocked_at == 1 else query_blocking(env),
+            # ################################
+            # Legacy key: prefer first_blocking (true reject evidence), not start.
+            # ################################
+            "contacts": first_blocking if first_blocking is not None else start_contacts,
+            "start_contacts": start_contacts,
+            "first_blocking_contacts": first_blocking,
+            "committed_contacts": committed,
+            "blocking_evidence": _blocking_evidence(
+                start_contacts=start_contacts,
+                first_blocking_contacts=first_blocking,
+                committed_contacts=committed,
+                blocked_sample=blocked_at,
+                candidate_pose=candidate,
+                action_hint=action_hint,
+            ),
             "blocked_sample": blocked_at,
             "samples_preview": samples[:5],
             "executor_version": EXECUTOR_VERSION,
@@ -277,7 +388,18 @@ def probe_base_motion(
         "yaw_step_rad": yaw_step_rad,
         "moved_m": math.hypot(last_valid[0] - x0, last_valid[1] - z0),
         "yaw_delta": (last_valid[2] - yaw0 + math.pi) % (2.0 * math.pi) - math.pi,
-        "contacts": commit_diag,
+        "contacts": first_blocking if first_blocking is not None else commit_diag,
+        "start_contacts": start_contacts,
+        "first_blocking_contacts": first_blocking,
+        "committed_contacts": commit_diag,
+        "blocking_evidence": _blocking_evidence(
+            start_contacts=start_contacts,
+            first_blocking_contacts=first_blocking,
+            committed_contacts=commit_diag,
+            blocked_sample=blocked_at,
+            candidate_pose=candidate,
+            action_hint=action_hint,
+        ),
         "blocked_sample": blocked_at,
         "samples_preview": samples[:5],
         "executor_version": EXECUTOR_VERSION,
@@ -289,6 +411,7 @@ def probe_arm_motion(
     q1: Sequence[float],
     *,
     n_samples: int = DEFAULT_ARM_SAMPLES,
+    action_hint: Optional[str] = None,
 ) -> Dict[str, Any]:
     """Interpolate arm joints; reject if any intermediate has robot–env collision."""
     snap = snapshot_state(env)
@@ -296,9 +419,11 @@ def probe_arm_motion(
     q1 = np.asarray(q1, dtype=np.float64)
     assert q1.shape == (6,)
     n = max(1, int(n_samples))
+    start_contacts = query_blocking(env)
     last_valid_q = q0.copy()
-    last_diag = query_blocking(env)
+    last_diag = start_contacts
     blocked_at = None
+    first_blocking = None
     for i in range(1, n + 1):
         t = i / float(n)
         qi = (1.0 - t) * q0 + t * q1
@@ -306,6 +431,7 @@ def probe_arm_motion(
         diag = query_blocking(env)
         if diag["blocking"]:
             blocked_at = i
+            first_blocking = diag
             break
         last_valid_q = qi.copy()
         last_diag = diag
@@ -319,11 +445,23 @@ def probe_arm_motion(
             "block_reason": None,
             "n_samples": n,
             "contacts": last_diag,
+            "start_contacts": start_contacts,
+            "first_blocking_contacts": None,
+            "committed_contacts": last_diag,
+            "blocking_evidence": _blocking_evidence(
+                start_contacts=start_contacts,
+                first_blocking_contacts=None,
+                committed_contacts=last_diag,
+                blocked_sample=None,
+                candidate_pose={"arm_q": q1.tolist()},
+                action_hint=action_hint,
+            ),
             "executor_version": EXECUTOR_VERSION,
         }
 
     restore_state(env, snap)
     if np.allclose(last_valid_q, q0):
+        committed = start_contacts
         return {
             "ok": False,
             "truncated": False,
@@ -331,11 +469,23 @@ def probe_arm_motion(
             "blocked": True,
             "block_reason": "arm_robot_env_collision",
             "n_samples": n,
-            "contacts": last_diag,
+            "contacts": first_blocking if first_blocking is not None else start_contacts,
+            "start_contacts": start_contacts,
+            "first_blocking_contacts": first_blocking,
+            "committed_contacts": committed,
+            "blocking_evidence": _blocking_evidence(
+                start_contacts=start_contacts,
+                first_blocking_contacts=first_blocking,
+                committed_contacts=committed,
+                blocked_sample=blocked_at,
+                candidate_pose={"arm_q": q1.tolist()},
+                action_hint=action_hint,
+            ),
             "blocked_sample": blocked_at,
             "executor_version": EXECUTOR_VERSION,
         }
     env.set_arm_joints(last_valid_q)
+    commit_diag = query_blocking(env)
     return {
         "ok": True,
         "truncated": True,
@@ -343,7 +493,18 @@ def probe_arm_motion(
         "blocked": True,
         "block_reason": "arm_truncated_at_robot_env_collision",
         "n_samples": n,
-        "contacts": query_blocking(env),
+        "contacts": first_blocking if first_blocking is not None else commit_diag,
+        "start_contacts": start_contacts,
+        "first_blocking_contacts": first_blocking,
+        "committed_contacts": commit_diag,
+        "blocking_evidence": _blocking_evidence(
+            start_contacts=start_contacts,
+            first_blocking_contacts=first_blocking,
+            committed_contacts=commit_diag,
+            blocked_sample=blocked_at,
+            candidate_pose={"arm_q": q1.tolist()},
+            action_hint=action_hint,
+        ),
         "blocked_sample": blocked_at,
         "executor_version": EXECUTOR_VERSION,
     }
@@ -356,5 +517,11 @@ def report_initial_penetration(env) -> Dict[str, Any]:
         "initial_penetration": bool(diag["blocking"]),
         "contacts": diag,
         "executor_version": EXECUTOR_VERSION,
-        "note": "Initial penetration is reported separately and is NOT a legal motion baseline.",
+        "spawn_status": (
+            "invalid_initial_penetration" if diag["blocking"] else "ok"
+        ),
+        "note": (
+            "Initial penetration is reported separately and is NOT a legal motion "
+            "baseline. Do not enlarge contact tolerance to clear invalid spawns."
+        ),
     }
