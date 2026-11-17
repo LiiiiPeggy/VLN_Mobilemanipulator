@@ -27,6 +27,14 @@ from geometry_msgs.msg import PoseStamped
 from plan_env.msg import MultipleMasksWithConfidence
 from std_msgs.msg import Float64, Int32, Int32MultiArray
 
+from .camera_modes import (
+    CAMERA_MODE_FIXED_BASE,
+    CAMERA_MODE_FIXED_BASE_GIMBAL,
+    CAMERA_MODE_LEGACY_ARM_LOOK,
+    activate_camera_mode,
+    apply_gimbal_look,
+    camera_mode_summary,
+)
 from .constants import (
     ARM_APEXNAV_INIT,
     ARM_DEFAULT,
@@ -38,6 +46,12 @@ from .constants import (
 )
 from .coord_habitat_ros import hab_pos_to_ros
 from .demo_compose import compose_frame
+from .execution_collision import (
+    EXECUTOR_VERSION,
+    probe_arm_motion,
+    probe_base_motion,
+    report_initial_penetration,
+)
 from .initial_camera_pose import apply_and_record_initial_camera, verify_arm_config
 from .kinematic_demo import DEFAULT_BASE_Y, RangerCr10KinematicEnv
 from .map_listener import ApexNavMapListener
@@ -429,93 +443,199 @@ class ApexNavRangerBridge:
         return meta
 
     def _execute_action(self, action: int) -> dict:
-        """Kinematic execution with collision diagnostics and LOOK pitch verify."""
+        """Kinematic execution: probe/commit collision gate + camera-mode LOOK."""
         assert self.env
         before = {
             "base": self.env.base_xyz.copy(),
             "yaw": float(self.env.base_yaw),
             "arm": self.env.arm_q.copy(),
-            "contacts": self.env.contact_count(),
             "forward": self.env.camera_forward_hab(),
+            "cam_mode": getattr(self.env, "camera_mode", CAMERA_MODE_LEGACY_ARM_LOOK),
+            "gimbal_pitch": float(getattr(self.env, "gimbal_pitch", 0.0)),
         }
         info: Dict[str, Any] = {
             "raw_action": int(action),
+            "requested_action": ACTION_NAME.get(int(action), str(action)),
             "action_name": ACTION_NAME.get(int(action), str(action)),
-            "look_equivalence": "native_pitch_approx"
-            if action in (ACTION.TURN_UP, ACTION.TURN_DOWN)
-            else "base_discrete",
+            "look_equivalence": "base_discrete",
             "executed": False,
             "blocked": False,
+            "truncated": False,
             "pitch_delta_rad": None,
+            "executor_version": EXECUTOR_VERSION,
+            "camera_mode": before["cam_mode"],
+            "robot_scale": float(self.env.robot_scale),
+            "scale_tag": getattr(self.env, "scale_tag", None),
         }
         x, y, z = self.env.base_xyz
         yaw = self.env.base_yaw
-        floor_y = float(getattr(self.env, "floor_y", y - DEFAULT_BASE_Y))
-
-        def _place(nx, nz, nyaw):
-            self.env.set_base_pose(
-                float(nx), float(nz), float(nyaw), y=float(y), floor_y=floor_y
-            )
 
         if action == ACTION.STOP:
             info["executed"] = True
+            info["actual_action"] = "STOP"
             return info
+
+        # ################################
+        # Base SE(2): discrete candidate checks; reject or truncate on robot–env hit.
+        # ################################
         if action == ACTION.MOVE_FORWARD:
-            # intermediate check: half step then full
-            nx = x + 0.5 * FORWARD_M * math.sin(yaw)
-            nz = z + 0.5 * FORWARD_M * math.cos(yaw)
-            _place(nx, nz, yaw)
-            mid_c = self.env.contact_count()
-            nx2 = x + FORWARD_M * math.sin(yaw)
-            nz2 = z + FORWARD_M * math.cos(yaw)
-            _place(nx2, nz2, yaw)
-            after_c = self.env.contact_count()
-            # heuristic: large contact jump + tiny motion → blocked (diagnostic)
-            moved = math.hypot(self.env.base_xyz[0] - x, self.env.base_xyz[2] - z)
-            if after_c > before["contacts"] + 15 and moved < 0.05:
-                # revert
-                _place(x, z, yaw)
-                info["blocked"] = True
-                info["block_reason"] = "contact_spike_little_motion"
-            else:
-                info["executed"] = True
-            info["mid_contacts"] = mid_c
-            info["moved_m"] = moved
+            nx = x + FORWARD_M * math.sin(yaw)
+            nz = z + FORWARD_M * math.cos(yaw)
+            res = probe_base_motion(self.env, nx, nz, yaw)
+            info.update(
+                {
+                    "executed": bool(res.get("executed")),
+                    "blocked": bool(res.get("blocked")),
+                    "truncated": bool(res.get("truncated")),
+                    "block_reason": res.get("block_reason"),
+                    "moved_m": res.get("moved_m"),
+                    "collision": res.get("contacts"),
+                    "motion_probe": {
+                        k: res.get(k)
+                        for k in (
+                            "n_samples",
+                            "trans_step_m",
+                            "yaw_step_rad",
+                            "blocked_sample",
+                            "samples_preview",
+                        )
+                    },
+                    "actual_action": "MOVE_FORWARD"
+                    if res.get("executed") and not res.get("truncated")
+                    else ("MOVE_FORWARD_TRUNCATED" if res.get("truncated") else "MOVE_FORWARD_BLOCKED"),
+                }
+            )
             info["upright"] = self.env.upright_diagnostics()
         elif action == ACTION.TURN_LEFT:
-            _place(x, z, yaw + TURN_RAD)
-            info["executed"] = True
+            res = probe_base_motion(self.env, x, z, yaw + TURN_RAD)
+            info.update(
+                {
+                    "executed": bool(res.get("executed")),
+                    "blocked": bool(res.get("blocked")),
+                    "truncated": bool(res.get("truncated")),
+                    "block_reason": res.get("block_reason"),
+                    "moved_m": res.get("moved_m"),
+                    "yaw_delta": res.get("yaw_delta"),
+                    "collision": res.get("contacts"),
+                    "motion_probe": {
+                        k: res.get(k)
+                        for k in (
+                            "n_samples",
+                            "trans_step_m",
+                            "yaw_step_rad",
+                            "blocked_sample",
+                        )
+                    },
+                    "actual_action": "TURN_LEFT"
+                    if res.get("executed") and not res.get("truncated")
+                    else ("TURN_LEFT_TRUNCATED" if res.get("truncated") else "TURN_LEFT_BLOCKED"),
+                }
+            )
             info["upright"] = self.env.upright_diagnostics()
         elif action == ACTION.TURN_RIGHT:
-            _place(x, z, yaw - TURN_RAD)
-            info["executed"] = True
+            res = probe_base_motion(self.env, x, z, yaw - TURN_RAD)
+            info.update(
+                {
+                    "executed": bool(res.get("executed")),
+                    "blocked": bool(res.get("blocked")),
+                    "truncated": bool(res.get("truncated")),
+                    "block_reason": res.get("block_reason"),
+                    "moved_m": res.get("moved_m"),
+                    "yaw_delta": res.get("yaw_delta"),
+                    "collision": res.get("contacts"),
+                    "motion_probe": {
+                        k: res.get(k)
+                        for k in (
+                            "n_samples",
+                            "trans_step_m",
+                            "yaw_step_rad",
+                            "blocked_sample",
+                        )
+                    },
+                    "actual_action": "TURN_RIGHT"
+                    if res.get("executed") and not res.get("truncated")
+                    else ("TURN_RIGHT_TRUNCATED" if res.get("truncated") else "TURN_RIGHT_BLOCKED"),
+                }
+            )
             info["upright"] = self.env.upright_diagnostics()
         elif action in (ACTION.TURN_UP, ACTION.TURN_DOWN):
-            # ################################
-            # LOOK pitch via joint3 (not joint5): at LocoManip 4.10 default FK,
-            # joint5 optical-pitch gain ≈ 0; joint3 ≈ 50 deg/rad. ±0.6 rad ≈ ±30°.
-            # Still arm-adapted — NOT Habitat agent look_up/down.
-            # ################################
-            q = self.env.arm_q.copy()
-            # Empirical @ L410: joint3 +δ → optical pitch up (Habitat fwd.y>0)
-            delta = 0.60 if action == ACTION.TURN_UP else -0.60
-            q[2] = float(np.clip(q[2] + delta, -2.86, 2.86))
-            self.env.set_arm_joints(q)
-            after_f = self.env.camera_forward_hab()
-            # pitch change approx: angle between forward vectors projected
-            cosang = float(np.clip(np.dot(before["forward"], after_f), -1, 1))
-            info["pitch_delta_rad"] = float(math.acos(cosang))
-            info["look_equivalence"] = "arm_joint3_adapted_not_habitat_look"
-            info["look_joint"] = "cr10_joint3"
-            info["executed"] = True
-            if info["pitch_delta_rad"] < math.radians(5):
-                info["pitch_verify"] = "weak_change"
+            cam_mode = before["cam_mode"]
+            direction = "up" if action == ACTION.TURN_UP else "down"
+            if cam_mode == CAMERA_MODE_FIXED_BASE:
+                info.update(
+                    {
+                        "executed": False,
+                        "blocked": True,
+                        "block_reason": "fixed_base_look_disabled",
+                        "look_equivalence": "fixed_base_no_pitch",
+                        "actual_action": "LOOK_BLOCKED_FIXED_BASE",
+                    }
+                )
+            elif cam_mode == CAMERA_MODE_FIXED_BASE_GIMBAL:
+                # ################################
+                # Simulated gimbal: pitch only; optical center fixed in base.
+                # Arm joints unchanged. Not a physical pan-tilt unit.
+                # ################################
+                g = apply_gimbal_look(self.env, direction)
+                after_f = self.env.camera_forward_hab()
+                cosang = float(np.clip(np.dot(before["forward"], after_f), -1, 1))
+                info.update(g)
+                info["pitch_delta_rad"] = float(math.acos(cosang))
+                info["pitch_verify"] = (
+                    "ok" if info["pitch_delta_rad"] >= math.radians(5) else "weak_change"
+                )
+                info["actual_action"] = (
+                    "LOOK_UP_GIMBAL" if direction == "up" else "LOOK_DOWN_GIMBAL"
+                )
+                if not info.get("executed"):
+                    info["actual_action"] = "LOOK_BLOCKED_GIMBAL_LIMIT"
             else:
-                info["pitch_verify"] = "ok"
+                # ################################
+                # legacy_arm_look: joint3 ±0.60 with arm collision probe.
+                # ################################
+                q = self.env.arm_q.copy()
+                delta = 0.60 if action == ACTION.TURN_UP else -0.60
+                q[2] = float(np.clip(q[2] + delta, -2.86, 2.86))
+                res = probe_arm_motion(self.env, q)
+                after_f = self.env.camera_forward_hab()
+                cosang = float(np.clip(np.dot(before["forward"], after_f), -1, 1))
+                info.update(
+                    {
+                        "executed": bool(res.get("executed")),
+                        "blocked": bool(res.get("blocked")),
+                        "truncated": bool(res.get("truncated")),
+                        "block_reason": res.get("block_reason"),
+                        "collision": res.get("contacts"),
+                        "pitch_delta_rad": float(math.acos(cosang)),
+                        "look_equivalence": "arm_joint3_adapted_not_habitat_look",
+                        "look_joint": "cr10_joint3",
+                        "actual_action": (
+                            "LOOK_UP_ARM" if direction == "up" else "LOOK_DOWN_ARM"
+                        ),
+                    }
+                )
+                if info["pitch_delta_rad"] < math.radians(5):
+                    info["pitch_verify"] = "weak_change"
+                else:
+                    info["pitch_verify"] = "ok"
+                if info["blocked"] and not info["executed"]:
+                    info["actual_action"] = "LOOK_BLOCKED_ARM_COLLISION"
         else:
             info["blocked"] = True
             info["block_reason"] = f"unknown_action_{action}"
-        info["contacts_after"] = self.env.contact_count()
+            info["actual_action"] = "UNKNOWN"
+
+        # Post-state for Cursor B / audits (committed state only)
+        info["base_xyz_after"] = self.env.base_xyz.tolist()
+        info["base_yaw_after"] = float(self.env.base_yaw)
+        info["arm_q_after"] = self.env.arm_q.tolist()
+        cam_T = self.env.camera_world_matrix()
+        info["camera_pos_after"] = [
+            float(cam_T.translation.x),
+            float(cam_T.translation.y),
+            float(cam_T.translation.z),
+        ]
+        info["gimbal_pitch_after"] = float(getattr(self.env, "gimbal_pitch", 0.0))
         info["joint_limits"] = self.env.joint_limits_report()
         return info
 
@@ -745,6 +865,23 @@ class ApexNavRangerBridge:
                     )
 
             # ################################
+            # Camera mode baseline (ApexNav primary: fixed_base_gimbal).
+            # Freeze optical mount in base; LOOK uses simulated gimbal pitch.
+            # No PPO in this deployment path unless explicitly handed over above.
+            # ################################
+            cam_mode = str(getattr(args, "camera_mode", CAMERA_MODE_FIXED_BASE_GIMBAL))
+            if cam_mode in (CAMERA_MODE_FIXED_BASE, CAMERA_MODE_FIXED_BASE_GIMBAL):
+                # Ensure baseline arm for ApexNav primary (skip if PPO handover kept joints).
+                if not (ppo_raise_json and Path(ppo_raise_json).is_file()):
+                    self.env.set_arm_joints(ARM_APEXNAV_INIT)
+            cam_mode_meta = activate_camera_mode(self.env, cam_mode, freeze_arm=True)
+            (self.out / "camera_mode.json").write_text(json.dumps(cam_mode_meta, indent=2))
+            init_pen = report_initial_penetration(self.env)
+            (self.out / "initial_penetration.json").write_text(json.dumps(init_pen, indent=2))
+            self._camera_mode_meta = cam_mode_meta
+            self._initial_penetration = init_pen
+
+            # ################################
             # Pass episode floor_y so ROS Z = AGL for ApexNav map_ros height filter.
             # Attach env for geometric self-hit masking (invalid→NaN, not max-range).
             # ################################
@@ -868,12 +1005,22 @@ class ApexNavRangerBridge:
             }
             if look_mode in ("budget_match", "chassis_ground") and extra_pubs > 0:
                 raised_q = list(self.env.arm_q)
+                gimbal_before = float(getattr(self.env, "gimbal_pitch", 0.0))
                 if look_mode == "chassis_ground":
-                    q = list(raised_q)
-                    q[2] = float(q[2]) - 0.60  # LOOK_DOWN via joint3
-                    self.env.set_arm_joints(q)
-                    look_meta["look_joint3_delta"] = -0.60
-                    look_meta["pose"] = "LOOK_DOWN_toward_chassis_side_ground"
+                    # ################################
+                    # Prefer simulated gimbal LOOK_DOWN when camera_mode allows;
+                    # legacy_arm_look keeps joint3 for experimental A/B only.
+                    # ################################
+                    if getattr(self.env, "camera_mode", "") == CAMERA_MODE_FIXED_BASE_GIMBAL:
+                        apply_gimbal_look(self.env, "down")
+                        look_meta["look"] = "simulated_gimbal_down"
+                        look_meta["pose"] = "LOOK_DOWN_gimbal_toward_chassis_side_ground"
+                    else:
+                        q = list(raised_q)
+                        q[2] = float(q[2]) - 0.60
+                        self.env.set_arm_joints(q)
+                        look_meta["look_joint3_delta"] = -0.60
+                        look_meta["pose"] = "LOOK_DOWN_toward_chassis_side_ground"
                 else:
                     look_meta["pose"] = "raised_forward_unchanged"
                 dt = 1.0 / max(extra_hz, 1e-3)
@@ -885,7 +1032,10 @@ class ApexNavRangerBridge:
                 look_meta["applied"] = True
                 look_meta["elapsed_s"] = float(time.time() - t_burst0)
                 if look_mode == "chassis_ground":
-                    self.env.set_arm_joints(raised_q)
+                    if getattr(self.env, "camera_mode", "") == CAMERA_MODE_FIXED_BASE_GIMBAL:
+                        self.env.gimbal_pitch = gimbal_before
+                    else:
+                        self.env.set_arm_joints(raised_q)
                     ee = self.env.observe_ee_only()
                     self._publish_obs_bundle(ee["ee_rgb"], ee["ee_depth"], 0)
                 (self.out / "chassis_look_burst.json").write_text(
@@ -1203,9 +1353,12 @@ class ApexNavRangerBridge:
 
                 _pub_int(state_pub, HABITAT_STATE.ACTION_FINISH)
 
-                if exec_info.get("blocked"):
-                    self.termination = "execution_blocked"
-                    break
+                # ################################
+                # Blocked/truncated actions are reported upward; do NOT abort the
+                # episode. Planner receives ACTION_FINISH and may replan.
+                # Only a fully rejected action with no motion sets blocked=True
+                # without executed; truncated still advances the committed pose.
+                # ################################
                 if action == ACTION.STOP:
                     self.termination = "planner_stop"
                     break
@@ -1296,8 +1449,17 @@ class ApexNavRangerBridge:
             "near_goal": bool(final_dtg is not None and final_dtg <= args.success_distance),
             "locomanip_commit": LOCOMANIP_COMMIT,
             "out_dir": str(self.out),
+            "executor_version": EXECUTOR_VERSION,
+            "camera_mode": getattr(self.env, "camera_mode", None) if self.env else getattr(args, "camera_mode", None),
+            "simulated_gimbal": bool(getattr(self.env, "simulated_gimbal", False)) if self.env else False,
+            "camera_mode_meta": getattr(self, "_camera_mode_meta", None),
+            "initial_penetration": getattr(self, "_initial_penetration", None),
+            "camera_runtime": camera_mode_summary(self.env) if self.env else None,
             "notes": [
-                "LOOK_UP/DOWN are arm-joint adapted (±pitch via FK), not Habitat agent look.",
+                "Executor kinematic_collision_v1: probe/commit robot–env contacts; wheel–floor allowed.",
+                "ApexNav primary camera_mode=fixed_base_gimbal (simulated_gimbal); LOOK does not move optical center.",
+                "legacy_arm_look keeps joint3 LOOK for old-result review only.",
+                "F0/expand affect map query only — do not exempt execution collision.",
                 "Initial EE uses ARM_APEXNAV_INIT FK (height × robot_scale); runtime sensor_pose is full SE3.",
                 "ROS Z = Habitat AGL (hab_y - floor_y) so ApexNav map_ros height filter [0.28,1.18] matches furniture.",
                 "Goal distance is eval-only (Habitat VIEW_POINTS; POINT kept as diagnostic) and not fed to planner.",
@@ -1305,6 +1467,7 @@ class ApexNavRangerBridge:
                 "Init lookaround ≠ adaptive explore; explore starts after 26 FSM init actions.",
                 "Demo map panel uses ApexNav /grid_map/* (not Habitat GT).",
                 "scaled_robot_proxy_* results are Habitat adapter proxies — NOT real Ranger+CR10 scores.",
+                "New execution/camera protocol baselines are NOT causally comparable to pre-fix trajectories.",
             ],
             "initial_camera": {
                 "config": "ARM_APEXNAV_INIT",
@@ -1387,6 +1550,19 @@ def main(argv=None) -> int:
     # 1.0 = real Ranger pin; 0.7 = scaled_robot_proxy_070 (adapter URDF only).
     # ################################
     p.add_argument("--robot_scale", type=float, default=1.0)
+    # ################################
+    # Camera deployment: ApexNav primary = fixed_base_gimbal (simulated_gimbal).
+    # fixed_base for VLFM-like; legacy_arm_look for old-result review only.
+    # ################################
+    p.add_argument(
+        "--camera_mode",
+        default=CAMERA_MODE_FIXED_BASE_GIMBAL,
+        choices=[
+            CAMERA_MODE_FIXED_BASE,
+            CAMERA_MODE_FIXED_BASE_GIMBAL,
+            CAMERA_MODE_LEGACY_ARM_LOOK,
+        ],
+    )
     p.add_argument(
         "--force_spawn_json",
         default="",
@@ -1394,6 +1570,7 @@ def main(argv=None) -> int:
     )
     # ################################
     # MuJoCo teleop-PPO raise result JSON (arm_q_final); Habitat only syncs joints.
+    # This deployment baseline leaves it empty (no PPO).
     # ################################
     p.add_argument("--ppo_raise_json", default="")
     p.add_argument("--gpu", type=int, default=0)

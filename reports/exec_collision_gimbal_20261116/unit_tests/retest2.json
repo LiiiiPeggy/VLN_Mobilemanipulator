@@ -1,0 +1,166 @@
+{
+  "executor_version": "kinematic_collision_v1.1",
+  "robot_scale": 0.7,
+  "scale_tag": "scaled_robot_proxy_070",
+  "camera_mode": "fixed_base_gimbal",
+  "scene": "/media/ubuntu/D/VLN_shared/datasets/scene_datasets/hm3d/val/00800-TEEsavR23oF/TEEsavR23oF.basis.glb",
+  "tests": {
+    "query_sanity": {
+      "clear_blocking": false,
+      "clear_robot_env": 0,
+      "penetrated_blocking": true,
+      "penetrated_robot_env": 37,
+      "contact_test_always_true_on_clear": false,
+      "ok_query_distinguishes": true,
+      "ok": true
+    },
+    "open_forward": {
+      "executed": true,
+      "blocked": false,
+      "moved_m": 0.25,
+      "ok": true
+    },
+    "open_turn": {
+      "executed": true,
+      "blocked": false,
+      "yaw_delta": 0.5235987755982987,
+      "ok": true
+    },
+    "long_forward_into_geometry": {
+      "executed": true,
+      "blocked": true,
+      "truncated": true,
+      "moved_m": 0.85,
+      "block_reason": "truncated_at_robot_env_collision",
+      "ok": true
+    },
+    "fixed_base_gimbal_look": {
+      "look_down": {
+        "executed": true,
+        "blocked": false,
+        "block_reason": null,
+        "gimbal_pitch_before": 0.0,
+        "gimbal_pitch_after": -0.5235987755982988,
+        "pitch_delta_rad": -0.5235987755982988,
+        "optical_pos_base_drift_m": 0.0,
+        "look_equivalence": "simulated_gimbal_pitch",
+        "simulated_gimbal": true
+      },
+      "look_up": {
+        "executed": true,
+        "blocked": false,
+        "block_reason": null,
+        "gimbal_pitch_before": -0.5235987755982988,
+        "gimbal_pitch_after": 0.0,
+        "pitch_delta_rad": 0.5235987755982988,
+        "optical_pos_base_drift_m": 0.0,
+        "look_equivalence": "simulated_gimbal_pitch",
+        "simulated_gimbal": true
+      },
+      "pos_base_drift_m": 0.0,
+      "fixed_buffer_unchanged": true,
+      "ok": true,
+      "camera_runtime": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.6389834880828857,
+          -0.07466697692871094,
+          0.29042547941207886
+        ],
+        "optical_pos_world": [
+          -9.348353385925293,
+          0.7630599737167358,
+          -0.2058277130126953
+        ]
+      }
+    },
+    "state_restore_open": {
+      "before": [
+        -9.273686408996582,
+        -0.844811201095581,
+        0.0
+      ],
+      "after": [
+        -9.273686408996582,
+        -0.844811201095581,
+        0.0
+      ],
+      "ok": true
+    }
+  },
+  "spawn": {
+    "x": -9.273686408996582,
+    "z": -0.844811201095581,
+    "yaw": 0.0,
+    "floor_y": 0.16337794065475464,
+    "contacts": {
+      "wheel_support": 0,
+      "robot_env": 0,
+      "self_collision": 0,
+      "other": 0,
+      "total": 0,
+      "robot_env_links": [],
+      "min_robot_env_distance": null,
+      "blocking": false,
+      "contact_test_raw": false,
+      "note": "contact_test_raw is True whenever any contact exists (incl. wheel support); do NOT treat contact_test_raw==False as clear, or True as blocking."
+    }
+  },
+  "camera_mode_meta": {
+    "camera_mode": "fixed_base_gimbal",
+    "simulated_gimbal": true,
+    "arm_baseline": [
+      0.236,
+      0.086,
+      -2.398,
+      -0.83,
+      -1.335,
+      0.0
+    ],
+    "hfov_deg": 79.0,
+    "resolution_hw": [
+      480,
+      640
+    ],
+    "fixed_cam_pos_base_m": [
+      0.6389834880828857,
+      -0.07466697692871094,
+      0.29042547941207886
+    ],
+    "init_optical_pitch_rad": 0.00019981987267061235,
+    "gimbal_pitch_step_rad": 0.5235987755982988,
+    "gimbal_pitch_limit_rad": 1.5207963267948965,
+    "warning_cam_inside_body": false,
+    "note": "LOOK changes orientation only; arm joints frozen. simulated_gimbal \u2014 not a physical pan-tilt unit."
+  },
+  "initial_penetration": {
+    "initial_penetration": false,
+    "contacts": {
+      "wheel_support": 0,
+      "robot_env": 0,
+      "self_collision": 0,
+      "other": 0,
+      "total": 0,
+      "robot_env_links": [],
+      "min_robot_env_distance": null,
+      "blocking": false,
+      "contact_test_raw": false,
+      "note": "contact_test_raw is True whenever any contact exists (incl. wheel support); do NOT treat contact_test_raw==False as clear, or True as blocking."
+    },
+    "executor_version": "kinematic_collision_v1.1",
+    "note": "Initial penetration is reported separately and is NOT a legal motion baseline."
+  },
+  "elapsed_sec": 18.226307153701782,
+  "all_ok": true
+}

@@ -1,0 +1,26 @@
+| ep | status | term | steps | expl | blocked | trunc | moved | init_pen | sr |
+|----|--------|------|-------|------|---------|-------|-------|----------|----|
+| dd4b_bed_1 | ok | step_budget_exhausted | 50 | 24 | 10 | 0 | 0.75 | False | False |
+| dd4b_chair_5 | ok | step_budget_exhausted | 50 | 24 | 10 | 0 | 0.75 | False | False |
+| dd4b_plant_5 | ok | step_budget_exhausted | 50 | 24 | 6 | 1 | 1.60 | False | False |
+| dd4b_toilet_0 | ok | step_budget_exhausted | 50 | 24 | 6 | 1 | 1.00 | False | False |
+| ef36_bed_4 | ok | step_budget_exhausted | 50 | 24 | 30 | 1 | 0.00 | False | False |
+| ef36_plant_4 | ok | step_budget_exhausted | 50 | 24 | 32 | 1 | 0.00 | False | False |
+| ef36_toilet_3 | ok | step_budget_exhausted | 50 | 24 | 34 | 1 | 0.00 | False | False |
+| ef36_tv_3 | ok | step_budget_exhausted | 50 | 24 | 19 | 3 | 2.15 | False | False |
+| hy1_chair_3 | ok | step_budget_exhausted | 50 | 24 | 15 | 1 | 3.00 | False | False |
+| hy1_plant_0 | ok | step_budget_exhausted | 50 | 24 | 24 | 4 | 1.42 | False | False |
+| hy1_plant_1 | ok | step_budget_exhausted | 50 | 24 | 24 | 4 | 1.42 | False | False |
+| hy1_tv_0 | ok | step_budget_exhausted | 50 | 24 | 19 | 2 | 1.67 | False | False |
+| k1cup_chair_0 | ok | step_budget_exhausted | 50 | 24 | 39 | 1 | 0.00 | False | False |
+| k1cup_plant_0 | ok | step_budget_exhausted | 50 | 24 | 39 | 1 | 0.00 | False | False |
+| k1cup_sofa_0 | ok | step_budget_exhausted | 50 | 24 | 39 | 1 | 0.00 | False | False |
+| k1cup_sofa_1 | ok | step_budget_exhausted | 50 | 24 | 39 | 1 | 0.00 | False | False |
+| lt9_chair_1 | ok | step_budget_exhausted | 50 | 24 | 48 | 0 | 0.00 | True | False |
+| lt9_sofa_4 | ok | step_budget_exhausted | 50 | 24 | 48 | 0 | 0.00 | True | False |
+| lt9_toilet_2 | ok | step_budget_exhausted | 50 | 24 | 48 | 0 | 0.00 | True | False |
+| lt9_tv_0 | ok | step_budget_exhausted | 50 | 24 | 48 | 0 | 0.00 | True | False |
+| yr17_chair_0 | ok | step_budget_exhausted | 50 | 24 | 48 | 1 | 0.00 | False | False |
+| yr17_plant_0 | ok | planner_stop | 17 | 0 | 11 | 1 | 0.00 | False | False |
+| yr17_sofa_0 | ok | planner_stop | 16 | 0 | 11 | 1 | 0.00 | False | False |
+| yr17_tv_0 | ok | step_budget_exhausted | 50 | 24 | 34 | 3 | 1.00 | False | False |

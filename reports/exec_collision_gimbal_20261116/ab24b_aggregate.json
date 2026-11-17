@@ -1,0 +1,23 @@
+{
+  "batch_id": "ab24b_20261116_224229",
+  "n": 24,
+  "sr_proxy": 0,
+  "sr_proxy_pct": 0.0,
+  "near_goal": 1,
+  "initial_penetration_eps": 0,
+  "missing_summary": 17,
+  "termination": {
+    "planner_stop": 2,
+    "step_budget_exhausted": 5,
+    "null": 17
+  },
+  "sum_blocked_exec": 102,
+  "sum_truncated_exec": 5,
+  "sum_moved_m": 4.1,
+  "mean_moved_m": 0.171,
+  "robot_scale": 0.7,
+  "scale_tag": "scaled_robot_proxy_070",
+  "camera_mode": "fixed_base_gimbal",
+  "executor_version": "kinematic_collision_v1.1",
+  "note": "New execution/camera protocol \u2014 not causally comparable to pre-fix 8/24 VIEW_POINTS recompute."
+}

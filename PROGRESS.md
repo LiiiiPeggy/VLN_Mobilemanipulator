@@ -1,13 +1,13 @@
 # PROGRESS.md — 当前状态
 
-更新时间：2026-11-11（SG-Nav 官方 navmesh 18/20；记忆同步）  
+更新时间：2026-11-17（Ranger 穿模修复 + fixed_base_gimbal 部署基线）  
 证据优先于本文；冲突时以代码、`reports/`、`runs/`、容器实测为准。
 
 ## 研究目标与阶段
 
 **目标**：六套 VLN/ObjectNav baseline 可复现评测 → 再适配 RangerBox-CR10。
 
-**当前阶段**：ApexNav HM3D-v2 全量已完成；旁路推进 **SG-Nav**（官方 mp3d_habitat navmesh，20ep 跑到 18 中断）与 **UniGoal**（仅弱 1ep smoke）。Ranger 侧仍冻结 F0/Hold/LabelMap。
+**当前阶段**：Ranger 部署基线升级为 **`kinematic_collision_v1.1` + `camera_mode=fixed_base_gimbal`**（0.7× proxy）；F0/Hold/LabelMap 算法变量仍冻结。原生 ApexNav 1000-ep 已完成。
 
 ## Baseline 状态一览
 
@@ -35,8 +35,11 @@
 | 项 | 状态 | 证据 |
 |----|------|------|
 | F0+expand0.3 / denoise=none / ObjectHold / LabelMap | **冻结** | 既有报告 |
+| 执行碰撞门控 | **`kinematic_collision_v1.1`** | `execution_collision.py`；单测 all_ok |
+| 相机模式 | **`fixed_base_gimbal`（simulated_gimbal）** | `camera_modes.py`；LOOK 不移光心 |
+| robot_scale | **0.7** `scaled_robot_proxy_070` | 组会主对照 |
 | SR_proxy dtg 参考 | **VIEW_POINTS**（阈值仍 1.0 m） | `apexnav_real_episode.goal_distance` |
-| LabelMap 批重算 | SR 5→**8**/24；原 5 成功保留；+sofa0/chair0/bed1 | `stop_near_viewpoint_20261109` |
+| 新协议 24-ep | **SR_proxy 0/24**；near_goal 5；不可与旧 8/24 归因对比 | `reports/exec_collision_gimbal_20261116` |
 
 ## ApexNav 论文复现（HM3D-v2）
 
@@ -58,8 +61,8 @@
 
 ## 下一步（最多 5）
 
-1. 重启 `vln-sgnav`，收尾 SG-Nav 剩余 ep 或重开完整 20ep（官方 navmesh）。  
-2. UniGoal：在 HM3D IIN 上加长步数 / 小批量，再谈论文对照。  
-3. MSGNav gpt-4o：有密钥后再开；luna 20ep 仅作替代小批。  
-4. Ranger：真 stop_not_near 与 synonym-only 分轨；勿再改 F0/Hold/映射/评估半径。  
-5. 合并前确认不污染 1.0× 默认路径。
+1. Cursor B：用冻结提交跑评测清单；对照 `exec` 字段（requested/actual/blocked/collision）。  
+2. 诊断高 blocked 转向（lt9/k1cup/yr17）：真障碍 vs 分类过严；**禁止**关碰撞凑 SR。  
+3. Ranger：真 stop_not_near / synonym-only；勿改 F0/Hold/映射/评估半径。  
+4. 合并前确认不污染 1.0× 默认路径与 `legacy_arm_look` 复核入口。  
+5. SG-Nav/UniGoal 旁路按原计划收尾。

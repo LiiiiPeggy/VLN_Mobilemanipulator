@@ -1,0 +1,26 @@
+| ep | term | steps | expl | blocked | trunc | moved | init_pen | sr |
+|----|------|-------|------|---------|-------|-------|----------|----|
+| yr17_plant_0 | planner_stop | 17 | 0 | 11 | 1 | 0.00 | False | False |
+| yr17_chair_0 | step_budget_exhausted | 50 | 24 | 48 | 1 | 0.00 | False | False |
+| yr17_sofa_0 | planner_stop | 16 | 0 | 11 | 1 | 0.00 | False | False |
+| yr17_tv_0 | None | None | None | None | None | 0.00 | None | None |
+| ef36_plant_4 | None | None | None | None | None | 0.00 | None | None |
+| ef36_tv_3 | None | None | None | None | None | 0.00 | None | None |
+| ef36_bed_4 | None | None | None | None | None | 0.00 | None | None |
+| ef36_toilet_3 | None | None | None | None | None | 0.00 | None | None |
+| hy1_plant_0 | None | None | None | None | None | 0.00 | None | None |
+| hy1_tv_0 | None | None | None | None | None | 0.00 | None | None |
+| hy1_chair_3 | None | None | None | None | None | 0.00 | None | None |
+| hy1_plant_1 | None | None | None | None | None | 0.00 | None | None |
+| lt9_tv_0 | None | None | None | None | None | 0.00 | None | None |
+| lt9_chair_1 | None | None | None | None | None | 0.00 | None | None |
+| lt9_toilet_2 | None | None | None | None | None | 0.00 | None | None |
+| lt9_sofa_4 | None | None | None | None | None | 0.00 | None | None |
+| k1cup_sofa_0 | None | None | None | None | None | 0.00 | None | None |
+| k1cup_chair_0 | None | None | None | None | None | 0.00 | None | None |
+| k1cup_plant_0 | None | None | None | None | None | 0.00 | None | None |
+| k1cup_sofa_1 | None | None | None | None | None | 0.00 | None | None |
+| dd4b_chair_5 | step_budget_exhausted | 50 | 24 | 10 | 0 | 0.75 | False | False |
+| dd4b_plant_5 | step_budget_exhausted | 50 | 24 | 6 | 1 | 1.60 | False | False |
+| dd4b_toilet_0 | step_budget_exhausted | 50 | 24 | 6 | 1 | 1.00 | False | False |
+| dd4b_bed_1 | step_budget_exhausted | 50 | 24 | 10 | 0 | 0.75 | False | False |

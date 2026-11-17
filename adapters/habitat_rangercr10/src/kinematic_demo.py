@@ -1,8 +1,9 @@
 """Kinematic Ranger+CR10 demo in Habitat HM3D (independent of VLN baselines).
 
 Control mode: **kinematic_state_set** — base SE(2) and arm joints are written directly;
-this is NOT whole-body dynamics / swerve physics. Collision contacts are queried when
-Bullet is available, but contacts under kinematic teleport are diagnostic only.
+this is NOT whole-body dynamics / swerve physics. Bullet contacts are used by
+``execution_collision`` to reject/truncate invalid teleports (robot–env only;
+wheel–floor support allowed). Camera modes: see ``camera_modes.py``.
 
 Outputs (to --out_dir):
   - rgb_ee/ frame_XXXX.png
@@ -207,6 +208,17 @@ class RangerCr10KinematicEnv:
         self.steer_q = np.zeros(4, dtype=np.float64)
         self.wheel_q = np.zeros(4, dtype=np.float64)
         self._prev_base_xz_yaw: Optional[Tuple[float, float, float]] = None
+        # ################################
+        # Camera mode state (default legacy_arm_look until activate_camera_mode).
+        # fixed_base / fixed_base_gimbal freeze optical mount in base frame.
+        # ################################
+        self.camera_mode = "legacy_arm_look"
+        self.simulated_gimbal = False
+        self.fixed_cam_pos_base: Optional[np.ndarray] = None
+        self.fixed_cam_rot_base: Optional[np.ndarray] = None
+        self.gimbal_pitch = 0.0
+        self.gimbal_pitch_step = math.pi / 6.0
+        self.gimbal_pitch_limit = math.pi / 2.0 - 0.05
         self._apply_state()
 
     def _urdf_to_habitat(self) -> mn.Matrix4:
@@ -394,9 +406,25 @@ class RangerCr10KinematicEnv:
         self.arm_q = q.copy()
         self._apply_state()
 
-    def camera_world_matrix(self) -> mn.Matrix4:
+    def camera_world_matrix_fk(self) -> mn.Matrix4:
+        """URDF FK optical frame (ignores simulated gimbal overlay)."""
         lid = self.link_ids[CAMERA_LINK]
         return mn.Matrix4(self.ao.get_link_scene_node(lid).absolute_transformation())
+
+    def camera_world_matrix(self) -> mn.Matrix4:
+        """Active optical frame for render / sensor_pose / self-occlusion.
+
+        ################################
+        fixed_base[_gimbal]: composed from frozen base-frame mount (+ gimbal pitch).
+        legacy_arm_look: raw FK from d455_depth_optical_frame.
+        ################################
+        """
+        mode = getattr(self, "camera_mode", "legacy_arm_look")
+        if mode in ("fixed_base", "fixed_base_gimbal") and self.fixed_cam_pos_base is not None:
+            from .camera_modes import compose_fixed_camera_world
+
+            return compose_fixed_camera_world(self)
+        return self.camera_world_matrix_fk()
 
     def _set_agent_pose(self, T: mn.Matrix4) -> None:
         st = habitat_sim.AgentState()
@@ -510,6 +538,8 @@ class RangerCr10KinematicEnv:
         return (-R[:, 2]).astype(np.float64)
 
     def contact_count(self) -> int:
+        """Raw Bullet contact count (includes wheel–floor). Prefer query_blocking()."""
+        self.sim.perform_discrete_collision_detection()
         return len(self.sim.get_physics_contact_points())
 
     def joint_limits_report(self) -> Dict[str, dict]:

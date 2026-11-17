@@ -994,6 +994,27 @@
 
 ---
 
+## 2026-11-16～17 Ranger 穿模修复 + fixed_base_gimbal 基线
+
+**模块**：`kinematic_demo` / `apexnav_real_episode` / `execution_collision` / `camera_modes`
+
+**问题**：KINEMATIC 直接赋位姿；接触总数启发式可绕过；转向/LOOK 无碰撞拒绝 → 穿模。组会要求 0.7×、固定光心+云台俯仰、不启 PPO、冻结 F0/Hold/LabelMap。
+
+**操作**：
+1. 碰撞分类（wheel_support vs robot_env）；候选运动离散采样；试探/提交分离；初始穿透单独报告。
+2. `camera_mode=fixed_base_gimbal`（simulated_gimbal）；LOOK ±30° 只改俯仰。
+3. 修轮地高度带误判；episode 不再因单次 blocked 中止。
+4. 冒烟 HY1/eF36/yr17；24-ep + recovery；代表性视频 `videos/penetration_fix_hy1_smoke3.mp4`。
+
+**实测**：单测 all_ok；冒烟可移动；合并 24-ep SR_proxy **0/24**（新协议）。DINO 权重 symlink 曾指向容器内不存在的 `/shared/...`，改为 `.pth.real`。
+
+**结论**：执行有效性与相机基线已落地；任务 SR 需在碰撞门控下单独解释，禁止关碰撞凑分。
+
+**相关**：`reports/exec_collision_gimbal_20261116.md`
+
+
+---
+
 ## 2026-11-09～11 ApexNav HM3D-v2 全量论文复现
 
 **模块**：原生 `habitat_evaluation.py`（非 Ranger 适配）

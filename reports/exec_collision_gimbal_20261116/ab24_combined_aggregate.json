@@ -1,0 +1,26 @@
+{
+  "n_combined": 24,
+  "n_ok": 24,
+  "sr_proxy": 0,
+  "sr_proxy_pct": 0.0,
+  "near_goal": 5,
+  "initial_penetration_eps": 4,
+  "status": {
+    "ok": 24
+  },
+  "termination": {
+    "planner_stop": 2,
+    "step_budget_exhausted": 22
+  },
+  "sum_moved_m_ok": 14.75,
+  "sum_blocked_ok": 681,
+  "sum_truncated_ok": 29,
+  "batches": [
+    "ab24b_20261116_224229",
+    "ab24b_rec_20261117_071620"
+  ],
+  "robot_scale": 0.7,
+  "camera_mode": "fixed_base_gimbal",
+  "executor_version": "kinematic_collision_v1.1",
+  "note": "New protocol baseline; not causally comparable to pre-fix LabelMap/VIEW_POINTS 8/24."
+}

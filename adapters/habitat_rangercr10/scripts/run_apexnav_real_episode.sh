@@ -137,11 +137,14 @@ done
 
 # ################################
 # ROBOT_SCALE=1.0 (real) or 0.7 (scaled_robot_proxy_070). Optional FORCE_SPAWN_JSON.
+# CAMERA_MODE: fixed_base | fixed_base_gimbal (ApexNav primary) | legacy_arm_look.
+# PPO_RAISE_JSON left empty for deployment baseline (no PPO).
 # ################################
-ROBOT_SCALE="${ROBOT_SCALE:-1.0}"
+ROBOT_SCALE="${ROBOT_SCALE:-0.7}"
+CAMERA_MODE="${CAMERA_MODE:-fixed_base_gimbal}"
 FORCE_SPAWN_JSON="${FORCE_SPAWN_JSON:-}"
 PPO_RAISE_JSON="${PPO_RAISE_JSON:-}"
-SCALE_ARGS="--robot_scale $ROBOT_SCALE"
+SCALE_ARGS="--robot_scale $ROBOT_SCALE --camera_mode $CAMERA_MODE"
 if [[ -n "$FORCE_SPAWN_JSON" ]]; then
   SCALE_ARGS="$SCALE_ARGS --force_spawn_json '$FORCE_SPAWN_JSON'"
 fi
@@ -150,7 +153,7 @@ if [[ -n "$PPO_RAISE_JSON" ]]; then
 fi
 
 MAX_EXPLORE_ACTIONS="${MAX_EXPLORE_ACTIONS:-20}"
-echo "[4/4] run real ApexNav episode → $OUT (robot_scale=$ROBOT_SCALE max_explore=$MAX_EXPLORE_ACTIONS)"
+echo "[4/4] run real ApexNav episode → $OUT (robot_scale=$ROBOT_SCALE camera_mode=$CAMERA_MODE max_explore=$MAX_EXPLORE_ACTIONS)"
 # ################################
 # Forward optional experimental chassis-look burst env (default none).
 # ################################
