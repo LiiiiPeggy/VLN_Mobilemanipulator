@@ -5,7 +5,7 @@
 - 日志接入；旧 8/24 与 short50 分档；near_goal 5 例表已出。
 - **120 有效性：109 valid / 11 invalid**。
 - 冻结 150/100；全量 formal 进行中：`formal150_full_20261117_190344`。
-- 当前进度：**10/109**；micro SR_proxy=0.1111111111111111（n_scored=9）；empty_run=1。
+- 当前进度：**13/109**；micro SR_proxy=0.25（n_scored=12）；empty_run=1。
 
 ## 仍缺
 
