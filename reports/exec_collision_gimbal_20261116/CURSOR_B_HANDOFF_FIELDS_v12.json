@@ -1,6 +1,12 @@
 {
   "freeze_note": "Cursor A handoff field sample for independent eval ingest. camera_mode is fixed_base_gimbal (not fixed_gimbal alias).",
-  "code_git_sha": "PENDING_COMMIT_AFTER_v1.2",
+  "code_git_sha": "cef07d7",
+  "code_git_sha_chain": {
+    "contact_evidence_upright_support": "9399dee",
+    "blocked_recovery_budget_fields": "6745243",
+    "batch_stop_budget_lock_handoff": "cef07d7",
+    "base_prior": "bb89842"
+  },
   "executor_version": "kinematic_collision_v1.2",
   "camera_mode": "fixed_base_gimbal",
   "simulated_gimbal": true,

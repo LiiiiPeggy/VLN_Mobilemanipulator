@@ -112,9 +112,13 @@ VLN_Mobilemanipulator/
 | MSGNav=`BATCH_OK`（8/8 无崩溃；SR_dist=37.5% SPL≈20.7%；峰显存 16507 MiB） | `runs/MSGNav/batch_8ep_status.md`；D `.../batch_20261101/MSGNav/` |
 | ApexNav=`BATCH_OK`（8/8 无崩溃；任务成功 6/8；峰显存 12912 MiB） | `runs/ApexNav/batch_8ep_status.md`；D `.../batch_20261101/ApexNav/metrics.csv`；VLM=`vlm.*` 非 `vlfm.vlm` |
 | ApexNav 原生 HM3D-v2 val **1000-ep 论文复现**：SR **74.4%** / SPL **37.65%**（论文 76.2 / 38.0；Δ −1.8 / −0.35 pp）；失败主因 **false positive 14.4%**（占失败 56%） | `reports/apexnav_hm3dv2_full_repro.md`；D `.../hm3dv2_full_20261109_231528`；墙钟 ~13.1 h；ROS `:11313` |
-| Ranger 执行层：`MotionType.KINEMATIC` 必须经 **试探/提交** 碰撞裁决（`kinematic_collision_v1.1`）；轮地 support 允许，robot–env 拒绝/截断；离散步 0.05 m / 5°；`contact_test` 不能当无碰撞判据 | `execution_collision.py`；`reports/exec_collision_gimbal_20261116` |
+| Ranger 执行层：`MotionType.KINEMATIC` 须经试探/提交碰撞裁决（**`kinematic_collision_v1.2`**）；拒绝时分别记 `start` / `first_blocking` / `committed` contacts；轮地 support **必须 upright**（`vs_stage`  alone 不再豁免侧面）；离散步 0.05 m / 5°；`contact_test` 不能当无碰撞判据 | `execution_collision.py`；`verify_wheel_support_classification.py` |
 | 相机模式：`fixed_base` / **`fixed_base_gimbal`（ApexNav 主对照，simulated_gimbal）** / `legacy_arm_look`；gimbal LOOK 不改光心相对底盘位置；臂冻 `ARM_APEXNAV_INIT` | `camera_modes.py`；`--camera_mode` |
-| 新部署协议 24-ep（0.7× + gimbal + collision）：SR_proxy **0/24**，near_goal 5；**不可**与旧轨迹 8/24 归因比较 | `reports/exec_collision_gimbal_20261116/ab24_combined_aggregate.json` |
+| 短预算批 `MAX_STEPS=50`（init26 后≈24 explore；`MAX_EXPLORE=100` 不生效）≠ 协议预算 `150/100`；禁止混算 | `SHORT_BUDGET_50.md`；`short50_corrected_stop_accounting.json` |
+| short50 合并 24-ep：SR_proxy **0/24**（any-phase STOP 校正后仍 0；2× far STOP）；taxonomy：invalid_spawn 4 / zero_trans stall 10 / moved_ok 10 | `ab24_combined_aggregate.json` |
+| 连续 3 次相同底盘全拒绝 → 本步改为 gimbal LOOK/反向转（计入预算）；`ACTION_FINISH`≠运动完成；`near_goal` 仅诊断 | `apexnav_real_episode.py` |
+| STOP/`SR_proxy` 按**任意 phase** 的 STOP 动作+VIEW_POINTS 距判定；勿用 `step<26`/`explore_planner` 过滤漏计 | batch 脚本；B `ingest_episode_run.py` |
+| 与 Cursor B 共享 `vln-rangercr10` ROS：formal lock 存在时开发批拒绝启动（exit 75） | `run_exec_collision_baseline_batch.sh`；`budget_ab150/queue_after_formal.sh` |
 | ApexNav 需 ROS1 Noetic + catkin planner；Jammy 上可用 Focal Noetic 文件树 + focal `.so`，但 `cv_bridge`/py3.8 boost 与 conda py3.9 不兼容 → 适配层手写 Image | 同 status；`habitat2ros/habitat_publisher.py` |
 | MSGNav 需 `ollama` 包（即使 `use_ollama:false` 也会 import） | 已 bake 进 `:msgnav-deps` |
 | MSGNav 可用 API：`gpt-5.6-luna`（当前默认示例）/ 曾验 `gpt-5.6-sol`；`gpt-5.5` 404；论文对照需 **gpt-4o**（无密钥则暂停） | 容器冒烟；密钥仅本地 `.env` |

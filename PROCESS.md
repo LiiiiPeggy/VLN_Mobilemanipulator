@@ -1015,6 +1015,37 @@
 
 ---
 
+## 2026-11-17 ApexNav–Ranger 最小收口（预算 / 阻挡证据 / 受阻反馈）
+
+**模块**：`execution_collision` v1.2 / `apexnav_real_episode` / `run_exec_collision_baseline_batch`
+
+**问题**：
+1. 默认 `MAX_STEPS=50` 使 `MAX_EXPLORE_ACTIONS=100` 失效；与协议 150/100 混谈。
+2. 拒绝时 `contacts` 常为 start/committed，不是 first_blocking；`upright||vs_stage` 可能把低矮侧面当支撑。
+3. lt9 初始穿透后几乎全拒；k1cup/ef36 无初始穿透但零平移且规划器反复同向转；yr17 在 init 阶段 STOP 被 batch 漏计。
+4. 与 Cursor B formal 共用 `vln-rangercr10`/ROS 11312，开发批不可 pkill 对方。
+
+**操作**：
+1. 短预算 50 归档（`SHORT_BUDGET_50.md`）；any-phase STOP 校正（2 far STOP，SR 仍 0/24）。
+2. v1.2：分别保存 start/first_blocking/committed；轮地 support 改 **必须 upright**；细节含 link/对方/法线/距离/采样序号。
+3. 连续 3 次同底盘全拒绝 → 本步 gimbal LOOK/反向转（计预算）；summary 写 effective_budget / spawn_status / 路程·转角·受阻。
+4. batch formal lock + `queue_after_formal.sh` 排队 wheel verify→150 diag→smoke→dev24。
+5. 独立提交：`9399dee` / `6745243` / `cef07d7`。未改 `evaluation/`。
+
+**实测（截至排队前）**：
+- short50 taxonomy：invalid_spawn 4 / zero_trans stall 10 / moved_ok 10。
+- lt9：轮子 min_dist≈−6.2 cm → `spawn_status=invalid_initial_penetration`（不扩容忍）。
+- k1cup/ef36：合法空间拒转 + 无执行反馈导致同动作空转（旧 contacts 误显示 blocking=false）。
+- hy1：可平移对照（≈3 m）。
+- 部分 150：`ef36_bed_4` 在 init 第 25 步 STOP（dtg≈0.04）；旧 batch `planner_stop=false` 已修。
+
+**结论**：实现缺陷已按证据收口；完整 150/100·dev24 数字待队列跑完后回填。正式独立评测应对齐 `fixed_base_gimbal` + 150/100 + v1.2 字段。
+
+**相关**：`CURSOR_B_HANDOFF_FIELDS_v12.json`；`short50_corrected_stop_accounting.json`；`budget_ab150/`
+
+
+---
+
 ## 2026-11-09～11 ApexNav HM3D-v2 全量论文复现
 
 **模块**：原生 `habitat_evaluation.py`（非 Ranger 适配）
