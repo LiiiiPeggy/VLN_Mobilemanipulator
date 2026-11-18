@@ -1,0 +1,29 @@
+{
+  "n_instances": 1,
+  "pair_cells": {
+    "both": 1
+  },
+  "by_category": [
+    {
+      "category": "cup",
+      "n_instances": 1,
+      "confirmed_fixed": 1,
+      "confirmed_arm": 1,
+      "both": 1,
+      "fixed_only": 0,
+      "arm_only": 0,
+      "neither": 0,
+      "metric_name": "\u684c\u8fb9\u76ee\u6807\u786e\u8ba4\u7387",
+      "confirm_rate_fixed": 1.0,
+      "confirm_rate_arm": 1.0,
+      "note": "small-n: prefer raw counts + case writeups over CI"
+    }
+  ],
+  "gain_attribution_counts": {},
+  "metric_notes": [
+    "\u684c\u8fb9\u76ee\u6807\u786e\u8ba4\u7387 = instances with \u22651 hit / pre-selected paired instances",
+    "hit = target class \u2227 IoU(pred, specified GT instance) \u2265 0.5",
+    "Invisible under one mode remains in denominator",
+    "Do not call this ObjectNav SR or paper accuracy"
+  ]
+}

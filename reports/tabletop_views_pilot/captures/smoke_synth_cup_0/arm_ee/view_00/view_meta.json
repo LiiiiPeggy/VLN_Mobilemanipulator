@@ -1,0 +1,13 @@
+{
+  "target_visible": true,
+  "observation_index": 0,
+  "unique_viewpoint": true,
+  "action_rejected": false,
+  "camera_mode": "arm_ee",
+  "instance_id": "cup_0",
+  "rgb_hw": [
+    120,
+    160
+  ],
+  "gt_visible": true
+}

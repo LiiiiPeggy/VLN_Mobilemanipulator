@@ -1,0 +1,26 @@
+{
+  "protocol": "tabletop_views_pilot_v1",
+  "camera_modes": [
+    "fixed_base_gimbal",
+    "arm_ee"
+  ],
+  "max_views_per_mode": 3,
+  "pairs": [
+    {
+      "pair_id": "fixture_cupA",
+      "instance_id": "cup_A",
+      "category": "mug",
+      "scene": "synthetic_fixture",
+      "reliable_gt": true,
+      "notes": "synthetic for D pipeline validation before C delivery"
+    },
+    {
+      "pair_id": "smoke_synth_cup_0",
+      "instance_id": "cup_0",
+      "category": "mug",
+      "scene": "synthetic",
+      "reliable_gt": true,
+      "notes": "first paired sample for live YOLO verify"
+    }
+  ]
+}

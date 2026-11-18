@@ -1,0 +1,29 @@
+{
+  "git_common_base": "492f53f",
+  "branch": "cursor/habitat-rangercr10-scale070",
+  "camera_modes": ["fixed_base_gimbal", "arm_ee"],
+  "query_labels": ["cup", "bowl", "remote", "bottle"],
+  "alias_map": {
+    "mug": "cup",
+    "coffee mug": "cup",
+    "remote control": "remote"
+  },
+  "similar_answer": [],
+  "detector": {
+    "entry": "vlm.utils.get_object_utils.get_object",
+    "yolo_port": 12184,
+    "sam_port": 12183,
+    "conf_yolo": 0.3,
+    "iou_yolo": 0.5,
+    "agnostic_nms": true,
+    "weights_note": "same as ApexNav Ranger production (yolov7-e6e + mobile_sam)"
+  },
+  "hit_rule": {
+    "pred_class_is_target": true,
+    "mask_iou_thr": 0.5,
+    "note": "specified instance GT only; other same-class instances = other_instance"
+  },
+  "instance_confirm_rule": ">=1 hit among <=3 views",
+  "metric_name_zh": "桌边目标确认率",
+  "llm_furniture_answer_table": "not used"
+}
