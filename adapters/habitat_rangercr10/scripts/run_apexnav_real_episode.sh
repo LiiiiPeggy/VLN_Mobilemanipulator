@@ -37,10 +37,13 @@ sleep 2
 # ################################
 LAUNCH_FILE="/workspace/VLN_Mobilemanipulator/adapters/habitat_rangercr10/launch/exploration_rangercr10.launch"
 # INFLATION_PROFILE:
-#   legacy018 (default for Habitat kinematic demos): 0.18 m — matches ApexNav HM3D agent;
-#     UNSAFE vs Ranger chassis half-width≈0.435 m (see reports).
-#   mid030: 0.30 m sensitivity — still UNSAFE vs half-width; offline/online A/B only.
-#   ranger_safe: 0.485 m oriented footprint — correct clearance, may starve free on sparse maps.
+#   legacy018 (P0): 0.18 m hard; soft off.
+#   halfwidth (P1): footprint half_w @ scale; lock; soft off.
+#   halfwidth_softcost (P2旧): half_w + soft R=0.40/w=2.0.
+# ################################
+#   inf020_soft010 (当前候选): hard 0.20 m + soft R=0.10 m / w=2.0; lock=true.
+# ################################
+#   mid030 / ranger_safe: legacy sensitivity profiles.
 PROFILE="${INFLATION_PROFILE:-legacy018}"
 case "$PROFILE" in
   ranger_safe)
@@ -55,6 +58,11 @@ case "$PROFILE" in
   halfwidth_softcost)
     OVERLAY="/workspace/VLN_Mobilemanipulator/adapters/habitat_rangercr10/config/apexnav_rangercr10_overlay_halfwidth_softcost.yaml"
     ;;
+  # ################################
+  inf020_soft010)
+    OVERLAY="/workspace/VLN_Mobilemanipulator/adapters/habitat_rangercr10/config/apexnav_rangercr10_overlay_inf020_soft010.yaml"
+    ;;
+  # ################################
   *)
     OVERLAY="/workspace/VLN_Mobilemanipulator/adapters/habitat_rangercr10/config/apexnav_rangercr10_overlay_legacy018.yaml"
     ;;
@@ -102,6 +110,15 @@ case "$PROFILE" in
     OBSTACLES_INFLATION="${OBSTACLES_INFLATION:-$STARTUP_PRIOR_HALF_W}"
     LOCK_OBSTACLES_INFLATION="${LOCK_OBSTACLES_INFLATION:-true}"
     SOFT_COST_RANGE_M="${SOFT_COST_RANGE_M:-0.40}"
+    SOFT_COST_WEIGHT="${SOFT_COST_WEIGHT:-2.0}"
+    ;;
+  # ################################
+  # Current candidate: 0.20 m hard inflate + soft band 0.10 m (w=2.0).
+  # ################################
+  inf020_soft010)
+    OBSTACLES_INFLATION="${OBSTACLES_INFLATION:-0.20}"
+    LOCK_OBSTACLES_INFLATION="${LOCK_OBSTACLES_INFLATION:-true}"
+    SOFT_COST_RANGE_M="${SOFT_COST_RANGE_M:-0.10}"
     SOFT_COST_WEIGHT="${SOFT_COST_WEIGHT:-2.0}"
     ;;
   mid030)

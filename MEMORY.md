@@ -206,7 +206,7 @@ VLN_Mobilemanipulator/
 | Ranger 底盘碰撞半长/半宽 ≈0.651/0.435 m；外接 R≈0.783 m；ApexNav 默认膨胀 0.18 m **小于** 足迹 | MuJoCo `base_link_col`；`apexnav_rangercr10_frontier_inflation.md` |
 | Habitat→ROS odom 航向须 `hab_yaw+π`（与 `(-z,-x)` 位移一致）；否则恒差 180° 导致 TURN_LEFT 空转 | `hab_yaw_to_ros`；`ros_dynamic_publisher.py` |
 | ApexNav `optimistic=false` 时未知格进 ESDF 障碍；膨胀↑会进一步吃掉 free | `sdf_map2d.cpp`；足迹对照实验 |
-| 适配膨胀档：`legacy018`(P0) / `halfwidth`(P1, lock+`half_w(scale)`) / `halfwidth_softcost`(P2, R=0.40 w=2.0) / `mid030` / `ranger_safe`；Habitat radius 可被 `lock_obstacles_inflation` 解耦 | `overlay_*.yaml`；`sdf_map2d` lock；`reports/nav_inflation_softcost_20261118/RECOMMENDATION.md` |
+| 适配膨胀档：`legacy018`(P0) / `halfwidth`(P1) / `halfwidth_softcost`(P2旧) / **`inf020_soft010`（当前候选：硬0.20+软R=0.10/w=2.0）** / `mid030` / `ranger_safe`；`lock_obstacles_inflation` 解耦 Habitat radius | `overlay_*.yaml`；`sdf_map2d` lock；`RECOMMENDATION.md` |
 | 软代价距离场须用 inflate-only ESDF（`distance_buffer_obs_`），勿用含 UNKNOWN 的 `getDistance`（optimistic=false 会压 frontier） | `astar2d::edgeTraversalCost` |
 | 在线 ≥0.30 m 半径即可把开阔图 free 压到 ≈0–1；窄场景 yaw 修复后仍 `NO_PASSABLE` | `real_yawfix_open_mid030_*`；`real_yawfix_narrow_legacy018_*` |
 | HM3D val 100 景；ObjectNav-v2 val content 36 与场景对齐；MP3D 11 景可用但本轮未跑 | `scene_datasets/hm3d/val`；`objectnav/hm3d/v2/val/content` |

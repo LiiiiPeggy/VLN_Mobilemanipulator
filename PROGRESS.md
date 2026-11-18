@@ -68,12 +68,13 @@
 | 分支 | `cursor/nav-inflation-halfwidth-softcost`（自 492f53f） | — |
 | lock inflation / soft cost C++ | **已实现并编入** `vln-rangercr10` | `sdf_map2d` + `astar2d` |
 | 同图离线 P0/P1/P2 | **完成** | `reports/nav_inflation_softcost_20261118/` |
-| 推荐（离线） | **P2 进短跑**（半宽硬膨胀为主；软代价 R=0.40/w=2.0 次要） | `RECOMMENDATION.md` |
+| 推荐（离线半宽） | P1/P2 半宽有效但易堵窄通道 | `RECOMMENDATION.md` |
+| 当前短跑候选 | **`inf020_soft010`：硬 0.20 m + 软 R=0.10 / w=2.0** | overlay + `run_apexnav_real_episode.sh` |
 | 短跑 / 候选 dev24 | **未跑**（GPU≈40GB + queue_after_formal） | 待空闲 |
 
 ## 下一步（最多 5）
 
-1. GPU 空闲后：同起点短跑 P0 vs P2（宽通道净空 + 窄门仍可过）→ 候选 `halfwidth_softcost` 跑一次匹配 formal 的 dev24。  
+1. GPU 空闲后：同起点短跑 P0 vs `inf020_soft010`（硬0.20+软R=0.10）→ 候选跑一次匹配 formal 的 dev24。  
 2. 若规划已离障而 traj 仍贴边：查跟踪/执行，不继续加大膨胀。  
 3. formal150 独立列表后续 ObjectNav 以 formal 报告为准。  
 4. 合并前确认不污染 1.0× 默认与 `legacy_arm_look`。  

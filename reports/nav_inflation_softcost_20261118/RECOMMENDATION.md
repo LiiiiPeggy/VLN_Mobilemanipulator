@@ -88,14 +88,16 @@ SR / 碰撞率归因须等匹配执行器的短跑 + 候选 dev24；离线只支
 | 软代价额外收益？ | **次要**：p10/居中更好，路径略长；硬碰撞边界仍靠 P1 |
 | 窄门可达？ | 本批离线 **基本保留**；个别候选 −1 |
 | 穿模/贴边仍在？ | 若规划已离障而 traj 仍贴边 → 跟踪/执行；矩形转弯扫掠未单独建模 |
-| **推荐** | **采用 P2 配置进入短跑**（硬半宽 + 轻软代价）；若短跑显示窄门 SR 掉点，可回退 **P1**。不维持 P0。 |
+| **推荐（离线半宽对照）** | 半宽硬膨胀对贴边有效；全半宽会堵窄通道。 |
+| **当前采用候选（用户指定）** | **硬膨胀 0.20 m + 软代价 R=0.10 m / w=2.0**（`INFLATION_PROFILE=inf020_soft010`），兼顾净空与窄通道可达。 |
 
 可复现：
 
 ```bash
-INFLATION_PROFILE=halfwidth_softcost ROBOT_SCALE=0.7 STARTUP_PRIOR_MODE=initial_footprint \
+INFLATION_PROFILE=inf020_soft010 ROBOT_SCALE=0.7 STARTUP_PRIOR_MODE=initial_footprint \
   CAMERA_MODE=fixed_base_gimbal MAX_EXPLORE_ACTIONS=100 MAX_STEPS=150 \
   bash adapters/habitat_rangercr10/scripts/run_apexnav_real_episode.sh
 ```
 
-代表轨迹图：`reports/nav_inflation_softcost_20261118/case_wide_teesav_sofa0_seq9/`。
+代表轨迹图：`reports/nav_inflation_softcost_20261118/case_wide_teesav_sofa0_seq9/`。  
+半宽 P1/P2 对照仍保留作基线证据；短跑请用 `inf020_soft010`。
