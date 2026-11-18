@@ -1,0 +1,19 @@
+{
+  "n": 1,
+  "episodes": [
+    {
+      "episode_list_id": "svBbv1Pavdk_bed_0",
+      "recovery_of": "svBbv1Pavdk_bed_0",
+      "reason": "empty_run",
+      "shell_rc": 1,
+      "n_steps_observed": 0,
+      "job": [
+        "svBbv1Pavdk_bed_0",
+        "svBbv1Pavdk",
+        "bed",
+        "0",
+        "/home/ubuntu/locomani/VLN_Mobilemanipulator/reports/ranger_category_eval_20261116/formal_fixed_gimbal_v1/spawns/svBbv1Pavdk_bed_0.json"
+      ]
+    }
+  ]
+}
