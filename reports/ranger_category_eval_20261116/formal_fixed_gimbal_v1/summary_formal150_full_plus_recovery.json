@@ -1,0 +1,217 @@
+{
+  "n_rows": 109,
+  "n_scored": 109,
+  "n_success_unknown": 0,
+  "success": 33,
+  "micro_sr": 0.30275229357798167,
+  "micro_sr_wilson95": [
+    0.22442993568724834,
+    0.39450444845318267
+  ],
+  "macro_sr": 0.31605937921727395,
+  "by_category": [
+    {
+      "category": "bed",
+      "group": "large_furniture",
+      "n_rows": 19,
+      "n_scored": 19,
+      "n_success_unknown": 0,
+      "success": 9,
+      "sr": 0.47368421052631576,
+      "sr_wilson95": [
+        0.2732980516117956,
+        0.6829219075488682
+      ],
+      "wrong_stop": 5,
+      "wrong_stop_rate": 0.2631578947368421,
+      "fail_bucket_counts": {
+        "explore_budget_exhausted": 5,
+        "wrong_stop": 5,
+        "ok_success_proxy": 9
+      },
+      "run_status_counts": {
+        "ok": 19
+      },
+      "mean_n_steps": 83.57894736842105,
+      "mean_elapsed_sec": 528.6213759748559,
+      "mean_forward_m": 4.146491228070175,
+      "mean_arm_motions": null,
+      "mean_effective_observations": null,
+      "n_blocked_exec_sum": 488,
+      "n_truncated_exec_sum": 17
+    },
+    {
+      "category": "chair",
+      "group": "large_furniture",
+      "n_rows": 13,
+      "n_scored": 13,
+      "n_success_unknown": 0,
+      "success": 7,
+      "sr": 0.5384615384615384,
+      "sr_wilson95": [
+        0.29143795714506004,
+        0.7679393219046169
+      ],
+      "wrong_stop": 1,
+      "wrong_stop_rate": 0.07692307692307693,
+      "fail_bucket_counts": {
+        "no_stop": 1,
+        "ok_success_proxy": 7,
+        "explore_budget_exhausted": 4,
+        "wrong_stop": 1
+      },
+      "run_status_counts": {
+        "ok": 13
+      },
+      "mean_n_steps": 97.84615384615384,
+      "mean_elapsed_sec": 538.734746988003,
+      "mean_forward_m": 7.196153846153847,
+      "mean_arm_motions": null,
+      "mean_effective_observations": null,
+      "n_blocked_exec_sum": 158,
+      "n_truncated_exec_sum": 5
+    },
+    {
+      "category": "plant",
+      "group": "large_furniture",
+      "n_rows": 19,
+      "n_scored": 19,
+      "n_success_unknown": 0,
+      "success": 2,
+      "sr": 0.10526315789473684,
+      "sr_wilson95": [
+        0.02935856029887013,
+        0.31394082711109006
+      ],
+      "wrong_stop": 5,
+      "wrong_stop_rate": 0.2631578947368421,
+      "fail_bucket_counts": {
+        "wrong_stop": 5,
+        "explore_budget_exhausted": 12,
+        "ok_success_proxy": 2
+      },
+      "run_status_counts": {
+        "ok": 19
+      },
+      "mean_n_steps": 112.89473684210526,
+      "mean_elapsed_sec": 643.3436063590802,
+      "mean_forward_m": 3.9600877192982447,
+      "mean_arm_motions": null,
+      "mean_effective_observations": null,
+      "n_blocked_exec_sum": 976,
+      "n_truncated_exec_sum": 47
+    },
+    {
+      "category": "sofa",
+      "group": "large_furniture",
+      "n_rows": 19,
+      "n_scored": 19,
+      "n_success_unknown": 0,
+      "success": 7,
+      "sr": 0.3684210526315789,
+      "sr_wilson95": [
+        0.19149512745135072,
+        0.5896046683519693
+      ],
+      "wrong_stop": 9,
+      "wrong_stop_rate": 0.47368421052631576,
+      "fail_bucket_counts": {
+        "wrong_stop": 9,
+        "explore_budget_exhausted": 3,
+        "ok_success_proxy": 7
+      },
+      "run_status_counts": {
+        "ok": 19
+      },
+      "mean_n_steps": 78.26315789473684,
+      "mean_elapsed_sec": 404.37150002780714,
+      "mean_forward_m": 3.7298245614035093,
+      "mean_arm_motions": null,
+      "mean_effective_observations": null,
+      "n_blocked_exec_sum": 562,
+      "n_truncated_exec_sum": 27
+    },
+    {
+      "category": "toilet",
+      "group": "large_furniture",
+      "n_rows": 19,
+      "n_scored": 19,
+      "n_success_unknown": 0,
+      "success": 4,
+      "sr": 0.21052631578947367,
+      "sr_wilson95": [
+        0.0850767663291625,
+        0.43334278443814167
+      ],
+      "wrong_stop": 4,
+      "wrong_stop_rate": 0.21052631578947367,
+      "fail_bucket_counts": {
+        "explore_budget_exhausted": 11,
+        "wrong_stop": 4,
+        "ok_success_proxy": 4
+      },
+      "run_status_counts": {
+        "ok": 19
+      },
+      "mean_n_steps": 104.21052631578948,
+      "mean_elapsed_sec": 568.877094055477,
+      "mean_forward_m": 4.688157894736842,
+      "mean_arm_motions": null,
+      "mean_effective_observations": null,
+      "n_blocked_exec_sum": 818,
+      "n_truncated_exec_sum": 29
+    },
+    {
+      "category": "tv_monitor",
+      "group": "large_furniture",
+      "n_rows": 20,
+      "n_scored": 20,
+      "n_success_unknown": 0,
+      "success": 4,
+      "sr": 0.2,
+      "sr_wilson95": [
+        0.08065766257979809,
+        0.4160174322518936
+      ],
+      "wrong_stop": 10,
+      "wrong_stop_rate": 0.5,
+      "fail_bucket_counts": {
+        "wrong_stop": 10,
+        "ok_success_proxy": 4,
+        "explore_budget_exhausted": 6
+      },
+      "run_status_counts": {
+        "ok": 20
+      },
+      "mean_n_steps": 81.4,
+      "mean_elapsed_sec": 520.0179824471473,
+      "mean_forward_m": 3.3383333333333334,
+      "mean_arm_motions": null,
+      "mean_effective_observations": null,
+      "n_blocked_exec_sum": 701,
+      "n_truncated_exec_sum": 35
+    }
+  ],
+  "by_group_report_only": [
+    {
+      "group": "large_furniture",
+      "n_scored": 109,
+      "success": 33,
+      "sr_micro_in_group": 0.30275229357798167,
+      "sr_wilson95": [
+        0.22442993568724834,
+        0.39450444845318267
+      ],
+      "note": "grouping_only_do_not_add_to_overall_with_subcats"
+    }
+  ],
+  "by_strata": null,
+  "metrics_notes": [
+    "SR_proxy uses VIEW_POINTS; missing success fields stay unknown (not false).",
+    "near_goal is reported separately and is not SR_proxy.",
+    "Do not call detection precision 'accuracy' interchangeably with SR.",
+    "SPL is N/A unless a footprint-matched geodesic exists.",
+    "Repeat seeds must be flagged; not independent scenes for CI interpretation.",
+    "camera_mode for ApexNav baseline A must be fixed_base_gimbal (+ simulated_gimbal)."
+  ]
+}

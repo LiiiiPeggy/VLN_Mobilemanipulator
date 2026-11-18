@@ -36,3 +36,9 @@ SMOKE_N=2 MAX_STEPS=150 MAX_EXPLORE_ACTIONS=100 \
 SMOKE_N=0 MAX_STEPS=150 MAX_EXPLORE_ACTIONS=100 \
   bash adapters/habitat_rangercr10/evaluation/scripts/run_formal_independent_eval.sh
 ```
+
+## Formal fixed_gimbal v1
+
+- 主批完成：`formal_fixed_gimbal_v1/FORMAL_RESULT_v1.md`
+- 计分合并（含 empty_run recovery）：micro SR_proxy **0.3028**（33/109）
+- 账本：`formal_fixed_gimbal_v1/accounting_formal150_full_plus_recovery.md`

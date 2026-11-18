@@ -1,0 +1,14 @@
+{
+  "n_primary": 109,
+  "n_recovery": 1,
+  "replaced": [
+    {
+      "episode_list_id": "svBbv1Pavdk_bed_0",
+      "primary_run_id": "formalgimbal_formal150_full_20261117_190344_svBbv1Pavdk_bed_0",
+      "recovery_run_id": "formalgimbal_formal150_recovery_empty_20261118c_svBbv1Pavdk_bed_0",
+      "primary_status": "empty_run",
+      "recovery_status": "ok",
+      "recovery_sr_proxy": false
+    }
+  ]
+}
