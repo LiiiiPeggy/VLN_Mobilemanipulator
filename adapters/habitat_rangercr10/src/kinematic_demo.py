@@ -108,6 +108,8 @@ class RangerCr10KinematicEnv:
         enable_physics: bool = True,
         gpu_device_id: int = 0,
         robot_scale: float = 1.0,
+        enable_semantic: bool = False,
+        scene_dataset_config: Optional[str] = None,
     ):
         if not habitat_sim.built_with_bullet and enable_physics:
             raise RuntimeError(
@@ -141,19 +143,36 @@ class RangerCr10KinematicEnv:
         self.urdf = resolved_urdf
         self.mode = MODE_KINEMATIC
         self.collision_mode = MODE_COLLISION_QUERY
+        self.enable_semantic = bool(enable_semantic)
+        self.scene_dataset_config = scene_dataset_config
 
         backend = habitat_sim.SimulatorConfiguration()
         backend.scene_id = scene
         backend.enable_physics = bool(enable_physics)
         backend.gpu_device_id = gpu_device_id
         backend.allow_sliding = True
+        # ################################
+        # Optional HM3D annotated dataset for SemanticScene / SEMANTIC sensor.
+        # Default None preserves prior ObjectNav / kinematic demo behaviour.
+        # ################################
+        if scene_dataset_config:
+            backend.scene_dataset_config_file = str(scene_dataset_config)
 
-        def make_cam(uuid: str, depth: bool = False, res=EE_RGB_RES, hfov=EE_RGB_HFOV_DEG):
+        def make_cam(
+            uuid: str,
+            depth: bool = False,
+            semantic: bool = False,
+            res=EE_RGB_RES,
+            hfov=EE_RGB_HFOV_DEG,
+        ):
             s = habitat_sim.CameraSensorSpec()
             s.uuid = uuid
-            s.sensor_type = (
-                habitat_sim.SensorType.DEPTH if depth else habitat_sim.SensorType.COLOR
-            )
+            if semantic:
+                s.sensor_type = habitat_sim.SensorType.SEMANTIC
+            elif depth:
+                s.sensor_type = habitat_sim.SensorType.DEPTH
+            else:
+                s.sensor_type = habitat_sim.SensorType.COLOR
             s.resolution = list(res)
             s.hfov = float(hfov)
             s.position = [0.0, 0.0, 0.0]
@@ -166,6 +185,8 @@ class RangerCr10KinematicEnv:
             make_cam("ee_depth", depth=True),
             make_cam("third_rgb", res=THIRD_RGB_RES, hfov=90.0),
         ]
+        if self.enable_semantic:
+            agent_cfg.sensor_specifications.append(make_cam("ee_semantic", semantic=True))
         agent_cfg.height = 0.01
         agent_cfg.radius = 0.01
 
@@ -510,7 +531,10 @@ class RangerCr10KinematicEnv:
         self.sync_agent_sensors()
         self._set_agent_pose(self._ee_T)
         obs = self.sim.get_sensor_observations()
-        return {"ee_rgb": obs["ee_rgb"], "ee_depth": obs["ee_depth"], "ee_T": self._ee_T}
+        out = {"ee_rgb": obs["ee_rgb"], "ee_depth": obs["ee_depth"], "ee_T": self._ee_T}
+        if getattr(self, "enable_semantic", False) and "ee_semantic" in obs:
+            out["ee_semantic"] = obs["ee_semantic"]
+        return out
 
     def observe_third_only(self) -> np.ndarray:
         """Third-person snapshot for demo; call AFTER planner publish to avoid pose pollution."""

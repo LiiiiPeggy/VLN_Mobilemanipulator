@@ -1,0 +1,3227 @@
+{
+  "protocol": "tabletop_views_pilot_v1",
+  "selection_rule": "scene-fact only; \u22643/cat; cross-scene; cup seeds CrMo8/VBzV; keep clear+partial; no detector scores",
+  "n_verified": 48,
+  "n_selected": 12,
+  "n_excluded": 36,
+  "selected": [
+    {
+      "scene_id": "CrMo8WxCyVb",
+      "semantic_id": 423,
+      "object_id_str": "coffee mug_423",
+      "label": "coffee mug",
+      "canonical": "cup",
+      "instance_key": "CrMo8WxCyVb:423",
+      "center_hab": [
+        -0.0768355056643486,
+        -2.2229490280151367,
+        5.839678764343262
+      ],
+      "sizes_hab": [
+        0.14421500265598297,
+        0.09962701797485352,
+        0.17023658752441406
+      ],
+      "height_agl_guess": null,
+      "verify": {
+        "accept_candidate": true,
+        "reason": "ok",
+        "best_pixels": 383,
+        "occlusion_labels": [
+          "clear",
+          "invisible"
+        ],
+        "nav": {
+          "has_navmesh": true,
+          "n_nearby_snaps": 55,
+          "deployable_hint": true
+        },
+        "tabletop_hint": true,
+        "views": [
+          {
+            "name": "side",
+            "pixels": 383,
+            "occlusion_proxy": "clear",
+            "eye": [
+              -0.07683550566434845,
+              -0.949935531616211,
+              8.239678764343262
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/CrMo8WxCyVb/cup_423/side_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/CrMo8WxCyVb/cup_423/side_mask.png"
+          },
+          {
+            "name": "high",
+            "pixels": 0,
+            "occlusion_proxy": "invisible",
+            "eye": [
+              0.7231644943356514,
+              -0.2999355316162109,
+              6.6396787643432615
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/CrMo8WxCyVb/cup_423/high_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/CrMo8WxCyVb/cup_423/high_mask.png"
+          }
+        ],
+        "verify_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/CrMo8WxCyVb/cup_423"
+      },
+      "pair_id": "CrMo8WxCyVb_cup_423",
+      "selection": {
+        "selected": true,
+        "category_slot": "cup",
+        "occlusion_case": "clear"
+      }
+    },
+    {
+      "scene_id": "bxsVRursffK",
+      "semantic_id": 381,
+      "object_id_str": "cup_381",
+      "label": "cup",
+      "canonical": "cup",
+      "instance_key": "bxsVRursffK:381",
+      "center_hab": [
+        -9.7110595703125,
+        -2.0565414428710938,
+        -5.605902671813965
+      ],
+      "sizes_hab": [
+        0.22666549682617188,
+        0.17259883880615234,
+        0.1399993896484375
+      ],
+      "height_agl_guess": null,
+      "verify": {
+        "accept_candidate": true,
+        "reason": "ok",
+        "best_pixels": 382,
+        "occlusion_labels": [
+          "clear",
+          "invisible"
+        ],
+        "nav": {
+          "has_navmesh": true,
+          "n_nearby_snaps": 20,
+          "deployable_hint": true
+        },
+        "tabletop_hint": true,
+        "views": [
+          {
+            "name": "side",
+            "pixels": 382,
+            "occlusion_proxy": "clear",
+            "eye": [
+              -8.014003295464786,
+              -1.8253248691558839,
+              -7.302958946661679
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/bxsVRursffK/cup_381/side_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/bxsVRursffK/cup_381/side_mask.png"
+          },
+          {
+            "name": "high",
+            "pixels": 0,
+            "occlusion_proxy": "invisible",
+            "eye": [
+              -8.9110595703125,
+              -1.1753248691558837,
+              -4.805902671813965
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/bxsVRursffK/cup_381/high_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/bxsVRursffK/cup_381/high_mask.png"
+          }
+        ],
+        "verify_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/bxsVRursffK/cup_381"
+      },
+      "pair_id": "bxsVRursffK_cup_381",
+      "selection": {
+        "selected": true,
+        "category_slot": "cup",
+        "occlusion_case": "clear"
+      }
+    },
+    {
+      "scene_id": "a8BtkwhxdRV",
+      "semantic_id": 598,
+      "object_id_str": "mug_598",
+      "label": "mug",
+      "canonical": "cup",
+      "instance_key": "a8BtkwhxdRV:598",
+      "center_hab": [
+        -5.186393737792969,
+        -0.38562247157096863,
+        0.5020335912704468
+      ],
+      "sizes_hab": [
+        0.18000030517578125,
+        0.14870703220367432,
+        0.15070700645446777
+      ],
+      "height_agl_guess": null,
+      "verify": {
+        "accept_candidate": true,
+        "reason": "ok",
+        "best_pixels": 210,
+        "occlusion_labels": [
+          "invisible",
+          "partial"
+        ],
+        "nav": {
+          "has_navmesh": true,
+          "n_nearby_snaps": 23,
+          "deployable_hint": true
+        },
+        "tabletop_hint": true,
+        "views": [
+          {
+            "name": "side",
+            "pixels": 210,
+            "occlusion_proxy": "partial",
+            "eye": [
+              -6.883450012640683,
+              -0.6591915845870973,
+              2.199089866118161
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/a8BtkwhxdRV/cup_598/side_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/a8BtkwhxdRV/cup_598/side_mask.png"
+          },
+          {
+            "name": "high",
+            "pixels": 0,
+            "occlusion_proxy": "invisible",
+            "eye": [
+              -4.386393737792969,
+              -0.009191584587097124,
+              1.3020335912704468
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/a8BtkwhxdRV/cup_598/high_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/a8BtkwhxdRV/cup_598/high_mask.png"
+          }
+        ],
+        "verify_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/a8BtkwhxdRV/cup_598"
+      },
+      "pair_id": "a8BtkwhxdRV_cup_598",
+      "selection": {
+        "selected": true,
+        "category_slot": "cup",
+        "occlusion_case": "partial"
+      }
+    },
+    {
+      "scene_id": "5cdEh9F2hJL",
+      "semantic_id": 395,
+      "object_id_str": "decorative bowl_395",
+      "label": "decorative bowl",
+      "canonical": "bowl",
+      "instance_key": "5cdEh9F2hJL:395",
+      "center_hab": [
+        8.691429138183594,
+        0.6210646629333496,
+        -3.612121105194092
+      ],
+      "sizes_hab": [
+        0.4055213928222656,
+        0.13687586784362793,
+        0.42000293731689453
+      ],
+      "height_agl_guess": null,
+      "verify": {
+        "accept_candidate": true,
+        "reason": "ok",
+        "best_pixels": 1778,
+        "occlusion_labels": [
+          "clear",
+          "invisible"
+        ],
+        "nav": {
+          "has_navmesh": true,
+          "n_nearby_snaps": 53,
+          "deployable_hint": true
+        },
+        "tabletop_hint": true,
+        "views": [
+          {
+            "name": "side",
+            "pixels": 1778,
+            "occlusion_proxy": "clear",
+            "eye": [
+              8.691429138183594,
+              1.1684034407138824,
+              -6.012121105194092
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/5cdEh9F2hJL/bowl_395/side_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/5cdEh9F2hJL/bowl_395/side_mask.png"
+          },
+          {
+            "name": "high",
+            "pixels": 0,
+            "occlusion_proxy": "invisible",
+            "eye": [
+              9.491429138183594,
+              1.8184034407138825,
+              -2.812121105194092
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/5cdEh9F2hJL/bowl_395/high_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/5cdEh9F2hJL/bowl_395/high_mask.png"
+          }
+        ],
+        "verify_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/5cdEh9F2hJL/bowl_395"
+      },
+      "pair_id": "5cdEh9F2hJL_bowl_395",
+      "selection": {
+        "selected": true,
+        "category_slot": "bowl",
+        "occlusion_case": "clear"
+      }
+    },
+    {
+      "scene_id": "7MXmsvcQjpJ",
+      "semantic_id": 791,
+      "object_id_str": "bowl_791",
+      "label": "bowl",
+      "canonical": "bowl",
+      "instance_key": "7MXmsvcQjpJ:791",
+      "center_hab": [
+        -5.003909111022949,
+        -1.5250816345214844,
+        0.5965752601623535
+      ],
+      "sizes_hab": [
+        0.4335803985595703,
+        0.21809720993041992,
+        0.44899606704711914
+      ],
+      "height_agl_guess": null,
+      "verify": {
+        "accept_candidate": true,
+        "reason": "ok",
+        "best_pixels": 1981,
+        "occlusion_labels": [
+          "clear",
+          "invisible"
+        ],
+        "nav": {
+          "has_navmesh": true,
+          "n_nearby_snaps": 28,
+          "deployable_hint": true
+        },
+        "tabletop_hint": true,
+        "views": [
+          {
+            "name": "side",
+            "pixels": 1981,
+            "occlusion_proxy": "clear",
+            "eye": [
+              -6.7009653858706635,
+              -0.820360279083252,
+              -1.1004810146853603
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/7MXmsvcQjpJ/bowl_791/side_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/7MXmsvcQjpJ/bowl_791/side_mask.png"
+          },
+          {
+            "name": "high",
+            "pixels": 0,
+            "occlusion_proxy": "invisible",
+            "eye": [
+              -4.203909111022949,
+              -0.1703602790832519,
+              1.3965752601623536
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/7MXmsvcQjpJ/bowl_791/high_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/7MXmsvcQjpJ/bowl_791/high_mask.png"
+          }
+        ],
+        "verify_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/7MXmsvcQjpJ/bowl_791"
+      },
+      "pair_id": "7MXmsvcQjpJ_bowl_791",
+      "selection": {
+        "selected": true,
+        "category_slot": "bowl",
+        "occlusion_case": "clear"
+      }
+    },
+    {
+      "scene_id": "eF36g7L6Z9M",
+      "semantic_id": 161,
+      "object_id_str": "bowl_161",
+      "label": "bowl",
+      "canonical": "bowl",
+      "instance_key": "eF36g7L6Z9M:161",
+      "center_hab": [
+        -4.568726539611816,
+        0.10428161919116974,
+        9.30397891998291
+      ],
+      "sizes_hab": [
+        0.3489408493041992,
+        0.18407902121543884,
+        0.3025932312011719
+      ],
+      "height_agl_guess": null,
+      "verify": {
+        "accept_candidate": true,
+        "reason": "ok",
+        "best_pixels": 1637,
+        "occlusion_labels": [
+          "clear"
+        ],
+        "nav": {
+          "has_navmesh": true,
+          "n_nearby_snaps": 20,
+          "deployable_hint": true
+        },
+        "tabletop_hint": true,
+        "views": [
+          {
+            "name": "side",
+            "pixels": 1637,
+            "occlusion_proxy": "clear",
+            "eye": [
+              -6.968726539611817,
+              1.279751443862915,
+              9.30397891998291
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/eF36g7L6Z9M/bowl_161/side_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/eF36g7L6Z9M/bowl_161/side_mask.png"
+          },
+          {
+            "name": "high",
+            "pixels": 106,
+            "occlusion_proxy": "clear",
+            "eye": [
+              -3.7687265396118166,
+              1.929751443862915,
+              10.10397891998291
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/eF36g7L6Z9M/bowl_161/high_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/eF36g7L6Z9M/bowl_161/high_mask.png"
+          }
+        ],
+        "verify_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/eF36g7L6Z9M/bowl_161"
+      },
+      "pair_id": "eF36g7L6Z9M_bowl_161",
+      "selection": {
+        "selected": true,
+        "category_slot": "bowl",
+        "occlusion_case": "clear"
+      }
+    },
+    {
+      "scene_id": "QaLdnwvtxbs",
+      "semantic_id": 189,
+      "object_id_str": "remote control_189",
+      "label": "remote control",
+      "canonical": "remote",
+      "instance_key": "QaLdnwvtxbs:189",
+      "center_hab": [
+        -4.409543991088867,
+        0.44772869348526,
+        1.3319406509399414
+      ],
+      "sizes_hab": [
+        0.2526817321777344,
+        0.04068899154663086,
+        0.12000298500061035
+      ],
+      "height_agl_guess": null,
+      "verify": {
+        "accept_candidate": true,
+        "reason": "ok",
+        "best_pixels": 348,
+        "occlusion_labels": [
+          "clear",
+          "invisible"
+        ],
+        "nav": {
+          "has_navmesh": true,
+          "n_nearby_snaps": 44,
+          "deployable_hint": true
+        },
+        "tabletop_hint": true,
+        "views": [
+          {
+            "name": "side",
+            "pixels": 348,
+            "occlusion_proxy": "clear",
+            "eye": [
+              -4.409543991088867,
+              1.285739117860794,
+              -1.0680593490600585
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/QaLdnwvtxbs/remote_189/side_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/QaLdnwvtxbs/remote_189/side_mask.png"
+          },
+          {
+            "name": "high",
+            "pixels": 0,
+            "occlusion_proxy": "invisible",
+            "eye": [
+              -3.6095439910888674,
+              1.9357391178607941,
+              2.1319406509399412
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/QaLdnwvtxbs/remote_189/high_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/QaLdnwvtxbs/remote_189/high_mask.png"
+          }
+        ],
+        "verify_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/QaLdnwvtxbs/remote_189"
+      },
+      "pair_id": "QaLdnwvtxbs_remote_189",
+      "selection": {
+        "selected": true,
+        "category_slot": "remote",
+        "occlusion_case": "clear"
+      }
+    },
+    {
+      "scene_id": "q5QZSEeHe5g",
+      "semantic_id": 919,
+      "object_id_str": "remote control_919",
+      "label": "remote control",
+      "canonical": "remote",
+      "instance_key": "q5QZSEeHe5g:919",
+      "center_hab": [
+        0.14527200162410736,
+        0.10960564762353897,
+        1.0921471118927002
+      ],
+      "sizes_hab": [
+        0.2000100016593933,
+        0.07713700830936432,
+        0.20007991790771484
+      ],
+      "height_agl_guess": null,
+      "verify": {
+        "accept_candidate": true,
+        "reason": "ok",
+        "best_pixels": 322,
+        "occlusion_labels": [
+          "clear",
+          "invisible"
+        ],
+        "nav": {
+          "has_navmesh": true,
+          "n_nearby_snaps": 43,
+          "deployable_hint": true
+        },
+        "tabletop_hint": true,
+        "views": [
+          {
+            "name": "side",
+            "pixels": 322,
+            "occlusion_proxy": "clear",
+            "eye": [
+              0.14527200162410692,
+              1.303877019882202,
+              -1.3078528881072997
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/q5QZSEeHe5g/remote_919/side_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/q5QZSEeHe5g/remote_919/side_mask.png"
+          },
+          {
+            "name": "high",
+            "pixels": 0,
+            "occlusion_proxy": "invisible",
+            "eye": [
+              0.9452720016241074,
+              1.9538770198822022,
+              1.8921471118927002
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/q5QZSEeHe5g/remote_919/high_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/q5QZSEeHe5g/remote_919/high_mask.png"
+          }
+        ],
+        "verify_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/q5QZSEeHe5g/remote_919"
+      },
+      "pair_id": "q5QZSEeHe5g_remote_919",
+      "selection": {
+        "selected": true,
+        "category_slot": "remote",
+        "occlusion_case": "clear"
+      }
+    },
+    {
+      "scene_id": "y9hTuugGdiq",
+      "semantic_id": 232,
+      "object_id_str": "remote control_232",
+      "label": "remote control",
+      "canonical": "remote",
+      "instance_key": "y9hTuugGdiq:232",
+      "center_hab": [
+        6.508930206298828,
+        0.5981130599975586,
+        -0.22687509655952454
+      ],
+      "sizes_hab": [
+        0.23725318908691406,
+        0.028120040893554688,
+        0.1914299726486206
+      ],
+      "height_agl_guess": null,
+      "verify": {
+        "accept_candidate": true,
+        "reason": "ok",
+        "best_pixels": 341,
+        "occlusion_labels": [
+          "clear",
+          "invisible"
+        ],
+        "nav": {
+          "has_navmesh": true,
+          "n_nearby_snaps": 40,
+          "deployable_hint": true
+        },
+        "tabletop_hint": true,
+        "views": [
+          {
+            "name": "side",
+            "pixels": 341,
+            "occlusion_proxy": "clear",
+            "eye": [
+              4.811873931451114,
+              1.2113906383514403,
+              1.4701811782881895
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/y9hTuugGdiq/remote_232/side_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/y9hTuugGdiq/remote_232/side_mask.png"
+          },
+          {
+            "name": "high",
+            "pixels": 0,
+            "occlusion_proxy": "invisible",
+            "eye": [
+              7.308930206298828,
+              1.8613906383514405,
+              0.5731249034404755
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/y9hTuugGdiq/remote_232/high_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/y9hTuugGdiq/remote_232/high_mask.png"
+          }
+        ],
+        "verify_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/y9hTuugGdiq/remote_232"
+      },
+      "pair_id": "y9hTuugGdiq_remote_232",
+      "selection": {
+        "selected": true,
+        "category_slot": "remote",
+        "occlusion_case": "clear"
+      }
+    },
+    {
+      "scene_id": "7MXmsvcQjpJ",
+      "semantic_id": 389,
+      "object_id_str": "bottle of detergent_389",
+      "label": "bottle of detergent",
+      "canonical": "bottle",
+      "instance_key": "7MXmsvcQjpJ:389",
+      "center_hab": [
+        -1.5507529973983765,
+        1.5178430080413818,
+        -5.898420810699463
+      ],
+      "sizes_hab": [
+        0.1400599479675293,
+        0.31293296813964844,
+        0.15894699096679688
+      ],
+      "height_agl_guess": null,
+      "verify": {
+        "accept_candidate": true,
+        "reason": "ok",
+        "best_pixels": 653,
+        "occlusion_labels": [
+          "clear",
+          "invisible"
+        ],
+        "nav": {
+          "has_navmesh": true,
+          "n_nearby_snaps": 27,
+          "deployable_hint": true
+        },
+        "tabletop_hint": true,
+        "views": [
+          {
+            "name": "side",
+            "pixels": 653,
+            "occlusion_proxy": "clear",
+            "eye": [
+              -1.5507529973983762,
+              2.5796398162841796,
+              -3.498420810699463
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/7MXmsvcQjpJ/bottle_389/side_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/7MXmsvcQjpJ/bottle_389/side_mask.png"
+          },
+          {
+            "name": "high",
+            "pixels": 0,
+            "occlusion_proxy": "invisible",
+            "eye": [
+              -0.7507529973983764,
+              3.2296398162841795,
+              -5.098420810699463
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/7MXmsvcQjpJ/bottle_389/high_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/7MXmsvcQjpJ/bottle_389/high_mask.png"
+          }
+        ],
+        "verify_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/7MXmsvcQjpJ/bottle_389"
+      },
+      "pair_id": "7MXmsvcQjpJ_bottle_389",
+      "selection": {
+        "selected": true,
+        "category_slot": "bottle",
+        "occlusion_case": "clear"
+      }
+    },
+    {
+      "scene_id": "q5QZSEeHe5g",
+      "semantic_id": 9,
+      "object_id_str": "bottle_9",
+      "label": "bottle",
+      "canonical": "bottle",
+      "instance_key": "q5QZSEeHe5g:9",
+      "center_hab": [
+        0.9752744436264038,
+        5.721018314361572,
+        -1.245672345161438
+      ],
+      "sizes_hab": [
+        0.1400010585784912,
+        0.2600059509277344,
+        0.2440030574798584
+      ],
+      "height_agl_guess": null,
+      "verify": {
+        "accept_candidate": true,
+        "reason": "ok",
+        "best_pixels": 492,
+        "occlusion_labels": [
+          "clear",
+          "invisible"
+        ],
+        "nav": {
+          "has_navmesh": true,
+          "n_nearby_snaps": 14,
+          "deployable_hint": true
+        },
+        "tabletop_hint": true,
+        "views": [
+          {
+            "name": "side",
+            "pixels": 492,
+            "occlusion_proxy": "clear",
+            "eye": [
+              -0.7217818312213107,
+              4.503877067565918,
+              -2.942728620009152
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/q5QZSEeHe5g/bottle_9/side_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/q5QZSEeHe5g/bottle_9/side_mask.png"
+          },
+          {
+            "name": "high",
+            "pixels": 0,
+            "occlusion_proxy": "invisible",
+            "eye": [
+              1.7752744436264039,
+              5.153877067565918,
+              -0.44567234516143794
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/q5QZSEeHe5g/bottle_9/high_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/q5QZSEeHe5g/bottle_9/high_mask.png"
+          }
+        ],
+        "verify_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/q5QZSEeHe5g/bottle_9"
+      },
+      "pair_id": "q5QZSEeHe5g_bottle_9",
+      "selection": {
+        "selected": true,
+        "category_slot": "bottle",
+        "occlusion_case": "clear"
+      }
+    },
+    {
+      "scene_id": "wcojb4TFT35",
+      "semantic_id": 706,
+      "object_id_str": "bottle of detergent_706",
+      "label": "bottle of detergent",
+      "canonical": "bottle",
+      "instance_key": "wcojb4TFT35:706",
+      "center_hab": [
+        2.7577199935913086,
+        -0.7592582106590271,
+        -9.671090126037598
+      ],
+      "sizes_hab": [
+        0.30930614471435547,
+        0.3083200454711914,
+        0.2022228240966797
+      ],
+      "height_agl_guess": null,
+      "verify": {
+        "accept_candidate": true,
+        "reason": "ok",
+        "best_pixels": 584,
+        "occlusion_labels": [
+          "clear",
+          "invisible"
+        ],
+        "nav": {
+          "has_navmesh": true,
+          "n_nearby_snaps": 27,
+          "deployable_hint": true
+        },
+        "tabletop_hint": true,
+        "views": [
+          {
+            "name": "side",
+            "pixels": 584,
+            "occlusion_proxy": "clear",
+            "eye": [
+              4.454776268439022,
+              1.3449198246002196,
+              -11.368146400885312
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/wcojb4TFT35/bottle_706/side_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/wcojb4TFT35/bottle_706/side_mask.png"
+          },
+          {
+            "name": "high",
+            "pixels": 0,
+            "occlusion_proxy": "invisible",
+            "eye": [
+              3.5577199935913084,
+              1.9949198246002198,
+              -8.871090126037597
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/wcojb4TFT35/bottle_706/high_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/wcojb4TFT35/bottle_706/high_mask.png"
+          }
+        ],
+        "verify_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/wcojb4TFT35/bottle_706"
+      },
+      "pair_id": "wcojb4TFT35_bottle_706",
+      "selection": {
+        "selected": true,
+        "category_slot": "bottle",
+        "occlusion_case": "clear"
+      }
+    }
+  ],
+  "excluded": [
+    {
+      "scene_id": "TEEsavR23oF",
+      "semantic_id": 335,
+      "object_id_str": "coffee mug_335",
+      "label": "coffee mug",
+      "canonical": "cup",
+      "instance_key": "TEEsavR23oF:335",
+      "center_hab": [
+        -3.4615139961242676,
+        0.9497672319412231,
+        0.7197054624557495
+      ],
+      "sizes_hab": [
+        0.16001415252685547,
+        0.11019206047058105,
+        0.15406298637390137
+      ],
+      "height_agl_guess": null,
+      "verify": {
+        "accept_candidate": true,
+        "reason": "ok",
+        "best_pixels": 264,
+        "occlusion_labels": [
+          "clear",
+          "invisible"
+        ],
+        "nav": {
+          "has_navmesh": true,
+          "n_nearby_snaps": 26,
+          "deployable_hint": true
+        },
+        "tabletop_hint": true,
+        "views": [
+          {
+            "name": "side",
+            "pixels": 264,
+            "occlusion_proxy": "clear",
+            "eye": [
+              -1.0615139961242677,
+              1.3133779406547545,
+              0.7197054624557495
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/TEEsavR23oF/cup_335/side_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/TEEsavR23oF/cup_335/side_mask.png"
+          },
+          {
+            "name": "high",
+            "pixels": 0,
+            "occlusion_proxy": "invisible",
+            "eye": [
+              -2.6615139961242678,
+              1.9633779406547547,
+              1.5197054624557496
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/TEEsavR23oF/cup_335/high_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/TEEsavR23oF/cup_335/high_mask.png"
+          }
+        ],
+        "verify_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/TEEsavR23oF/cup_335"
+      },
+      "pair_id": "TEEsavR23oF_cup_335",
+      "selection": {
+        "selected": false,
+        "category_slot": "cup",
+        "exclude_reason": "quota_or_scene_diversity"
+      }
+    },
+    {
+      "scene_id": "CrMo8WxCyVb",
+      "semantic_id": 421,
+      "object_id_str": "coffee mug_421",
+      "label": "coffee mug",
+      "canonical": "cup",
+      "instance_key": "CrMo8WxCyVb:421",
+      "center_hab": [
+        0.3188149929046631,
+        -2.221280097961426,
+        5.408134937286377
+      ],
+      "sizes_hab": [
+        0.14448601007461548,
+        0.10303115844726562,
+        0.1449441909790039
+      ],
+      "height_agl_guess": null,
+      "verify": {
+        "accept_candidate": true,
+        "reason": "ok",
+        "best_pixels": 379,
+        "occlusion_labels": [
+          "clear",
+          "invisible"
+        ],
+        "nav": {
+          "has_navmesh": true,
+          "n_nearby_snaps": 58,
+          "deployable_hint": true
+        },
+        "tabletop_hint": true,
+        "views": [
+          {
+            "name": "side",
+            "pixels": 379,
+            "occlusion_proxy": "clear",
+            "eye": [
+              2.718814992904663,
+              -0.949935531616211,
+              5.408134937286377
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/CrMo8WxCyVb/cup_421/side_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/CrMo8WxCyVb/cup_421/side_mask.png"
+          },
+          {
+            "name": "high",
+            "pixels": 0,
+            "occlusion_proxy": "invisible",
+            "eye": [
+              1.1188149929046631,
+              -0.2999355316162109,
+              6.208134937286377
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/CrMo8WxCyVb/cup_421/high_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/CrMo8WxCyVb/cup_421/high_mask.png"
+          }
+        ],
+        "verify_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/CrMo8WxCyVb/cup_421"
+      },
+      "pair_id": "CrMo8WxCyVb_cup_421",
+      "selection": {
+        "selected": false,
+        "category_slot": "cup",
+        "exclude_reason": "quota_or_scene_diversity"
+      }
+    },
+    {
+      "scene_id": "CrMo8WxCyVb",
+      "semantic_id": 422,
+      "object_id_str": "coffee mug_422",
+      "label": "coffee mug",
+      "canonical": "cup",
+      "instance_key": "CrMo8WxCyVb:422",
+      "center_hab": [
+        -0.46050047874450684,
+        -2.2249650955200195,
+        5.438518047332764
+      ],
+      "sizes_hab": [
+        0.14874303340911865,
+        0.10332679748535156,
+        0.1296977996826172
+      ],
+      "height_agl_guess": null,
+      "verify": {
+        "accept_candidate": true,
+        "reason": "ok",
+        "best_pixels": 356,
+        "occlusion_labels": [
+          "clear",
+          "invisible"
+        ],
+        "nav": {
+          "has_navmesh": true,
+          "n_nearby_snaps": 59,
+          "deployable_hint": true
+        },
+        "tabletop_hint": true,
+        "views": [
+          {
+            "name": "side",
+            "pixels": 356,
+            "occlusion_proxy": "clear",
+            "eye": [
+              1.939499521255493,
+              -0.949935531616211,
+              5.438518047332764
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/CrMo8WxCyVb/cup_422/side_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/CrMo8WxCyVb/cup_422/side_mask.png"
+          },
+          {
+            "name": "high",
+            "pixels": 0,
+            "occlusion_proxy": "invisible",
+            "eye": [
+              0.3394995212554932,
+              -0.2999355316162109,
+              6.2385180473327635
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/CrMo8WxCyVb/cup_422/high_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/CrMo8WxCyVb/cup_422/high_mask.png"
+          }
+        ],
+        "verify_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/CrMo8WxCyVb/cup_422"
+      },
+      "pair_id": "CrMo8WxCyVb_cup_422",
+      "selection": {
+        "selected": false,
+        "category_slot": "cup",
+        "exclude_reason": "quota_or_scene_diversity"
+      }
+    },
+    {
+      "scene_id": "CrMo8WxCyVb",
+      "semantic_id": 424,
+      "object_id_str": "coffee mug_424",
+      "label": "coffee mug",
+      "canonical": "cup",
+      "instance_key": "CrMo8WxCyVb:424",
+      "center_hab": [
+        0.6704620122909546,
+        -2.221634864807129,
+        5.849721431732178
+      ],
+      "sizes_hab": [
+        0.12577199935913086,
+        0.09771537780761719,
+        0.11888504028320312
+      ],
+      "height_agl_guess": null,
+      "verify": {
+        "accept_candidate": true,
+        "reason": "ok",
+        "best_pixels": 249,
+        "occlusion_labels": [
+          "clear",
+          "invisible"
+        ],
+        "nav": {
+          "has_navmesh": true,
+          "n_nearby_snaps": 55,
+          "deployable_hint": true
+        },
+        "tabletop_hint": true,
+        "views": [
+          {
+            "name": "side",
+            "pixels": 249,
+            "occlusion_proxy": "clear",
+            "eye": [
+              2.367518287138668,
+              -1.7499354839324952,
+              4.1526651568844635
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/CrMo8WxCyVb/cup_424/side_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/CrMo8WxCyVb/cup_424/side_mask.png"
+          },
+          {
+            "name": "high",
+            "pixels": 0,
+            "occlusion_proxy": "invisible",
+            "eye": [
+              1.4704620122909546,
+              -1.099935483932495,
+              6.649721431732178
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/CrMo8WxCyVb/cup_424/high_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/CrMo8WxCyVb/cup_424/high_mask.png"
+          }
+        ],
+        "verify_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/CrMo8WxCyVb/cup_424"
+      },
+      "pair_id": "CrMo8WxCyVb_cup_424",
+      "selection": {
+        "selected": false,
+        "category_slot": "cup",
+        "exclude_reason": "quota_or_scene_diversity"
+      }
+    },
+    {
+      "scene_id": "VBzV5z6i1WS",
+      "semantic_id": 430,
+      "object_id_str": "cup_430",
+      "label": "cup",
+      "canonical": "cup",
+      "instance_key": "VBzV5z6i1WS:430",
+      "center_hab": [
+        2.2873640060424805,
+        0.9529720544815063,
+        -4.838065147399902
+      ],
+      "sizes_hab": [
+        0.0791621208190918,
+        0.08851099014282227,
+        0.10879135131835938
+      ],
+      "height_agl_guess": null,
+      "verify": {
+        "accept_candidate": false,
+        "reason": "low_visibility best_pix=50",
+        "best_pixels": 50,
+        "occlusion_labels": [
+          "invisible",
+          "partial"
+        ],
+        "nav": {
+          "has_navmesh": true,
+          "n_nearby_snaps": 53,
+          "deployable_hint": true
+        },
+        "tabletop_hint": true,
+        "views": [
+          {
+            "name": "side",
+            "pixels": 50,
+            "occlusion_proxy": "partial",
+            "eye": [
+              -0.11263599395751944,
+              1.1965418845415114,
+              -4.838065147399902
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/VBzV5z6i1WS/cup_430/side_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/VBzV5z6i1WS/cup_430/side_mask.png"
+          },
+          {
+            "name": "high",
+            "pixels": 0,
+            "occlusion_proxy": "invisible",
+            "eye": [
+              3.0873640060424803,
+              1.8465418845415116,
+              -4.0380651473999025
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/VBzV5z6i1WS/cup_430/high_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/VBzV5z6i1WS/cup_430/high_mask.png"
+          }
+        ],
+        "verify_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/VBzV5z6i1WS/cup_430"
+      },
+      "pair_id": "VBzV5z6i1WS_cup_430",
+      "selection": {
+        "selected": false,
+        "category_slot": "cup",
+        "exclude_reason": "low_visibility best_pix=50"
+      }
+    },
+    {
+      "scene_id": "a8BtkwhxdRV",
+      "semantic_id": 597,
+      "object_id_str": "mug_597",
+      "label": "mug",
+      "canonical": "cup",
+      "instance_key": "a8BtkwhxdRV:597",
+      "center_hab": [
+        -5.116393566131592,
+        -0.3767908811569214,
+        1.221639633178711
+      ],
+      "sizes_hab": [
+        0.16000080108642578,
+        0.1286640167236328,
+        0.13166499137878418
+      ],
+      "height_agl_guess": null,
+      "verify": {
+        "accept_candidate": true,
+        "reason": "ok",
+        "best_pixels": 179,
+        "occlusion_labels": [
+          "clear",
+          "invisible"
+        ],
+        "nav": {
+          "has_navmesh": true,
+          "n_nearby_snaps": 23,
+          "deployable_hint": true
+        },
+        "tabletop_hint": true,
+        "views": [
+          {
+            "name": "side",
+            "pixels": 179,
+            "occlusion_proxy": "clear",
+            "eye": [
+              -3.4193372912838784,
+              -0.6591915845870973,
+              -0.47541664166900355
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/a8BtkwhxdRV/cup_597/side_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/a8BtkwhxdRV/cup_597/side_mask.png"
+          },
+          {
+            "name": "high",
+            "pixels": 0,
+            "occlusion_proxy": "invisible",
+            "eye": [
+              -4.316393566131592,
+              -0.009191584587097124,
+              2.0216396331787108
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/a8BtkwhxdRV/cup_597/high_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/a8BtkwhxdRV/cup_597/high_mask.png"
+          }
+        ],
+        "verify_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/a8BtkwhxdRV/cup_597"
+      },
+      "pair_id": "a8BtkwhxdRV_cup_597",
+      "selection": {
+        "selected": false,
+        "category_slot": "cup",
+        "exclude_reason": "quota_or_scene_diversity"
+      }
+    },
+    {
+      "scene_id": "bxsVRursffK",
+      "semantic_id": 382,
+      "object_id_str": "cup_382",
+      "label": "cup",
+      "canonical": "cup",
+      "instance_key": "bxsVRursffK:382",
+      "center_hab": [
+        -9.75509262084961,
+        -2.072000026702881,
+        -5.735904693603516
+      ],
+      "sizes_hab": [
+        0.13979339599609375,
+        0.14196205139160156,
+        0.12000465393066406
+      ],
+      "height_agl_guess": null,
+      "verify": {
+        "accept_candidate": true,
+        "reason": "ok",
+        "best_pixels": 236,
+        "occlusion_labels": [
+          "clear",
+          "invisible"
+        ],
+        "nav": {
+          "has_navmesh": true,
+          "n_nearby_snaps": 19,
+          "deployable_hint": true
+        },
+        "tabletop_hint": true,
+        "views": [
+          {
+            "name": "side",
+            "pixels": 236,
+            "occlusion_proxy": "clear",
+            "eye": [
+              -7.355092620849609,
+              -1.8253248691558839,
+              -5.735904693603516
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/bxsVRursffK/cup_382/side_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/bxsVRursffK/cup_382/side_mask.png"
+          },
+          {
+            "name": "high",
+            "pixels": 0,
+            "occlusion_proxy": "invisible",
+            "eye": [
+              -8.955092620849609,
+              -1.1753248691558837,
+              -4.935904693603516
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/bxsVRursffK/cup_382/high_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/bxsVRursffK/cup_382/high_mask.png"
+          }
+        ],
+        "verify_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/bxsVRursffK/cup_382"
+      },
+      "pair_id": "bxsVRursffK_cup_382",
+      "selection": {
+        "selected": false,
+        "category_slot": "cup",
+        "exclude_reason": "quota_or_scene_diversity"
+      }
+    },
+    {
+      "scene_id": "svBbv1Pavdk",
+      "semantic_id": 94,
+      "object_id_str": "mug_94",
+      "label": "mug",
+      "canonical": "cup",
+      "instance_key": "svBbv1Pavdk:94",
+      "center_hab": [
+        7.763104438781738,
+        0.644180178642273,
+        -3.7225708961486816
+      ],
+      "sizes_hab": [
+        0.0800008773803711,
+        0.08490705490112305,
+        0.11571121215820312
+      ],
+      "height_agl_guess": null,
+      "verify": {
+        "accept_candidate": true,
+        "reason": "ok",
+        "best_pixels": 166,
+        "occlusion_labels": [
+          "clear",
+          "invisible"
+        ],
+        "nav": {
+          "has_navmesh": true,
+          "n_nearby_snaps": 28,
+          "deployable_hint": true
+        },
+        "tabletop_hint": true,
+        "views": [
+          {
+            "name": "side",
+            "pixels": 166,
+            "occlusion_proxy": "clear",
+            "eye": [
+              9.460160713629453,
+              1.2275474309921264,
+              -2.025514621300968
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/svBbv1Pavdk/cup_94/side_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/svBbv1Pavdk/cup_94/side_mask.png"
+          },
+          {
+            "name": "high",
+            "pixels": 0,
+            "occlusion_proxy": "invisible",
+            "eye": [
+              8.563104438781739,
+              1.8775474309921265,
+              -2.922570896148682
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/svBbv1Pavdk/cup_94/high_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/svBbv1Pavdk/cup_94/high_mask.png"
+          }
+        ],
+        "verify_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/svBbv1Pavdk/cup_94"
+      },
+      "pair_id": "svBbv1Pavdk_cup_94",
+      "selection": {
+        "selected": false,
+        "category_slot": "cup",
+        "exclude_reason": "quota_or_scene_diversity"
+      }
+    },
+    {
+      "scene_id": "wcojb4TFT35",
+      "semantic_id": 196,
+      "object_id_str": "mug_196",
+      "label": "mug",
+      "canonical": "cup",
+      "instance_key": "wcojb4TFT35:196",
+      "center_hab": [
+        3.0297598838806152,
+        3.480910301208496,
+        -7.402268409729004
+      ],
+      "sizes_hab": [
+        0.10256767272949219,
+        0.10395622253417969,
+        0.18775558471679688
+      ],
+      "height_agl_guess": null,
+      "verify": {
+        "accept_candidate": true,
+        "reason": "ok",
+        "best_pixels": 260,
+        "occlusion_labels": [
+          "clear",
+          "invisible"
+        ],
+        "nav": {
+          "has_navmesh": true,
+          "n_nearby_snaps": 24,
+          "deployable_hint": true
+        },
+        "tabletop_hint": true,
+        "views": [
+          {
+            "name": "side",
+            "pixels": 260,
+            "occlusion_proxy": "clear",
+            "eye": [
+              0.6297598838806153,
+              3.944919967651367,
+              -7.402268409729004
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/wcojb4TFT35/cup_196/side_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/wcojb4TFT35/cup_196/side_mask.png"
+          },
+          {
+            "name": "high",
+            "pixels": 0,
+            "occlusion_proxy": "invisible",
+            "eye": [
+              3.829759883880615,
+              4.594919967651367,
+              -6.602268409729004
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/wcojb4TFT35/cup_196/high_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/wcojb4TFT35/cup_196/high_mask.png"
+          }
+        ],
+        "verify_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/wcojb4TFT35/cup_196"
+      },
+      "pair_id": "wcojb4TFT35_cup_196",
+      "selection": {
+        "selected": false,
+        "category_slot": "cup",
+        "exclude_reason": "quota_or_scene_diversity"
+      }
+    },
+    {
+      "scene_id": "BAbdmeyTvMZ",
+      "semantic_id": 330,
+      "object_id_str": "bowl_330",
+      "label": "bowl",
+      "canonical": "bowl",
+      "instance_key": "BAbdmeyTvMZ:330",
+      "center_hab": [
+        -2.021825075149536,
+        1.4585790634155273,
+        6.578204154968262
+      ],
+      "sizes_hab": [
+        0.2600998878479004,
+        0.11728811264038086,
+        0.20000267028808594
+      ],
+      "height_agl_guess": null,
+      "verify": {
+        "accept_candidate": true,
+        "reason": "ok",
+        "best_pixels": 425,
+        "occlusion_labels": [
+          "clear",
+          "invisible"
+        ],
+        "nav": {
+          "has_navmesh": true,
+          "n_nearby_snaps": 35,
+          "deployable_hint": true
+        },
+        "tabletop_hint": true,
+        "views": [
+          {
+            "name": "side",
+            "pixels": 425,
+            "occlusion_proxy": "clear",
+            "eye": [
+              0.3781749248504638,
+              1.4098576247692107,
+              6.578204154968262
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/BAbdmeyTvMZ/bowl_330/side_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/BAbdmeyTvMZ/bowl_330/side_mask.png"
+          },
+          {
+            "name": "high",
+            "pixels": 0,
+            "occlusion_proxy": "invisible",
+            "eye": [
+              -1.221825075149536,
+              2.0598576247692106,
+              7.3782041549682615
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/BAbdmeyTvMZ/bowl_330/high_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/BAbdmeyTvMZ/bowl_330/high_mask.png"
+          }
+        ],
+        "verify_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/BAbdmeyTvMZ/bowl_330"
+      },
+      "pair_id": "BAbdmeyTvMZ_bowl_330",
+      "selection": {
+        "selected": false,
+        "category_slot": "bowl",
+        "exclude_reason": "quota_or_scene_diversity"
+      }
+    },
+    {
+      "scene_id": "CrMo8WxCyVb",
+      "semantic_id": 399,
+      "object_id_str": "bowl_399",
+      "label": "bowl",
+      "canonical": "bowl",
+      "instance_key": "CrMo8WxCyVb:399",
+      "center_hab": [
+        -2.3933374881744385,
+        -2.0440878868103027,
+        7.764384746551514
+      ],
+      "sizes_hab": [
+        0.3354830741882324,
+        0.15753698348999023,
+        0.3530111312866211
+      ],
+      "height_agl_guess": null,
+      "verify": {
+        "accept_candidate": true,
+        "reason": "ok",
+        "best_pixels": 1120,
+        "occlusion_labels": [
+          "clear",
+          "invisible"
+        ],
+        "nav": {
+          "has_navmesh": true,
+          "n_nearby_snaps": 52,
+          "deployable_hint": true
+        },
+        "tabletop_hint": true,
+        "views": [
+          {
+            "name": "side",
+            "pixels": 1120,
+            "occlusion_proxy": "clear",
+            "eye": [
+              -2.393337488174439,
+              -1.7499354839324952,
+              5.364384746551513
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/CrMo8WxCyVb/bowl_399/side_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/CrMo8WxCyVb/bowl_399/side_mask.png"
+          },
+          {
+            "name": "high",
+            "pixels": 0,
+            "occlusion_proxy": "invisible",
+            "eye": [
+              -1.5933374881744384,
+              -1.099935483932495,
+              8.564384746551514
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/CrMo8WxCyVb/bowl_399/high_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/CrMo8WxCyVb/bowl_399/high_mask.png"
+          }
+        ],
+        "verify_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/CrMo8WxCyVb/bowl_399"
+      },
+      "pair_id": "CrMo8WxCyVb_bowl_399",
+      "selection": {
+        "selected": false,
+        "category_slot": "bowl",
+        "exclude_reason": "quota_or_scene_diversity"
+      }
+    },
+    {
+      "scene_id": "GLAQ4DNUx5U",
+      "semantic_id": 307,
+      "object_id_str": "bowl_307",
+      "label": "bowl",
+      "canonical": "bowl",
+      "instance_key": "GLAQ4DNUx5U:307",
+      "center_hab": [
+        -8.289274215698242,
+        -0.6594739556312561,
+        1.0521132946014404
+      ],
+      "sizes_hab": [
+        0.34819602966308594,
+        0.12868201732635498,
+        0.32099205255508423
+      ],
+      "height_agl_guess": null,
+      "verify": {
+        "accept_candidate": true,
+        "reason": "ok",
+        "best_pixels": 1086,
+        "occlusion_labels": [
+          "clear",
+          "invisible"
+        ],
+        "nav": {
+          "has_navmesh": true,
+          "n_nearby_snaps": 48,
+          "deployable_hint": true
+        },
+        "tabletop_hint": true,
+        "views": [
+          {
+            "name": "side",
+            "pixels": 1086,
+            "occlusion_proxy": "clear",
+            "eye": [
+              -9.986330490545956,
+              -0.44288668632507333,
+              -0.6449429802462734
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/GLAQ4DNUx5U/bowl_307/side_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/GLAQ4DNUx5U/bowl_307/side_mask.png"
+          },
+          {
+            "name": "high",
+            "pixels": 0,
+            "occlusion_proxy": "invisible",
+            "eye": [
+              -7.489274215698242,
+              0.2071133136749268,
+              1.8521132946014405
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/GLAQ4DNUx5U/bowl_307/high_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/GLAQ4DNUx5U/bowl_307/high_mask.png"
+          }
+        ],
+        "verify_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/GLAQ4DNUx5U/bowl_307"
+      },
+      "pair_id": "GLAQ4DNUx5U_bowl_307",
+      "selection": {
+        "selected": false,
+        "category_slot": "bowl",
+        "exclude_reason": "quota_or_scene_diversity"
+      }
+    },
+    {
+      "scene_id": "LT9Jq6dN3Ea",
+      "semantic_id": 63,
+      "object_id_str": "bowl_63",
+      "label": "bowl",
+      "canonical": "bowl",
+      "instance_key": "LT9Jq6dN3Ea:63",
+      "center_hab": [
+        1.458266019821167,
+        -2.429684638977051,
+        5.350994110107422
+      ],
+      "sizes_hab": [
+        0.2703399658203125,
+        0.09991836547851562,
+        0.3056163787841797
+      ],
+      "height_agl_guess": null,
+      "verify": {
+        "accept_candidate": true,
+        "reason": "ok",
+        "best_pixels": 934,
+        "occlusion_labels": [
+          "clear",
+          "invisible"
+        ],
+        "nav": {
+          "has_navmesh": true,
+          "n_nearby_snaps": 54,
+          "deployable_hint": true
+        },
+        "tabletop_hint": true,
+        "views": [
+          {
+            "name": "side",
+            "pixels": 934,
+            "occlusion_proxy": "clear",
+            "eye": [
+              -0.2387902550265475,
+              -1.9439717292785645,
+              3.653937835259708
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/LT9Jq6dN3Ea/bowl_63/side_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/LT9Jq6dN3Ea/bowl_63/side_mask.png"
+          },
+          {
+            "name": "high",
+            "pixels": 0,
+            "occlusion_proxy": "invisible",
+            "eye": [
+              2.258266019821167,
+              -1.2939717292785644,
+              6.150994110107422
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/LT9Jq6dN3Ea/bowl_63/high_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/LT9Jq6dN3Ea/bowl_63/high_mask.png"
+          }
+        ],
+        "verify_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/LT9Jq6dN3Ea/bowl_63"
+      },
+      "pair_id": "LT9Jq6dN3Ea_bowl_63",
+      "selection": {
+        "selected": false,
+        "category_slot": "bowl",
+        "exclude_reason": "quota_or_scene_diversity"
+      }
+    },
+    {
+      "scene_id": "TEEsavR23oF",
+      "semantic_id": 354,
+      "object_id_str": "fruit bowl_354",
+      "label": "fruit bowl",
+      "canonical": "bowl",
+      "instance_key": "TEEsavR23oF:354",
+      "center_hab": [
+        -2.8445539474487305,
+        1.1647582054138184,
+        0.6455124616622925
+      ],
+      "sizes_hab": [
+        0.23745203018188477,
+        0.23664402961730957,
+        0.20318901538848877
+      ],
+      "height_agl_guess": null,
+      "verify": {
+        "accept_candidate": true,
+        "reason": "ok",
+        "best_pixels": 243,
+        "occlusion_labels": [
+          "clear",
+          "invisible"
+        ],
+        "nav": {
+          "has_navmesh": true,
+          "n_nearby_snaps": 28,
+          "deployable_hint": true
+        },
+        "tabletop_hint": true,
+        "views": [
+          {
+            "name": "side",
+            "pixels": 243,
+            "occlusion_proxy": "clear",
+            "eye": [
+              -4.541610222296445,
+              1.3133779406547545,
+              2.3425687365100067
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/TEEsavR23oF/bowl_354/side_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/TEEsavR23oF/bowl_354/side_mask.png"
+          },
+          {
+            "name": "high",
+            "pixels": 0,
+            "occlusion_proxy": "invisible",
+            "eye": [
+              -2.0445539474487306,
+              1.9633779406547547,
+              1.4455124616622925
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/TEEsavR23oF/bowl_354/high_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/TEEsavR23oF/bowl_354/high_mask.png"
+          }
+        ],
+        "verify_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/TEEsavR23oF/bowl_354"
+      },
+      "pair_id": "TEEsavR23oF_bowl_354",
+      "selection": {
+        "selected": false,
+        "category_slot": "bowl",
+        "exclude_reason": "quota_or_scene_diversity"
+      }
+    },
+    {
+      "scene_id": "VBzV5z6i1WS",
+      "semantic_id": 423,
+      "object_id_str": "bowl_423",
+      "label": "bowl",
+      "canonical": "bowl",
+      "instance_key": "VBzV5z6i1WS:423",
+      "center_hab": [
+        -0.2494100034236908,
+        0.9210605621337891,
+        -5.206704139709473
+      ],
+      "sizes_hab": [
+        0.38001197576522827,
+        0.13013005256652832,
+        0.3884773254394531
+      ],
+      "height_agl_guess": null,
+      "verify": {
+        "accept_candidate": true,
+        "reason": "ok",
+        "best_pixels": 683,
+        "occlusion_labels": [
+          "clear",
+          "invisible"
+        ],
+        "nav": {
+          "has_navmesh": true,
+          "n_nearby_snaps": 31,
+          "deployable_hint": true
+        },
+        "tabletop_hint": true,
+        "views": [
+          {
+            "name": "side",
+            "pixels": 683,
+            "occlusion_proxy": "clear",
+            "eye": [
+              -1.9464662782714053,
+              1.1965418845415114,
+              -6.903760414557187
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/VBzV5z6i1WS/bowl_423/side_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/VBzV5z6i1WS/bowl_423/side_mask.png"
+          },
+          {
+            "name": "high",
+            "pixels": 0,
+            "occlusion_proxy": "invisible",
+            "eye": [
+              0.5505899965763092,
+              1.8465418845415116,
+              -4.406704139709473
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/VBzV5z6i1WS/bowl_423/high_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/VBzV5z6i1WS/bowl_423/high_mask.png"
+          }
+        ],
+        "verify_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/VBzV5z6i1WS/bowl_423"
+      },
+      "pair_id": "VBzV5z6i1WS_bowl_423",
+      "selection": {
+        "selected": false,
+        "category_slot": "bowl",
+        "exclude_reason": "quota_or_scene_diversity"
+      }
+    },
+    {
+      "scene_id": "a8BtkwhxdRV",
+      "semantic_id": 465,
+      "object_id_str": "bowl_465",
+      "label": "bowl",
+      "canonical": "bowl",
+      "instance_key": "a8BtkwhxdRV:465",
+      "center_hab": [
+        -4.217253684997559,
+        -0.6540635228157043,
+        8.508453369140625
+      ],
+      "sizes_hab": [
+        0.18597698211669922,
+        0.09181499481201172,
+        0.21471023559570312
+      ],
+      "height_agl_guess": null,
+      "verify": {
+        "accept_candidate": true,
+        "reason": "ok",
+        "best_pixels": 305,
+        "occlusion_labels": [
+          "clear",
+          "invisible"
+        ],
+        "nav": {
+          "has_navmesh": true,
+          "n_nearby_snaps": 13,
+          "deployable_hint": true
+        },
+        "tabletop_hint": true,
+        "views": [
+          {
+            "name": "side",
+            "pixels": 305,
+            "occlusion_proxy": "clear",
+            "eye": [
+              -1.8172536849975587,
+              -0.6591915845870973,
+              8.508453369140625
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/a8BtkwhxdRV/bowl_465/side_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/a8BtkwhxdRV/bowl_465/side_mask.png"
+          },
+          {
+            "name": "high",
+            "pixels": 1,
+            "occlusion_proxy": "invisible",
+            "eye": [
+              -3.4172536849975588,
+              -0.009191584587097124,
+              9.308453369140626
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/a8BtkwhxdRV/bowl_465/high_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/a8BtkwhxdRV/bowl_465/high_mask.png"
+          }
+        ],
+        "verify_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/a8BtkwhxdRV/bowl_465"
+      },
+      "pair_id": "a8BtkwhxdRV_bowl_465",
+      "selection": {
+        "selected": false,
+        "category_slot": "bowl",
+        "exclude_reason": "quota_or_scene_diversity"
+      }
+    },
+    {
+      "scene_id": "bxsVRursffK",
+      "semantic_id": 365,
+      "object_id_str": "bowl of fruit_365",
+      "label": "bowl of fruit",
+      "canonical": "bowl",
+      "instance_key": "bxsVRursffK:365",
+      "center_hab": [
+        -7.5575151443481445,
+        -2.0321521759033203,
+        -4.380195617675781
+      ],
+      "sizes_hab": [
+        0.4101438522338867,
+        0.23950910568237305,
+        0.4257926940917969
+      ],
+      "height_agl_guess": null,
+      "verify": {
+        "accept_candidate": true,
+        "reason": "ok",
+        "best_pixels": 1145,
+        "occlusion_labels": [
+          "clear",
+          "invisible"
+        ],
+        "nav": {
+          "has_navmesh": true,
+          "n_nearby_snaps": 50,
+          "deployable_hint": true
+        },
+        "tabletop_hint": true,
+        "views": [
+          {
+            "name": "side",
+            "pixels": 1145,
+            "occlusion_proxy": "clear",
+            "eye": [
+              -5.86045886950043,
+              -1.8253248691558839,
+              -2.6831393428280674
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/bxsVRursffK/bowl_365/side_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/bxsVRursffK/bowl_365/side_mask.png"
+          },
+          {
+            "name": "high",
+            "pixels": 0,
+            "occlusion_proxy": "invisible",
+            "eye": [
+              -6.757515144348145,
+              -1.1753248691558837,
+              -3.5801956176757814
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/bxsVRursffK/bowl_365/high_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/bxsVRursffK/bowl_365/high_mask.png"
+          }
+        ],
+        "verify_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/bxsVRursffK/bowl_365"
+      },
+      "pair_id": "bxsVRursffK_bowl_365",
+      "selection": {
+        "selected": false,
+        "category_slot": "bowl",
+        "exclude_reason": "quota_or_scene_diversity"
+      }
+    },
+    {
+      "scene_id": "q5QZSEeHe5g",
+      "semantic_id": 382,
+      "object_id_str": "bowl_382",
+      "label": "bowl",
+      "canonical": "bowl",
+      "instance_key": "q5QZSEeHe5g:382",
+      "center_hab": [
+        2.57527494430542,
+        0.7833338975906372,
+        -2.1778836250305176
+      ],
+      "sizes_hab": [
+        0.29999828338623047,
+        0.06655192375183105,
+        0.22002315521240234
+      ],
+      "height_agl_guess": null,
+      "verify": {
+        "accept_candidate": true,
+        "reason": "ok",
+        "best_pixels": 464,
+        "occlusion_labels": [
+          "clear",
+          "invisible"
+        ],
+        "nav": {
+          "has_navmesh": true,
+          "n_nearby_snaps": 52,
+          "deployable_hint": true
+        },
+        "tabletop_hint": true,
+        "views": [
+          {
+            "name": "side",
+            "pixels": 464,
+            "occlusion_proxy": "clear",
+            "eye": [
+              0.17527494430542,
+              1.303877019882202,
+              -2.177883625030517
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/q5QZSEeHe5g/bowl_382/side_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/q5QZSEeHe5g/bowl_382/side_mask.png"
+          },
+          {
+            "name": "high",
+            "pixels": 0,
+            "occlusion_proxy": "invisible",
+            "eye": [
+              3.3752749443054197,
+              1.9538770198822022,
+              -1.3778836250305175
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/q5QZSEeHe5g/bowl_382/high_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/q5QZSEeHe5g/bowl_382/high_mask.png"
+          }
+        ],
+        "verify_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/q5QZSEeHe5g/bowl_382"
+      },
+      "pair_id": "q5QZSEeHe5g_bowl_382",
+      "selection": {
+        "selected": false,
+        "category_slot": "bowl",
+        "exclude_reason": "quota_or_scene_diversity"
+      }
+    },
+    {
+      "scene_id": "6s7QHgap2fW",
+      "semantic_id": 354,
+      "object_id_str": "remote control_354",
+      "label": "remote control",
+      "canonical": "remote",
+      "instance_key": "6s7QHgap2fW:354",
+      "center_hab": [
+        3.9371166229248047,
+        0.5840338468551636,
+        -1.381940245628357
+      ],
+      "sizes_hab": [
+        0.08000946044921875,
+        0.011477947235107422,
+        0.16001200675964355
+      ],
+      "height_agl_guess": null,
+      "verify": {
+        "accept_candidate": true,
+        "reason": "ok",
+        "best_pixels": 204,
+        "occlusion_labels": [
+          "clear",
+          "invisible"
+        ],
+        "nav": {
+          "has_navmesh": true,
+          "n_nearby_snaps": 57,
+          "deployable_hint": true
+        },
+        "tabletop_hint": true,
+        "views": [
+          {
+            "name": "side",
+            "pixels": 204,
+            "occlusion_proxy": "clear",
+            "eye": [
+              6.337116622924805,
+              1.2494358360767364,
+              -1.381940245628357
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/6s7QHgap2fW/remote_354/side_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/6s7QHgap2fW/remote_354/side_mask.png"
+          },
+          {
+            "name": "high",
+            "pixels": 0,
+            "occlusion_proxy": "invisible",
+            "eye": [
+              4.7371166229248045,
+              1.8994358360767365,
+              -0.5819402456283569
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/6s7QHgap2fW/remote_354/high_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/6s7QHgap2fW/remote_354/high_mask.png"
+          }
+        ],
+        "verify_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/6s7QHgap2fW/remote_354"
+      },
+      "pair_id": "6s7QHgap2fW_remote_354",
+      "selection": {
+        "selected": false,
+        "category_slot": "remote",
+        "exclude_reason": "quota_or_scene_diversity"
+      }
+    },
+    {
+      "scene_id": "6s7QHgap2fW",
+      "semantic_id": 355,
+      "object_id_str": "remote control_355",
+      "label": "remote control",
+      "canonical": "remote",
+      "instance_key": "6s7QHgap2fW:355",
+      "center_hab": [
+        3.9971225261688232,
+        0.5858688950538635,
+        -1.4919862747192383
+      ],
+      "sizes_hab": [
+        0.12000513076782227,
+        0.017521977424621582,
+        0.18008017539978027
+      ],
+      "height_agl_guess": null,
+      "verify": {
+        "accept_candidate": true,
+        "reason": "ok",
+        "best_pixels": 188,
+        "occlusion_labels": [
+          "clear",
+          "invisible"
+        ],
+        "nav": {
+          "has_navmesh": true,
+          "n_nearby_snaps": 57,
+          "deployable_hint": true
+        },
+        "tabletop_hint": true,
+        "views": [
+          {
+            "name": "side",
+            "pixels": 188,
+            "occlusion_proxy": "clear",
+            "eye": [
+              5.694178801016537,
+              1.2494358360767364,
+              -3.1890425495669525
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/6s7QHgap2fW/remote_355/side_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/6s7QHgap2fW/remote_355/side_mask.png"
+          },
+          {
+            "name": "high",
+            "pixels": 0,
+            "occlusion_proxy": "invisible",
+            "eye": [
+              4.797122526168823,
+              1.8994358360767365,
+              -0.6919862747192382
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/6s7QHgap2fW/remote_355/high_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/6s7QHgap2fW/remote_355/high_mask.png"
+          }
+        ],
+        "verify_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/6s7QHgap2fW/remote_355"
+      },
+      "pair_id": "6s7QHgap2fW_remote_355",
+      "selection": {
+        "selected": false,
+        "category_slot": "remote",
+        "exclude_reason": "quota_or_scene_diversity"
+      }
+    },
+    {
+      "scene_id": "eF36g7L6Z9M",
+      "semantic_id": 224,
+      "object_id_str": "remote control_224",
+      "label": "remote control",
+      "canonical": "remote",
+      "instance_key": "eF36g7L6Z9M:224",
+      "center_hab": [
+        6.0346527099609375,
+        0.5760887265205383,
+        1.6565486192703247
+      ],
+      "sizes_hab": [
+        0.18117713928222656,
+        0.023293018341064453,
+        0.13590288162231445
+      ],
+      "height_agl_guess": null,
+      "verify": {
+        "accept_candidate": true,
+        "reason": "ok",
+        "best_pixels": 149,
+        "occlusion_labels": [
+          "clear",
+          "invisible"
+        ],
+        "nav": {
+          "has_navmesh": true,
+          "n_nearby_snaps": 41,
+          "deployable_hint": true
+        },
+        "tabletop_hint": true,
+        "views": [
+          {
+            "name": "side",
+            "pixels": 149,
+            "occlusion_proxy": "clear",
+            "eye": [
+              8.434652709960938,
+              1.279751443862915,
+              1.6565486192703247
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/eF36g7L6Z9M/remote_224/side_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/eF36g7L6Z9M/remote_224/side_mask.png"
+          },
+          {
+            "name": "high",
+            "pixels": 0,
+            "occlusion_proxy": "invisible",
+            "eye": [
+              6.834652709960937,
+              1.929751443862915,
+              2.4565486192703245
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/eF36g7L6Z9M/remote_224/high_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/eF36g7L6Z9M/remote_224/high_mask.png"
+          }
+        ],
+        "verify_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/eF36g7L6Z9M/remote_224"
+      },
+      "pair_id": "eF36g7L6Z9M_remote_224",
+      "selection": {
+        "selected": false,
+        "category_slot": "remote",
+        "exclude_reason": "quota_or_scene_diversity"
+      }
+    },
+    {
+      "scene_id": "eF36g7L6Z9M",
+      "semantic_id": 225,
+      "object_id_str": "remote control_225",
+      "label": "remote control",
+      "canonical": "remote",
+      "instance_key": "eF36g7L6Z9M:225",
+      "center_hab": [
+        5.944067001342773,
+        0.5801612138748169,
+        1.7471331357955933
+      ],
+      "sizes_hab": [
+        0.1811819076538086,
+        0.032449960708618164,
+        0.18117403984069824
+      ],
+      "height_agl_guess": null,
+      "verify": {
+        "accept_candidate": true,
+        "reason": "ok",
+        "best_pixels": 226,
+        "occlusion_labels": [
+          "clear",
+          "invisible"
+        ],
+        "nav": {
+          "has_navmesh": true,
+          "n_nearby_snaps": 40,
+          "deployable_hint": true
+        },
+        "tabletop_hint": true,
+        "views": [
+          {
+            "name": "side",
+            "pixels": 226,
+            "occlusion_proxy": "clear",
+            "eye": [
+              5.944067001342773,
+              1.279751443862915,
+              4.147133135795594
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/eF36g7L6Z9M/remote_225/side_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/eF36g7L6Z9M/remote_225/side_mask.png"
+          },
+          {
+            "name": "high",
+            "pixels": 0,
+            "occlusion_proxy": "invisible",
+            "eye": [
+              6.744067001342773,
+              1.929751443862915,
+              2.547133135795593
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/eF36g7L6Z9M/remote_225/high_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/eF36g7L6Z9M/remote_225/high_mask.png"
+          }
+        ],
+        "verify_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/eF36g7L6Z9M/remote_225"
+      },
+      "pair_id": "eF36g7L6Z9M_remote_225",
+      "selection": {
+        "selected": false,
+        "category_slot": "remote",
+        "exclude_reason": "quota_or_scene_diversity"
+      }
+    },
+    {
+      "scene_id": "eF36g7L6Z9M",
+      "semantic_id": 672,
+      "object_id_str": "remote control_672",
+      "label": "remote control",
+      "canonical": "remote",
+      "instance_key": "eF36g7L6Z9M:672",
+      "center_hab": [
+        6.238474369049072,
+        -3.093127489089966,
+        3.581531047821045
+      ],
+      "sizes_hab": [
+        0.09054279327392578,
+        0.03207111358642578,
+        0.13589191436767578
+      ],
+      "height_agl_guess": null,
+      "verify": {
+        "accept_candidate": true,
+        "reason": "ok",
+        "best_pixels": 173,
+        "occlusion_labels": [
+          "clear",
+          "invisible"
+        ],
+        "nav": {
+          "has_navmesh": true,
+          "n_nearby_snaps": 58,
+          "deployable_hint": true
+        },
+        "tabletop_hint": true,
+        "views": [
+          {
+            "name": "side",
+            "pixels": 173,
+            "occlusion_proxy": "clear",
+            "eye": [
+              3.8384743690490724,
+              -1.720248556137085,
+              3.5815310478210454
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/eF36g7L6Z9M/remote_672/side_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/eF36g7L6Z9M/remote_672/side_mask.png"
+          },
+          {
+            "name": "high",
+            "pixels": 15,
+            "occlusion_proxy": "invisible",
+            "eye": [
+              7.038474369049072,
+              -1.070248556137085,
+              4.381531047821045
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/eF36g7L6Z9M/remote_672/high_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/eF36g7L6Z9M/remote_672/high_mask.png"
+          }
+        ],
+        "verify_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/eF36g7L6Z9M/remote_672"
+      },
+      "pair_id": "eF36g7L6Z9M_remote_672",
+      "selection": {
+        "selected": false,
+        "category_slot": "remote",
+        "exclude_reason": "quota_or_scene_diversity"
+      }
+    },
+    {
+      "scene_id": "q5QZSEeHe5g",
+      "semantic_id": 58,
+      "object_id_str": "remote control_58",
+      "label": "remote control",
+      "canonical": "remote",
+      "instance_key": "q5QZSEeHe5g:58",
+      "center_hab": [
+        1.7752954959869385,
+        3.734865665435791,
+        -6.207892417907715
+      ],
+      "sizes_hab": [
+        0.13996291160583496,
+        0.0078277587890625,
+        0.08002185821533203
+      ],
+      "height_agl_guess": null,
+      "verify": {
+        "accept_candidate": true,
+        "reason": "ok",
+        "best_pixels": 175,
+        "occlusion_labels": [
+          "clear",
+          "invisible"
+        ],
+        "nav": {
+          "has_navmesh": true,
+          "n_nearby_snaps": 56,
+          "deployable_hint": true
+        },
+        "tabletop_hint": true,
+        "views": [
+          {
+            "name": "side",
+            "pixels": 175,
+            "occlusion_proxy": "clear",
+            "eye": [
+              4.175295495986939,
+              4.503877067565918,
+              -6.207892417907715
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/q5QZSEeHe5g/remote_58/side_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/q5QZSEeHe5g/remote_58/side_mask.png"
+          },
+          {
+            "name": "high",
+            "pixels": 0,
+            "occlusion_proxy": "invisible",
+            "eye": [
+              2.5752954959869383,
+              5.153877067565918,
+              -5.407892417907715
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/q5QZSEeHe5g/remote_58/high_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/q5QZSEeHe5g/remote_58/high_mask.png"
+          }
+        ],
+        "verify_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/q5QZSEeHe5g/remote_58"
+      },
+      "pair_id": "q5QZSEeHe5g_remote_58",
+      "selection": {
+        "selected": false,
+        "category_slot": "remote",
+        "exclude_reason": "quota_or_scene_diversity"
+      }
+    },
+    {
+      "scene_id": "y9hTuugGdiq",
+      "semantic_id": 230,
+      "object_id_str": "remote control_230",
+      "label": "remote control",
+      "canonical": "remote",
+      "instance_key": "y9hTuugGdiq:230",
+      "center_hab": [
+        6.608002662658691,
+        0.591773509979248,
+        -0.3225926160812378
+      ],
+      "sizes_hab": [
+        0.14026832580566406,
+        0.0155869722366333,
+        0.09570503234863281
+      ],
+      "height_agl_guess": null,
+      "verify": {
+        "accept_candidate": true,
+        "reason": "ok",
+        "best_pixels": 132,
+        "occlusion_labels": [
+          "clear",
+          "invisible"
+        ],
+        "nav": {
+          "has_navmesh": true,
+          "n_nearby_snaps": 41,
+          "deployable_hint": true
+        },
+        "tabletop_hint": true,
+        "views": [
+          {
+            "name": "side",
+            "pixels": 132,
+            "occlusion_proxy": "clear",
+            "eye": [
+              8.305058937506406,
+              1.2113906383514403,
+              -2.019648890928952
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/y9hTuugGdiq/remote_230/side_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/y9hTuugGdiq/remote_230/side_mask.png"
+          },
+          {
+            "name": "high",
+            "pixels": 0,
+            "occlusion_proxy": "invisible",
+            "eye": [
+              7.408002662658691,
+              1.8613906383514405,
+              0.47740738391876225
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/y9hTuugGdiq/remote_230/high_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/y9hTuugGdiq/remote_230/high_mask.png"
+          }
+        ],
+        "verify_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/y9hTuugGdiq/remote_230"
+      },
+      "pair_id": "y9hTuugGdiq_remote_230",
+      "selection": {
+        "selected": false,
+        "category_slot": "remote",
+        "exclude_reason": "quota_or_scene_diversity"
+      }
+    },
+    {
+      "scene_id": "y9hTuugGdiq",
+      "semantic_id": 231,
+      "object_id_str": "remote control_231",
+      "label": "remote control",
+      "canonical": "remote",
+      "instance_key": "y9hTuugGdiq:231",
+      "center_hab": [
+        6.558513164520264,
+        0.5987344980239868,
+        -0.2866995930671692
+      ],
+      "sizes_hab": [
+        0.23925209045410156,
+        0.029417037963867188,
+        0.16749101877212524
+      ],
+      "height_agl_guess": null,
+      "verify": {
+        "accept_candidate": true,
+        "reason": "ok",
+        "best_pixels": 262,
+        "occlusion_labels": [
+          "clear",
+          "invisible"
+        ],
+        "nav": {
+          "has_navmesh": true,
+          "n_nearby_snaps": 39,
+          "deployable_hint": true
+        },
+        "tabletop_hint": true,
+        "views": [
+          {
+            "name": "side",
+            "pixels": 262,
+            "occlusion_proxy": "clear",
+            "eye": [
+              8.255569439367978,
+              1.2113906383514403,
+              -1.9837558679148837
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/y9hTuugGdiq/remote_231/side_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/y9hTuugGdiq/remote_231/side_mask.png"
+          },
+          {
+            "name": "high",
+            "pixels": 0,
+            "occlusion_proxy": "invisible",
+            "eye": [
+              7.3585131645202635,
+              1.8613906383514405,
+              0.5133004069328309
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/y9hTuugGdiq/remote_231/high_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/y9hTuugGdiq/remote_231/high_mask.png"
+          }
+        ],
+        "verify_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/y9hTuugGdiq/remote_231"
+      },
+      "pair_id": "y9hTuugGdiq_remote_231",
+      "selection": {
+        "selected": false,
+        "category_slot": "remote",
+        "exclude_reason": "quota_or_scene_diversity"
+      }
+    },
+    {
+      "scene_id": "ziup5kvtCCR",
+      "semantic_id": 156,
+      "object_id_str": "remote control_156",
+      "label": "remote control",
+      "canonical": "remote",
+      "instance_key": "ziup5kvtCCR:156",
+      "center_hab": [
+        -1.789801001548767,
+        0.6482493877410889,
+        7.108153343200684
+      ],
+      "sizes_hab": [
+        0.19999408721923828,
+        0.03463304042816162,
+        0.07999324798583984
+      ],
+      "height_agl_guess": null,
+      "verify": {
+        "accept_candidate": true,
+        "reason": "ok",
+        "best_pixels": 154,
+        "occlusion_labels": [
+          "clear",
+          "invisible"
+        ],
+        "nav": {
+          "has_navmesh": true,
+          "n_nearby_snaps": 38,
+          "deployable_hint": true
+        },
+        "tabletop_hint": true,
+        "views": [
+          {
+            "name": "side",
+            "pixels": 154,
+            "occlusion_proxy": "clear",
+            "eye": [
+              -3.4868572763964814,
+              1.171223172545433,
+              5.411097068352969
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/ziup5kvtCCR/remote_156/side_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/ziup5kvtCCR/remote_156/side_mask.png"
+          },
+          {
+            "name": "high",
+            "pixels": 0,
+            "occlusion_proxy": "invisible",
+            "eye": [
+              -0.989801001548767,
+              1.821223172545433,
+              7.908153343200683
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/ziup5kvtCCR/remote_156/high_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/ziup5kvtCCR/remote_156/high_mask.png"
+          }
+        ],
+        "verify_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/ziup5kvtCCR/remote_156"
+      },
+      "pair_id": "ziup5kvtCCR_remote_156",
+      "selection": {
+        "selected": false,
+        "category_slot": "remote",
+        "exclude_reason": "quota_or_scene_diversity"
+      }
+    },
+    {
+      "scene_id": "4ok3usBNeis",
+      "semantic_id": 66,
+      "object_id_str": "bottle of detergent_66",
+      "label": "bottle of detergent",
+      "canonical": "bottle",
+      "instance_key": "4ok3usBNeis:66",
+      "center_hab": [
+        -0.3759565055370331,
+        -0.3986138701438904,
+        1.7030491828918457
+      ],
+      "sizes_hab": [
+        0.0801050066947937,
+        0.3200000524520874,
+        0.1252899169921875
+      ],
+      "height_agl_guess": null,
+      "verify": {
+        "accept_candidate": true,
+        "reason": "ok",
+        "best_pixels": 453,
+        "occlusion_labels": [
+          "clear",
+          "invisible"
+        ],
+        "nav": {
+          "has_navmesh": true,
+          "n_nearby_snaps": 39,
+          "deployable_hint": true
+        },
+        "tabletop_hint": true,
+        "views": [
+          {
+            "name": "side",
+            "pixels": 453,
+            "occlusion_proxy": "clear",
+            "eye": [
+              2.024043494462967,
+              0.6144747972488402,
+              1.7030491828918457
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/4ok3usBNeis/bottle_66/side_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/4ok3usBNeis/bottle_66/side_mask.png"
+          },
+          {
+            "name": "high",
+            "pixels": 0,
+            "occlusion_proxy": "invisible",
+            "eye": [
+              0.42404349446296696,
+              1.2644747972488404,
+              2.5030491828918455
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/4ok3usBNeis/bottle_66/high_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/4ok3usBNeis/bottle_66/high_mask.png"
+          }
+        ],
+        "verify_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/4ok3usBNeis/bottle_66"
+      },
+      "pair_id": "4ok3usBNeis_bottle_66",
+      "selection": {
+        "selected": false,
+        "category_slot": "bottle",
+        "exclude_reason": "quota_or_scene_diversity"
+      }
+    },
+    {
+      "scene_id": "DYehNKdT76V",
+      "semantic_id": 37,
+      "object_id_str": "bottle of soap_37",
+      "label": "bottle of soap",
+      "canonical": "bottle",
+      "instance_key": "DYehNKdT76V:37",
+      "center_hab": [
+        -9.393165588378906,
+        4.297789573669434,
+        -5.823479652404785
+      ],
+      "sizes_hab": [
+        0.0108642578125,
+        0.1740894317626953,
+        0.13056564331054688
+      ],
+      "height_agl_guess": null,
+      "verify": {
+        "accept_candidate": false,
+        "reason": "low_visibility best_pix=61",
+        "best_pixels": 61,
+        "occlusion_labels": [
+          "invisible",
+          "partial"
+        ],
+        "nav": {
+          "has_navmesh": true,
+          "n_nearby_snaps": 23,
+          "deployable_hint": true
+        },
+        "tabletop_hint": true,
+        "views": [
+          {
+            "name": "side",
+            "pixels": 61,
+            "occlusion_proxy": "partial",
+            "eye": [
+              -6.993165588378906,
+              4.486507081985474,
+              -5.823479652404785
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/DYehNKdT76V/bottle_37/side_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/DYehNKdT76V/bottle_37/side_mask.png"
+          },
+          {
+            "name": "high",
+            "pixels": 0,
+            "occlusion_proxy": "invisible",
+            "eye": [
+              -8.593165588378906,
+              5.1365070819854735,
+              -5.023479652404785
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/DYehNKdT76V/bottle_37/high_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/DYehNKdT76V/bottle_37/high_mask.png"
+          }
+        ],
+        "verify_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/DYehNKdT76V/bottle_37"
+      },
+      "pair_id": "DYehNKdT76V_bottle_37",
+      "selection": {
+        "selected": false,
+        "category_slot": "bottle",
+        "exclude_reason": "low_visibility best_pix=61"
+      }
+    },
+    {
+      "scene_id": "GLAQ4DNUx5U",
+      "semantic_id": 263,
+      "object_id_str": "bottle of detergent_263",
+      "label": "bottle of detergent",
+      "canonical": "bottle",
+      "instance_key": "GLAQ4DNUx5U:263",
+      "center_hab": [
+        -2.903650999069214,
+        -0.8971149921417236,
+        5.499100685119629
+      ],
+      "sizes_hab": [
+        0.18307209014892578,
+        0.29338908195495605,
+        0.17034339904785156
+      ],
+      "height_agl_guess": null,
+      "verify": {
+        "accept_candidate": true,
+        "reason": "ok",
+        "best_pixels": 488,
+        "occlusion_labels": [
+          "clear",
+          "invisible"
+        ],
+        "nav": {
+          "has_navmesh": true,
+          "n_nearby_snaps": 33,
+          "deployable_hint": true
+        },
+        "tabletop_hint": true,
+        "views": [
+          {
+            "name": "side",
+            "pixels": 488,
+            "occlusion_proxy": "clear",
+            "eye": [
+              -2.9036509990692143,
+              -0.44288668632507333,
+              3.099100685119629
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/GLAQ4DNUx5U/bottle_263/side_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/GLAQ4DNUx5U/bottle_263/side_mask.png"
+          },
+          {
+            "name": "high",
+            "pixels": 0,
+            "occlusion_proxy": "invisible",
+            "eye": [
+              -2.103650999069214,
+              0.2071133136749268,
+              6.299100685119629
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/GLAQ4DNUx5U/bottle_263/high_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/GLAQ4DNUx5U/bottle_263/high_mask.png"
+          }
+        ],
+        "verify_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/GLAQ4DNUx5U/bottle_263"
+      },
+      "pair_id": "GLAQ4DNUx5U_bottle_263",
+      "selection": {
+        "selected": false,
+        "category_slot": "bottle",
+        "exclude_reason": "quota_or_scene_diversity"
+      }
+    },
+    {
+      "scene_id": "LT9Jq6dN3Ea",
+      "semantic_id": 505,
+      "object_id_str": "bottle_505",
+      "label": "bottle",
+      "canonical": "bottle",
+      "instance_key": "LT9Jq6dN3Ea:505",
+      "center_hab": [
+        1.9462170600891113,
+        1.5168638229370117,
+        4.7164812088012695
+      ],
+      "sizes_hab": [
+        0.1490178108215332,
+        0.18013811111450195,
+        0.09237289428710938
+      ],
+      "height_agl_guess": null,
+      "verify": {
+        "accept_candidate": false,
+        "reason": "low_visibility best_pix=58",
+        "best_pixels": 58,
+        "occlusion_labels": [
+          "invisible",
+          "partial"
+        ],
+        "nav": {
+          "has_navmesh": true,
+          "n_nearby_snaps": 41,
+          "deployable_hint": true
+        },
+        "tabletop_hint": true,
+        "views": [
+          {
+            "name": "side",
+            "pixels": 58,
+            "occlusion_proxy": "partial",
+            "eye": [
+              3.6432733349368247,
+              1.2560283184051513,
+              3.0194249339535553
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/LT9Jq6dN3Ea/bottle_505/side_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/LT9Jq6dN3Ea/bottle_505/side_mask.png"
+          },
+          {
+            "name": "high",
+            "pixels": 0,
+            "occlusion_proxy": "invisible",
+            "eye": [
+              2.746217060089111,
+              1.9060283184051514,
+              5.516481208801269
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/LT9Jq6dN3Ea/bottle_505/high_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/LT9Jq6dN3Ea/bottle_505/high_mask.png"
+          }
+        ],
+        "verify_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/LT9Jq6dN3Ea/bottle_505"
+      },
+      "pair_id": "LT9Jq6dN3Ea_bottle_505",
+      "selection": {
+        "selected": false,
+        "category_slot": "bottle",
+        "exclude_reason": "low_visibility best_pix=58"
+      }
+    },
+    {
+      "scene_id": "TEEsavR23oF",
+      "semantic_id": 573,
+      "object_id_str": "soap bottle_573",
+      "label": "soap bottle",
+      "canonical": "bottle",
+      "instance_key": "TEEsavR23oF:573",
+      "center_hab": [
+        -1.8765690326690674,
+        0.9451549053192139,
+        -5.847925186157227
+      ],
+      "sizes_hab": [
+        0.12987804412841797,
+        0.2200930118560791,
+        0.11005973815917969
+      ],
+      "height_agl_guess": null,
+      "verify": {
+        "accept_candidate": true,
+        "reason": "ok",
+        "best_pixels": 231,
+        "occlusion_labels": [
+          "clear",
+          "invisible"
+        ],
+        "nav": {
+          "has_navmesh": true,
+          "n_nearby_snaps": 48,
+          "deployable_hint": true
+        },
+        "tabletop_hint": true,
+        "views": [
+          {
+            "name": "side",
+            "pixels": 231,
+            "occlusion_proxy": "clear",
+            "eye": [
+              -4.276569032669068,
+              1.3133779406547545,
+              -5.847925186157227
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/TEEsavR23oF/bottle_573/side_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/TEEsavR23oF/bottle_573/side_mask.png"
+          },
+          {
+            "name": "high",
+            "pixels": 0,
+            "occlusion_proxy": "invisible",
+            "eye": [
+              -1.0765690326690673,
+              1.9633779406547547,
+              -5.047925186157227
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/TEEsavR23oF/bottle_573/high_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/TEEsavR23oF/bottle_573/high_mask.png"
+          }
+        ],
+        "verify_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/TEEsavR23oF/bottle_573"
+      },
+      "pair_id": "TEEsavR23oF_bottle_573",
+      "selection": {
+        "selected": false,
+        "category_slot": "bottle",
+        "exclude_reason": "quota_or_scene_diversity"
+      }
+    },
+    {
+      "scene_id": "VBzV5z6i1WS",
+      "semantic_id": 30,
+      "object_id_str": "bottle_30",
+      "label": "bottle",
+      "canonical": "bottle",
+      "instance_key": "VBzV5z6i1WS:30",
+      "center_hab": [
+        -4.269413471221924,
+        0.8458111882209778,
+        -3.4662604331970215
+      ],
+      "sizes_hab": [
+        0.1000051498413086,
+        0.14589297771453857,
+        0.10760021209716797
+      ],
+      "height_agl_guess": null,
+      "verify": {
+        "accept_candidate": true,
+        "reason": "ok",
+        "best_pixels": 116,
+        "occlusion_labels": [
+          "clear",
+          "invisible"
+        ],
+        "nav": {
+          "has_navmesh": true,
+          "n_nearby_snaps": 49,
+          "deployable_hint": true
+        },
+        "tabletop_hint": true,
+        "views": [
+          {
+            "name": "side",
+            "pixels": 116,
+            "occlusion_proxy": "clear",
+            "eye": [
+              -6.669413471221924,
+              1.1965418845415114,
+              -3.466260433197021
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/VBzV5z6i1WS/bottle_30/side_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/VBzV5z6i1WS/bottle_30/side_mask.png"
+          },
+          {
+            "name": "high",
+            "pixels": 0,
+            "occlusion_proxy": "invisible",
+            "eye": [
+              -3.469413471221924,
+              1.8465418845415116,
+              -2.6662604331970217
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/VBzV5z6i1WS/bottle_30/high_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/VBzV5z6i1WS/bottle_30/high_mask.png"
+          }
+        ],
+        "verify_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/VBzV5z6i1WS/bottle_30"
+      },
+      "pair_id": "VBzV5z6i1WS_bottle_30",
+      "selection": {
+        "selected": false,
+        "category_slot": "bottle",
+        "exclude_reason": "quota_or_scene_diversity"
+      }
+    },
+    {
+      "scene_id": "a8BtkwhxdRV",
+      "semantic_id": 15,
+      "object_id_str": "soap bottle_15",
+      "label": "soap bottle",
+      "canonical": "bottle",
+      "instance_key": "a8BtkwhxdRV:15",
+      "center_hab": [
+        -3.746392011642456,
+        1.9036662578582764,
+        8.208006858825684
+      ],
+      "sizes_hab": [
+        0.14000415802001953,
+        0.1273179054260254,
+        0.09562492370605469
+      ],
+      "height_agl_guess": null,
+      "verify": {
+        "accept_candidate": true,
+        "reason": "ok",
+        "best_pixels": 141,
+        "occlusion_labels": [
+          "clear",
+          "invisible"
+        ],
+        "nav": {
+          "has_navmesh": true,
+          "n_nearby_snaps": 22,
+          "deployable_hint": true
+        },
+        "tabletop_hint": true,
+        "views": [
+          {
+            "name": "side",
+            "pixels": 141,
+            "occlusion_proxy": "clear",
+            "eye": [
+              -2.0493357367947427,
+              2.3408085346221923,
+              6.510950583977969
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/a8BtkwhxdRV/bottle_15/side_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/a8BtkwhxdRV/bottle_15/side_mask.png"
+          },
+          {
+            "name": "high",
+            "pixels": 0,
+            "occlusion_proxy": "invisible",
+            "eye": [
+              -2.9463920116424562,
+              2.990808534622192,
+              9.008006858825684
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/a8BtkwhxdRV/bottle_15/high_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/a8BtkwhxdRV/bottle_15/high_mask.png"
+          }
+        ],
+        "verify_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/a8BtkwhxdRV/bottle_15"
+      },
+      "pair_id": "a8BtkwhxdRV_bottle_15",
+      "selection": {
+        "selected": false,
+        "category_slot": "bottle",
+        "exclude_reason": "quota_or_scene_diversity"
+      }
+    },
+    {
+      "scene_id": "bxsVRursffK",
+      "semantic_id": 258,
+      "object_id_str": "bottle_258",
+      "label": "bottle",
+      "canonical": "bottle",
+      "instance_key": "bxsVRursffK:258",
+      "center_hab": [
+        -9.237719535827637,
+        0.9239233732223511,
+        -2.4779720306396484
+      ],
+      "sizes_hab": [
+        0.1600017547607422,
+        0.24151301383972168,
+        0.1158761978149414
+      ],
+      "height_agl_guess": null,
+      "verify": {
+        "accept_candidate": true,
+        "reason": "ok",
+        "best_pixels": 334,
+        "occlusion_labels": [
+          "clear",
+          "invisible"
+        ],
+        "nav": {
+          "has_navmesh": true,
+          "n_nearby_snaps": 35,
+          "deployable_hint": true
+        },
+        "tabletop_hint": true,
+        "views": [
+          {
+            "name": "side",
+            "pixels": 334,
+            "occlusion_proxy": "clear",
+            "eye": [
+              -10.934775810675351,
+              1.1746751308441161,
+              -0.7809157557919344
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/bxsVRursffK/bottle_258/side_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/bxsVRursffK/bottle_258/side_mask.png"
+          },
+          {
+            "name": "high",
+            "pixels": 0,
+            "occlusion_proxy": "invisible",
+            "eye": [
+              -8.437719535827636,
+              1.8246751308441163,
+              -1.6779720306396484
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/bxsVRursffK/bottle_258/high_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/bxsVRursffK/bottle_258/high_mask.png"
+          }
+        ],
+        "verify_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/bxsVRursffK/bottle_258"
+      },
+      "pair_id": "bxsVRursffK_bottle_258",
+      "selection": {
+        "selected": false,
+        "category_slot": "bottle",
+        "exclude_reason": "quota_or_scene_diversity"
+      }
+    },
+    {
+      "scene_id": "svBbv1Pavdk",
+      "semantic_id": 382,
+      "object_id_str": "bottle_382",
+      "label": "bottle",
+      "canonical": "bottle",
+      "instance_key": "svBbv1Pavdk:382",
+      "center_hab": [
+        -0.8054724931716919,
+        1.0541315078735352,
+        3.409569263458252
+      ],
+      "sizes_hab": [
+        0.0029230117797851562,
+        0.07500004768371582,
+        0.26000022888183594
+      ],
+      "height_agl_guess": null,
+      "verify": {
+        "accept_candidate": true,
+        "reason": "ok",
+        "best_pixels": 184,
+        "occlusion_labels": [
+          "clear",
+          "invisible"
+        ],
+        "nav": {
+          "has_navmesh": true,
+          "n_nearby_snaps": 30,
+          "deployable_hint": true
+        },
+        "tabletop_hint": true,
+        "views": [
+          {
+            "name": "side",
+            "pixels": 184,
+            "occlusion_proxy": "clear",
+            "eye": [
+              1.594527506828308,
+              1.2275474309921264,
+              3.409569263458252
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/svBbv1Pavdk/bottle_382/side_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/svBbv1Pavdk/bottle_382/side_mask.png"
+          },
+          {
+            "name": "high",
+            "pixels": 0,
+            "occlusion_proxy": "invisible",
+            "eye": [
+              -0.00547249317169185,
+              1.8775474309921265,
+              4.209569263458252
+            ],
+            "rgb": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/svBbv1Pavdk/bottle_382/high_rgb.png",
+            "mask": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/svBbv1Pavdk/bottle_382/high_mask.png"
+          }
+        ],
+        "verify_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/verify/svBbv1Pavdk/bottle_382"
+      },
+      "pair_id": "svBbv1Pavdk_bottle_382",
+      "selection": {
+        "selected": false,
+        "category_slot": "bottle",
+        "exclude_reason": "quota_or_scene_diversity"
+      }
+    }
+  ],
+  "selection_note": "Rebalanced for cup seed scenes + >=1 partial when available"
+}

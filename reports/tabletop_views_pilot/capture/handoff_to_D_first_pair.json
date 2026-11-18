@@ -1,0 +1,66 @@
+{
+  "protocol": "tabletop_views_pilot_v1",
+  "baseline_sha": "492f53fd567c2be207a28a6fd5f9b6dbe7ee2da1",
+  "first_pair_id": "CrMo8WxCyVb_cup_423",
+  "captures_root": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/captures",
+  "reports_captures_symlink": "/workspace/VLN_Mobilemanipulator/reports/tabletop_views_pilot/captures",
+  "layout_doc": "/workspace/VLN_Mobilemanipulator/adapters/habitat_rangercr10/evaluation/tabletop_views/CAPTURE_LAYOUT.md",
+  "camera_modes": [
+    "fixed_base_gimbal",
+    "arm_ee"
+  ],
+  "arm_mode_alias": "arm_view",
+  "frozen": {
+    "robot_scale": 0.7,
+    "executor_version": "kinematic_collision_v1.2",
+    "arm_init": [
+      0.236,
+      0.086,
+      -2.398,
+      -0.83,
+      -1.335,
+      0.0
+    ],
+    "gimbal_sequence": [
+      "hold",
+      "up",
+      "down"
+    ],
+    "arm_deltas": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.35,
+        -0.45,
+        0.0,
+        -0.35,
+        0.0
+      ],
+      [
+        0.55,
+        0.25,
+        -0.35,
+        0.0,
+        -0.25,
+        0.0
+      ]
+    ],
+    "resolution_hw": [
+      480,
+      640
+    ],
+    "hfov_deg": 79.0
+  },
+  "status": "batch_ready",
+  "all_pairs_index": "reports/tabletop_views_pilot/captures/pairing_index.json",
+  "capture_report": "reports/tabletop_views_pilot/capture/CAPTURE_REPORT.md",
+  "n_pairs_total": 12,
+  "n_reliable_gt": 9
+}

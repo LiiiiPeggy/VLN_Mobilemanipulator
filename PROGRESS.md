@@ -1,13 +1,13 @@
 # PROGRESS.md — 当前状态
 
-更新时间：2026-11-17（ApexNav–Ranger 最小收口 v1.2；排队等 B formal）  
+更新时间：2026-11-18（桌边视点 C 采集 12 对交付 D；formal 仍排队）  
 证据优先于本文；冲突时以代码、`reports/`、`runs/`、容器实测为准。
 
 ## 研究目标与阶段
 
 **目标**：六套 VLN/ObjectNav baseline 可复现评测 → 再适配 RangerBox-CR10。
 
-**当前阶段**：Ranger 执行收口 **`kinematic_collision_v1.2` + `fixed_base_gimbal`**；短预算 50 已归档；协议预算 150/100 的 diag→smoke→dev24 **排队**等 Cursor B formal 释放共享 ROS/GPU。
+**当前阶段**：Ranger 执行收口 **`kinematic_collision_v1.2` + `fixed_base_gimbal`**；**桌边小物体配对采集（Cursor C）已交付**；协议预算 150/100 仍排队。
 
 ## Baseline 状态一览
 
@@ -50,10 +50,21 @@
 | 全量 1000-ep | **完成** | `.../hm3dv2_full_20261109_231528`；~13.1 h |
 | SR / SPL | **74.4% / 37.65%**（论文 76.2 / 38.0） | log + `summary.json` |
 
+## 桌边视点 pilot（Cursor C 采集）
+
+| 项 | 状态 | 证据 |
+|----|------|------|
+| 实例锁定 | **12**（cup/bowl/remote/bottle ×≤3） | `reports/tabletop_views_pilot/capture/locked_instances.md` |
+| 配对采集 | **12/12**；可靠 GT **9/12** | `CAPTURE_REPORT.md`；D 盘 `.../tabletop_views_pilot/captures/` |
+| 接口 | `fixed_base_gimbal` + `arm_ee`≡`arm_view`；3 视点含共用 init | `CAPTURE_LAYOUT.md`；`handoff_to_D_first_pair.json` |
+| 首对 | `CrMo8WxCyVb_cup_423` | init MAE≈0；base 未动 |
+| 不可靠 3 对 | q5 bottle/remote、wcoj bottle | `reliable_gt=false`（spawn 后全程无目标像素） |
+| 脚本 | `adapters/.../experiments/tabletop_views/` | catalog→verify→capture→finalize |
+
 ## 下一步（最多 5）
 
-1. 等 B formal 结束后由 `queue_after_formal.sh` 自动跑：wheel verify → budget150 diag → smoke → **dev24@150/100**。  
-2. 用 v1.2 日志核对 lt9（invalid spawn）/ k1cup·ef36（合法拒转+缺反馈）/ hy1（可动对照）。  
-3. 向 B 交付冻结 SHA（`cef07d7` 链）+ 字段样例；正式独立评测以 **150/100** 为准。  
+1. Cursor D 按 `pairing_index.json` 跑检测汇总（C 采集已齐）。  
+2. 等 B formal 结束后跑 budget150 diag → smoke → **dev24@150/100**。  
+3. 可选：对 3 个 `reliable_gt=false` 对加密 spawn 短名单再采。  
 4. 合并前确认不污染 1.0× 默认与 `legacy_arm_look`。  
 5. SG-Nav/UniGoal 旁路按原计划收尾。

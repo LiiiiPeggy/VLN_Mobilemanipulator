@@ -1,0 +1,2609 @@
+{
+  "n_scenes_scanned": 20,
+  "n_instances": 134,
+  "counts_by_canonical": {
+    "cup": 15,
+    "bowl": 40,
+    "remote": 14,
+    "bottle": 65
+  },
+  "scenes_by_canonical": {
+    "cup": [
+      "CrMo8WxCyVb",
+      "TEEsavR23oF",
+      "VBzV5z6i1WS",
+      "a8BtkwhxdRV",
+      "bxsVRursffK",
+      "svBbv1Pavdk",
+      "wcojb4TFT35"
+    ],
+    "bowl": [
+      "5cdEh9F2hJL",
+      "7MXmsvcQjpJ",
+      "BAbdmeyTvMZ",
+      "CrMo8WxCyVb",
+      "GLAQ4DNUx5U",
+      "LT9Jq6dN3Ea",
+      "TEEsavR23oF",
+      "VBzV5z6i1WS",
+      "a8BtkwhxdRV",
+      "bxsVRursffK",
+      "eF36g7L6Z9M",
+      "q5QZSEeHe5g",
+      "svBbv1Pavdk",
+      "ziup5kvtCCR"
+    ],
+    "remote": [
+      "6s7QHgap2fW",
+      "QaLdnwvtxbs",
+      "eF36g7L6Z9M",
+      "q5QZSEeHe5g",
+      "y9hTuugGdiq",
+      "ziup5kvtCCR"
+    ],
+    "bottle": [
+      "4ok3usBNeis",
+      "7MXmsvcQjpJ",
+      "DYehNKdT76V",
+      "GLAQ4DNUx5U",
+      "LT9Jq6dN3Ea",
+      "TEEsavR23oF",
+      "VBzV5z6i1WS",
+      "a8BtkwhxdRV",
+      "bxsVRursffK",
+      "q5QZSEeHe5g",
+      "svBbv1Pavdk",
+      "wcojb4TFT35",
+      "y9hTuugGdiq"
+    ]
+  },
+  "errors": [],
+  "instances": [
+    {
+      "scene_id": "CrMo8WxCyVb",
+      "semantic_id": 399,
+      "object_id_str": "bowl_399",
+      "label": "bowl",
+      "canonical": "bowl",
+      "instance_key": "CrMo8WxCyVb:399",
+      "center_hab": [
+        -2.3933374881744385,
+        -2.0440878868103027,
+        7.764384746551514
+      ],
+      "sizes_hab": [
+        0.3354830741882324,
+        0.15753698348999023,
+        0.3530111312866211
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "CrMo8WxCyVb",
+      "semantic_id": 421,
+      "object_id_str": "coffee mug_421",
+      "label": "coffee mug",
+      "canonical": "cup",
+      "instance_key": "CrMo8WxCyVb:421",
+      "center_hab": [
+        0.3188149929046631,
+        -2.221280097961426,
+        5.408134937286377
+      ],
+      "sizes_hab": [
+        0.14448601007461548,
+        0.10303115844726562,
+        0.1449441909790039
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "CrMo8WxCyVb",
+      "semantic_id": 422,
+      "object_id_str": "coffee mug_422",
+      "label": "coffee mug",
+      "canonical": "cup",
+      "instance_key": "CrMo8WxCyVb:422",
+      "center_hab": [
+        -0.46050047874450684,
+        -2.2249650955200195,
+        5.438518047332764
+      ],
+      "sizes_hab": [
+        0.14874303340911865,
+        0.10332679748535156,
+        0.1296977996826172
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "CrMo8WxCyVb",
+      "semantic_id": 423,
+      "object_id_str": "coffee mug_423",
+      "label": "coffee mug",
+      "canonical": "cup",
+      "instance_key": "CrMo8WxCyVb:423",
+      "center_hab": [
+        -0.0768355056643486,
+        -2.2229490280151367,
+        5.839678764343262
+      ],
+      "sizes_hab": [
+        0.14421500265598297,
+        0.09962701797485352,
+        0.17023658752441406
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "CrMo8WxCyVb",
+      "semantic_id": 424,
+      "object_id_str": "coffee mug_424",
+      "label": "coffee mug",
+      "canonical": "cup",
+      "instance_key": "CrMo8WxCyVb:424",
+      "center_hab": [
+        0.6704620122909546,
+        -2.221634864807129,
+        5.849721431732178
+      ],
+      "sizes_hab": [
+        0.12577199935913086,
+        0.09771537780761719,
+        0.11888504028320312
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "VBzV5z6i1WS",
+      "semantic_id": 30,
+      "object_id_str": "bottle_30",
+      "label": "bottle",
+      "canonical": "bottle",
+      "instance_key": "VBzV5z6i1WS:30",
+      "center_hab": [
+        -4.269413471221924,
+        0.8458111882209778,
+        -3.4662604331970215
+      ],
+      "sizes_hab": [
+        0.1000051498413086,
+        0.14589297771453857,
+        0.10760021209716797
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "VBzV5z6i1WS",
+      "semantic_id": 31,
+      "object_id_str": "bottle_31",
+      "label": "bottle",
+      "canonical": "bottle",
+      "instance_key": "VBzV5z6i1WS:31",
+      "center_hab": [
+        -4.275308132171631,
+        0.8394067287445068,
+        -3.412461519241333
+      ],
+      "sizes_hab": [
+        0.07845020294189453,
+        0.09308409690856934,
+        0.11999988555908203
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "VBzV5z6i1WS",
+      "semantic_id": 423,
+      "object_id_str": "bowl_423",
+      "label": "bowl",
+      "canonical": "bowl",
+      "instance_key": "VBzV5z6i1WS:423",
+      "center_hab": [
+        -0.2494100034236908,
+        0.9210605621337891,
+        -5.206704139709473
+      ],
+      "sizes_hab": [
+        0.38001197576522827,
+        0.13013005256652832,
+        0.3884773254394531
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "VBzV5z6i1WS",
+      "semantic_id": 428,
+      "object_id_str": "bowl of fruit_428",
+      "label": "bowl of fruit",
+      "canonical": "bowl",
+      "instance_key": "VBzV5z6i1WS:428",
+      "center_hab": [
+        2.206660032272339,
+        0.9498200416564941,
+        -5.260976791381836
+      ],
+      "sizes_hab": [
+        0.24169588088989258,
+        0.18292903900146484,
+        0.22959518432617188
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "VBzV5z6i1WS",
+      "semantic_id": 429,
+      "object_id_str": "bowl of fruit_429",
+      "label": "bowl of fruit",
+      "canonical": "bowl",
+      "instance_key": "VBzV5z6i1WS:429",
+      "center_hab": [
+        2.0079524517059326,
+        0.9664620161056519,
+        -5.063448905944824
+      ],
+      "sizes_hab": [
+        0.3535270690917969,
+        0.14721107482910156,
+        0.3634986877441406
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "VBzV5z6i1WS",
+      "semantic_id": 430,
+      "object_id_str": "cup_430",
+      "label": "cup",
+      "canonical": "cup",
+      "instance_key": "VBzV5z6i1WS:430",
+      "center_hab": [
+        2.2873640060424805,
+        0.9529720544815063,
+        -4.838065147399902
+      ],
+      "sizes_hab": [
+        0.0791621208190918,
+        0.08851099014282227,
+        0.10879135131835938
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "VBzV5z6i1WS",
+      "semantic_id": 473,
+      "object_id_str": "bottle_473",
+      "label": "bottle",
+      "canonical": "bottle",
+      "instance_key": "VBzV5z6i1WS:473",
+      "center_hab": [
+        0.7405830025672913,
+        0.9305340051651001,
+        -5.499481201171875
+      ],
+      "sizes_hab": [
+        0.08000195026397705,
+        0.04466891288757324,
+        0.061489105224609375
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "VBzV5z6i1WS",
+      "semantic_id": 539,
+      "object_id_str": "decorative bowl_539",
+      "label": "decorative bowl",
+      "canonical": "bowl",
+      "instance_key": "VBzV5z6i1WS:539",
+      "center_hab": [
+        6.916756629943848,
+        0.4828183650970459,
+        -5.759820461273193
+      ],
+      "sizes_hab": [
+        0.17250442504882812,
+        0.16767001152038574,
+        0.1852703094482422
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "TEEsavR23oF",
+      "semantic_id": 335,
+      "object_id_str": "coffee mug_335",
+      "label": "coffee mug",
+      "canonical": "cup",
+      "instance_key": "TEEsavR23oF:335",
+      "center_hab": [
+        -3.4615139961242676,
+        0.9497672319412231,
+        0.7197054624557495
+      ],
+      "sizes_hab": [
+        0.16001415252685547,
+        0.11019206047058105,
+        0.15406298637390137
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "TEEsavR23oF",
+      "semantic_id": 354,
+      "object_id_str": "fruit bowl_354",
+      "label": "fruit bowl",
+      "canonical": "bowl",
+      "instance_key": "TEEsavR23oF:354",
+      "center_hab": [
+        -2.8445539474487305,
+        1.1647582054138184,
+        0.6455124616622925
+      ],
+      "sizes_hab": [
+        0.23745203018188477,
+        0.23664402961730957,
+        0.20318901538848877
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "TEEsavR23oF",
+      "semantic_id": 573,
+      "object_id_str": "soap bottle_573",
+      "label": "soap bottle",
+      "canonical": "bottle",
+      "instance_key": "TEEsavR23oF:573",
+      "center_hab": [
+        -1.8765690326690674,
+        0.9451549053192139,
+        -5.847925186157227
+      ],
+      "sizes_hab": [
+        0.12987804412841797,
+        0.2200930118560791,
+        0.11005973815917969
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "TEEsavR23oF",
+      "semantic_id": 657,
+      "object_id_str": "bottle of soap_657",
+      "label": "bottle of soap",
+      "canonical": "bottle",
+      "instance_key": "TEEsavR23oF:657",
+      "center_hab": [
+        -3.09451961517334,
+        0.9452030658721924,
+        -5.033901214599609
+      ],
+      "sizes_hab": [
+        0.09394264221191406,
+        0.3400149345397949,
+        0.09131240844726562
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "a8BtkwhxdRV",
+      "semantic_id": 15,
+      "object_id_str": "soap bottle_15",
+      "label": "soap bottle",
+      "canonical": "bottle",
+      "instance_key": "a8BtkwhxdRV:15",
+      "center_hab": [
+        -3.746392011642456,
+        1.9036662578582764,
+        8.208006858825684
+      ],
+      "sizes_hab": [
+        0.14000415802001953,
+        0.1273179054260254,
+        0.09562492370605469
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "a8BtkwhxdRV",
+      "semantic_id": 159,
+      "object_id_str": "soap bottle_159",
+      "label": "soap bottle",
+      "canonical": "bottle",
+      "instance_key": "a8BtkwhxdRV:159",
+      "center_hab": [
+        -5.149362564086914,
+        1.9070005416870117,
+        2.084721088409424
+      ],
+      "sizes_hab": [
+        0.1306591033935547,
+        0.17396020889282227,
+        0.10786819458007812
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "a8BtkwhxdRV",
+      "semantic_id": 197,
+      "object_id_str": "soap bottle_197",
+      "label": "soap bottle",
+      "canonical": "bottle",
+      "instance_key": "a8BtkwhxdRV:197",
+      "center_hab": [
+        0.07980400323867798,
+        1.915919542312622,
+        -1.4941918849945068
+      ],
+      "sizes_hab": [
+        0.09246999025344849,
+        0.12194299697875977,
+        0.14000320434570312
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "a8BtkwhxdRV",
+      "semantic_id": 465,
+      "object_id_str": "bowl_465",
+      "label": "bowl",
+      "canonical": "bowl",
+      "instance_key": "a8BtkwhxdRV:465",
+      "center_hab": [
+        -4.217253684997559,
+        -0.6540635228157043,
+        8.508453369140625
+      ],
+      "sizes_hab": [
+        0.18597698211669922,
+        0.09181499481201172,
+        0.21471023559570312
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "a8BtkwhxdRV",
+      "semantic_id": 597,
+      "object_id_str": "mug_597",
+      "label": "mug",
+      "canonical": "cup",
+      "instance_key": "a8BtkwhxdRV:597",
+      "center_hab": [
+        -5.116393566131592,
+        -0.3767908811569214,
+        1.221639633178711
+      ],
+      "sizes_hab": [
+        0.16000080108642578,
+        0.1286640167236328,
+        0.13166499137878418
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "a8BtkwhxdRV",
+      "semantic_id": 598,
+      "object_id_str": "mug_598",
+      "label": "mug",
+      "canonical": "cup",
+      "instance_key": "a8BtkwhxdRV:598",
+      "center_hab": [
+        -5.186393737792969,
+        -0.38562247157096863,
+        0.5020335912704468
+      ],
+      "sizes_hab": [
+        0.18000030517578125,
+        0.14870703220367432,
+        0.15070700645446777
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "a8BtkwhxdRV",
+      "semantic_id": 649,
+      "object_id_str": "bowl_649",
+      "label": "bowl",
+      "canonical": "bowl",
+      "instance_key": "a8BtkwhxdRV:649",
+      "center_hab": [
+        1.0305780172348022,
+        -1.3131130933761597,
+        0.38880422711372375
+      ],
+      "sizes_hab": [
+        0.46605396270751953,
+        0.11437606811523438,
+        0.5059980750083923
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "a8BtkwhxdRV",
+      "semantic_id": 652,
+      "object_id_str": "bowl_652",
+      "label": "bowl",
+      "canonical": "bowl",
+      "instance_key": "a8BtkwhxdRV:652",
+      "center_hab": [
+        1.1672160625457764,
+        -1.334367036819458,
+        0.685829758644104
+      ],
+      "sizes_hab": [
+        0.2727780342102051,
+        0.06878805160522461,
+        0.3000450134277344
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "bxsVRursffK",
+      "semantic_id": 258,
+      "object_id_str": "bottle_258",
+      "label": "bottle",
+      "canonical": "bottle",
+      "instance_key": "bxsVRursffK:258",
+      "center_hab": [
+        -9.237719535827637,
+        0.9239233732223511,
+        -2.4779720306396484
+      ],
+      "sizes_hab": [
+        0.1600017547607422,
+        0.24151301383972168,
+        0.1158761978149414
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "bxsVRursffK",
+      "semantic_id": 365,
+      "object_id_str": "bowl of fruit_365",
+      "label": "bowl of fruit",
+      "canonical": "bowl",
+      "instance_key": "bxsVRursffK:365",
+      "center_hab": [
+        -7.5575151443481445,
+        -2.0321521759033203,
+        -4.380195617675781
+      ],
+      "sizes_hab": [
+        0.4101438522338867,
+        0.23950910568237305,
+        0.4257926940917969
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "bxsVRursffK",
+      "semantic_id": 381,
+      "object_id_str": "cup_381",
+      "label": "cup",
+      "canonical": "cup",
+      "instance_key": "bxsVRursffK:381",
+      "center_hab": [
+        -9.7110595703125,
+        -2.0565414428710938,
+        -5.605902671813965
+      ],
+      "sizes_hab": [
+        0.22666549682617188,
+        0.17259883880615234,
+        0.1399993896484375
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "bxsVRursffK",
+      "semantic_id": 382,
+      "object_id_str": "cup_382",
+      "label": "cup",
+      "canonical": "cup",
+      "instance_key": "bxsVRursffK:382",
+      "center_hab": [
+        -9.75509262084961,
+        -2.072000026702881,
+        -5.735904693603516
+      ],
+      "sizes_hab": [
+        0.13979339599609375,
+        0.14196205139160156,
+        0.12000465393066406
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "bxsVRursffK",
+      "semantic_id": 384,
+      "object_id_str": "bowl_384",
+      "label": "bowl",
+      "canonical": "bowl",
+      "instance_key": "bxsVRursffK:384",
+      "center_hab": [
+        -9.447721481323242,
+        -2.1137030124664307,
+        -5.805908203125
+      ],
+      "sizes_hab": [
+        0.220001220703125,
+        0.07676410675048828,
+        0.2600059509277344
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "bxsVRursffK",
+      "semantic_id": 385,
+      "object_id_str": "bowl_385",
+      "label": "bowl",
+      "canonical": "bowl",
+      "instance_key": "bxsVRursffK:385",
+      "center_hab": [
+        -8.842597961425781,
+        -2.060737133026123,
+        -6.555902481079102
+      ],
+      "sizes_hab": [
+        0.19023895263671875,
+        0.17811596393585205,
+        0.24000167846679688
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "bxsVRursffK",
+      "semantic_id": 386,
+      "object_id_str": "bowl of fruit_386",
+      "label": "bowl of fruit",
+      "canonical": "bowl",
+      "instance_key": "bxsVRursffK:386",
+      "center_hab": [
+        -9.12771987915039,
+        -1.9874999523162842,
+        -6.593921661376953
+      ],
+      "sizes_hab": [
+        0.3400001525878906,
+        0.3356437683105469,
+        0.27603721618652344
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "bxsVRursffK",
+      "semantic_id": 389,
+      "object_id_str": "bottle_389",
+      "label": "bottle",
+      "canonical": "bottle",
+      "instance_key": "bxsVRursffK:389",
+      "center_hab": [
+        -9.695161819458008,
+        -2.0301361083984375,
+        -6.473703861236572
+      ],
+      "sizes_hab": [
+        0.2748832702636719,
+        0.2339879274368286,
+        0.28439903259277344
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "bxsVRursffK",
+      "semantic_id": 390,
+      "object_id_str": "fruit bowl_390",
+      "label": "fruit bowl",
+      "canonical": "bowl",
+      "instance_key": "bxsVRursffK:390",
+      "center_hab": [
+        -9.55123519897461,
+        -2.0567309856414795,
+        -6.514041900634766
+      ],
+      "sizes_hab": [
+        0.29296875,
+        0.1768198013305664,
+        0.2837228775024414
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "svBbv1Pavdk",
+      "semantic_id": 94,
+      "object_id_str": "mug_94",
+      "label": "mug",
+      "canonical": "cup",
+      "instance_key": "svBbv1Pavdk:94",
+      "center_hab": [
+        7.763104438781738,
+        0.644180178642273,
+        -3.7225708961486816
+      ],
+      "sizes_hab": [
+        0.0800008773803711,
+        0.08490705490112305,
+        0.11571121215820312
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "svBbv1Pavdk",
+      "semantic_id": 362,
+      "object_id_str": "mug_362",
+      "label": "mug",
+      "canonical": "cup",
+      "instance_key": "svBbv1Pavdk:362",
+      "center_hab": [
+        1.8841145038604736,
+        0.9966344237327576,
+        2.5495738983154297
+      ],
+      "sizes_hab": [
+        0.12202095985412598,
+        0.10000002384185791,
+        0.17999935150146484
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "svBbv1Pavdk",
+      "semantic_id": 363,
+      "object_id_str": "mug_363",
+      "label": "mug",
+      "canonical": "cup",
+      "instance_key": "svBbv1Pavdk:363",
+      "center_hab": [
+        1.779365062713623,
+        0.9966338872909546,
+        2.509572982788086
+      ],
+      "sizes_hab": [
+        0.15647220611572266,
+        0.10000109672546387,
+        0.1400003433227539
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "svBbv1Pavdk",
+      "semantic_id": 368,
+      "object_id_str": "fruit bowl_368",
+      "label": "fruit bowl",
+      "canonical": "bowl",
+      "instance_key": "svBbv1Pavdk:368",
+      "center_hab": [
+        1.603103518486023,
+        1.0174721479415894,
+        4.350475311279297
+      ],
+      "sizes_hab": [
+        0.23999905586242676,
+        0.18906283378601074,
+        0.1818103790283203
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "svBbv1Pavdk",
+      "semantic_id": 382,
+      "object_id_str": "bottle_382",
+      "label": "bottle",
+      "canonical": "bottle",
+      "instance_key": "svBbv1Pavdk:382",
+      "center_hab": [
+        -0.8054724931716919,
+        1.0541315078735352,
+        3.409569263458252
+      ],
+      "sizes_hab": [
+        0.0029230117797851562,
+        0.07500004768371582,
+        0.26000022888183594
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "svBbv1Pavdk",
+      "semantic_id": 383,
+      "object_id_str": "bottle_383",
+      "label": "bottle",
+      "canonical": "bottle",
+      "instance_key": "svBbv1Pavdk:383",
+      "center_hab": [
+        -0.8066934943199158,
+        0.986655056476593,
+        3.5145678520202637
+      ],
+      "sizes_hab": [
+        0.0023490190505981445,
+        0.11995899677276611,
+        0.21000289916992188
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "svBbv1Pavdk",
+      "semantic_id": 384,
+      "object_id_str": "bottle_384",
+      "label": "bottle",
+      "canonical": "bottle",
+      "instance_key": "svBbv1Pavdk:384",
+      "center_hab": [
+        -0.790132999420166,
+        1.133590579032898,
+        3.4495699405670166
+      ],
+      "sizes_hab": [
+        0.035470008850097656,
+        0.4260880947113037,
+        0.3399991989135742
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "wcojb4TFT35",
+      "semantic_id": 196,
+      "object_id_str": "mug_196",
+      "label": "mug",
+      "canonical": "cup",
+      "instance_key": "wcojb4TFT35:196",
+      "center_hab": [
+        3.0297598838806152,
+        3.480910301208496,
+        -7.402268409729004
+      ],
+      "sizes_hab": [
+        0.10256767272949219,
+        0.10395622253417969,
+        0.18775558471679688
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "wcojb4TFT35",
+      "semantic_id": 240,
+      "object_id_str": "cup_240",
+      "label": "cup",
+      "canonical": "cup",
+      "instance_key": "wcojb4TFT35:240",
+      "center_hab": [
+        1.8522495031356812,
+        3.82613468170166,
+        -11.514556884765625
+      ],
+      "sizes_hab": [
+        0.187669038772583,
+        0.44592857360839844,
+        0.001277923583984375
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "wcojb4TFT35",
+      "semantic_id": 706,
+      "object_id_str": "bottle of detergent_706",
+      "label": "bottle of detergent",
+      "canonical": "bottle",
+      "instance_key": "wcojb4TFT35:706",
+      "center_hab": [
+        2.7577199935913086,
+        -0.7592582106590271,
+        -9.671090126037598
+      ],
+      "sizes_hab": [
+        0.30930614471435547,
+        0.3083200454711914,
+        0.2022228240966797
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "7MXmsvcQjpJ",
+      "semantic_id": 389,
+      "object_id_str": "bottle of detergent_389",
+      "label": "bottle of detergent",
+      "canonical": "bottle",
+      "instance_key": "7MXmsvcQjpJ:389",
+      "center_hab": [
+        -1.5507529973983765,
+        1.5178430080413818,
+        -5.898420810699463
+      ],
+      "sizes_hab": [
+        0.1400599479675293,
+        0.31293296813964844,
+        0.15894699096679688
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "7MXmsvcQjpJ",
+      "semantic_id": 791,
+      "object_id_str": "bowl_791",
+      "label": "bowl",
+      "canonical": "bowl",
+      "instance_key": "7MXmsvcQjpJ:791",
+      "center_hab": [
+        -5.003909111022949,
+        -1.5250816345214844,
+        0.5965752601623535
+      ],
+      "sizes_hab": [
+        0.4335803985595703,
+        0.21809720993041992,
+        0.44899606704711914
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "7MXmsvcQjpJ",
+      "semantic_id": 886,
+      "object_id_str": "bowl_886",
+      "label": "bowl",
+      "canonical": "bowl",
+      "instance_key": "7MXmsvcQjpJ:886",
+      "center_hab": [
+        -5.2895355224609375,
+        -1.1808907985687256,
+        -5.581396579742432
+      ],
+      "sizes_hab": [
+        0.2621726989746094,
+        0.11047172546386719,
+        0.28493404388427734
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "7MXmsvcQjpJ",
+      "semantic_id": 903,
+      "object_id_str": "bowl of fruit_903",
+      "label": "bowl of fruit",
+      "canonical": "bowl",
+      "instance_key": "7MXmsvcQjpJ:903",
+      "center_hab": [
+        -1.940245509147644,
+        -1.1069626808166504,
+        -4.7590556144714355
+      ],
+      "sizes_hab": [
+        0.5350449085235596,
+        0.27786803245544434,
+        0.6002378463745117
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "7MXmsvcQjpJ",
+      "semantic_id": 906,
+      "object_id_str": "bowl_906",
+      "label": "bowl",
+      "canonical": "bowl",
+      "instance_key": "7MXmsvcQjpJ:906",
+      "center_hab": [
+        -1.8502230644226074,
+        0.21427598595619202,
+        -4.399664878845215
+      ],
+      "sizes_hab": [
+        0.31366395950317383,
+        0.20003700256347656,
+        0.3585014343261719
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "7MXmsvcQjpJ",
+      "semantic_id": 952,
+      "object_id_str": "bottle_952",
+      "label": "bottle",
+      "canonical": "bottle",
+      "instance_key": "7MXmsvcQjpJ:952",
+      "center_hab": [
+        -4.767416954040527,
+        0.16932666301727295,
+        -2.998080253601074
+      ],
+      "sizes_hab": [
+        0.1458721160888672,
+        0.2299700379371643,
+        0.27830028533935547
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "7MXmsvcQjpJ",
+      "semantic_id": 953,
+      "object_id_str": "bottle_953",
+      "label": "bottle",
+      "canonical": "bottle",
+      "instance_key": "7MXmsvcQjpJ:953",
+      "center_hab": [
+        -4.9458513259887695,
+        0.16638615727424622,
+        -2.968952178955078
+      ],
+      "sizes_hab": [
+        0.17000961303710938,
+        0.21585100889205933,
+        0.2600440979003906
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "7MXmsvcQjpJ",
+      "semantic_id": 954,
+      "object_id_str": "bottle_954",
+      "label": "bottle",
+      "canonical": "bottle",
+      "instance_key": "7MXmsvcQjpJ:954",
+      "center_hab": [
+        -5.148717880249023,
+        0.1287456452846527,
+        -2.9989428520202637
+      ],
+      "sizes_hab": [
+        0.1842803955078125,
+        0.11222600936889648,
+        0.1600332260131836
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "7MXmsvcQjpJ",
+      "semantic_id": 1043,
+      "object_id_str": "bottle_1043",
+      "label": "bottle",
+      "canonical": "bottle",
+      "instance_key": "7MXmsvcQjpJ:1043",
+      "center_hab": [
+        5.542097568511963,
+        -2.0239758491516113,
+        -1.445220947265625
+      ],
+      "sizes_hab": [
+        0.24598121643066406,
+        0.32335519790649414,
+        0.13268804550170898
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "7MXmsvcQjpJ",
+      "semantic_id": 1048,
+      "object_id_str": "bottle_1048",
+      "label": "bottle",
+      "canonical": "bottle",
+      "instance_key": "7MXmsvcQjpJ:1048",
+      "center_hab": [
+        5.44414758682251,
+        -0.9225153923034668,
+        -2.0189261436462402
+      ],
+      "sizes_hab": [
+        0.1300029754638672,
+        0.19729399681091309,
+        0.19999587535858154
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "7MXmsvcQjpJ",
+      "semantic_id": 1103,
+      "object_id_str": "bottle_1103",
+      "label": "bottle",
+      "canonical": "bottle",
+      "instance_key": "7MXmsvcQjpJ:1103",
+      "center_hab": [
+        -1.521517038345337,
+        -2.0207176208496094,
+        -4.104487419128418
+      ],
+      "sizes_hab": [
+        0.16142606735229492,
+        0.27007007598876953,
+        0.14023399353027344
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "7MXmsvcQjpJ",
+      "semantic_id": 1585,
+      "object_id_str": "bottle of detergent_1585",
+      "label": "bottle of detergent",
+      "canonical": "bottle",
+      "instance_key": "7MXmsvcQjpJ:1585",
+      "center_hab": [
+        5.246362209320068,
+        -2.9012489318847656,
+        0.6090614199638367
+      ],
+      "sizes_hab": [
+        0.2944459915161133,
+        0.28899526596069336,
+        0.25894999504089355
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "7MXmsvcQjpJ",
+      "semantic_id": 1586,
+      "object_id_str": "bottle of detergent_1586",
+      "label": "bottle of detergent",
+      "canonical": "bottle",
+      "instance_key": "7MXmsvcQjpJ:1586",
+      "center_hab": [
+        5.398804664611816,
+        -2.9056735038757324,
+        0.5473313927650452
+      ],
+      "sizes_hab": [
+        0.15937042236328125,
+        0.2800283432006836,
+        0.10749208927154541
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "7MXmsvcQjpJ",
+      "semantic_id": 1605,
+      "object_id_str": "bottle_1605",
+      "label": "bottle",
+      "canonical": "bottle",
+      "instance_key": "7MXmsvcQjpJ:1605",
+      "center_hab": [
+        5.190760612487793,
+        -3.780010938644409,
+        -0.24896356463432312
+      ],
+      "sizes_hab": [
+        0.16155433654785156,
+        0.17136287689208984,
+        0.13992804288864136
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "7MXmsvcQjpJ",
+      "semantic_id": 1606,
+      "object_id_str": "bottle_1606",
+      "label": "bottle",
+      "canonical": "bottle",
+      "instance_key": "7MXmsvcQjpJ:1606",
+      "center_hab": [
+        5.2735915184021,
+        -3.7261438369750977,
+        -0.32765257358551025
+      ],
+      "sizes_hab": [
+        0.38889503479003906,
+        0.2391366958618164,
+        0.2909560203552246
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "7MXmsvcQjpJ",
+      "semantic_id": 1607,
+      "object_id_str": "bottle_1607",
+      "label": "bottle",
+      "canonical": "bottle",
+      "instance_key": "7MXmsvcQjpJ:1607",
+      "center_hab": [
+        5.22913932800293,
+        -3.668829917907715,
+        -0.5083526372909546
+      ],
+      "sizes_hab": [
+        0.30002689361572266,
+        0.14311504364013672,
+        0.17886197566986084
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "LT9Jq6dN3Ea",
+      "semantic_id": 63,
+      "object_id_str": "bowl_63",
+      "label": "bowl",
+      "canonical": "bowl",
+      "instance_key": "LT9Jq6dN3Ea:63",
+      "center_hab": [
+        1.458266019821167,
+        -2.429684638977051,
+        5.350994110107422
+      ],
+      "sizes_hab": [
+        0.2703399658203125,
+        0.09991836547851562,
+        0.3056163787841797
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "LT9Jq6dN3Ea",
+      "semantic_id": 209,
+      "object_id_str": "bowl_209",
+      "label": "bowl",
+      "canonical": "bowl",
+      "instance_key": "LT9Jq6dN3Ea:209",
+      "center_hab": [
+        -5.509397506713867,
+        0.8499186038970947,
+        -0.7168676853179932
+      ],
+      "sizes_hab": [
+        0.2708911895751953,
+        0.0795130729675293,
+        0.688194990158081
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "LT9Jq6dN3Ea",
+      "semantic_id": 427,
+      "object_id_str": "bowl of fruit_427",
+      "label": "bowl of fruit",
+      "canonical": "bowl",
+      "instance_key": "LT9Jq6dN3Ea:427",
+      "center_hab": [
+        -0.8543020486831665,
+        0.98927903175354,
+        3.685647964477539
+      ],
+      "sizes_hab": [
+        0.4947519302368164,
+        0.15419316291809082,
+        0.5546350479125977
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "LT9Jq6dN3Ea",
+      "semantic_id": 485,
+      "object_id_str": "bowl_485",
+      "label": "bowl",
+      "canonical": "bowl",
+      "instance_key": "LT9Jq6dN3Ea:485",
+      "center_hab": [
+        3.5975685119628906,
+        1.001359224319458,
+        4.741451263427734
+      ],
+      "sizes_hab": [
+        0.34011316299438477,
+        0.20082688331604004,
+        0.36493682861328125
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "LT9Jq6dN3Ea",
+      "semantic_id": 505,
+      "object_id_str": "bottle_505",
+      "label": "bottle",
+      "canonical": "bottle",
+      "instance_key": "LT9Jq6dN3Ea:505",
+      "center_hab": [
+        1.9462170600891113,
+        1.5168638229370117,
+        4.7164812088012695
+      ],
+      "sizes_hab": [
+        0.1490178108215332,
+        0.18013811111450195,
+        0.09237289428710938
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "LT9Jq6dN3Ea",
+      "semantic_id": 506,
+      "object_id_str": "bottle_506",
+      "label": "bottle",
+      "canonical": "bottle",
+      "instance_key": "LT9Jq6dN3Ea:506",
+      "center_hab": [
+        1.9047609567642212,
+        1.627305269241333,
+        3.9533872604370117
+      ],
+      "sizes_hab": [
+        0.17770600318908691,
+        0.34684324264526367,
+        0.12329864501953125
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "LT9Jq6dN3Ea",
+      "semantic_id": 507,
+      "object_id_str": "bottle_507",
+      "label": "bottle",
+      "canonical": "bottle",
+      "instance_key": "LT9Jq6dN3Ea:507",
+      "center_hab": [
+        1.9191584587097168,
+        1.5964901447296143,
+        3.719259738922119
+      ],
+      "sizes_hab": [
+        0.1488790512084961,
+        0.339367151260376,
+        0.10725116729736328
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "LT9Jq6dN3Ea",
+      "semantic_id": 508,
+      "object_id_str": "bottle_508",
+      "label": "bottle",
+      "canonical": "bottle",
+      "instance_key": "LT9Jq6dN3Ea:508",
+      "center_hab": [
+        1.925874948501587,
+        1.5737595558166504,
+        3.490723133087158
+      ],
+      "sizes_hab": [
+        0.2438502311706543,
+        0.3185861110687256,
+        0.13775634765625
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "LT9Jq6dN3Ea",
+      "semantic_id": 509,
+      "object_id_str": "bottle_509",
+      "label": "bottle",
+      "canonical": "bottle",
+      "instance_key": "LT9Jq6dN3Ea:509",
+      "center_hab": [
+        1.8806800842285156,
+        1.6051530838012695,
+        3.2515769004821777
+      ],
+      "sizes_hab": [
+        0.22584009170532227,
+        0.3887209892272949,
+        0.17405319213867188
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "LT9Jq6dN3Ea",
+      "semantic_id": 510,
+      "object_id_str": "bottle_510",
+      "label": "bottle",
+      "canonical": "bottle",
+      "instance_key": "LT9Jq6dN3Ea:510",
+      "center_hab": [
+        1.8626644611358643,
+        1.5442005395889282,
+        3.0068039894104004
+      ],
+      "sizes_hab": [
+        0.20296502113342285,
+        0.23488402366638184,
+        0.17218780517578125
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "LT9Jq6dN3Ea",
+      "semantic_id": 511,
+      "object_id_str": "bottle_511",
+      "label": "bottle",
+      "canonical": "bottle",
+      "instance_key": "LT9Jq6dN3Ea:511",
+      "center_hab": [
+        1.9437954425811768,
+        1.516500473022461,
+        2.8340179920196533
+      ],
+      "sizes_hab": [
+        0.15378713607788086,
+        0.17939233779907227,
+        0.11932992935180664
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "LT9Jq6dN3Ea",
+      "semantic_id": 512,
+      "object_id_str": "bottle_512",
+      "label": "bottle",
+      "canonical": "bottle",
+      "instance_key": "LT9Jq6dN3Ea:512",
+      "center_hab": [
+        1.8725165128707886,
+        1.612311601638794,
+        2.624581813812256
+      ],
+      "sizes_hab": [
+        0.22375702857971191,
+        0.37102222442626953,
+        0.18643569946289062
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "BAbdmeyTvMZ",
+      "semantic_id": 330,
+      "object_id_str": "bowl_330",
+      "label": "bowl",
+      "canonical": "bowl",
+      "instance_key": "BAbdmeyTvMZ:330",
+      "center_hab": [
+        -2.021825075149536,
+        1.4585790634155273,
+        6.578204154968262
+      ],
+      "sizes_hab": [
+        0.2600998878479004,
+        0.11728811264038086,
+        0.20000267028808594
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "BAbdmeyTvMZ",
+      "semantic_id": 351,
+      "object_id_str": "bowl_351",
+      "label": "bowl",
+      "canonical": "bowl",
+      "instance_key": "BAbdmeyTvMZ:351",
+      "center_hab": [
+        3.5683155059814453,
+        0.9716671705245972,
+        4.786175727844238
+      ],
+      "sizes_hab": [
+        0.37883520126342773,
+        0.14890098571777344,
+        0.39368247985839844
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "BAbdmeyTvMZ",
+      "semantic_id": 361,
+      "object_id_str": "bowl_361",
+      "label": "bowl",
+      "canonical": "bowl",
+      "instance_key": "BAbdmeyTvMZ:361",
+      "center_hab": [
+        4.47331428527832,
+        1.0640569925308228,
+        7.357206344604492
+      ],
+      "sizes_hab": [
+        0.323028564453125,
+        0.16632580757141113,
+        0.3220071792602539
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "5cdEh9F2hJL",
+      "semantic_id": 395,
+      "object_id_str": "decorative bowl_395",
+      "label": "decorative bowl",
+      "canonical": "bowl",
+      "instance_key": "5cdEh9F2hJL:395",
+      "center_hab": [
+        8.691429138183594,
+        0.6210646629333496,
+        -3.612121105194092
+      ],
+      "sizes_hab": [
+        0.4055213928222656,
+        0.13687586784362793,
+        0.42000293731689453
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "6s7QHgap2fW",
+      "semantic_id": 354,
+      "object_id_str": "remote control_354",
+      "label": "remote control",
+      "canonical": "remote",
+      "instance_key": "6s7QHgap2fW:354",
+      "center_hab": [
+        3.9371166229248047,
+        0.5840338468551636,
+        -1.381940245628357
+      ],
+      "sizes_hab": [
+        0.08000946044921875,
+        0.011477947235107422,
+        0.16001200675964355
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "6s7QHgap2fW",
+      "semantic_id": 355,
+      "object_id_str": "remote control_355",
+      "label": "remote control",
+      "canonical": "remote",
+      "instance_key": "6s7QHgap2fW:355",
+      "center_hab": [
+        3.9971225261688232,
+        0.5858688950538635,
+        -1.4919862747192383
+      ],
+      "sizes_hab": [
+        0.12000513076782227,
+        0.017521977424621582,
+        0.18008017539978027
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "eF36g7L6Z9M",
+      "semantic_id": 161,
+      "object_id_str": "bowl_161",
+      "label": "bowl",
+      "canonical": "bowl",
+      "instance_key": "eF36g7L6Z9M:161",
+      "center_hab": [
+        -4.568726539611816,
+        0.10428161919116974,
+        9.30397891998291
+      ],
+      "sizes_hab": [
+        0.3489408493041992,
+        0.18407902121543884,
+        0.3025932312011719
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "eF36g7L6Z9M",
+      "semantic_id": 224,
+      "object_id_str": "remote control_224",
+      "label": "remote control",
+      "canonical": "remote",
+      "instance_key": "eF36g7L6Z9M:224",
+      "center_hab": [
+        6.0346527099609375,
+        0.5760887265205383,
+        1.6565486192703247
+      ],
+      "sizes_hab": [
+        0.18117713928222656,
+        0.023293018341064453,
+        0.13590288162231445
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "eF36g7L6Z9M",
+      "semantic_id": 225,
+      "object_id_str": "remote control_225",
+      "label": "remote control",
+      "canonical": "remote",
+      "instance_key": "eF36g7L6Z9M:225",
+      "center_hab": [
+        5.944067001342773,
+        0.5801612138748169,
+        1.7471331357955933
+      ],
+      "sizes_hab": [
+        0.1811819076538086,
+        0.032449960708618164,
+        0.18117403984069824
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "eF36g7L6Z9M",
+      "semantic_id": 672,
+      "object_id_str": "remote control_672",
+      "label": "remote control",
+      "canonical": "remote",
+      "instance_key": "eF36g7L6Z9M:672",
+      "center_hab": [
+        6.238474369049072,
+        -3.093127489089966,
+        3.581531047821045
+      ],
+      "sizes_hab": [
+        0.09054279327392578,
+        0.03207111358642578,
+        0.13589191436767578
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "y9hTuugGdiq",
+      "semantic_id": 230,
+      "object_id_str": "remote control_230",
+      "label": "remote control",
+      "canonical": "remote",
+      "instance_key": "y9hTuugGdiq:230",
+      "center_hab": [
+        6.608002662658691,
+        0.591773509979248,
+        -0.3225926160812378
+      ],
+      "sizes_hab": [
+        0.14026832580566406,
+        0.0155869722366333,
+        0.09570503234863281
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "y9hTuugGdiq",
+      "semantic_id": 231,
+      "object_id_str": "remote control_231",
+      "label": "remote control",
+      "canonical": "remote",
+      "instance_key": "y9hTuugGdiq:231",
+      "center_hab": [
+        6.558513164520264,
+        0.5987344980239868,
+        -0.2866995930671692
+      ],
+      "sizes_hab": [
+        0.23925209045410156,
+        0.029417037963867188,
+        0.16749101877212524
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "y9hTuugGdiq",
+      "semantic_id": 232,
+      "object_id_str": "remote control_232",
+      "label": "remote control",
+      "canonical": "remote",
+      "instance_key": "y9hTuugGdiq:232",
+      "center_hab": [
+        6.508930206298828,
+        0.5981130599975586,
+        -0.22687509655952454
+      ],
+      "sizes_hab": [
+        0.23725318908691406,
+        0.028120040893554688,
+        0.1914299726486206
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "y9hTuugGdiq",
+      "semantic_id": 419,
+      "object_id_str": "bottle_419",
+      "label": "bottle",
+      "canonical": "bottle",
+      "instance_key": "y9hTuugGdiq:419",
+      "center_hab": [
+        -12.650964736938477,
+        0.9913362264633179,
+        5.421029090881348
+      ],
+      "sizes_hab": [
+        0.01584625244140625,
+        0.19139909744262695,
+        0.9594306945800781
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "y9hTuugGdiq",
+      "semantic_id": 420,
+      "object_id_str": "bottle_420",
+      "label": "bottle",
+      "canonical": "bottle",
+      "instance_key": "y9hTuugGdiq:420",
+      "center_hab": [
+        -12.580671310424805,
+        0.8837713003158569,
+        5.240403175354004
+      ],
+      "sizes_hab": [
+        0.13354873657226562,
+        0.023730993270874023,
+        0.1674938201904297
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "y9hTuugGdiq",
+      "semantic_id": 421,
+      "object_id_str": "bottle_421",
+      "label": "bottle",
+      "canonical": "bottle",
+      "instance_key": "y9hTuugGdiq:421",
+      "center_hab": [
+        -12.628787994384766,
+        0.8842892646789551,
+        5.19254732131958
+      ],
+      "sizes_hab": [
+        0.03731536865234375,
+        0.022695064544677734,
+        0.07178211212158203
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "y9hTuugGdiq",
+      "semantic_id": 436,
+      "object_id_str": "remote control_436",
+      "label": "remote control",
+      "canonical": "remote",
+      "instance_key": "y9hTuugGdiq:436",
+      "center_hab": [
+        -8.573712348937988,
+        0.8053366541862488,
+        0.7048724889755249
+      ],
+      "sizes_hab": [
+        0.1644134521484375,
+        0.016685009002685547,
+        0.09292304515838623
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "y9hTuugGdiq",
+      "semantic_id": 491,
+      "object_id_str": "remote control_491",
+      "label": "remote control",
+      "canonical": "remote",
+      "instance_key": "y9hTuugGdiq:491",
+      "center_hab": [
+        -7.821555137634277,
+        0.6473278999328613,
+        -0.8609316945075989
+      ],
+      "sizes_hab": [
+        0.2392253875732422,
+        0.028706073760986328,
+        0.07178902626037598
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "y9hTuugGdiq",
+      "semantic_id": 822,
+      "object_id_str": "soap bottle_822",
+      "label": "soap bottle",
+      "canonical": "bottle",
+      "instance_key": "y9hTuugGdiq:822",
+      "center_hab": [
+        -5.01699686050415,
+        -1.9164108037948608,
+        4.378907203674316
+      ],
+      "sizes_hab": [
+        0.005455970764160156,
+        0.022665977478027344,
+        0.21520233154296875
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "y9hTuugGdiq",
+      "semantic_id": 823,
+      "object_id_str": "soap bottle_823",
+      "label": "soap bottle",
+      "canonical": "bottle",
+      "instance_key": "y9hTuugGdiq:823",
+      "center_hab": [
+        -5.022133827209473,
+        -1.9226996898651123,
+        4.283326148986816
+      ],
+      "sizes_hab": [
+        0.01840972900390625,
+        0.0377659797668457,
+        0.5024356842041016
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "q5QZSEeHe5g",
+      "semantic_id": 9,
+      "object_id_str": "bottle_9",
+      "label": "bottle",
+      "canonical": "bottle",
+      "instance_key": "q5QZSEeHe5g:9",
+      "center_hab": [
+        0.9752744436264038,
+        5.721018314361572,
+        -1.245672345161438
+      ],
+      "sizes_hab": [
+        0.1400010585784912,
+        0.2600059509277344,
+        0.2440030574798584
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "q5QZSEeHe5g",
+      "semantic_id": 58,
+      "object_id_str": "remote control_58",
+      "label": "remote control",
+      "canonical": "remote",
+      "instance_key": "q5QZSEeHe5g:58",
+      "center_hab": [
+        1.7752954959869385,
+        3.734865665435791,
+        -6.207892417907715
+      ],
+      "sizes_hab": [
+        0.13996291160583496,
+        0.0078277587890625,
+        0.08002185821533203
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "q5QZSEeHe5g",
+      "semantic_id": 382,
+      "object_id_str": "bowl_382",
+      "label": "bowl",
+      "canonical": "bowl",
+      "instance_key": "q5QZSEeHe5g:382",
+      "center_hab": [
+        2.57527494430542,
+        0.7833338975906372,
+        -2.1778836250305176
+      ],
+      "sizes_hab": [
+        0.29999828338623047,
+        0.06655192375183105,
+        0.22002315521240234
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "q5QZSEeHe5g",
+      "semantic_id": 572,
+      "object_id_str": "bowl_572",
+      "label": "bowl",
+      "canonical": "bowl",
+      "instance_key": "q5QZSEeHe5g:572",
+      "center_hab": [
+        7.148161888122559,
+        0.4019286632537842,
+        -7.238941192626953
+      ],
+      "sizes_hab": [
+        0.21776962280273438,
+        0.11178100109100342,
+        0.2688331604003906
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "q5QZSEeHe5g",
+      "semantic_id": 757,
+      "object_id_str": "bowl_757",
+      "label": "bowl",
+      "canonical": "bowl",
+      "instance_key": "q5QZSEeHe5g:757",
+      "center_hab": [
+        3.7156333923339844,
+        0.8803927898406982,
+        0.9021119475364685
+      ],
+      "sizes_hab": [
+        0.33928680419921875,
+        0.1012730598449707,
+        0.3400000333786011
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "q5QZSEeHe5g",
+      "semantic_id": 759,
+      "object_id_str": "bowl_759",
+      "label": "bowl",
+      "canonical": "bowl",
+      "instance_key": "q5QZSEeHe5g:759",
+      "center_hab": [
+        3.865311622619629,
+        0.8577936887741089,
+        0.7765529751777649
+      ],
+      "sizes_hab": [
+        0.20007896423339844,
+        0.089447021484375,
+        0.19112801551818848
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "q5QZSEeHe5g",
+      "semantic_id": 790,
+      "object_id_str": "bowl_790",
+      "label": "bowl",
+      "canonical": "bowl",
+      "instance_key": "q5QZSEeHe5g:790",
+      "center_hab": [
+        6.625261306762695,
+        0.9829866886138916,
+        4.806615829467773
+      ],
+      "sizes_hab": [
+        0.2399883270263672,
+        0.056123971939086914,
+        0.18892669677734375
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "q5QZSEeHe5g",
+      "semantic_id": 811,
+      "object_id_str": "bowl_811",
+      "label": "bowl",
+      "canonical": "bowl",
+      "instance_key": "q5QZSEeHe5g:811",
+      "center_hab": [
+        7.149808883666992,
+        0.7051604986190796,
+        3.5731515884399414
+      ],
+      "sizes_hab": [
+        0.19089603424072266,
+        0.029168009757995605,
+        0.1579456329345703
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "q5QZSEeHe5g",
+      "semantic_id": 919,
+      "object_id_str": "remote control_919",
+      "label": "remote control",
+      "canonical": "remote",
+      "instance_key": "q5QZSEeHe5g:919",
+      "center_hab": [
+        0.14527200162410736,
+        0.10960564762353897,
+        1.0921471118927002
+      ],
+      "sizes_hab": [
+        0.2000100016593933,
+        0.07713700830936432,
+        0.20007991790771484
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "q5QZSEeHe5g",
+      "semantic_id": 951,
+      "object_id_str": "bowl_951",
+      "label": "bowl",
+      "canonical": "bowl",
+      "instance_key": "q5QZSEeHe5g:951",
+      "center_hab": [
+        3.2252700328826904,
+        1.1590564250946045,
+        2.911389112472534
+      ],
+      "sizes_hab": [
+        0.15999794006347656,
+        0.07077789306640625,
+        0.16144800186157227
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "q5QZSEeHe5g",
+      "semantic_id": 961,
+      "object_id_str": "bowl_961",
+      "label": "bowl",
+      "canonical": "bowl",
+      "instance_key": "q5QZSEeHe5g:961",
+      "center_hab": [
+        3.2675161361694336,
+        0.2228807806968689,
+        2.2424488067626953
+      ],
+      "sizes_hab": [
+        0.20449161529541016,
+        0.10373306274414062,
+        0.23086929321289062
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "q5QZSEeHe5g",
+      "semantic_id": 1086,
+      "object_id_str": "bowl_1086",
+      "label": "bowl",
+      "canonical": "bowl",
+      "instance_key": "q5QZSEeHe5g:1086",
+      "center_hab": [
+        10.495231628417969,
+        0.06842534989118576,
+        2.970057964324951
+      ],
+      "sizes_hab": [
+        0.26010894775390625,
+        0.1252080351114273,
+        0.3159151077270508
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "q5QZSEeHe5g",
+      "semantic_id": 1273,
+      "object_id_str": "bottle_1273",
+      "label": "bottle",
+      "canonical": "bottle",
+      "instance_key": "q5QZSEeHe5g:1273",
+      "center_hab": [
+        0.025271998718380928,
+        -2.3653364181518555,
+        1.4120957851409912
+      ],
+      "sizes_hab": [
+        0.16005799174308777,
+        0.21434497833251953,
+        0.12000083923339844
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "q5QZSEeHe5g",
+      "semantic_id": 1274,
+      "object_id_str": "bottle_1274",
+      "label": "bottle",
+      "canonical": "bottle",
+      "instance_key": "q5QZSEeHe5g:1274",
+      "center_hab": [
+        -0.06856399774551392,
+        -2.27896785736084,
+        1.2747353315353394
+      ],
+      "sizes_hab": [
+        0.10765600204467773,
+        0.2599964141845703,
+        0.1947779655456543
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "QaLdnwvtxbs",
+      "semantic_id": 189,
+      "object_id_str": "remote control_189",
+      "label": "remote control",
+      "canonical": "remote",
+      "instance_key": "QaLdnwvtxbs:189",
+      "center_hab": [
+        -4.409543991088867,
+        0.44772869348526,
+        1.3319406509399414
+      ],
+      "sizes_hab": [
+        0.2526817321777344,
+        0.04068899154663086,
+        0.12000298500061035
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "ziup5kvtCCR",
+      "semantic_id": 17,
+      "object_id_str": "bowl of fruit_17",
+      "label": "bowl of fruit",
+      "canonical": "bowl",
+      "instance_key": "ziup5kvtCCR:17",
+      "center_hab": [
+        0.7602900266647339,
+        0.5355521440505981,
+        5.157861709594727
+      ],
+      "sizes_hab": [
+        0.3562140464782715,
+        0.1995069980621338,
+        0.35665130615234375
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "ziup5kvtCCR",
+      "semantic_id": 63,
+      "object_id_str": "bowl of fruit_63",
+      "label": "bowl of fruit",
+      "canonical": "bowl",
+      "instance_key": "ziup5kvtCCR:63",
+      "center_hab": [
+        5.579078674316406,
+        0.8890714645385742,
+        7.221334934234619
+      ],
+      "sizes_hab": [
+        0.2754030227661133,
+        0.2275850772857666,
+        0.2718677520751953
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "ziup5kvtCCR",
+      "semantic_id": 156,
+      "object_id_str": "remote control_156",
+      "label": "remote control",
+      "canonical": "remote",
+      "instance_key": "ziup5kvtCCR:156",
+      "center_hab": [
+        -1.789801001548767,
+        0.6482493877410889,
+        7.108153343200684
+      ],
+      "sizes_hab": [
+        0.19999408721923828,
+        0.03463304042816162,
+        0.07999324798583984
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "4ok3usBNeis",
+      "semantic_id": 66,
+      "object_id_str": "bottle of detergent_66",
+      "label": "bottle of detergent",
+      "canonical": "bottle",
+      "instance_key": "4ok3usBNeis:66",
+      "center_hab": [
+        -0.3759565055370331,
+        -0.3986138701438904,
+        1.7030491828918457
+      ],
+      "sizes_hab": [
+        0.0801050066947937,
+        0.3200000524520874,
+        0.1252899169921875
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "4ok3usBNeis",
+      "semantic_id": 91,
+      "object_id_str": "bottle of soap_91",
+      "label": "bottle of soap",
+      "canonical": "bottle",
+      "instance_key": "4ok3usBNeis:91",
+      "center_hab": [
+        4.390453338623047,
+        0.2713775336742401,
+        4.225691795349121
+      ],
+      "sizes_hab": [
+        0.060821533203125,
+        0.019981980323791504,
+        0.040004730224609375
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "4ok3usBNeis",
+      "semantic_id": 124,
+      "object_id_str": "bottle of detergent_124",
+      "label": "bottle of detergent",
+      "canonical": "bottle",
+      "instance_key": "4ok3usBNeis:124",
+      "center_hab": [
+        7.263369560241699,
+        1.397740364074707,
+        4.544528007507324
+      ],
+      "sizes_hab": [
+        0.29049110412597656,
+        0.3527092933654785,
+        0.27767276763916016
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "4ok3usBNeis",
+      "semantic_id": 125,
+      "object_id_str": "bottle of detergent_125",
+      "label": "bottle of detergent",
+      "canonical": "bottle",
+      "instance_key": "4ok3usBNeis:125",
+      "center_hab": [
+        7.1993865966796875,
+        1.3967996835708618,
+        4.375693321228027
+      ],
+      "sizes_hab": [
+        0.16130447387695312,
+        0.31082606315612793,
+        0.18000030517578125
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "4ok3usBNeis",
+      "semantic_id": 126,
+      "object_id_str": "bottle of detergent_126",
+      "label": "bottle of detergent",
+      "canonical": "bottle",
+      "instance_key": "4ok3usBNeis:126",
+      "center_hab": [
+        7.21087646484375,
+        1.3856576681137085,
+        4.23569393157959
+      ],
+      "sizes_hab": [
+        0.1783294677734375,
+        0.32854413986206055,
+        0.14000320434570312
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "4ok3usBNeis",
+      "semantic_id": 127,
+      "object_id_str": "bottle of detergent_127",
+      "label": "bottle of detergent",
+      "canonical": "bottle",
+      "instance_key": "4ok3usBNeis:127",
+      "center_hab": [
+        7.2700395584106445,
+        1.3790671825408936,
+        4.107957363128662
+      ],
+      "sizes_hab": [
+        0.3000030517578125,
+        0.3102531433105469,
+        0.19547176361083984
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "4ok3usBNeis",
+      "semantic_id": 320,
+      "object_id_str": "bottle of soap_320",
+      "label": "bottle of soap",
+      "canonical": "bottle",
+      "instance_key": "4ok3usBNeis:320",
+      "center_hab": [
+        9.230040550231934,
+        3.0035195350646973,
+        6.205695629119873
+      ],
+      "sizes_hab": [
+        0.10000038146972656,
+        0.11573314666748047,
+        0.1199960708618164
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "4ok3usBNeis",
+      "semantic_id": 388,
+      "object_id_str": "bottle of soap_388",
+      "label": "bottle of soap",
+      "canonical": "bottle",
+      "instance_key": "4ok3usBNeis:388",
+      "center_hab": [
+        4.408561706542969,
+        2.9289817810058594,
+        4.047952175140381
+      ],
+      "sizes_hab": [
+        0.09704017639160156,
+        0.18480825424194336,
+        0.12450599670410156
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "GLAQ4DNUx5U",
+      "semantic_id": 263,
+      "object_id_str": "bottle of detergent_263",
+      "label": "bottle of detergent",
+      "canonical": "bottle",
+      "instance_key": "GLAQ4DNUx5U:263",
+      "center_hab": [
+        -2.903650999069214,
+        -0.8971149921417236,
+        5.499100685119629
+      ],
+      "sizes_hab": [
+        0.18307209014892578,
+        0.29338908195495605,
+        0.17034339904785156
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "GLAQ4DNUx5U",
+      "semantic_id": 264,
+      "object_id_str": "bottle of detergent_264",
+      "label": "bottle of detergent",
+      "canonical": "bottle",
+      "instance_key": "GLAQ4DNUx5U:264",
+      "center_hab": [
+        -2.9251794815063477,
+        -0.8990844488143921,
+        5.685649871826172
+      ],
+      "sizes_hab": [
+        0.1399989128112793,
+        0.2894577980041504,
+        0.1399993896484375
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "GLAQ4DNUx5U",
+      "semantic_id": 266,
+      "object_id_str": "bottle of detergent_266",
+      "label": "bottle of detergent",
+      "canonical": "bottle",
+      "instance_key": "GLAQ4DNUx5U:266",
+      "center_hab": [
+        -2.905177593231201,
+        -0.503808856010437,
+        5.435640335083008
+      ],
+      "sizes_hab": [
+        0.10000133514404297,
+        0.28000104427337646,
+        0.12001991271972656
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "GLAQ4DNUx5U",
+      "semantic_id": 267,
+      "object_id_str": "bottle of detergent_267",
+      "label": "bottle of detergent",
+      "canonical": "bottle",
+      "instance_key": "GLAQ4DNUx5U:267",
+      "center_hab": [
+        -2.8819470405578613,
+        -0.4794013798236847,
+        5.5313825607299805
+      ],
+      "sizes_hab": [
+        0.0935659408569336,
+        0.28881603479385376,
+        0.15146827697753906
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "GLAQ4DNUx5U",
+      "semantic_id": 268,
+      "object_id_str": "bottle of detergent_268",
+      "label": "bottle of detergent",
+      "canonical": "bottle",
+      "instance_key": "GLAQ4DNUx5U:268",
+      "center_hab": [
+        -2.9164891242980957,
+        -0.5001463890075684,
+        5.735651016235352
+      ],
+      "sizes_hab": [
+        0.12261772155761719,
+        0.2819819748401642,
+        0.12000083923339844
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "GLAQ4DNUx5U",
+      "semantic_id": 269,
+      "object_id_str": "bottle of detergent_269",
+      "label": "bottle of detergent",
+      "canonical": "bottle",
+      "instance_key": "GLAQ4DNUx5U:269",
+      "center_hab": [
+        -2.963726043701172,
+        -0.5249183177947998,
+        5.8600239753723145
+      ],
+      "sizes_hab": [
+        0.07477998733520508,
+        0.25578996539115906,
+        0.12875080108642578
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "GLAQ4DNUx5U",
+      "semantic_id": 270,
+      "object_id_str": "bottle of detergent_270",
+      "label": "bottle of detergent",
+      "canonical": "bottle",
+      "instance_key": "GLAQ4DNUx5U:270",
+      "center_hab": [
+        -2.8601136207580566,
+        -0.4957883954048157,
+        5.655649185180664
+      ],
+      "sizes_hab": [
+        0.11979103088378906,
+        0.21604406833648682,
+        0.160003662109375
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "GLAQ4DNUx5U",
+      "semantic_id": 307,
+      "object_id_str": "bowl_307",
+      "label": "bowl",
+      "canonical": "bowl",
+      "instance_key": "GLAQ4DNUx5U:307",
+      "center_hab": [
+        -8.289274215698242,
+        -0.6594739556312561,
+        1.0521132946014404
+      ],
+      "sizes_hab": [
+        0.34819602966308594,
+        0.12868201732635498,
+        0.32099205255508423
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "GLAQ4DNUx5U",
+      "semantic_id": 359,
+      "object_id_str": "bottle_359",
+      "label": "bottle",
+      "canonical": "bottle",
+      "instance_key": "GLAQ4DNUx5U:359",
+      "center_hab": [
+        -3.9151785373687744,
+        -0.07380808144807816,
+        -0.6562155485153198
+      ],
+      "sizes_hab": [
+        0.12000894546508789,
+        0.21999599039554596,
+        0.2637369632720947
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "GLAQ4DNUx5U",
+      "semantic_id": 360,
+      "object_id_str": "bottle_360",
+      "label": "bottle",
+      "canonical": "bottle",
+      "instance_key": "GLAQ4DNUx5U:360",
+      "center_hab": [
+        -3.4909744262695312,
+        -0.0038135945796966553,
+        -0.7269481420516968
+      ],
+      "sizes_hab": [
+        0.12841510772705078,
+        0.2799930274486542,
+        0.1251981258392334
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "GLAQ4DNUx5U",
+      "semantic_id": 395,
+      "object_id_str": "bottle_395",
+      "label": "bottle",
+      "canonical": "bottle",
+      "instance_key": "GLAQ4DNUx5U:395",
+      "center_hab": [
+        -8.135181427001953,
+        -1.0475295782089233,
+        9.025688171386719
+      ],
+      "sizes_hab": [
+        0.07999801635742188,
+        0.12733888626098633,
+        0.10007476806640625
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "GLAQ4DNUx5U",
+      "semantic_id": 542,
+      "object_id_str": "bottle_542",
+      "label": "bottle",
+      "canonical": "bottle",
+      "instance_key": "GLAQ4DNUx5U:542",
+      "center_hab": [
+        -5.355696678161621,
+        2.092881917953491,
+        6.798765182495117
+      ],
+      "sizes_hab": [
+        0.12103271484375,
+        0.3266458511352539,
+        0.12622833251953125
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "GLAQ4DNUx5U",
+      "semantic_id": 543,
+      "object_id_str": "bottle_543",
+      "label": "bottle",
+      "canonical": "bottle",
+      "instance_key": "GLAQ4DNUx5U:543",
+      "center_hab": [
+        -5.2779083251953125,
+        2.03933048248291,
+        6.820080757141113
+      ],
+      "sizes_hab": [
+        0.08545875549316406,
+        0.20627880096435547,
+        0.10097122192382812
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "GLAQ4DNUx5U",
+      "semantic_id": 544,
+      "object_id_str": "bottle_544",
+      "label": "bottle",
+      "canonical": "bottle",
+      "instance_key": "GLAQ4DNUx5U:544",
+      "center_hab": [
+        -5.2112345695495605,
+        2.03033447265625,
+        6.807129383087158
+      ],
+      "sizes_hab": [
+        0.12788867950439453,
+        0.1882929801940918,
+        0.12748050689697266
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "DYehNKdT76V",
+      "semantic_id": 37,
+      "object_id_str": "bottle of soap_37",
+      "label": "bottle of soap",
+      "canonical": "bottle",
+      "instance_key": "DYehNKdT76V:37",
+      "center_hab": [
+        -9.393165588378906,
+        4.297789573669434,
+        -5.823479652404785
+      ],
+      "sizes_hab": [
+        0.0108642578125,
+        0.1740894317626953,
+        0.13056564331054688
+      ],
+      "height_agl_guess": null
+    },
+    {
+      "scene_id": "DYehNKdT76V",
+      "semantic_id": 333,
+      "object_id_str": "bottle of soap_333",
+      "label": "bottle of soap",
+      "canonical": "bottle",
+      "instance_key": "DYehNKdT76V:333",
+      "center_hab": [
+        -8.049430847167969,
+        0.9746555089950562,
+        -4.917126655578613
+      ],
+      "sizes_hab": [
+        0.10879898071289062,
+        0.1614820957183838,
+        0.0843353271484375
+      ],
+      "height_agl_guess": null
+    }
+  ]
+}

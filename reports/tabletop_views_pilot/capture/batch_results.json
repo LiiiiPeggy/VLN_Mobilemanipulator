@@ -1,0 +1,125 @@
+[
+  {
+    "pair_id": "CrMo8WxCyVb_cup_423",
+    "ok": true,
+    "skipped": true,
+    "pair_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/captures/CrMo8WxCyVb_cup_423",
+    "error": null,
+    "init_consistency": null
+  },
+  {
+    "pair_id": "bxsVRursffK_cup_381",
+    "ok": true,
+    "skipped": true,
+    "pair_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/captures/bxsVRursffK_cup_381",
+    "error": null,
+    "init_consistency": null
+  },
+  {
+    "pair_id": "a8BtkwhxdRV_cup_598",
+    "ok": true,
+    "skipped": true,
+    "pair_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/captures/a8BtkwhxdRV_cup_598",
+    "error": null,
+    "init_consistency": null
+  },
+  {
+    "pair_id": "5cdEh9F2hJL_bowl_395",
+    "ok": true,
+    "skipped": false,
+    "pair_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/captures/5cdEh9F2hJL_bowl_395",
+    "error": null,
+    "init_consistency": {
+      "mae": 0.0015776909422129393,
+      "approx_equal": true
+    }
+  },
+  {
+    "pair_id": "7MXmsvcQjpJ_bowl_791",
+    "ok": true,
+    "skipped": false,
+    "pair_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/captures/7MXmsvcQjpJ_bowl_791",
+    "error": null,
+    "init_consistency": {
+      "mae": 0.0010069444542750716,
+      "approx_equal": true
+    }
+  },
+  {
+    "pair_id": "eF36g7L6Z9M_bowl_161",
+    "ok": true,
+    "skipped": false,
+    "pair_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/captures/eF36g7L6Z9M_bowl_161",
+    "error": null,
+    "init_consistency": {
+      "mae": 0.0006445312756113708,
+      "approx_equal": true
+    }
+  },
+  {
+    "pair_id": "QaLdnwvtxbs_remote_189",
+    "ok": true,
+    "skipped": false,
+    "pair_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/captures/QaLdnwvtxbs_remote_189",
+    "error": null,
+    "init_consistency": {
+      "mae": 0.00019314236124046147,
+      "approx_equal": true
+    }
+  },
+  {
+    "pair_id": "q5QZSEeHe5g_remote_919",
+    "ok": true,
+    "skipped": false,
+    "pair_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/captures/q5QZSEeHe5g_remote_919",
+    "error": null,
+    "init_consistency": {
+      "mae": 0.0004177517257630825,
+      "approx_equal": true
+    }
+  },
+  {
+    "pair_id": "y9hTuugGdiq_remote_232",
+    "ok": true,
+    "skipped": false,
+    "pair_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/captures/y9hTuugGdiq_remote_232",
+    "error": null,
+    "init_consistency": {
+      "mae": 0.0005674913409166038,
+      "approx_equal": true
+    }
+  },
+  {
+    "pair_id": "7MXmsvcQjpJ_bottle_389",
+    "ok": true,
+    "skipped": false,
+    "pair_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/captures/7MXmsvcQjpJ_bottle_389",
+    "error": null,
+    "init_consistency": {
+      "mae": 0.0006401909631676972,
+      "approx_equal": true
+    }
+  },
+  {
+    "pair_id": "q5QZSEeHe5g_bottle_9",
+    "ok": true,
+    "skipped": false,
+    "pair_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/captures/q5QZSEeHe5g_bottle_9",
+    "error": null,
+    "init_consistency": {
+      "mae": 0.0006955295102670789,
+      "approx_equal": true
+    }
+  },
+  {
+    "pair_id": "wcojb4TFT35_bottle_706",
+    "ok": true,
+    "skipped": false,
+    "pair_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/captures/wcojb4TFT35_bottle_706",
+    "error": null,
+    "init_consistency": {
+      "mae": 0.00527235260233283,
+      "approx_equal": true
+    }
+  }
+]

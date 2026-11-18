@@ -1,0 +1,134 @@
+{
+  "protocol": "tabletop_views_pilot_v1",
+  "camera_modes": [
+    "fixed_base_gimbal",
+    "arm_ee"
+  ],
+  "arm_mode_alias": "arm_view",
+  "max_views_per_mode": 3,
+  "captures_data_root": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/tabletop_views_pilot/captures",
+  "n_pairs": 12,
+  "n_reliable_gt": 9,
+  "pairs": [
+    {
+      "pair_id": "5cdEh9F2hJL_bowl_395",
+      "instance_id": "bowl_395",
+      "category": "decorative bowl",
+      "scene": "5cdEh9F2hJL",
+      "reliable_gt": true,
+      "notes": "",
+      "max_gt_pixels_any_view": 6731,
+      "n_visible_views": 5
+    },
+    {
+      "pair_id": "7MXmsvcQjpJ_bottle_389",
+      "instance_id": "bottle_389",
+      "category": "bottle of detergent",
+      "scene": "7MXmsvcQjpJ",
+      "reliable_gt": true,
+      "notes": "",
+      "max_gt_pixels_any_view": 9369,
+      "n_visible_views": 6
+    },
+    {
+      "pair_id": "7MXmsvcQjpJ_bowl_791",
+      "instance_id": "bowl_791",
+      "category": "bowl",
+      "scene": "7MXmsvcQjpJ",
+      "reliable_gt": true,
+      "notes": "",
+      "max_gt_pixels_any_view": 6878,
+      "n_visible_views": 6
+    },
+    {
+      "pair_id": "CrMo8WxCyVb_cup_423",
+      "instance_id": "cup_423",
+      "category": "coffee mug",
+      "scene": "CrMo8WxCyVb",
+      "reliable_gt": true,
+      "notes": "",
+      "max_gt_pixels_any_view": 4683,
+      "n_visible_views": 5
+    },
+    {
+      "pair_id": "QaLdnwvtxbs_remote_189",
+      "instance_id": "remote_189",
+      "category": "remote control",
+      "scene": "QaLdnwvtxbs",
+      "reliable_gt": true,
+      "notes": "",
+      "max_gt_pixels_any_view": 949,
+      "n_visible_views": 4
+    },
+    {
+      "pair_id": "a8BtkwhxdRV_cup_598",
+      "instance_id": "cup_598",
+      "category": "mug",
+      "scene": "a8BtkwhxdRV",
+      "reliable_gt": true,
+      "notes": "",
+      "max_gt_pixels_any_view": 250,
+      "n_visible_views": 6
+    },
+    {
+      "pair_id": "bxsVRursffK_cup_381",
+      "instance_id": "cup_381",
+      "category": "cup",
+      "scene": "bxsVRursffK",
+      "reliable_gt": true,
+      "notes": "",
+      "max_gt_pixels_any_view": 351,
+      "n_visible_views": 6
+    },
+    {
+      "pair_id": "eF36g7L6Z9M_bowl_161",
+      "instance_id": "bowl_161",
+      "category": "bowl",
+      "scene": "eF36g7L6Z9M",
+      "reliable_gt": true,
+      "notes": "",
+      "max_gt_pixels_any_view": 3703,
+      "n_visible_views": 5
+    },
+    {
+      "pair_id": "q5QZSEeHe5g_bottle_9",
+      "instance_id": "bottle_9",
+      "category": "bottle",
+      "scene": "q5QZSEeHe5g",
+      "reliable_gt": false,
+      "notes": "no_ee_view_with_gt_pixels>=32_after_visibility_ranked_spawn",
+      "max_gt_pixels_any_view": 0,
+      "n_visible_views": 0
+    },
+    {
+      "pair_id": "q5QZSEeHe5g_remote_919",
+      "instance_id": "remote_919",
+      "category": "remote control",
+      "scene": "q5QZSEeHe5g",
+      "reliable_gt": false,
+      "notes": "no_ee_view_with_gt_pixels>=32_after_visibility_ranked_spawn",
+      "max_gt_pixels_any_view": 0,
+      "n_visible_views": 0
+    },
+    {
+      "pair_id": "wcojb4TFT35_bottle_706",
+      "instance_id": "bottle_706",
+      "category": "bottle of detergent",
+      "scene": "wcojb4TFT35",
+      "reliable_gt": false,
+      "notes": "no_ee_view_with_gt_pixels>=32_after_visibility_ranked_spawn",
+      "max_gt_pixels_any_view": 0,
+      "n_visible_views": 0
+    },
+    {
+      "pair_id": "y9hTuugGdiq_remote_232",
+      "instance_id": "remote_232",
+      "category": "remote control",
+      "scene": "y9hTuugGdiq",
+      "reliable_gt": true,
+      "notes": "",
+      "max_gt_pixels_any_view": 1633,
+      "n_visible_views": 4
+    }
+  ]
+}

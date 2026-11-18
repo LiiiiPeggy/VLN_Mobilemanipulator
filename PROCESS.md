@@ -1111,3 +1111,24 @@
 **结论**：SG-Nav 主路径已切到官方 navmesh；收尾 20ep 与 UniGoal 批量仍待做。MSGNav 论文对照等 gpt-4o。
 
 **相关**：`runs/SG-Nav/smoke_status.md`；`runs/MSGNav/luna_20ep_status.md`；`PROGRESS.md`
+
+---
+
+## 2026-11-18 桌边小物体配对观察采集（Cursor C）
+
+**模块**：habitat_rangercr10 / tabletop_views  
+
+**问题**：需在同一底盘位姿下采集 `fixed_base_gimbal` vs `arm_view`（磁盘目录 `arm_ee`）配对画面 + 实例 GT 掩膜，供 D 离线检测。  
+
+**操作**：
+
+- 从 HM3D semantic 枚举 cup/bowl/remote/bottle；独立渲染核对后锁定 12 实例。  
+- `RangerCr10KinematicEnv` 增加可选 semantic 传感器 + annotated dataset。  
+- 可见性排序 spawn（GT 仅用于布置）；共用臂/云台动作序列，不瞄准真值；拒动不重试。  
+- 大数据落 D 盘；`reports/.../captures/<pair>` 软链；报告与索引进 Git。  
+
+**实测结果**：12 对采集完成；9 对有可靠 GT 像素；3 对全程不可见标 `reliable_gt=false`；首对 init 帧一致、底盘未移。  
+
+**结论**：C 侧接口与批量画面已交付 D；导航六类入口未改。  
+
+**相关**：`adapters/habitat_rangercr10/experiments/tabletop_views/`；`reports/tabletop_views_pilot/capture/CAPTURE_REPORT.md`
