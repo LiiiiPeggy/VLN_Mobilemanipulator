@@ -1,0 +1,71 @@
+{
+  "case": "/home/ubuntu/locomani/VLN_Mobilemanipulator/reports/nav_inflation_softcost_20261118/case_wide_teesav_sofa0_seq20",
+  "source_run": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/formalgimbal_formal150_full_20261117_190344_TEEsavR23oF_sofa_0",
+  "plan_seq": 20,
+  "robot_scale": 0.7,
+  "half_w_m": 0.30428999999999995,
+  "soft_R_m": 0.4,
+  "soft_w": 2.0,
+  "units": {
+    "inflate": "m",
+    "soft_R": "m",
+    "soft_w": "dimensionless",
+    "clearance": "m"
+  },
+  "P0": {
+    "inflate_m": 0.18,
+    "n_reachable": 0,
+    "n_candidates": 11,
+    "best_len": null,
+    "clearance": {
+      "n": 0
+    },
+    "path": null
+  },
+  "P1": {
+    "inflate_m": 0.30428999999999995,
+    "n_reachable": 0,
+    "n_candidates": 11,
+    "best_len": null,
+    "clearance": {
+      "n": 0
+    },
+    "path": null
+  },
+  "P2": {
+    "inflate_m": 0.30428999999999995,
+    "soft_R": 0.4,
+    "soft_w": 2.0,
+    "n_reachable": 0,
+    "n_candidates": 11,
+    "best_len": null,
+    "clearance": {
+      "n": 0
+    },
+    "path": null
+  },
+  "exec_traj_clearance": {
+    "n": 111,
+    "center_min": 0.4463498836219583,
+    "center_p10": 0.48464112814610016,
+    "edge_min": 0.14205988362195837,
+    "edge_p10": 0.18035112814610021,
+    "worst_i": 60,
+    "worst_xy": [
+      2.7599656118822087,
+      2.4161694095256183
+    ]
+  },
+  "orig_selected_path_clearance": {
+    "n": 17,
+    "center_min": 0.2067399574344543,
+    "center_p10": 0.2842907676855614,
+    "edge_min": -0.09755004256554564,
+    "edge_p10": -0.01999923231443857,
+    "worst_i": 7,
+    "worst_xy": [
+      2.2912,
+      2.4346
+    ]
+  }
+}

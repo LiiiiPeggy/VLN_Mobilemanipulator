@@ -1,6 +1,6 @@
 # PROGRESS.md — 当前状态
 
-更新时间：2026-11-17（ApexNav–Ranger 最小收口 v1.2；排队等 B formal）  
+更新时间：2026-11-18（导航 P0/P1/P2 离线对照完成；短跑/dev24 待 GPU）  
 证据优先于本文；冲突时以代码、`reports/`、`runs/`、容器实测为准。
 
 ## 研究目标与阶段
@@ -50,10 +50,31 @@
 | 全量 1000-ep | **完成** | `.../hm3dv2_full_20261109_231528`；~13.1 h |
 | SR / SPL | **74.4% / 37.65%**（论文 76.2 / 38.0） | log + `summary.json` |
 
+## 桌边视点 pilot（固定云台 vs 臂载）
+
+| 项 | 状态 | 证据 |
+|----|------|------|
+| 离线 `get_object` + IoU≥0.5 实例匹配 | **入口就绪** | `adapters/.../tabletop_views/`；`cab7213` |
+| 合成夹具冒烟 | 管线 OK（非真实结论） | `reports/tabletop_views_pilot/evaluation/` |
+| A 实例目录 | 134 候选（cup15/bowl40/remote14/bottle65） | `capture/instance_catalog.json` |
+| 真实 RGB+GT 配对 | **等待 A → `captures/`** | watcher 轮询中 |
+
+正式 fixed_gimbal formal150 结果见 `reports/ranger_category_eval_20261116/formal_fixed_gimbal_v1/`（勿与桌边 pilot 混写）。
+
+## 导航规划膨胀 A/B（本轮）
+
+| 项 | 状态 | 证据 |
+|----|------|------|
+| 分支 | `cursor/nav-inflation-halfwidth-softcost`（自 492f53f） | — |
+| lock inflation / soft cost C++ | **已实现并编入** `vln-rangercr10` | `sdf_map2d` + `astar2d` |
+| 同图离线 P0/P1/P2 | **完成** | `reports/nav_inflation_softcost_20261118/` |
+| 推荐（离线） | **P2 进短跑**（半宽硬膨胀为主；软代价 R=0.40/w=2.0 次要） | `RECOMMENDATION.md` |
+| 短跑 / 候选 dev24 | **未跑**（GPU≈40GB + queue_after_formal） | 待空闲 |
+
 ## 下一步（最多 5）
 
-1. 等 B formal 结束后由 `queue_after_formal.sh` 自动跑：wheel verify → budget150 diag → smoke → **dev24@150/100**。  
-2. 用 v1.2 日志核对 lt9（invalid spawn）/ k1cup·ef36（合法拒转+缺反馈）/ hy1（可动对照）。  
-3. 向 B 交付冻结 SHA（`cef07d7` 链）+ 字段样例；正式独立评测以 **150/100** 为准。  
+1. GPU 空闲后：同起点短跑 P0 vs P2（宽通道净空 + 窄门仍可过）→ 候选 `halfwidth_softcost` 跑一次匹配 formal 的 dev24。  
+2. 若规划已离障而 traj 仍贴边：查跟踪/执行，不继续加大膨胀。  
+3. formal150 独立列表后续 ObjectNav 以 formal 报告为准。  
 4. 合并前确认不污染 1.0× 默认与 `legacy_arm_look`。  
-5. SG-Nav/UniGoal 旁路按原计划收尾。
+5. 桌边 pilot / SG-Nav 旁路按原计划。
