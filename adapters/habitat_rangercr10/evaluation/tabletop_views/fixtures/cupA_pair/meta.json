@@ -1,0 +1,7 @@
+{
+  "pair_id": "fixture_cupA",
+  "instance_id": "cup_A",
+  "category": "mug",
+  "scene": "synthetic_fixture",
+  "reliable_gt": true
+}
