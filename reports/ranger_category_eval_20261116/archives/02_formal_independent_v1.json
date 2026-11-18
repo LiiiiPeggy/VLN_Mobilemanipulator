@@ -1,0 +1,16 @@
+{
+  "archive_id": "formal_independent_v1_150_100",
+  "batch_id": "formal150_full_20261117_190344",
+  "role": "frozen_independent_eval",
+  "jsonl": "/home/ubuntu/locomani/VLN_Mobilemanipulator/reports/ranger_category_eval_20261116/formal_fixed_gimbal_v1/batch_formal150_full_20261117_190344.jsonl",
+  "accounting": "/home/ubuntu/locomani/VLN_Mobilemanipulator/reports/ranger_category_eval_20261116/formal_fixed_gimbal_v1/accounting_formal150_full_20261117_190344.json",
+  "validity": "/home/ubuntu/locomani/VLN_Mobilemanipulator/reports/ranger_category_eval_20261116/lists/independent_list_validity_v1_post.json",
+  "camera_mode": "fixed_base_gimbal",
+  "budget": {
+    "max_steps": 150,
+    "max_explore_actions": 100
+  },
+  "written_utc": "2026-11-18T03:22:18.584227+00:00",
+  "n_rows_at_finalize": 109,
+  "note": "Per-run executor_version/SHA from artifacts; do not mix with short50 or hist 8/24."
+}

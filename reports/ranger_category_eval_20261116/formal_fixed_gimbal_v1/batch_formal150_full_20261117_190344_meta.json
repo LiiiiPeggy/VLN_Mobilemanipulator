@@ -1,0 +1,10 @@
+{
+  "batch_id": "formal150_full_20261117_190344",
+  "code_git_sha_shell": "77158e04d2bbecfab783324df657b6560ba02155",
+  "note": "shell SHA is checkout hint; ingest prefers summary/run_config values",
+  "max_steps": 150,
+  "max_explore_actions": 100,
+  "camera_mode": "fixed_base_gimbal",
+  "n_jobs": 109,
+  "validity": "/home/ubuntu/locomani/VLN_Mobilemanipulator/reports/ranger_category_eval_20261116/lists/independent_list_validity_v1_post.json"
+}
