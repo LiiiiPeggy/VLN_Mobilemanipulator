@@ -50,6 +50,7 @@ struct FSMData {
     stucking_points_.clear();
     // ################################
     object_hold_miss_count_ = 0;
+    no_frontier_look_count_ = 0;
     // ################################
 
     local_pos_ = Eigen::Vector2d(0, 0);
@@ -86,6 +87,10 @@ struct FSMData {
   // final_result_ was SEARCH_OBJECT (transient object-cloud miss).
   // ################################
   int object_hold_miss_count_;
+  // ################################
+  // Consecutive NO_FRONTIER outcomes before allowing FINISH→STOP.
+  // ################################
+  int no_frontier_look_count_;
 
   Eigen::Vector2d local_pos_;
   LocalTrajectory newest_traj_;  // Store latest planned trajectory

@@ -111,8 +111,35 @@ void ExplorationFSM::FSMCallback(const ros::TimerEvent& e)
         expl_state_msg.data = fd_->final_result_;
         expl_state_pub_.publish(expl_state_msg);
         if (fd_->final_result_ == FINAL_RESULT::EXPLORE ||
-            fd_->final_result_ == FINAL_RESULT::SEARCH_OBJECT)
+            fd_->final_result_ == FINAL_RESULT::SEARCH_OBJECT) {
+          // ################################
+          fd_->no_frontier_look_count_ = 0;
+          // ################################
           transitState(ROS_STATE::PUB_ACTION, "FSM");
+        }
+        // ################################
+        // Defer FINISH on NO_FRONTIER: publish look/turn so Habitat can add
+        // free space / detections instead of immediate STOP far from goal.
+        // REACH_OBJECT / STUCKING still finish immediately.
+        // ################################
+        else if (fd_->final_result_ == FINAL_RESULT::NO_FRONTIER &&
+                 fd_->no_frontier_look_count_ < FSMConstants::MAX_NO_FRONTIER_LOOK) {
+          fd_->no_frontier_look_count_++;
+          // Alternate left turns with occasional look-down/up to refresh map.
+          const int k = fd_->no_frontier_look_count_;
+          if (k % 8 == 0)
+            fd_->newest_action_ = ACTION::TURN_DOWN;
+          else if (k % 8 == 4)
+            fd_->newest_action_ = ACTION::TURN_UP;
+          else
+            fd_->newest_action_ = ACTION::TURN_LEFT;
+          ROS_WARN("[NoFrontierLook] %d/%d — defer STOP, action=%d",
+              fd_->no_frontier_look_count_, FSMConstants::MAX_NO_FRONTIER_LOOK,
+              fd_->newest_action_);
+          updateFrontierAndObject();
+          transitState(ROS_STATE::PUB_ACTION, "FSM");
+        }
+        // ################################
         else
           transitState(ROS_STATE::FINISH, "FSM");
       }

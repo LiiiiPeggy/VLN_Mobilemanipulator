@@ -1,0 +1,486 @@
+[
+  {
+    "id": "ef36_bed_4",
+    "category": "bed",
+    "spawn_status": "ok",
+    "sum_moved_m": 0.5250000000000004,
+    "dtg_min": 0.015730741186742985,
+    "sr_dtg_at_stop": 0.015730741186742985,
+    "sr_proxy": true,
+    "entered_search_best": false,
+    "n_search_best": 0,
+    "termination": "planner_stop",
+    "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/execgimbal_dev24_after_dinofix_20261119_011332_ef36_bed_4",
+    "plan_results": {
+      "EXPLORATION": 81,
+      "NO_COVERABLE_FRONTIER": 1
+    },
+    "label_hist": {},
+    "n_nav_mode": 0,
+    "stop_step_detail": {
+      "step": 111,
+      "phase": "explore_planner",
+      "ros_state": 5,
+      "expl_result": 5,
+      "final_state": 3,
+      "dtg": 0.015730741186742985,
+      "ndet": 0
+    },
+    "initial_penetration": false,
+    "bucket": "success"
+  },
+  {
+    "id": "lt9_tv_0",
+    "category": "tv_monitor",
+    "spawn_status": "invalid_initial_penetration",
+    "sum_moved_m": 0.0,
+    "dtg_min": 0.32031109266764185,
+    "sr_dtg_at_stop": 0.32031109266764185,
+    "sr_proxy": true,
+    "entered_search_best": false,
+    "n_search_best": 0,
+    "termination": "planner_stop",
+    "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/execgimbal_dev24_after_dinofix_20261119_011332_lt9_tv_0",
+    "plan_results": {
+      "EXPLORATION": 15,
+      "NO_COVERABLE_FRONTIER": 1
+    },
+    "label_hist": {},
+    "n_nav_mode": 0,
+    "stop_step_detail": {
+      "step": 51,
+      "phase": "explore_planner",
+      "ros_state": 5,
+      "expl_result": 5,
+      "final_state": 3,
+      "dtg": 0.32031109266764185,
+      "ndet": 0
+    },
+    "initial_penetration": true,
+    "bucket": "success"
+  },
+  {
+    "id": "lt9_sofa_4",
+    "category": "sofa",
+    "spawn_status": "invalid_initial_penetration",
+    "sum_moved_m": 0.0,
+    "dtg_min": 0.23145227668411147,
+    "sr_dtg_at_stop": 0.23145227668411147,
+    "sr_proxy": true,
+    "entered_search_best": false,
+    "n_search_best": 0,
+    "termination": "planner_stop",
+    "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/execgimbal_dev24_after_dinofix_20261119_011332_lt9_sofa_4",
+    "plan_results": {
+      "EXPLORATION": 15,
+      "NO_COVERABLE_FRONTIER": 1
+    },
+    "label_hist": {},
+    "n_nav_mode": 0,
+    "stop_step_detail": {
+      "step": 51,
+      "phase": "explore_planner",
+      "ros_state": 5,
+      "expl_result": 5,
+      "final_state": 3,
+      "dtg": 0.23145227668411147,
+      "ndet": 0
+    },
+    "initial_penetration": true,
+    "bucket": "success"
+  },
+  {
+    "id": "dd4b_plant_5",
+    "category": "plant",
+    "spawn_status": "ok",
+    "sum_moved_m": 2.3833333333333333,
+    "dtg_min": 0.02618769729026612,
+    "sr_dtg_at_stop": 0.034709006121742034,
+    "sr_proxy": true,
+    "entered_search_best": true,
+    "n_search_best": 26,
+    "termination": "planner_stop",
+    "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/execgimbal_dev24_after_dinofix_20261119_011332_dd4b_plant_5",
+    "plan_results": {
+      "SEARCH_BEST_OBJECT": 26
+    },
+    "label_hist": {
+      "1": 21,
+      "3": 4,
+      "0": 81,
+      "2": 5
+    },
+    "n_nav_mode": 26,
+    "stop_step_detail": {
+      "step": 70,
+      "phase": "explore_planner",
+      "ros_state": 5,
+      "expl_result": 1,
+      "final_state": 4,
+      "dtg": 0.034709006121742034,
+      "ndet": 0
+    },
+    "initial_penetration": false,
+    "bucket": "success"
+  },
+  {
+    "id": "yr17_plant_0",
+    "category": "plant",
+    "spawn_status": "ok",
+    "sum_moved_m": 0.7500000000000006,
+    "dtg_min": 4.9927644855056865,
+    "sr_dtg_at_stop": 5.1744316690288565,
+    "sr_proxy": false,
+    "entered_search_best": false,
+    "n_search_best": 0,
+    "termination": "planner_stop",
+    "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/execgimbal_dev24_after_dinofix_20261119_011332_yr17_plant_0",
+    "plan_results": {
+      "EXPLORATION": 52,
+      "NO_PASSABLE_FRONTIER": 1
+    },
+    "label_hist": {},
+    "n_nav_mode": 0,
+    "stop_step_detail": {
+      "step": 86,
+      "phase": "explore_planner",
+      "ros_state": 5,
+      "expl_result": 4,
+      "final_state": 3,
+      "dtg": 5.1744316690288565,
+      "ndet": 0
+    },
+    "initial_penetration": false,
+    "bucket": "wrong_stop"
+  },
+  {
+    "id": "yr17_chair_0",
+    "category": "chair",
+    "spawn_status": "ok",
+    "sum_moved_m": 0.7500000000000006,
+    "dtg_min": 3.3246774946823443,
+    "sr_dtg_at_stop": 3.949363575994705,
+    "sr_proxy": false,
+    "entered_search_best": false,
+    "n_search_best": 0,
+    "termination": "planner_stop",
+    "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/execgimbal_dev24_after_dinofix_20261119_011332_yr17_chair_0",
+    "plan_results": {
+      "EXPLORATION": 52,
+      "NO_PASSABLE_FRONTIER": 1
+    },
+    "label_hist": {},
+    "n_nav_mode": 0,
+    "stop_step_detail": {
+      "step": 86,
+      "phase": "explore_planner",
+      "ros_state": 5,
+      "expl_result": 4,
+      "final_state": 3,
+      "dtg": 3.949363575994705,
+      "ndet": 0
+    },
+    "initial_penetration": false,
+    "bucket": "wrong_stop"
+  },
+  {
+    "id": "yr17_sofa_0",
+    "category": "sofa",
+    "spawn_status": "ok",
+    "sum_moved_m": 0.7500000000000006,
+    "dtg_min": 10.63985073062389,
+    "sr_dtg_at_stop": 10.63985073062389,
+    "sr_proxy": false,
+    "entered_search_best": false,
+    "n_search_best": 0,
+    "termination": "planner_stop",
+    "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/execgimbal_dev24_after_dinofix_20261119_011332_yr17_sofa_0",
+    "plan_results": {
+      "EXPLORATION": 52,
+      "NO_PASSABLE_FRONTIER": 1
+    },
+    "label_hist": {},
+    "n_nav_mode": 0,
+    "stop_step_detail": {
+      "step": 86,
+      "phase": "explore_planner",
+      "ros_state": 5,
+      "expl_result": 4,
+      "final_state": 3,
+      "dtg": 10.63985073062389,
+      "ndet": 0
+    },
+    "initial_penetration": false,
+    "bucket": "wrong_stop"
+  },
+  {
+    "id": "yr17_tv_0",
+    "category": "tv_monitor",
+    "spawn_status": "ok",
+    "sum_moved_m": 0.7500000000000006,
+    "dtg_min": 2.353255432500866,
+    "sr_dtg_at_stop": 2.622486177169348,
+    "sr_proxy": false,
+    "entered_search_best": false,
+    "n_search_best": 0,
+    "termination": "planner_stop",
+    "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/execgimbal_dev24_after_dinofix_20261119_011332_yr17_tv_0",
+    "plan_results": {
+      "EXPLORATION": 52,
+      "NO_PASSABLE_FRONTIER": 1
+    },
+    "label_hist": {},
+    "n_nav_mode": 0,
+    "stop_step_detail": {
+      "step": 86,
+      "phase": "explore_planner",
+      "ros_state": 5,
+      "expl_result": 4,
+      "final_state": 3,
+      "dtg": 2.622486177169348,
+      "ndet": 1
+    },
+    "initial_penetration": false,
+    "bucket": "wrong_stop"
+  },
+  {
+    "id": "ef36_plant_4",
+    "category": "plant",
+    "spawn_status": "ok",
+    "sum_moved_m": 0.5250000000000004,
+    "dtg_min": 7.837529446035417,
+    "sr_dtg_at_stop": 8.3305805666062,
+    "sr_proxy": false,
+    "entered_search_best": false,
+    "n_search_best": 0,
+    "termination": "planner_stop",
+    "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/execgimbal_dev24_after_dinofix_20261119_011332_ef36_plant_4",
+    "plan_results": {
+      "EXPLORATION": 81,
+      "NO_COVERABLE_FRONTIER": 1
+    },
+    "label_hist": {},
+    "n_nav_mode": 0,
+    "stop_step_detail": {
+      "step": 111,
+      "phase": "explore_planner",
+      "ros_state": 5,
+      "expl_result": 5,
+      "final_state": 3,
+      "dtg": 8.3305805666062,
+      "ndet": 1
+    },
+    "initial_penetration": false,
+    "bucket": "wrong_stop"
+  },
+  {
+    "id": "ef36_tv_3",
+    "category": "tv_monitor",
+    "spawn_status": "ok",
+    "sum_moved_m": 0.5250000000000004,
+    "dtg_min": 7.591089273641812,
+    "sr_dtg_at_stop": 7.730117551446761,
+    "sr_proxy": false,
+    "entered_search_best": false,
+    "n_search_best": 0,
+    "termination": "planner_stop",
+    "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/execgimbal_dev24_after_dinofix_20261119_011332_ef36_tv_3",
+    "plan_results": {
+      "EXPLORATION": 80,
+      "NO_COVERABLE_FRONTIER": 1
+    },
+    "label_hist": {},
+    "n_nav_mode": 0,
+    "stop_step_detail": {
+      "step": 110,
+      "phase": "explore_planner",
+      "ros_state": 5,
+      "expl_result": 5,
+      "final_state": 3,
+      "dtg": 7.730117551446761,
+      "ndet": 0
+    },
+    "initial_penetration": false,
+    "bucket": "wrong_stop"
+  },
+  {
+    "id": "ef36_toilet_3",
+    "category": "toilet",
+    "spawn_status": "ok",
+    "sum_moved_m": 0.6666666666666672,
+    "dtg_min": 16.49215761832053,
+    "sr_dtg_at_stop": 16.57531423487283,
+    "sr_proxy": false,
+    "entered_search_best": false,
+    "n_search_best": 0,
+    "termination": "planner_stop",
+    "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/execgimbal_dev24_after_dinofix_20261119_011332_ef36_toilet_3",
+    "plan_results": {
+      "EXPLORATION": 80,
+      "NO_COVERABLE_FRONTIER": 1
+    },
+    "label_hist": {},
+    "n_nav_mode": 0,
+    "stop_step_detail": {
+      "step": 114,
+      "phase": "explore_planner",
+      "ros_state": 5,
+      "expl_result": 5,
+      "final_state": 3,
+      "dtg": 16.57531423487283,
+      "ndet": 1
+    },
+    "initial_penetration": false,
+    "bucket": "wrong_stop"
+  },
+  {
+    "id": "hy1_plant_0",
+    "category": "plant",
+    "spawn_status": "ok",
+    "sum_moved_m": 2.458333333333335,
+    "dtg_min": 2.3129927576133165,
+    "sr_dtg_at_stop": 2.3129927576133165,
+    "sr_proxy": false,
+    "entered_search_best": false,
+    "n_search_best": 0,
+    "termination": "planner_stop",
+    "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/execgimbal_dev24_after_dinofix_20261119_011332_hy1_plant_0",
+    "plan_results": {
+      "EXPLORATION": 41,
+      "NO_PASSABLE_FRONTIER": 1
+    },
+    "label_hist": {},
+    "n_nav_mode": 0,
+    "stop_step_detail": {
+      "step": 83,
+      "phase": "explore_planner",
+      "ros_state": 5,
+      "expl_result": 4,
+      "final_state": 3,
+      "dtg": 2.3129927576133165,
+      "ndet": 0
+    },
+    "initial_penetration": false,
+    "bucket": "wrong_stop"
+  },
+  {
+    "id": "hy1_chair_3",
+    "category": "chair",
+    "spawn_status": "ok",
+    "sum_moved_m": 2.458333333333335,
+    "dtg_min": 4.175791433919137,
+    "sr_dtg_at_stop": 6.257979094060331,
+    "sr_proxy": false,
+    "entered_search_best": false,
+    "n_search_best": 0,
+    "termination": "planner_stop",
+    "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/execgimbal_dev24_after_dinofix_20261119_011332_hy1_chair_3",
+    "plan_results": {
+      "EXPLORATION": 49,
+      "NO_PASSABLE_FRONTIER": 1
+    },
+    "label_hist": {},
+    "n_nav_mode": 0,
+    "stop_step_detail": {
+      "step": 91,
+      "phase": "explore_planner",
+      "ros_state": 5,
+      "expl_result": 4,
+      "final_state": 3,
+      "dtg": 6.257979094060331,
+      "ndet": 0
+    },
+    "initial_penetration": false,
+    "bucket": "wrong_stop"
+  },
+  {
+    "id": "hy1_plant_1",
+    "category": "plant",
+    "spawn_status": "ok",
+    "sum_moved_m": 2.458333333333335,
+    "dtg_min": 2.3129927576133165,
+    "sr_dtg_at_stop": 2.3129927576133165,
+    "sr_proxy": false,
+    "entered_search_best": false,
+    "n_search_best": 0,
+    "termination": "planner_stop",
+    "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/execgimbal_dev24_after_dinofix_20261119_011332_hy1_plant_1",
+    "plan_results": {
+      "EXPLORATION": 41,
+      "NO_PASSABLE_FRONTIER": 1
+    },
+    "label_hist": {},
+    "n_nav_mode": 0,
+    "stop_step_detail": {
+      "step": 83,
+      "phase": "explore_planner",
+      "ros_state": 5,
+      "expl_result": 4,
+      "final_state": 3,
+      "dtg": 2.3129927576133165,
+      "ndet": 0
+    },
+    "initial_penetration": false,
+    "bucket": "wrong_stop"
+  },
+  {
+    "id": "lt9_chair_1",
+    "category": "chair",
+    "spawn_status": "invalid_initial_penetration",
+    "sum_moved_m": 0.0,
+    "dtg_min": 5.049272872538462,
+    "sr_dtg_at_stop": 5.049272872538462,
+    "sr_proxy": false,
+    "entered_search_best": false,
+    "n_search_best": 0,
+    "termination": "planner_stop",
+    "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/execgimbal_dev24_after_dinofix_20261119_011332_lt9_chair_1",
+    "plan_results": {
+      "EXPLORATION": 15,
+      "NO_COVERABLE_FRONTIER": 1
+    },
+    "label_hist": {},
+    "n_nav_mode": 0,
+    "stop_step_detail": {
+      "step": 51,
+      "phase": "explore_planner",
+      "ros_state": 5,
+      "expl_result": 5,
+      "final_state": 3,
+      "dtg": 5.049272872538462,
+      "ndet": 0
+    },
+    "initial_penetration": true,
+    "bucket": "wrong_stop"
+  },
+  {
+    "id": "lt9_toilet_2",
+    "category": "toilet",
+    "spawn_status": "invalid_initial_penetration",
+    "sum_moved_m": 0.0,
+    "dtg_min": 2.62780369952202,
+    "sr_dtg_at_stop": 2.62780369952202,
+    "sr_proxy": false,
+    "entered_search_best": false,
+    "n_search_best": 0,
+    "termination": "planner_stop",
+    "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/execgimbal_dev24_after_dinofix_20261119_011332_lt9_toilet_2",
+    "plan_results": {
+      "EXPLORATION": 15,
+      "NO_COVERABLE_FRONTIER": 1
+    },
+    "label_hist": {},
+    "n_nav_mode": 0,
+    "stop_step_detail": {
+      "step": 51,
+      "phase": "explore_planner",
+      "ros_state": 5,
+      "expl_result": 5,
+      "final_state": 3,
+      "dtg": 2.62780369952202,
+      "ndet": 0
+    },
+    "initial_penetration": true,
+    "bucket": "wrong_stop"
+  }
+]
