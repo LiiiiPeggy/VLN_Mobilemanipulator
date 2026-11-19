@@ -16,6 +16,13 @@ void ExplorationFSM::init(ros::NodeHandle& nh)
   expl_manager_->initialize(nh);
   visualization_.reset(new PlanningVisualization(nh));
   fp_->vis_scale_ = expl_manager_->sdf_map_->getResolution() * FSMConstants::VIS_SCALE_FACTOR;
+  // ################################
+  // Pairing switch: false=legacy STOP on NO_FRONTIER; true=bounded lookaround.
+  // ################################
+  nh.param("enable_no_frontier_look", fp_->enable_no_frontier_look_, false);
+  ROS_WARN("[NoFrontierLook] enable=%s max=%d",
+      fp_->enable_no_frontier_look_ ? "true" : "false", FSMConstants::MAX_NO_FRONTIER_LOOK);
+  // ################################
 
   state_ = ROS_STATE::INIT;
 
@@ -122,7 +129,8 @@ void ExplorationFSM::FSMCallback(const ros::TimerEvent& e)
         // free space / detections instead of immediate STOP far from goal.
         // REACH_OBJECT / STUCKING still finish immediately.
         // ################################
-        else if (fd_->final_result_ == FINAL_RESULT::NO_FRONTIER &&
+        else if (fp_->enable_no_frontier_look_ &&
+                 fd_->final_result_ == FINAL_RESULT::NO_FRONTIER &&
                  fd_->no_frontier_look_count_ < FSMConstants::MAX_NO_FRONTIER_LOOK) {
           fd_->no_frontier_look_count_++;
           // Alternate left turns with occasional look-down/up to refresh map.

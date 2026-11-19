@@ -104,6 +104,9 @@ struct FSMParam {
     replan_traj_end_threshold_ = 1.0;
     replan_frontier_change_delay_ = 0.5;
     replan_timeout_ = 2.0;
+    // ################################
+    enable_no_frontier_look_ = false;  // legacy OFF group default
+    // ################################
 
     const double step_length = 0.25;
     const double angle_increment = M_PI / 6;
@@ -121,6 +124,10 @@ struct FSMParam {
   double replan_traj_end_threshold_;
   double replan_frontier_change_delay_;
   double replan_timeout_;
+  // ################################
+  // OFF (false): legacy NO_FRONTIER→FINISH→STOP. ON (true): bounded lookaround.
+  // ################################
+  bool enable_no_frontier_look_;
 };
 
 struct ExplorationData {

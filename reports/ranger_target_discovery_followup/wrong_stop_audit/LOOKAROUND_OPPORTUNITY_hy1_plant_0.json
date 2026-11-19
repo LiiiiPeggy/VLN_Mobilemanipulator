@@ -1,0 +1,105 @@
+{
+  "representative": "hy1_plant_0",
+  "why_chosen": "ok spawn; moved\u22482.46m; dtg@STOP\u22482.31m; NO_PASSABLE\u2192FINISH\u2192STOP; empty labels",
+  "spawn_status": "ok",
+  "moved_m": 2.458333333333335,
+  "dtg_at_stop": 2.3129927576133165,
+  "stop_step": 83,
+  "at_stop": {
+    "map_stats": {
+      "occupied": 1708,
+      "occupied_msgs": 1206,
+      "free": 10784,
+      "free_msgs": 1207,
+      "unknown": 111754,
+      "unknown_msgs": 1205,
+      "occupied_inflate": 4347,
+      "occupied_inflate_msgs": 1206,
+      "value_map": 10784,
+      "value_map_msgs": 1207,
+      "cosine_msgs": 85,
+      "last_cosine_x1000": 197
+    },
+    "n_detections": 0,
+    "expl_result": 4,
+    "final_state": 3,
+    "ros_state": 5,
+    "planner_action": "STOP",
+    "base": {
+      "x": 22.617889144434038,
+      "y": 0.3715007912838459,
+      "z": -3.443061720308169,
+      "yaw": 3.6025284869192276
+    }
+  },
+  "yaw_coverage": {
+    "n_yaw_samples": 84,
+    "yaw_min_max": [
+      0.8100016837283014,
+      5.9711896146258185
+    ],
+    "unique_15deg_bins": 13,
+    "bins_occupied": [
+      -11,
+      -10,
+      -9,
+      -7,
+      -5,
+      -3,
+      -1,
+      3,
+      5,
+      7,
+      9,
+      11,
+      12
+    ],
+    "full_circle_bins_needed": 24,
+    "last10_yaw_delta_rad": 0.07479982508547112
+  },
+  "action_hist": {
+    "TURN_DOWN": 4,
+    "TURN_LEFT": 40,
+    "TURN_UP": 1,
+    "TURN_RIGHT": 20,
+    "MOVE_FORWARD": 18,
+    "STOP": 1
+  },
+  "last_20_actions": [
+    "TURN_RIGHT",
+    "MOVE_FORWARD",
+    "TURN_LEFT",
+    "MOVE_FORWARD",
+    "TURN_RIGHT",
+    "MOVE_FORWARD",
+    "TURN_LEFT",
+    "MOVE_FORWARD",
+    "TURN_RIGHT",
+    "MOVE_FORWARD",
+    "TURN_RIGHT",
+    "MOVE_FORWARD",
+    "TURN_LEFT",
+    "TURN_LEFT",
+    "TURN_LEFT",
+    "MOVE_FORWARD",
+    "TURN_LEFT",
+    "MOVE_FORWARD",
+    "TURN_LEFT",
+    "STOP"
+  ],
+  "n_rgb_ee": 84,
+  "n_detection_files": 84,
+  "lookaround_opportunity": {
+    "offline_verdict": "plausible_unproven",
+    "evidence_for": [
+      "Entire episode label_hist={}: never SEARCH; new views could create detections",
+      "plan_results NO_PASSABLE_FRONTIER count=1: STOP on first empty-frontier plan",
+      "dtg@STOP=2.313m \u2014 goal nearby but unreached",
+      "yaw 15deg bins occupied=13/24 \u2014 not full panoramic coverage before STOP"
+    ],
+    "evidence_against_or_limit": [
+      "Cannot prove a new frontier exists without re-sim",
+      "Many TURN_* already during explore; residual benefit is the unobserved yaw/pitch bins"
+    ]
+  }
+}

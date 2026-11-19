@@ -3,6 +3,16 @@
 更新时间：2026-11-19（target-discovery followup 配对完成；dev24 回归跑中）
 证据优先于本文；冲突时以代码、`reports/`、`runs/`、容器实测为准。
 
+## B 专用（NoFrontierLook / 错误 STOP）— 2026-11-20
+
+- 独立 clone：`/home/ubuntu/locomani/B_VLN_Mobilemanipulator`（勿在共享树切分支）
+- 基线 `51fb1d4`；B 提交见 `/home/ubuntu/locomani/B_followup_safe/B_COMMIT.txt`
+- 离线：12/12 错误 STOP = NO_FRONTIER→FINISH→STOP；FSM 有界补视测试 PASS
+- 开关：`enable_no_frontier_look`（false=关闭组/legacy）
+- 在线配对：等 A 释放 `vln-rangercr10-agentA-navinf`
+- 报告：`reports/ranger_target_discovery_followup/wrong_stop_audit/OFFLINE_PATH_AUDIT.md`
+
+
 ## 研究目标与阶段
 
 **目标**：六套 VLN/ObjectNav baseline 可复现评测 → 再适配 RangerBox-CR10。
