@@ -257,3 +257,14 @@ VLN_Mobilemanipulator/
 | 抬臂后 NO_PASSABLE | 高度错位 + 相机/底盘起点分裂 + 自遮挡进 occupied | 见 `apexnav_rangercr10_nopassable_after_ppo_raise.md`；禁 optimistic=true 凑数 |
 | ApexNav VLM 离线 | bert/blip2/dino 勿直连 HF | `HF_HOME`/`TORCH_HOME` + `/workspace/ApexNav/bert-base-uncased`；dino 权重用 D 盘实文件 |
 | 动态相机 | 不可再用固定 +0.88 m | 适配层发真实 EE SE3；第三人称渲染勿覆盖 EE 观测 |
+
+## B 专用：错误 STOP 与 NoFrontierLook（2026-11-20 验证）
+
+| 项 | 内容 |
+|----|------|
+| 独立工作区 | `/home/ubuntu/locomani/B_VLN_Mobilemanipulator`（勿在共享树强制切分支） |
+| 保全目录 | `/home/ubuntu/locomani/B_followup_safe/`；提交号 `B_COMMIT.txt` |
+| 错误 STOP 根因 | 12/12：`NO_PASSABLE/NO_COVERABLE`→`FINAL NO_FRONTIER`→`ROS FINISH`→`ACTION STOP`；非 SEARCH 选错 |
+| 开关 | ROS `enable_no_frontier_look`（默认 false=legacy）；ON 时最多 24 次 TURN_* 计入预算后再 FINISH |
+| 证据 | `reports/ranger_target_discovery_followup/wrong_stop_audit/OFFLINE_PATH_AUDIT.md` |
+
