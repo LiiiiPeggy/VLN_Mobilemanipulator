@@ -1,0 +1,151 @@
+{
+  "episode_start_position": [
+    -4.10662,
+    0.01882,
+    2.25427
+  ],
+  "episode_start_rotation": [
+    0,
+    0.45455,
+    0,
+    -0.89072
+  ],
+  "spawn": {
+    "x": 0.35986998677253723,
+    "z": -1.2264126539230347,
+    "yaw": 1.2437231765719372,
+    "floor_y": 0.01882,
+    "base_y": 0.3281407973480225,
+    "contacts": 36,
+    "upright": {
+      "up_dot_hab_y": 1.0,
+      "fwd_xz_norm": 0.9999999844982899,
+      "wheel_y_min": 0.10574248433113098,
+      "wheel_y_max": 0.1068975180387497,
+      "wheel_y_spread": 0.0011550337076187134
+    },
+    "wheels": {
+      "fr_wheel_link": 0.1068975180387497,
+      "fl_wheel_link": 0.10574248433113098,
+      "rl_wheel_link": 0.10574251413345337,
+      "rr_wheel_link": 0.10689748823642731
+    },
+    "wheel_mean_agl": 0.12500000640034675,
+    "ok": true,
+    "offset_from_episode_m": 0.4999999650712002,
+    "adapted_episode": true,
+    "episode_start_xz": [
+      0.60987,
+      -0.7934
+    ],
+    "n_trials": 10,
+    "trial_summary": [
+      {
+        "contacts": 170,
+        "ok": false,
+        "offset": 1.9564841834805142e-08,
+        "x": 0.6098700165748596,
+        "z": -0.79339998960495
+      },
+      {
+        "contacts": 109,
+        "ok": false,
+        "offset": 0.5102493660935052,
+        "x": 1.1098699569702148,
+        "z": -0.8951568603515625
+      },
+      {
+        "contacts": 173,
+        "ok": false,
+        "offset": 0.3231986067655421,
+        "x": 0.8147048950195312,
+        "z": -0.54339998960495
+      },
+      {
+        "contacts": 154,
+        "ok": false,
+        "offset": 0.4790170523994453,
+        "x": 0.8147048950195312,
+        "z": -0.36038729548454285
+      },
+      {
+        "contacts": 67,
+        "ok": false,
+        "offset": 0.5000000103950503,
+        "x": 0.6098700165748596,
+        "z": -0.29339998960494995
+      },
+      {
+        "contacts": 61,
+        "ok": false,
+        "offset": 0.5000000088855221,
+        "x": 0.35986998677253723,
+        "z": -0.36038729548454285
+      },
+      {
+        "contacts": 49,
+        "ok": false,
+        "offset": 0.5000000099222571,
+        "x": 0.17685729265213013,
+        "z": -0.54339998960495
+      },
+      {
+        "contacts": 130,
+        "ok": false,
+        "offset": 0.4999999983263017,
+        "x": 0.10987000167369843,
+        "z": -0.79339998960495
+      },
+      {
+        "contacts": 101,
+        "ok": false,
+        "offset": 0.5000000293295309,
+        "x": 0.17685729265213013,
+        "z": -1.0434000492095947
+      },
+      {
+        "contacts": 35,
+        "ok": true,
+        "offset": 0.4999999650712002,
+        "x": 0.35986998677253723,
+        "z": -1.2264126539230347
+      }
+    ],
+    "arm_q_used": [
+      0.236,
+      0.086,
+      -2.398,
+      -0.83,
+      -1.335,
+      0.0
+    ],
+    "forced_from": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_ctrl_dd4b_chair5_20261105_001053/start_pose.json",
+    "robot_scale": 0.7,
+    "scale_tag": "scaled_robot_proxy_070"
+  },
+  "robot_scale": 0.7,
+  "scale_tag": "scaled_robot_proxy_070",
+  "urdf": "/workspace/VLN_Mobilemanipulator/adapters/habitat_rangercr10/assets/urdf/rangercr10lidar_habitat_stage410d_ec5fd65_s070.urdf",
+  "footprint": {
+    "robot_scale": 0.7,
+    "scale_tag": "scaled_robot_proxy_070",
+    "chassis_half_length_m": 0.4557,
+    "chassis_half_width_m": 0.30428999999999995,
+    "chassis_length_m": 0.9114,
+    "chassis_width_m": 0.6085799999999999,
+    "chassis_circumscribed_radius_m": 0.5479551935149441,
+    "wheel_track_half_y_m": 0.196,
+    "wheel_base_half_x_m": 0.3115,
+    "wheel_radius_mesh_m": 0.10717,
+    "wheel_radius_snap_m": 0.0875,
+    "default_base_y_m": 0.30933,
+    "arm_home_xy_reach_m": 0.735,
+    "cam_height_target_m": 0.616,
+    "min_corridor_width_for_straight_m": 0.7085799999999999,
+    "min_turn_in_place_diameter_m": 1.1959103870298884,
+    "source_1x": "MuJoCo base_link_col Stage4.10d + URDF wheel origins",
+    "note": "proxy geometric scale; not a real Ranger resize"
+  },
+  "urdf_to_habitat": "Ry(-90)*Rx(-90) Z-up\u2192Y-up",
+  "note": "adapted_episode if start offset >5cm; not raw benchmark; scaled_robot_proxy_* is NOT real Ranger safety"
+}

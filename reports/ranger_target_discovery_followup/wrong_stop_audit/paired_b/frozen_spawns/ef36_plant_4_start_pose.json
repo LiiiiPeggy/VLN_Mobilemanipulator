@@ -1,0 +1,211 @@
+{
+  "episode_start_position": [
+    2.96747,
+    0.02975,
+    -4.26897
+  ],
+  "episode_start_rotation": [
+    0,
+    0.20886,
+    0,
+    0.97794
+  ],
+  "spawn": {
+    "x": 3.206827402114868,
+    "z": 14.497610092163086,
+    "yaw": -1.4746766694604272,
+    "floor_y": -3.47025,
+    "base_y": -3.1609292639923097,
+    "contacts": 0,
+    "upright": {
+      "up_dot_hab_y": 0.9999999403953552,
+      "fwd_xz_norm": 0.9999998470341405,
+      "wheel_y_min": -3.3833274841308594,
+      "wheel_y_max": -3.3821723461151123,
+      "wheel_y_spread": 0.0011551380157470703
+    },
+    "wheels": {
+      "fr_wheel_link": -3.3821723461151123,
+      "fl_wheel_link": -3.3833274841308594,
+      "rl_wheel_link": -3.3833274841308594,
+      "rr_wheel_link": -3.3821725845336914
+    },
+    "wheel_mean_agl": 0.12500022792816168,
+    "ok": true,
+    "offset_from_episode_m": 0.4999998638456778,
+    "nav_clearance_m": 0.5415163040161133,
+    "adapted_episode": true,
+    "episode_start_xz": [
+      3.63984,
+      14.74761
+    ],
+    "n_trials": 42,
+    "trial_summary": [
+      {
+        "contacts": 30,
+        "ok": true,
+        "offset": 1.4533932507472929e-07,
+        "nav_clearance_m": 0.4584836959838867,
+        "x": 3.6398398876190186,
+        "z": 14.747610092163086
+      },
+      {
+        "contacts": 31,
+        "ok": true,
+        "offset": 0.47986376968384675,
+        "nav_clearance_m": 0.0,
+        "x": 4.119703769683838,
+        "z": 14.747610092163086
+      },
+      {
+        "contacts": 30,
+        "ok": true,
+        "offset": 0.49999996783575534,
+        "nav_clearance_m": 0.046851158142089844,
+        "x": 4.072852611541748,
+        "z": 14.997610092163086
+      },
+      {
+        "contacts": 32,
+        "ok": true,
+        "offset": 0.5000002491806856,
+        "nav_clearance_m": 0.025470733642578125,
+        "x": 3.8898398876190186,
+        "z": 15.180623054504395
+      },
+      {
+        "contacts": 33,
+        "ok": true,
+        "offset": 0.45848378814698654,
+        "nav_clearance_m": 0.0,
+        "x": 3.6398398876190186,
+        "z": 15.206093788146973
+      },
+      {
+        "contacts": 19,
+        "ok": true,
+        "offset": 0.5000003615615984,
+        "nav_clearance_m": 0.025470733642578125,
+        "x": 3.3898398876190186,
+        "z": 15.180623054504395
+      },
+      {
+        "contacts": 27,
+        "ok": true,
+        "offset": 0.49999995600878044,
+        "nav_clearance_m": 0.20848369598388672,
+        "x": 3.206827402114868,
+        "z": 14.997610092163086
+      },
+      {
+        "contacts": 5,
+        "ok": true,
+        "offset": 0.5000001123809898,
+        "nav_clearance_m": 0.4584836959838867,
+        "x": 3.1398398876190186,
+        "z": 14.747610092163086
+      },
+      {
+        "contacts": 7,
+        "ok": true,
+        "offset": 0.4999998638456778,
+        "nav_clearance_m": 0.5415163040161133,
+        "x": 3.206827402114868,
+        "z": 14.497610092163086
+      },
+      {
+        "contacts": 25,
+        "ok": true,
+        "offset": 0.5000002019304447,
+        "nav_clearance_m": 0.3585033416748047,
+        "x": 3.3898398876190186,
+        "z": 14.314597129821777
+      },
+      {
+        "contacts": 59,
+        "ok": false,
+        "offset": 0.4999999078369266,
+        "nav_clearance_m": 0.2915163040161133,
+        "x": 3.6398398876190186,
+        "z": 14.247610092163086
+      },
+      {
+        "contacts": 48,
+        "ok": false,
+        "offset": 0.5000000895494962,
+        "nav_clearance_m": 0.22986388206481934,
+        "x": 3.8898398876190186,
+        "z": 14.314597129821777
+      },
+      {
+        "contacts": 32,
+        "ok": true,
+        "offset": 0.49999987567265475,
+        "nav_clearance_m": 0.046851158142089844,
+        "x": 4.072852611541748,
+        "z": 14.497610092163086
+      },
+      {
+        "contacts": 31,
+        "ok": true,
+        "offset": 0.47986376968384675,
+        "nav_clearance_m": 0.0,
+        "x": 4.119703769683838,
+        "z": 14.747610092163086
+      },
+      {
+        "contacts": 22,
+        "ok": true,
+        "offset": 0.6247151398917388,
+        "nav_clearance_m": 0.0,
+        "x": 4.119703769683838,
+        "z": 15.14760971069336
+      },
+      {
+        "contacts": 20,
+        "ok": true,
+        "offset": 0.6084468432966603,
+        "nav_clearance_m": 0.0,
+        "x": 4.039840221405029,
+        "z": 15.206093788146973
+      }
+    ],
+    "arm_q_used": [
+      0.236,
+      0.086,
+      -2.398,
+      -0.83,
+      -1.335,
+      0.0
+    ],
+    "spawn_policy": "prefer_open_clearance",
+    "forced_from": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_wide_ef36_openband_20261105_124359/start_pose.json",
+    "robot_scale": 0.7,
+    "scale_tag": "scaled_robot_proxy_070"
+  },
+  "robot_scale": 0.7,
+  "scale_tag": "scaled_robot_proxy_070",
+  "urdf": "/workspace/VLN_Mobilemanipulator/adapters/habitat_rangercr10/assets/urdf/rangercr10lidar_habitat_stage410d_ec5fd65_s070.urdf",
+  "footprint": {
+    "robot_scale": 0.7,
+    "scale_tag": "scaled_robot_proxy_070",
+    "chassis_half_length_m": 0.4557,
+    "chassis_half_width_m": 0.30428999999999995,
+    "chassis_length_m": 0.9114,
+    "chassis_width_m": 0.6085799999999999,
+    "chassis_circumscribed_radius_m": 0.5479551935149441,
+    "wheel_track_half_y_m": 0.196,
+    "wheel_base_half_x_m": 0.3115,
+    "wheel_radius_mesh_m": 0.10717,
+    "wheel_radius_snap_m": 0.0875,
+    "default_base_y_m": 0.30933,
+    "arm_home_xy_reach_m": 0.735,
+    "cam_height_target_m": 0.616,
+    "min_corridor_width_for_straight_m": 0.7085799999999999,
+    "min_turn_in_place_diameter_m": 1.1959103870298884,
+    "source_1x": "MuJoCo base_link_col Stage4.10d + URDF wheel origins",
+    "note": "proxy geometric scale; not a real Ranger resize"
+  },
+  "urdf_to_habitat": "Ry(-90)*Rx(-90) Z-up\u2192Y-up",
+  "note": "adapted_episode if start offset >5cm; not raw benchmark; scaled_robot_proxy_* is NOT real Ranger safety"
+}

@@ -1,0 +1,211 @@
+{
+  "episode_start_position": [
+    24.21718,
+    0.06218,
+    -1.43268
+  ],
+  "episode_start_rotation": [
+    0,
+    0.39402,
+    0,
+    0.9191
+  ],
+  "spawn": {
+    "x": 23.717180252075195,
+    "z": -1.4326800107955933,
+    "yaw": 0.8100016837283014,
+    "floor_y": 0.06218,
+    "base_y": 0.3715007912838459,
+    "contacts": 30,
+    "upright": {
+      "up_dot_hab_y": 0.9999999403953552,
+      "fwd_xz_norm": 0.9999999374794705,
+      "wheel_y_min": 0.14910249412059784,
+      "wheel_y_max": 0.15025748312473297,
+      "wheel_y_spread": 0.0011549890041351318
+    },
+    "wheels": {
+      "fr_wheel_link": 0.15025745332241058,
+      "fl_wheel_link": 0.14910249412059784,
+      "rl_wheel_link": 0.1491025686264038,
+      "rr_wheel_link": 0.15025748312473297
+    },
+    "wheel_mean_agl": 0.12499999383807182,
+    "ok": true,
+    "offset_from_episode_m": 0.49999974792480384,
+    "nav_clearance_m": 0.5302008390426636,
+    "adapted_episode": true,
+    "episode_start_xz": [
+      24.21718,
+      -1.43268
+    ],
+    "n_trials": 73,
+    "trial_summary": [
+      {
+        "contacts": 18,
+        "ok": true,
+        "offset": 2.523062611400114e-07,
+        "nav_clearance_m": 0.575492799282074,
+        "x": 24.217180252075195,
+        "z": -1.4326800107955933
+      },
+      {
+        "contacts": 10,
+        "ok": true,
+        "offset": 0.5000002520751964,
+        "nav_clearance_m": 0.8519023060798645,
+        "x": 24.717180252075195,
+        "z": -1.4326800107955933
+      },
+      {
+        "contacts": 12,
+        "ok": true,
+        "offset": 0.4999996125551143,
+        "nav_clearance_m": 0.6473429799079895,
+        "x": 24.650192260742188,
+        "z": -1.1826800107955933
+      },
+      {
+        "contacts": 18,
+        "ok": true,
+        "offset": 0.5000001357673668,
+        "nav_clearance_m": 0.40171870589256287,
+        "x": 24.467180252075195,
+        "z": -0.9996672868728638
+      },
+      {
+        "contacts": 33,
+        "ok": true,
+        "offset": 0.4999999892044702,
+        "nav_clearance_m": 0.1474934220314026,
+        "x": 24.217180252075195,
+        "z": -0.9326800107955933
+      },
+      {
+        "contacts": 44,
+        "ok": false,
+        "offset": 0.4999998836921754,
+        "nav_clearance_m": 0.09718811511993408,
+        "x": 23.967180252075195,
+        "z": -0.9996672868728638
+      },
+      {
+        "contacts": 50,
+        "ok": false,
+        "offset": 0.49999917594823706,
+        "nav_clearance_m": 0.2802008390426636,
+        "x": 23.784168243408203,
+        "z": -1.1826800107955933
+      },
+      {
+        "contacts": 34,
+        "ok": true,
+        "offset": 0.49999974792480384,
+        "nav_clearance_m": 0.5302008390426636,
+        "x": 23.717180252075195,
+        "z": -1.4326800107955933
+      },
+      {
+        "contacts": 14,
+        "ok": true,
+        "offset": 0.49999918674384813,
+        "nav_clearance_m": 0.7802008390426636,
+        "x": 23.784168243408203,
+        "z": -1.6826800107955933
+      },
+      {
+        "contacts": 14,
+        "ok": true,
+        "offset": 0.49999990239069647,
+        "nav_clearance_m": 0.9632135629653931,
+        "x": 23.967180252075195,
+        "z": -1.8656927347183228
+      },
+      {
+        "contacts": 9,
+        "ok": true,
+        "offset": 0.5000000107956568,
+        "nav_clearance_m": 0.9697996377944946,
+        "x": 24.217180252075195,
+        "z": -1.9326800107955933
+      },
+      {
+        "contacts": 15,
+        "ok": true,
+        "offset": 0.5000001544658784,
+        "nav_clearance_m": 1.0367869138717651,
+        "x": 24.467180252075195,
+        "z": -1.8656927347183228
+      },
+      {
+        "contacts": 16,
+        "ok": true,
+        "offset": 0.4999996233507159,
+        "nav_clearance_m": 0.9996263980865479,
+        "x": 24.650192260742188,
+        "z": -1.6826800107955933
+      },
+      {
+        "contacts": 17,
+        "ok": true,
+        "offset": 0.7999994891357431,
+        "nav_clearance_m": 1.0908739566802979,
+        "x": 25.017179489135742,
+        "z": -1.4326800107955933
+      },
+      {
+        "contacts": 17,
+        "ok": true,
+        "offset": 0.7999995707862473,
+        "nav_clearance_m": 0.7802004814147949,
+        "x": 24.90999984741211,
+        "z": -1.0326800346374512
+      },
+      {
+        "contacts": 33,
+        "ok": true,
+        "offset": 0.7999999151845442,
+        "nav_clearance_m": 0.48738014698028564,
+        "x": 24.61717987060547,
+        "z": -0.7398597002029419
+      }
+    ],
+    "arm_q_used": [
+      0.236,
+      0.086,
+      -2.398,
+      -0.83,
+      -1.335,
+      0.0
+    ],
+    "spawn_policy": "prefer_open_clearance",
+    "forced_from": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_wide_hy1_openband_20261105_113724/start_pose.json",
+    "robot_scale": 0.7,
+    "scale_tag": "scaled_robot_proxy_070"
+  },
+  "robot_scale": 0.7,
+  "scale_tag": "scaled_robot_proxy_070",
+  "urdf": "/workspace/VLN_Mobilemanipulator/adapters/habitat_rangercr10/assets/urdf/rangercr10lidar_habitat_stage410d_ec5fd65_s070.urdf",
+  "footprint": {
+    "robot_scale": 0.7,
+    "scale_tag": "scaled_robot_proxy_070",
+    "chassis_half_length_m": 0.4557,
+    "chassis_half_width_m": 0.30428999999999995,
+    "chassis_length_m": 0.9114,
+    "chassis_width_m": 0.6085799999999999,
+    "chassis_circumscribed_radius_m": 0.5479551935149441,
+    "wheel_track_half_y_m": 0.196,
+    "wheel_base_half_x_m": 0.3115,
+    "wheel_radius_mesh_m": 0.10717,
+    "wheel_radius_snap_m": 0.0875,
+    "default_base_y_m": 0.30933,
+    "arm_home_xy_reach_m": 0.735,
+    "cam_height_target_m": 0.616,
+    "min_corridor_width_for_straight_m": 0.7085799999999999,
+    "min_turn_in_place_diameter_m": 1.1959103870298884,
+    "source_1x": "MuJoCo base_link_col Stage4.10d + URDF wheel origins",
+    "note": "proxy geometric scale; not a real Ranger resize"
+  },
+  "urdf_to_habitat": "Ry(-90)*Rx(-90) Z-up\u2192Y-up",
+  "note": "adapted_episode if start offset >5cm; not raw benchmark; scaled_robot_proxy_* is NOT real Ranger safety"
+}

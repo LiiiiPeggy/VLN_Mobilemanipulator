@@ -9,7 +9,9 @@
 - 基线 `51fb1d4`；B 提交见 `/home/ubuntu/locomani/B_followup_safe/B_COMMIT.txt`
 - 离线：12/12 错误 STOP = NO_FRONTIER→FINISH→STOP；FSM 有界补视测试 PASS
 - 开关：`enable_no_frontier_look`（false=关闭组/legacy）
-- 在线配对：等 A 释放 `vln-rangercr10-agentA-navinf`
+- 在线配对：**配置已备好，等 A 释放锁**（旗标 `B_followup_safe/host_lock/A_RELEASED_LOCK`）
+- B 容器/挂载/devel/输出见 `reports/.../paired_b/PREPARATION.md`；不复用 agentA 容器
+- 首对：`hy1_plant_0` OFF/ON；确认后再 phase1（3 fail + dd4b_plant_5）
 - 报告：`reports/ranger_target_discovery_followup/wrong_stop_audit/OFFLINE_PATH_AUDIT.md`
 
 

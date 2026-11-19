@@ -28,6 +28,11 @@
   ################################ -->
   <arg name="startup_prior_expand_m" default="0.0"/>
   <arg name="obstacle_denoise" default="none"/>
+  <!-- ################################
+    NoFrontierLook pairing switch (Agent B).
+    false = legacy NO_FRONTIER→FINISH→STOP; true = bounded lookaround.
+  ################################ -->
+  <arg name="enable_no_frontier_look" default="false"/>
 
   <group unless="$(arg is_real_world)">
     <rosparam file="$(find exploration_manager)/../../../config/habitat_eval_hm3dv2.yaml" command="load"/>
@@ -63,5 +68,8 @@
     <arg name="startup_prior_half_width_" value="$(arg startup_prior_half_width)"/>
     <arg name="startup_prior_expand_m_" value="$(arg startup_prior_expand_m)"/>
     <arg name="obstacle_denoise_" value="$(arg obstacle_denoise)"/>
+    <!-- ################################ -->
+    <arg name="enable_no_frontier_look_" value="$(arg enable_no_frontier_look)"/>
+    <!-- ################################ -->
   </include>
 </launch>

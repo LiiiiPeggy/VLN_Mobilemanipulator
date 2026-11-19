@@ -33,6 +33,10 @@
       obstacle_denoise: none | median3 (current-frame OCC projection filter).
     ################################ -->
     <arg name="obstacle_denoise_" default="none"/>
+    <!-- ################################
+      NoFrontierLook: false=legacy STOP; true=bounded look (≤24).
+    ################################ -->
+    <arg name="enable_no_frontier_look_" default="false"/>
 
     <!-- main node -->
     <node pkg="exploration_manager" name="exploration_node" type="exploration_node" output="screen">
@@ -115,6 +119,10 @@
         <param name="exploration/startup_prior_half_length" value="$(arg startup_prior_half_length_)" type="double"/>
         <param name="exploration/startup_prior_half_width" value="$(arg startup_prior_half_width_)" type="double"/>
         <param name="exploration/startup_prior_expand_m" value="$(arg startup_prior_expand_m_)" type="double"/>
+        <!-- ################################
+          Private nh("~") reads enable_no_frontier_look (see exploration_fsm.cpp).
+        ################################ -->
+        <param name="enable_no_frontier_look" value="$(arg enable_no_frontier_look_)" type="bool"/>
         <!-- ################################
           Gated native plan / map pipeline diagnostics (off unless dir set).
           Does not change planning or free-update decisions.
