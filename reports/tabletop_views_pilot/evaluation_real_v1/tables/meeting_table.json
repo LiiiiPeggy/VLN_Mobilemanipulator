@@ -1,0 +1,65 @@
+{
+  "title": "桌面物品识别确认（固定云台 vs 机械臂相机）",
+  "base_commit": "16a541f",
+  "n_collected": 12,
+  "n_scorable": 9,
+  "n_excluded_no_reliable_gt": 3,
+  "excluded_ids": [
+    "q5QZSEeHe5g_bottle_9",
+    "q5QZSEeHe5g_remote_919",
+    "wcojb4TFT35_bottle_706"
+  ],
+  "n_frames": 54,
+  "alias_fixes": {
+    "decorative bowl": "bowl",
+    "bottle of detergent": "bottle"
+  },
+  "main_table": [
+    {
+      "类别": "杯子",
+      "可评分实例数": 3,
+      "固定云台识别成功数": 1,
+      "机械臂相机识别成功数": 0,
+      "仅固定云台认出": 1,
+      "仅机械臂认出": 0
+    },
+    {
+      "类别": "碗",
+      "可评分实例数": 3,
+      "固定云台识别成功数": 0,
+      "机械臂相机识别成功数": 0,
+      "仅固定云台认出": 0,
+      "仅机械臂认出": 0
+    },
+    {
+      "类别": "遥控器",
+      "可评分实例数": 2,
+      "固定云台识别成功数": 0,
+      "机械臂相机识别成功数": 0,
+      "仅固定云台认出": 0,
+      "仅机械臂认出": 0
+    },
+    {
+      "类别": "瓶子",
+      "可评分实例数": 1,
+      "固定云台识别成功数": 0,
+      "机械臂相机识别成功数": 0,
+      "仅固定云台认出": 0,
+      "仅机械臂认出": 0
+    },
+    {
+      "类别": "总体",
+      "可评分实例数": 9,
+      "固定云台识别成功数": 1,
+      "机械臂相机识别成功数": 0,
+      "仅固定云台认出": 1,
+      "仅机械臂认出": 0
+    }
+  ],
+  "case_overlays": [
+    "cases/bxsVRursffK_cup_381__fixed_hit_view_01.png",
+    "cases/bxsVRursffK_cup_381__arm_miss_view_00.png",
+    "cases/y9hTuugGdiq_remote_232__other_instance_arm_ee_view_01.png"
+  ],
+  "visibility_note": "9 个可评分实例在共同起始画面均已可见；本批检验换视角能否帮助识别确认"
+}

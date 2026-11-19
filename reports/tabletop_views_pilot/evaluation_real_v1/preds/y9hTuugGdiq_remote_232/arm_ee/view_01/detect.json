@@ -1,0 +1,31 @@
+{
+  "query_label": "remote",
+  "similar_answer": [],
+  "detector": {
+    "backend": "get_object\u2192YOLOv7+MobileSAM",
+    "conf_yolo": 0.3,
+    "iou_yolo": 0.5,
+    "agnostic_nms": true,
+    "dino_used": false,
+    "note": "six-class LLM answer table unused; similar_answer=[] locked"
+  },
+  "image_hw": [
+    480,
+    640
+  ],
+  "n_pred": 1,
+  "n_pred_target_class": 1,
+  "predictions": [
+    {
+      "idx": 0,
+      "score": 0.353515625,
+      "label_list_code": 0,
+      "is_target_class": true,
+      "mask_sum": 284,
+      "mask_shape": [
+        480,
+        640
+      ]
+    }
+  ]
+}

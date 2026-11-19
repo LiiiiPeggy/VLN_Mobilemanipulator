@@ -1,0 +1,48 @@
+{
+  "id": "XB4GS9ShBRE_plant_2",
+  "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/formalgimbal_formal150_full_20261117_190344_XB4GS9ShBRE_plant_2",
+  "target_label": {
+    "object_category": "plant",
+    "hm3d_object_category": "plant",
+    "label": "potted plant",
+    "label_mapped": true,
+    "hm3d_to_apex": {
+      "chair": "chair",
+      "bed": "bed",
+      "plant": "potted plant",
+      "toilet": "toilet",
+      "tv_monitor": "tv",
+      "sofa": "couch"
+    },
+    "room": "everywhere",
+    "llm_answer": [
+      "lamp",
+      "teddy bear",
+      "toilet"
+    ],
+    "fusion_threshold": 0.4
+  },
+  "n_steps": 126,
+  "label_hist": {
+    "1": 145,
+    "3": 12
+  },
+  "n_nav_mode": 0,
+  "first_detection_step": 0,
+  "first_detection_ndet": 1,
+  "first_label0_log": null,
+  "first_nav_log": null,
+  "first_search_step": null,
+  "stop_step": null,
+  "min_dtg": 0.1680666156737253,
+  "min_dtg_step": 71,
+  "min_dtg_ndet": 0,
+  "near_goal_and_detection_any": true,
+  "keyframe_steps": [
+    0,
+    71
+  ],
+  "breakpoint": "primary_label0_never_in_object_map",
+  "role": "fail_plant_near_goal_aux_only",
+  "category": "plant"
+}

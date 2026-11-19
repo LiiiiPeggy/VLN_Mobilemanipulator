@@ -1,0 +1,50 @@
+{
+  "id": "ziup5kvtCCR_plant_3",
+  "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/formalgimbal_formal150_full_20261117_190344_ziup5kvtCCR_plant_3",
+  "target_label": {
+    "object_category": "plant",
+    "hm3d_object_category": "plant",
+    "label": "potted plant",
+    "label_mapped": true,
+    "hm3d_to_apex": {
+      "chair": "chair",
+      "bed": "bed",
+      "plant": "potted plant",
+      "toilet": "toilet",
+      "tv_monitor": "tv",
+      "sofa": "couch"
+    },
+    "room": "everywhere",
+    "llm_answer": [
+      "lamp",
+      "teddy bear",
+      "toilet"
+    ],
+    "fusion_threshold": 0.4
+  },
+  "n_steps": 111,
+  "label_hist": {
+    "1": 72,
+    "0": 46
+  },
+  "n_nav_mode": 17,
+  "first_detection_step": 5,
+  "first_detection_ndet": 1,
+  "first_label0_log": "\u001b[33m[WARN] [1794920480.846110160]: \u001b[1;35m[New Object Cluster] id = 3 label = 0 confidence score = 0.412 \u001b[0m\u001b[0m",
+  "first_nav_log": "\u001b[33m[WARN] [1794920804.602235407]: [Navigation Mode] Get object_cloud num = 1\u001b[0m",
+  "first_search_step": 93,
+  "stop_step": 110,
+  "min_dtg": 0.014116398737108099,
+  "min_dtg_step": 100,
+  "min_dtg_ndet": 3,
+  "near_goal_and_detection_any": true,
+  "keyframe_steps": [
+    5,
+    93,
+    100,
+    110
+  ],
+  "breakpoint": "reached_nav_or_search",
+  "role": "success_plant_control",
+  "category": "plant"
+}

@@ -1,0 +1,37 @@
+{
+  "protocol": "tabletop_views_pilot_v1",
+  "role": "Cursor D — offline get_object + instance IoU match",
+  "detector_entry": "baselines/ApexNav/vlm/utils/get_object_utils.get_object",
+  "backend": "YOLOv7Client:12184 + MobileSAMClient:12183",
+  "query_labels_canonical": [
+    "cup",
+    "bowl",
+    "remote",
+    "bottle"
+  ],
+  "alias_map": {
+    "mug": "cup",
+    "coffee mug": "cup",
+    "remote control": "remote",
+    "decorative bowl": "bowl",
+    "bottle of detergent": "bottle"
+  },
+  "similar_answer": [],
+  "similar_answer_rationale": "HM3D six-class LLM answer table has no small-object rows; pass explicit empty list so only the target COCO class is scored",
+  "yolo": {
+    "confidence_threshold_yolo": 0.3,
+    "iou_threshold_yolo": 0.5,
+    "agnostic_nms": true,
+    "source": "baselines/ApexNav/config/habitat_eval_hm3dv2.yaml detector.yolo"
+  },
+  "hit_rule": {
+    "pred_class": "canonical target",
+    "iou_thr": 0.5,
+    "note": "same-class other instance with IoU<0.5 → other_instance, not hit"
+  },
+  "confirmation_rule": "instance confirmed for a camera mode iff ≥1 of ≤3 views is a frame hit",
+  "metric_name": "桌边目标确认率",
+  "same_weights_both_groups": true,
+  "n_frames_scored": 54,
+  "n_instances_scored": 9
+}

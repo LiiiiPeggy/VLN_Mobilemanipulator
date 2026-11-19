@@ -1,0 +1,30 @@
+[
+  {
+    "step": 0,
+    "n_detections": 1,
+    "dtg": 1.645685703708955,
+    "phase": "init_lookaround",
+    "itm": 0.2122611105442047
+  },
+  {
+    "step": 10,
+    "n_detections": 2,
+    "dtg": 1.645685703708955,
+    "phase": "init_lookaround",
+    "itm": 0.31343984603881836
+  },
+  {
+    "step": 20,
+    "n_detections": 2,
+    "dtg": 1.645685703708955,
+    "phase": "init_lookaround",
+    "itm": 0.2397661656141281
+  },
+  {
+    "step": 30,
+    "n_detections": 3,
+    "dtg": 1.3956881983463718,
+    "phase": "explore_planner",
+    "itm": 0.24071753025054932
+  }
+]

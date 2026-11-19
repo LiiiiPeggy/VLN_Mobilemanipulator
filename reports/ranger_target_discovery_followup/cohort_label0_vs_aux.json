@@ -1,0 +1,375 @@
+[
+  {
+    "id": "svBbv1Pavdk_bed_0",
+    "category": "bed",
+    "label_hist": {},
+    "n_label0_events": 0,
+    "n_label0_new_cluster": 0,
+    "n_nav_mode": 0,
+    "missing_log": false
+  },
+  {
+    "id": "svBbv1Pavdk_toilet_0",
+    "category": "toilet",
+    "label_hist": {
+      "1": 64,
+      "3": 39,
+      "0": 23
+    },
+    "n_label0_events": 23,
+    "n_label0_new_cluster": 1,
+    "n_nav_mode": 0,
+    "missing_log": false
+  },
+  {
+    "id": "cvZr5TUy5C5_plant_4",
+    "category": "plant",
+    "label_hist": {},
+    "n_label0_events": 0,
+    "n_label0_new_cluster": 0,
+    "n_nav_mode": 0,
+    "missing_log": false
+  },
+  {
+    "id": "cvZr5TUy5C5_toilet_2",
+    "category": "toilet",
+    "label_hist": {},
+    "n_label0_events": 0,
+    "n_label0_new_cluster": 0,
+    "n_nav_mode": 0,
+    "missing_log": false
+  },
+  {
+    "id": "ziup5kvtCCR_sofa_0",
+    "category": "sofa",
+    "label_hist": {
+      "2": 42,
+      "1": 40,
+      "0": 8
+    },
+    "n_label0_events": 8,
+    "n_label0_new_cluster": 1,
+    "n_nav_mode": 0,
+    "missing_log": false
+  },
+  {
+    "id": "ziup5kvtCCR_toilet_0",
+    "category": "toilet",
+    "label_hist": {
+      "3": 9,
+      "1": 25
+    },
+    "n_label0_events": 0,
+    "n_label0_new_cluster": 0,
+    "n_nav_mode": 0,
+    "missing_log": false
+  },
+  {
+    "id": "ziup5kvtCCR_tv_monitor_1",
+    "category": "tv_monitor",
+    "label_hist": {
+      "3": 202,
+      "2": 128,
+      "0": 8
+    },
+    "n_label0_events": 8,
+    "n_label0_new_cluster": 1,
+    "n_nav_mode": 0,
+    "missing_log": false
+  },
+  {
+    "id": "wcojb4TFT35_chair_2",
+    "category": "chair",
+    "label_hist": {},
+    "n_label0_events": 0,
+    "n_label0_new_cluster": 0,
+    "n_nav_mode": 0,
+    "missing_log": false
+  },
+  {
+    "id": "wcojb4TFT35_toilet_4",
+    "category": "toilet",
+    "label_hist": {},
+    "n_label0_events": 0,
+    "n_label0_new_cluster": 0,
+    "n_nav_mode": 0,
+    "missing_log": false
+  },
+  {
+    "id": "DYehNKdT76V_chair_0",
+    "category": "chair",
+    "label_hist": {
+      "1": 46,
+      "2": 15,
+      "0": 5
+    },
+    "n_label0_events": 5,
+    "n_label0_new_cluster": 1,
+    "n_nav_mode": 0,
+    "missing_log": false
+  },
+  {
+    "id": "Nfvxx8J5NCo_tv_monitor_1",
+    "category": "tv_monitor",
+    "label_hist": {},
+    "n_label0_events": 0,
+    "n_label0_new_cluster": 0,
+    "n_nav_mode": 0,
+    "missing_log": false
+  },
+  {
+    "id": "h1zeeAwLh9Z_toilet_0",
+    "category": "toilet",
+    "label_hist": {},
+    "n_label0_events": 0,
+    "n_label0_new_cluster": 0,
+    "n_nav_mode": 0,
+    "missing_log": false
+  },
+  {
+    "id": "5cdEh9F2hJL_toilet_0",
+    "category": "toilet",
+    "label_hist": {},
+    "n_label0_events": 0,
+    "n_label0_new_cluster": 0,
+    "n_nav_mode": 0,
+    "missing_log": false
+  },
+  {
+    "id": "bxsVRursffK_plant_1",
+    "category": "plant",
+    "label_hist": {
+      "1": 9,
+      "2": 2
+    },
+    "n_label0_events": 0,
+    "n_label0_new_cluster": 0,
+    "n_nav_mode": 0,
+    "missing_log": false
+  },
+  {
+    "id": "a8BtkwhxdRV_plant_0",
+    "category": "plant",
+    "label_hist": {
+      "1": 11
+    },
+    "n_label0_events": 0,
+    "n_label0_new_cluster": 0,
+    "n_nav_mode": 0,
+    "missing_log": false
+  },
+  {
+    "id": "p53SfW6mjZe_bed_4",
+    "category": "bed",
+    "label_hist": {
+      "0": 27,
+      "2": 31,
+      "1": 9
+    },
+    "n_label0_events": 27,
+    "n_label0_new_cluster": 2,
+    "n_nav_mode": 0,
+    "missing_log": false
+  },
+  {
+    "id": "mv2HUxq3B53_plant_3",
+    "category": "plant",
+    "label_hist": {
+      "3": 23,
+      "1": 68
+    },
+    "n_label0_events": 0,
+    "n_label0_new_cluster": 0,
+    "n_nav_mode": 0,
+    "missing_log": false
+  },
+  {
+    "id": "mv2HUxq3B53_toilet_0",
+    "category": "toilet",
+    "label_hist": {
+      "1": 40,
+      "2": 21
+    },
+    "n_label0_events": 0,
+    "n_label0_new_cluster": 0,
+    "n_nav_mode": 0,
+    "missing_log": false
+  },
+  {
+    "id": "mv2HUxq3B53_tv_monitor_1",
+    "category": "tv_monitor",
+    "label_hist": {
+      "3": 309,
+      "2": 163,
+      "0": 1
+    },
+    "n_label0_events": 1,
+    "n_label0_new_cluster": 0,
+    "n_nav_mode": 0,
+    "missing_log": false
+  },
+  {
+    "id": "BAbdmeyTvMZ_bed_5",
+    "category": "bed",
+    "label_hist": {
+      "0": 91,
+      "1": 19
+    },
+    "n_label0_events": 91,
+    "n_label0_new_cluster": 4,
+    "n_nav_mode": 0,
+    "missing_log": false
+  },
+  {
+    "id": "BAbdmeyTvMZ_toilet_3",
+    "category": "toilet",
+    "label_hist": {},
+    "n_label0_events": 0,
+    "n_label0_new_cluster": 0,
+    "n_nav_mode": 0,
+    "missing_log": false
+  },
+  {
+    "id": "BAbdmeyTvMZ_tv_monitor_1",
+    "category": "tv_monitor",
+    "label_hist": {
+      "3": 40,
+      "2": 8
+    },
+    "n_label0_events": 0,
+    "n_label0_new_cluster": 0,
+    "n_nav_mode": 0,
+    "missing_log": false
+  },
+  {
+    "id": "TEEsavR23oF_bed_0",
+    "category": "bed",
+    "label_hist": {
+      "0": 38,
+      "1": 40,
+      "2": 3,
+      "3": 18
+    },
+    "n_label0_events": 38,
+    "n_label0_new_cluster": 5,
+    "n_nav_mode": 0,
+    "missing_log": false
+  },
+  {
+    "id": "TEEsavR23oF_plant_0",
+    "category": "plant",
+    "label_hist": {
+      "1": 8
+    },
+    "n_label0_events": 0,
+    "n_label0_new_cluster": 0,
+    "n_nav_mode": 0,
+    "missing_log": false
+  },
+  {
+    "id": "QaLdnwvtxbs_toilet_0",
+    "category": "toilet",
+    "label_hist": {
+      "1": 71,
+      "4": 11
+    },
+    "n_label0_events": 0,
+    "n_label0_new_cluster": 0,
+    "n_nav_mode": 0,
+    "missing_log": false
+  },
+  {
+    "id": "zt1RVoi7PcG_plant_1",
+    "category": "plant",
+    "label_hist": {},
+    "n_label0_events": 0,
+    "n_label0_new_cluster": 0,
+    "n_nav_mode": 0,
+    "missing_log": false
+  },
+  {
+    "id": "y9hTuugGdiq_sofa_0",
+    "category": "sofa",
+    "label_hist": {},
+    "n_label0_events": 0,
+    "n_label0_new_cluster": 0,
+    "n_nav_mode": 0,
+    "missing_log": false
+  },
+  {
+    "id": "CrMo8WxCyVb_toilet_0",
+    "category": "toilet",
+    "label_hist": {},
+    "n_label0_events": 0,
+    "n_label0_new_cluster": 0,
+    "n_nav_mode": 0,
+    "missing_log": false
+  },
+  {
+    "id": "q5QZSEeHe5g_bed_0",
+    "category": "bed",
+    "label_hist": {
+      "2": 8,
+      "0": 1
+    },
+    "n_label0_events": 1,
+    "n_label0_new_cluster": 1,
+    "n_nav_mode": 0,
+    "missing_log": false
+  },
+  {
+    "id": "q5QZSEeHe5g_sofa_2",
+    "category": "sofa",
+    "label_hist": {},
+    "n_label0_events": 0,
+    "n_label0_new_cluster": 0,
+    "n_nav_mode": 0,
+    "missing_log": false
+  },
+  {
+    "id": "q5QZSEeHe5g_plant_0",
+    "category": "plant",
+    "label_hist": {},
+    "n_label0_events": 0,
+    "n_label0_new_cluster": 0,
+    "n_nav_mode": 0,
+    "missing_log": false
+  },
+  {
+    "id": "q5QZSEeHe5g_tv_monitor_1",
+    "category": "tv_monitor",
+    "label_hist": {
+      "3": 78,
+      "2": 56
+    },
+    "n_label0_events": 0,
+    "n_label0_new_cluster": 0,
+    "n_nav_mode": 0,
+    "missing_log": false
+  },
+  {
+    "id": "XB4GS9ShBRE_plant_2",
+    "category": "plant",
+    "label_hist": {
+      "1": 145,
+      "3": 12
+    },
+    "n_label0_events": 0,
+    "n_label0_new_cluster": 0,
+    "n_nav_mode": 0,
+    "missing_log": false
+  },
+  {
+    "id": "MHPLjHsuG27_tv_monitor_1",
+    "category": "tv_monitor",
+    "label_hist": {
+      "3": 300,
+      "2": 141,
+      "1": 8
+    },
+    "n_label0_events": 0,
+    "n_label0_new_cluster": 0,
+    "n_nav_mode": 0,
+    "missing_log": false
+  }
+]

@@ -1,0 +1,406 @@
+{
+  "denominators": {
+    "n_rows": 109,
+    "run_ok_no_init_pen": 84,
+    "ebe": 36,
+    "ebe_no_search_best": 34
+  },
+  "cohort_by_category": {
+    "bed": 5,
+    "toilet": 10,
+    "plant": 8,
+    "sofa": 3,
+    "tv_monitor": 6,
+    "chair": 2
+  },
+  "entered_search_any": {
+    "true": 0,
+    "false": 34,
+    "null": 0
+  },
+  "moved_buckets": {
+    "moved_0.5_2": 14,
+    "moved_ge_2": 18,
+    "moved_lt_0.5": 2
+  },
+  "blocked_buckets": {
+    "blk_ge_50": 20,
+    "blk_0": 14
+  },
+  "episodes": [
+    {
+      "id": "svBbv1Pavdk_bed_0",
+      "category": "bed",
+      "entered_search_any": false,
+      "n_search_any": 0,
+      "n_search_best": 0,
+      "sum_moved_m": 0.5416666666666663,
+      "n_blocked_exec": 106,
+      "termination": "explore_budget_exhausted",
+      "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/formalgimbal_formal150_recovery_empty_20261118c_svBbv1Pavdk_bed_0"
+    },
+    {
+      "id": "svBbv1Pavdk_toilet_0",
+      "category": "toilet",
+      "entered_search_any": false,
+      "n_search_any": 0,
+      "n_search_best": 0,
+      "sum_moved_m": 12.5,
+      "n_blocked_exec": 0,
+      "termination": "explore_budget_exhausted",
+      "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/formalgimbal_formal150_full_20261117_190344_svBbv1Pavdk_toilet_0"
+    },
+    {
+      "id": "cvZr5TUy5C5_plant_4",
+      "category": "plant",
+      "entered_search_any": false,
+      "n_search_any": 0,
+      "n_search_best": 0,
+      "sum_moved_m": 2.224999999999999,
+      "n_blocked_exec": 75,
+      "termination": "explore_budget_exhausted",
+      "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/formalgimbal_formal150_full_20261117_190344_cvZr5TUy5C5_plant_4"
+    },
+    {
+      "id": "cvZr5TUy5C5_toilet_2",
+      "category": "toilet",
+      "entered_search_any": false,
+      "n_search_any": 0,
+      "n_search_best": 0,
+      "sum_moved_m": 3.466666666666667,
+      "n_blocked_exec": 73,
+      "termination": "explore_budget_exhausted",
+      "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/formalgimbal_formal150_full_20261117_190344_cvZr5TUy5C5_toilet_2"
+    },
+    {
+      "id": "ziup5kvtCCR_sofa_0",
+      "category": "sofa",
+      "entered_search_any": false,
+      "n_search_any": 0,
+      "n_search_best": 0,
+      "sum_moved_m": 8.999999999999998,
+      "n_blocked_exec": 0,
+      "termination": "explore_budget_exhausted",
+      "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/formalgimbal_formal150_full_20261117_190344_ziup5kvtCCR_sofa_0"
+    },
+    {
+      "id": "ziup5kvtCCR_toilet_0",
+      "category": "toilet",
+      "entered_search_any": false,
+      "n_search_any": 0,
+      "n_search_best": 0,
+      "sum_moved_m": 11.75,
+      "n_blocked_exec": 0,
+      "termination": "explore_budget_exhausted",
+      "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/formalgimbal_formal150_full_20261117_190344_ziup5kvtCCR_toilet_0"
+    },
+    {
+      "id": "ziup5kvtCCR_tv_monitor_1",
+      "category": "tv_monitor",
+      "entered_search_any": false,
+      "n_search_any": 0,
+      "n_search_best": 0,
+      "sum_moved_m": 11.75,
+      "n_blocked_exec": 0,
+      "termination": "explore_budget_exhausted",
+      "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/formalgimbal_formal150_full_20261117_190344_ziup5kvtCCR_tv_monitor_1"
+    },
+    {
+      "id": "wcojb4TFT35_chair_2",
+      "category": "chair",
+      "entered_search_any": false,
+      "n_search_any": 0,
+      "n_search_best": 0,
+      "sum_moved_m": 4.250000000000003,
+      "n_blocked_exec": 68,
+      "termination": "explore_budget_exhausted",
+      "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/formalgimbal_formal150_full_20261117_190344_wcojb4TFT35_chair_2"
+    },
+    {
+      "id": "wcojb4TFT35_toilet_4",
+      "category": "toilet",
+      "entered_search_any": false,
+      "n_search_any": 0,
+      "n_search_best": 0,
+      "sum_moved_m": 1.749999999999996,
+      "n_blocked_exec": 82,
+      "termination": "explore_budget_exhausted",
+      "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/formalgimbal_formal150_full_20261117_190344_wcojb4TFT35_toilet_4"
+    },
+    {
+      "id": "DYehNKdT76V_chair_0",
+      "category": "chair",
+      "entered_search_any": false,
+      "n_search_any": 0,
+      "n_search_best": 0,
+      "sum_moved_m": 8.750000000000002,
+      "n_blocked_exec": 0,
+      "termination": "explore_budget_exhausted",
+      "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/formalgimbal_formal150_full_20261117_190344_DYehNKdT76V_chair_0"
+    },
+    {
+      "id": "Nfvxx8J5NCo_tv_monitor_1",
+      "category": "tv_monitor",
+      "entered_search_any": false,
+      "n_search_any": 0,
+      "n_search_best": 0,
+      "sum_moved_m": 1.3750000000000004,
+      "n_blocked_exec": 110,
+      "termination": "explore_budget_exhausted",
+      "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/formalgimbal_formal150_full_20261117_190344_Nfvxx8J5NCo_tv_monitor_1"
+    },
+    {
+      "id": "h1zeeAwLh9Z_toilet_0",
+      "category": "toilet",
+      "entered_search_any": false,
+      "n_search_any": 0,
+      "n_search_best": 0,
+      "sum_moved_m": 0.5000000000000006,
+      "n_blocked_exec": 114,
+      "termination": "explore_budget_exhausted",
+      "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/formalgimbal_formal150_full_20261117_190344_h1zeeAwLh9Z_toilet_0"
+    },
+    {
+      "id": "5cdEh9F2hJL_toilet_0",
+      "category": "toilet",
+      "entered_search_any": false,
+      "n_search_any": 0,
+      "n_search_best": 0,
+      "sum_moved_m": 1.2,
+      "n_blocked_exec": 88,
+      "termination": "explore_budget_exhausted",
+      "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/formalgimbal_formal150_full_20261117_190344_5cdEh9F2hJL_toilet_0"
+    },
+    {
+      "id": "bxsVRursffK_plant_1",
+      "category": "plant",
+      "entered_search_any": false,
+      "n_search_any": 0,
+      "n_search_best": 0,
+      "sum_moved_m": 0.5166666666666667,
+      "n_blocked_exec": 89,
+      "termination": "explore_budget_exhausted",
+      "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/formalgimbal_formal150_full_20261117_190344_bxsVRursffK_plant_1"
+    },
+    {
+      "id": "a8BtkwhxdRV_plant_0",
+      "category": "plant",
+      "entered_search_any": false,
+      "n_search_any": 0,
+      "n_search_best": 0,
+      "sum_moved_m": 0.9666666666666668,
+      "n_blocked_exec": 89,
+      "termination": "explore_budget_exhausted",
+      "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/formalgimbal_formal150_full_20261117_190344_a8BtkwhxdRV_plant_0"
+    },
+    {
+      "id": "p53SfW6mjZe_bed_4",
+      "category": "bed",
+      "entered_search_any": false,
+      "n_search_any": 0,
+      "n_search_best": 0,
+      "sum_moved_m": 7.75,
+      "n_blocked_exec": 0,
+      "termination": "explore_budget_exhausted",
+      "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/formalgimbal_formal150_full_20261117_190344_p53SfW6mjZe_bed_4"
+    },
+    {
+      "id": "mv2HUxq3B53_plant_3",
+      "category": "plant",
+      "entered_search_any": false,
+      "n_search_any": 0,
+      "n_search_best": 0,
+      "sum_moved_m": 0.6500000000000001,
+      "n_blocked_exec": 77,
+      "termination": "explore_budget_exhausted",
+      "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/formalgimbal_formal150_full_20261117_190344_mv2HUxq3B53_plant_3"
+    },
+    {
+      "id": "mv2HUxq3B53_toilet_0",
+      "category": "toilet",
+      "entered_search_any": false,
+      "n_search_any": 0,
+      "n_search_best": 0,
+      "sum_moved_m": 10.749999999999998,
+      "n_blocked_exec": 0,
+      "termination": "explore_budget_exhausted",
+      "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/formalgimbal_formal150_full_20261117_190344_mv2HUxq3B53_toilet_0"
+    },
+    {
+      "id": "mv2HUxq3B53_tv_monitor_1",
+      "category": "tv_monitor",
+      "entered_search_any": false,
+      "n_search_any": 0,
+      "n_search_best": 0,
+      "sum_moved_m": 11.25,
+      "n_blocked_exec": 0,
+      "termination": "explore_budget_exhausted",
+      "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/formalgimbal_formal150_full_20261117_190344_mv2HUxq3B53_tv_monitor_1"
+    },
+    {
+      "id": "BAbdmeyTvMZ_bed_5",
+      "category": "bed",
+      "entered_search_any": false,
+      "n_search_any": 0,
+      "n_search_best": 0,
+      "sum_moved_m": 8.5,
+      "n_blocked_exec": 0,
+      "termination": "explore_budget_exhausted",
+      "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/formalgimbal_formal150_full_20261117_190344_BAbdmeyTvMZ_bed_5"
+    },
+    {
+      "id": "BAbdmeyTvMZ_toilet_3",
+      "category": "toilet",
+      "entered_search_any": false,
+      "n_search_any": 0,
+      "n_search_best": 0,
+      "sum_moved_m": 9.999999999999998,
+      "n_blocked_exec": 0,
+      "termination": "explore_budget_exhausted",
+      "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/formalgimbal_formal150_full_20261117_190344_BAbdmeyTvMZ_toilet_3"
+    },
+    {
+      "id": "BAbdmeyTvMZ_tv_monitor_1",
+      "category": "tv_monitor",
+      "entered_search_any": false,
+      "n_search_any": 0,
+      "n_search_best": 0,
+      "sum_moved_m": 0.8000000000000003,
+      "n_blocked_exec": 85,
+      "termination": "explore_budget_exhausted",
+      "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/formalgimbal_formal150_full_20261117_190344_BAbdmeyTvMZ_tv_monitor_1"
+    },
+    {
+      "id": "TEEsavR23oF_bed_0",
+      "category": "bed",
+      "entered_search_any": false,
+      "n_search_any": 0,
+      "n_search_best": 0,
+      "sum_moved_m": 11.250000000000002,
+      "n_blocked_exec": 0,
+      "termination": "explore_budget_exhausted",
+      "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/formalgimbal_formal150_full_20261117_190344_TEEsavR23oF_bed_0"
+    },
+    {
+      "id": "TEEsavR23oF_plant_0",
+      "category": "plant",
+      "entered_search_any": false,
+      "n_search_any": 0,
+      "n_search_best": 0,
+      "sum_moved_m": 1.9916666666666665,
+      "n_blocked_exec": 74,
+      "termination": "explore_budget_exhausted",
+      "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/formalgimbal_formal150_full_20261117_190344_TEEsavR23oF_plant_0"
+    },
+    {
+      "id": "QaLdnwvtxbs_toilet_0",
+      "category": "toilet",
+      "entered_search_any": false,
+      "n_search_any": 0,
+      "n_search_best": 0,
+      "sum_moved_m": 11.75,
+      "n_blocked_exec": 0,
+      "termination": "explore_budget_exhausted",
+      "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/formalgimbal_formal150_full_20261117_190344_QaLdnwvtxbs_toilet_0"
+    },
+    {
+      "id": "zt1RVoi7PcG_plant_1",
+      "category": "plant",
+      "entered_search_any": false,
+      "n_search_any": 0,
+      "n_search_best": 0,
+      "sum_moved_m": 0.7999999999999999,
+      "n_blocked_exec": 96,
+      "termination": "explore_budget_exhausted",
+      "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/formalgimbal_formal150_full_20261117_190344_zt1RVoi7PcG_plant_1"
+    },
+    {
+      "id": "y9hTuugGdiq_sofa_0",
+      "category": "sofa",
+      "entered_search_any": false,
+      "n_search_any": 0,
+      "n_search_best": 0,
+      "sum_moved_m": 0.24999999999999964,
+      "n_blocked_exec": 101,
+      "termination": "explore_budget_exhausted",
+      "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/formalgimbal_formal150_full_20261117_190344_y9hTuugGdiq_sofa_0"
+    },
+    {
+      "id": "CrMo8WxCyVb_toilet_0",
+      "category": "toilet",
+      "entered_search_any": false,
+      "n_search_any": 0,
+      "n_search_best": 0,
+      "sum_moved_m": 0.41666666666666696,
+      "n_blocked_exec": 102,
+      "termination": "explore_budget_exhausted",
+      "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/formalgimbal_formal150_full_20261117_190344_CrMo8WxCyVb_toilet_0"
+    },
+    {
+      "id": "q5QZSEeHe5g_bed_0",
+      "category": "bed",
+      "entered_search_any": false,
+      "n_search_any": 0,
+      "n_search_best": 0,
+      "sum_moved_m": 0.6999999999999995,
+      "n_blocked_exec": 83,
+      "termination": "explore_budget_exhausted",
+      "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/formalgimbal_formal150_full_20261117_190344_q5QZSEeHe5g_bed_0"
+    },
+    {
+      "id": "q5QZSEeHe5g_sofa_2",
+      "category": "sofa",
+      "entered_search_any": false,
+      "n_search_any": 0,
+      "n_search_best": 0,
+      "sum_moved_m": 0.966666666666667,
+      "n_blocked_exec": 98,
+      "termination": "explore_budget_exhausted",
+      "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/formalgimbal_formal150_full_20261117_190344_q5QZSEeHe5g_sofa_2"
+    },
+    {
+      "id": "q5QZSEeHe5g_plant_0",
+      "category": "plant",
+      "entered_search_any": false,
+      "n_search_any": 0,
+      "n_search_best": 0,
+      "sum_moved_m": 0.6666666666666666,
+      "n_blocked_exec": 109,
+      "termination": "explore_budget_exhausted",
+      "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/formalgimbal_formal150_full_20261117_190344_q5QZSEeHe5g_plant_0"
+    },
+    {
+      "id": "q5QZSEeHe5g_tv_monitor_1",
+      "category": "tv_monitor",
+      "entered_search_any": false,
+      "n_search_any": 0,
+      "n_search_best": 0,
+      "sum_moved_m": 4.616666666666665,
+      "n_blocked_exec": 71,
+      "termination": "explore_budget_exhausted",
+      "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/formalgimbal_formal150_full_20261117_190344_q5QZSEeHe5g_tv_monitor_1"
+    },
+    {
+      "id": "XB4GS9ShBRE_plant_2",
+      "category": "plant",
+      "entered_search_any": false,
+      "n_search_any": 0,
+      "n_search_best": 0,
+      "sum_moved_m": 10.5,
+      "n_blocked_exec": 0,
+      "termination": "explore_budget_exhausted",
+      "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/formalgimbal_formal150_full_20261117_190344_XB4GS9ShBRE_plant_2"
+    },
+    {
+      "id": "MHPLjHsuG27_tv_monitor_1",
+      "category": "tv_monitor",
+      "entered_search_any": false,
+      "n_search_any": 0,
+      "n_search_best": 0,
+      "sum_moved_m": 12.25,
+      "n_blocked_exec": 0,
+      "termination": "explore_budget_exhausted",
+      "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/formalgimbal_formal150_full_20261117_190344_MHPLjHsuG27_tv_monitor_1"
+    }
+  ]
+}

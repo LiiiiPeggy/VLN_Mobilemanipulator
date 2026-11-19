@@ -1,0 +1,19 @@
+{
+  "query_label": "bowl",
+  "similar_answer": [],
+  "detector": {
+    "backend": "get_object\u2192YOLOv7+MobileSAM",
+    "conf_yolo": 0.3,
+    "iou_yolo": 0.5,
+    "agnostic_nms": true,
+    "dino_used": false,
+    "note": "six-class LLM answer table unused; similar_answer=[] locked"
+  },
+  "image_hw": [
+    480,
+    640
+  ],
+  "n_pred": 0,
+  "n_pred_target_class": 0,
+  "predictions": []
+}

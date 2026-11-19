@@ -1,0 +1,79 @@
+{
+  "n_instances": 9,
+  "pair_cells": {
+    "neither": 8,
+    "fixed_only": 1
+  },
+  "by_category": [
+    {
+      "category": "bottle",
+      "n_instances": 1,
+      "confirmed_fixed": 0,
+      "confirmed_arm": 0,
+      "both": 0,
+      "fixed_only": 0,
+      "arm_only": 0,
+      "neither": 1,
+      "metric_name": "桌边目标确认率",
+      "confirm_rate_fixed": 0.0,
+      "confirm_rate_arm": 0.0,
+      "note": "small-n: prefer raw counts + case writeups over CI"
+    },
+    {
+      "category": "bowl",
+      "n_instances": 3,
+      "confirmed_fixed": 0,
+      "confirmed_arm": 0,
+      "both": 0,
+      "fixed_only": 0,
+      "arm_only": 0,
+      "neither": 3,
+      "metric_name": "桌边目标确认率",
+      "confirm_rate_fixed": 0.0,
+      "confirm_rate_arm": 0.0,
+      "note": "small-n: prefer raw counts + case writeups over CI"
+    },
+    {
+      "category": "cup",
+      "n_instances": 3,
+      "confirmed_fixed": 1,
+      "confirmed_arm": 0,
+      "both": 0,
+      "fixed_only": 1,
+      "arm_only": 0,
+      "neither": 2,
+      "metric_name": "桌边目标确认率",
+      "confirm_rate_fixed": 0.3333333333333333,
+      "confirm_rate_arm": 0.0,
+      "note": "small-n: prefer raw counts + case writeups over CI"
+    },
+    {
+      "category": "remote",
+      "n_instances": 2,
+      "confirmed_fixed": 0,
+      "confirmed_arm": 0,
+      "both": 0,
+      "fixed_only": 0,
+      "arm_only": 0,
+      "neither": 2,
+      "metric_name": "桌边目标确认率",
+      "confirm_rate_fixed": 0.0,
+      "confirm_rate_arm": 0.0,
+      "note": "small-n: prefer raw counts + case writeups over CI"
+    }
+  ],
+  "gain_attribution_counts": {
+    "fixed_detection_advantage": 1
+  },
+  "metric_notes": [
+    "桌边目标确认率 = instances with ≥1 hit / pre-selected paired instances",
+    "hit = target class ∧ IoU(pred, specified GT instance) ≥ 0.5",
+    "Invisible under one mode remains in denominator",
+    "Do not call this ObjectNav SR or paper accuracy"
+  ],
+  "ops": {
+    "n_frames": 54,
+    "n_action_rejected": 8,
+    "n_unique_viewpoints": 54
+  }
+}

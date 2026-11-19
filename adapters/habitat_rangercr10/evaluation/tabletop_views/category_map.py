@@ -24,12 +24,17 @@ ALIAS_TO_CANONICAL = {
     "coffee mug": "cup",
     "coffee_mug": "cup",
     "bowl": "bowl",
+    # ################################
+    # VLN adapt: capture labels used in pairing_index (must enter YOLO queries)
+    # ################################
+    "decorative bowl": "bowl",
     "remote": "remote",
     "remote control": "remote",
     "remote_control": "remote",
     "tv remote": "remote",
     "bottle": "bottle",
     "water bottle": "bottle",
+    "bottle of detergent": "bottle",
 }
 
 # Empty similar_answer: do NOT expand to LLM near-synonyms for scoring.
