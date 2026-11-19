@@ -1,6 +1,6 @@
 # PROGRESS.md — 当前状态
 
-更新时间：2026-11-17（ApexNav–Ranger 最小收口 v1.2；排队等 B formal）  
+更新时间：2026-11-19（target-discovery followup 配对完成；dev24 回归跑中）
 证据优先于本文；冲突时以代码、`reports/`、`runs/`、容器实测为准。
 
 ## 研究目标与阶段
@@ -52,8 +52,8 @@
 
 ## 下一步（最多 5）
 
-1. 等 B formal 结束后由 `queue_after_formal.sh` 自动跑：wheel verify → budget150 diag → smoke → **dev24@150/100**。  
-2. 用 v1.2 日志核对 lt9（invalid spawn）/ k1cup·ef36（合法拒转+缺反馈）/ hy1（可动对照）。  
-3. 向 B 交付冻结 SHA（`cef07d7` 链）+ 字段样例；正式独立评测以 **150/100** 为准。  
+1. 等 followup `dev24_after_dinofix_20261119_011332` 跑完并写入 `reports/ranger_target_discovery_followup/dev24_regress/` 汇总。  
+2. A 侧 `queue_after_formal.sh` 仍可能因容器内 `pgrep formalgimbal_formal150` 自匹配假死；勿 cross-kill，协调后再跑 A 的 budget150 队列。  
+3. 可选下一刀：`SEARCH_OVER_DEPTH`→BEST（近距花盆深度/俯仰），勿回退 detect_label。  
 4. 合并前确认不污染 1.0× 默认与 `legacy_arm_look`。  
 5. SG-Nav/UniGoal 旁路按原计划收尾。

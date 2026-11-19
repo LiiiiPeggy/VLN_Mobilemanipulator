@@ -1,0 +1,49 @@
+{
+  "id": "MHPLjHsuG27_tv_monitor_1",
+  "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/formalgimbal_formal150_full_20261117_190344_MHPLjHsuG27_tv_monitor_1",
+  "target_label": {
+    "object_category": "tv_monitor",
+    "hm3d_object_category": "tv_monitor",
+    "label": "tv",
+    "label_mapped": true,
+    "hm3d_to_apex": {
+      "chair": "chair",
+      "bed": "bed",
+      "plant": "potted plant",
+      "toilet": "toilet",
+      "tv_monitor": "tv",
+      "sofa": "couch"
+    },
+    "room": "living room",
+    "llm_answer": [
+      "laptop",
+      "picture frame",
+      "window"
+    ],
+    "fusion_threshold": 0.45
+  },
+  "n_steps": 126,
+  "label_hist": {
+    "3": 300,
+    "2": 141,
+    "1": 8
+  },
+  "n_nav_mode": 0,
+  "first_detection_step": 0,
+  "first_detection_ndet": 3,
+  "first_label0_log": null,
+  "first_nav_log": null,
+  "first_search_step": null,
+  "stop_step": null,
+  "min_dtg": 2.082780026021845,
+  "min_dtg_step": 87,
+  "min_dtg_ndet": 2,
+  "near_goal_and_detection_any": false,
+  "keyframe_steps": [
+    0,
+    87
+  ],
+  "breakpoint": "primary_label0_never_in_object_map",
+  "role": "fail_tv_aux_only",
+  "category": "tv_monitor"
+}

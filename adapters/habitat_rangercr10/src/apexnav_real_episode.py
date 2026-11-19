@@ -981,6 +981,27 @@ class ApexNavRangerBridge:
             label = _hm3d_to_apex.get(hm3d_object_category, hm3d_object_category)
             label_mapped = label != hm3d_object_category
             # ################################
+            # Target-discovery followup: plant/tv llm_answer auxiliaries are mostly
+            # COCO, so get_object never runs GroundingDINO on the primary. YOLO-only
+            # "potted plant"/"tv" misses HM3D flowers/monitors while green aux boxes
+            # still fire → object map never gets label=0 → never SEARCH_BEST.
+            # Expand primary right_label with non-COCO synonyms (pipe-separated) so
+            # DINO runs and synonym hits count as label=0. Keep llm/ITM key = label.
+            # ################################
+            _primary_dino_synonyms = {
+                "plant": ["plant", "flower", "vase"],
+                "tv_monitor": ["television", "monitor", "screen"],
+            }
+            detect_label = label
+            if hm3d_object_category in _primary_dino_synonyms:
+                extras = [
+                    s
+                    for s in _primary_dino_synonyms[hm3d_object_category]
+                    if s.strip() and s.strip().lower() != str(label).strip().lower()
+                ]
+                if extras:
+                    detect_label = "|".join([label] + extras)
+            # ################################
 
             fusion_threshold = 0.35
             # LLM answer optional
@@ -1004,6 +1025,7 @@ class ApexNavRangerBridge:
                         "object_category": ep["object_category"],
                         "hm3d_object_category": hm3d_object_category,
                         "label": label,
+                        "detect_label": detect_label,
                         "label_mapped": label_mapped,
                         "hm3d_to_apex": _hm3d_to_apex,
                         "room": room,
@@ -1271,9 +1293,13 @@ class ApexNavRangerBridge:
                     cosine = float(get_itm_message_cosine(rgb[..., :3], label, room))
                     _pub_f64(itm_score_pub, cosine)
                     rospy.sleep(0.02)
+                    # ################################
+                    # Use detect_label (primary + DINO synonyms) for get_object only.
+                    # ################################
                     rgb_vis, score_list, masks, label_list = get_object(
-                        label, rgb[..., :3].copy(), detector_cfg, llm_answer
+                        detect_label, rgb[..., :3].copy(), detector_cfg, llm_answer
                     )
+                    # ################################
                     Image.fromarray(rgb_vis).save(
                         self.out / "detections" / f"frame_{step:04d}.png"
                     )

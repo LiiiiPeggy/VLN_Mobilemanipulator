@@ -1,0 +1,54 @@
+{
+  "name": "target_discovery_paired_v2_formal_spawns",
+  "budget": {
+    "max_steps": 150,
+    "max_explore_actions": 100
+  },
+  "camera_mode": "fixed_base_gimbal",
+  "robot_scale": 0.7,
+  "note": "force_spawn from formal_fixed_gimbal_v1/spawns (not run start_pose.json)",
+  "episodes": [
+    {
+      "id": "XB4GS9ShBRE_plant_2",
+      "scene_filter": "XB4GS9ShBRE",
+      "category": "plant",
+      "episode_id": "2",
+      "force_spawn_json": "/home/ubuntu/locomani/VLN_Mobilemanipulator/reports/ranger_category_eval_20261116/formal_fixed_gimbal_v1/spawns/XB4GS9ShBRE_plant_2.json",
+      "role": "fail_plant_near_goal_aux_only"
+    },
+    {
+      "id": "mv2HUxq3B53_plant_3",
+      "scene_filter": "mv2HUxq3B53",
+      "category": "plant",
+      "episode_id": "3",
+      "force_spawn_json": "/home/ubuntu/locomani/VLN_Mobilemanipulator/reports/ranger_category_eval_20261116/formal_fixed_gimbal_v1/spawns/mv2HUxq3B53_plant_3.json",
+      "role": "fail_plant_aux_only"
+    },
+    {
+      "id": "MHPLjHsuG27_tv_monitor_1",
+      "scene_filter": "MHPLjHsuG27",
+      "category": "tv_monitor",
+      "episode_id": "1",
+      "force_spawn_json": "/home/ubuntu/locomani/VLN_Mobilemanipulator/reports/ranger_category_eval_20261116/formal_fixed_gimbal_v1/spawns/MHPLjHsuG27_tv_monitor_1.json",
+      "role": "fail_tv_aux_only"
+    },
+    {
+      "id": "ziup5kvtCCR_plant_3",
+      "scene_filter": "ziup5kvtCCR",
+      "category": "plant",
+      "episode_id": "3",
+      "force_spawn_json": "/home/ubuntu/locomani/VLN_Mobilemanipulator/reports/ranger_category_eval_20261116/formal_fixed_gimbal_v1/spawns/ziup5kvtCCR_plant_3.json",
+      "role": "success_plant_control"
+    }
+  ],
+  "smoke": [
+    {
+      "id": "XB4GS9ShBRE_plant_2",
+      "scene_filter": "XB4GS9ShBRE",
+      "category": "plant",
+      "episode_id": "2",
+      "force_spawn_json": "/home/ubuntu/locomani/VLN_Mobilemanipulator/reports/ranger_category_eval_20261116/formal_fixed_gimbal_v1/spawns/XB4GS9ShBRE_plant_2.json",
+      "role": "fail_plant_near_goal_aux_only"
+    }
+  ]
+}

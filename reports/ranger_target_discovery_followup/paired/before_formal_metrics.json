@@ -1,0 +1,58 @@
+{
+  "ziup5kvtCCR_plant_3": {
+    "episode_list_id": "ziup5kvtCCR_plant_3",
+    "category": "plant",
+    "spawn_status": "ok",
+    "entered_search_best": true,
+    "entered_search_any": true,
+    "n_search_best": 17,
+    "sr_proxy": true,
+    "dtg_min": 0.014116398737108099,
+    "dtg_final": 0.0679742517919329,
+    "termination": "planner_stop",
+    "sum_moved_m": 7.749999999999999,
+    "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/formalgimbal_formal150_full_20261117_190344_ziup5kvtCCR_plant_3"
+  },
+  "mv2HUxq3B53_plant_3": {
+    "episode_list_id": "mv2HUxq3B53_plant_3",
+    "category": "plant",
+    "spawn_status": "ok",
+    "entered_search_best": false,
+    "entered_search_any": false,
+    "n_search_best": 0,
+    "sr_proxy": false,
+    "dtg_min": 10.845082366348313,
+    "dtg_final": 10.845082366348313,
+    "termination": "explore_budget_exhausted",
+    "sum_moved_m": 0.6500000000000001,
+    "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/formalgimbal_formal150_full_20261117_190344_mv2HUxq3B53_plant_3"
+  },
+  "XB4GS9ShBRE_plant_2": {
+    "episode_list_id": "XB4GS9ShBRE_plant_2",
+    "category": "plant",
+    "spawn_status": "ok",
+    "entered_search_best": false,
+    "entered_search_any": false,
+    "n_search_best": 0,
+    "sr_proxy": false,
+    "dtg_min": 0.1680666156737253,
+    "dtg_final": 1.0845963871705577,
+    "termination": "explore_budget_exhausted",
+    "sum_moved_m": 10.5,
+    "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/formalgimbal_formal150_full_20261117_190344_XB4GS9ShBRE_plant_2"
+  },
+  "MHPLjHsuG27_tv_monitor_1": {
+    "episode_list_id": "MHPLjHsuG27_tv_monitor_1",
+    "category": "tv_monitor",
+    "spawn_status": "ok",
+    "entered_search_best": false,
+    "entered_search_any": false,
+    "n_search_best": 0,
+    "sr_proxy": false,
+    "dtg_min": 2.082780026021845,
+    "dtg_final": 6.2795924902308675,
+    "termination": "explore_budget_exhausted",
+    "sum_moved_m": 12.25,
+    "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/formalgimbal_formal150_full_20261117_190344_MHPLjHsuG27_tv_monitor_1"
+  }
+}

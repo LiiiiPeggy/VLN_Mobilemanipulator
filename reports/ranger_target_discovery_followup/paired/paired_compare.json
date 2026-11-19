@@ -1,0 +1,187 @@
+[
+  {
+    "id": "XB4GS9ShBRE_plant_2",
+    "category": "plant",
+    "before": {
+      "entered_search_best": false,
+      "entered_search_any": false,
+      "n_search_best": 0,
+      "sr_proxy": false,
+      "dtg_min": 0.1680666156737253,
+      "termination": "explore_budget_exhausted",
+      "label_hist": {
+        "1": 145,
+        "3": 12
+      },
+      "plan_results": {
+        "EXPLORATION": 101
+      },
+      "n_label0": 0
+    },
+    "after": {
+      "entered_search_best": false,
+      "entered_search_any": true,
+      "n_search_best": 0,
+      "sr_proxy": false,
+      "dtg_min": 0.12607074187693057,
+      "dtg_final": 1.5064960312855833,
+      "termination": "explore_budget_exhausted",
+      "label_hist": {
+        "0": 83,
+        "1": 52,
+        "3": 22,
+        "2": 3
+      },
+      "plan_results": {
+        "EXPLORATION": 98,
+        "SEARCH_OVER_DEPTH_OBJECT": 3
+      },
+      "n_label0": 83,
+      "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/execgimbal_paired_after_dinofix_v2_20261118_221046_XB4GS9ShBRE_plant_2",
+      "spawn_status": "ok"
+    },
+    "delta": {
+      "label0": 83,
+      "search_best": false,
+      "found_more_primary": true
+    }
+  },
+  {
+    "id": "mv2HUxq3B53_plant_3",
+    "category": "plant",
+    "before": {
+      "entered_search_best": false,
+      "entered_search_any": false,
+      "n_search_best": 0,
+      "sr_proxy": false,
+      "dtg_min": 10.845082366348313,
+      "termination": "explore_budget_exhausted",
+      "label_hist": {
+        "3": 23,
+        "1": 68
+      },
+      "plan_results": {
+        "EXPLORATION": 93
+      },
+      "n_label0": 0
+    },
+    "after": {
+      "entered_search_best": true,
+      "entered_search_any": true,
+      "n_search_best": 3,
+      "sr_proxy": false,
+      "dtg_min": 11.010762885274271,
+      "dtg_final": 11.010762885274271,
+      "termination": "planner_stop",
+      "label_hist": {
+        "0": 20,
+        "1": 4
+      },
+      "plan_results": {
+        "SEARCH_BEST_OBJECT": 3,
+        "EXPLORATION": 2
+      },
+      "n_label0": 20,
+      "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/execgimbal_paired_after_dinofix_v2_20261118_221046_mv2HUxq3B53_plant_3",
+      "spawn_status": "ok"
+    },
+    "delta": {
+      "label0": 20,
+      "search_best": true,
+      "found_more_primary": true
+    }
+  },
+  {
+    "id": "MHPLjHsuG27_tv_monitor_1",
+    "category": "tv_monitor",
+    "before": {
+      "entered_search_best": false,
+      "entered_search_any": false,
+      "n_search_best": 0,
+      "sr_proxy": false,
+      "dtg_min": 2.082780026021845,
+      "termination": "explore_budget_exhausted",
+      "label_hist": {
+        "3": 300,
+        "2": 141,
+        "1": 8
+      },
+      "plan_results": {
+        "EXPLORATION": 101
+      },
+      "n_label0": 0
+    },
+    "after": {
+      "entered_search_best": false,
+      "entered_search_any": false,
+      "n_search_best": 0,
+      "sr_proxy": false,
+      "dtg_min": 2.082780026021845,
+      "dtg_final": 6.2795924902308675,
+      "termination": "explore_budget_exhausted",
+      "label_hist": {
+        "3": 236,
+        "0": 4,
+        "2": 45
+      },
+      "plan_results": {
+        "EXPLORATION": 101
+      },
+      "n_label0": 4,
+      "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/execgimbal_paired_after_dinofix_v2_20261118_221046_MHPLjHsuG27_tv_monitor_1",
+      "spawn_status": "ok"
+    },
+    "delta": {
+      "label0": 4,
+      "search_best": false,
+      "found_more_primary": true
+    }
+  },
+  {
+    "id": "ziup5kvtCCR_plant_3",
+    "category": "plant",
+    "before": {
+      "entered_search_best": true,
+      "entered_search_any": true,
+      "n_search_best": 17,
+      "sr_proxy": true,
+      "dtg_min": 0.014116398737108099,
+      "termination": "planner_stop",
+      "label_hist": {
+        "1": 72,
+        "0": 46
+      },
+      "plan_results": {
+        "EXPLORATION": 67,
+        "SEARCH_BEST_OBJECT": 17
+      },
+      "n_label0": 46
+    },
+    "after": {
+      "entered_search_best": true,
+      "entered_search_any": true,
+      "n_search_best": 1,
+      "sr_proxy": true,
+      "dtg_min": 0.011087231239670118,
+      "dtg_final": 0.039207961964330816,
+      "termination": "planner_stop",
+      "label_hist": {
+        "0": 150,
+        "1": 50,
+        "2": 7
+      },
+      "plan_results": {
+        "EXPLORATION": 76,
+        "SEARCH_BEST_OBJECT": 1
+      },
+      "n_label0": 150,
+      "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/execgimbal_paired_after_dinofix_v2_20261118_221046_ziup5kvtCCR_plant_3",
+      "spawn_status": "ok"
+    },
+    "delta": {
+      "label0": 104,
+      "search_best": false,
+      "found_more_primary": true
+    }
+  }
+]

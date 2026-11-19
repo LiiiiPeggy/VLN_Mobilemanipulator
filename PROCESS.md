@@ -1111,3 +1111,24 @@
 **结论**：SG-Nav 主路径已切到官方 navmesh；收尾 20ep 与 UniGoal 批量仍待做。MSGNav 论文对照等 gpt-4o。
 
 **相关**：`runs/SG-Nav/smoke_status.md`；`runs/MSGNav/luna_20ep_status.md`；`PROGRESS.md`
+
+---
+
+## 2026-11-18/19 Ranger target-discovery followup（主目标 label=0）
+
+**模块**：ApexNav–Ranger / 检测→object map  
+
+**问题**：formal150 中 34 例 spawn-ok ebe 无 SEARCH_BEST；最常见断点为 A_no_label0（25/34）——plant/tv 仅 YOLO COCO 主名，llm_answer 全是 COCO 时 DINO 不跑主目标，绿框仅 aux。  
+
+**操作**：
+- `detect_label` 为 plant/tv 追加非 COCO 同义词并送入 `get_object`；`get_object_utils` 增加模糊 phrase 匹配。
+- 配对 4 例（formal spawn）@150/100；启动全量 dev24 回归 `dev24_after_dinofix_20261119_011332`。
+
+**实测结果**：
+- 配对 4/4 label0↑；mv2 新获 SEARCH_BEST；XB4 达 SEARCH_OVER_DEPTH；ziup 对照 SEARCH_BEST+sr 保持。
+- SR_proxy 未系统性抬升（近距花盆 over-depth / 错误 STOP 仍在）。
+
+**结论**：应修「主目标检测→label=0」；发现更多目标，但 SEARCH_BEST/SR 还需后续 over-depth/置信度路径。
+
+**相关**：`reports/ranger_target_discovery_followup/REPORT.md`；代码 `apexnav_real_episode.py` / `get_object_utils.py`
+
