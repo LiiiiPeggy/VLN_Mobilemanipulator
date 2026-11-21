@@ -70,20 +70,42 @@ docker exec -d "$CONTAINER" bash -lc \
 sleep 4
 
 docker exec "$CONTAINER" bash -lc \
-  "$SRC_ROS; rosparam get /exploration_node/enable_no_frontier_look; rosparam get /exploration_node/sdf_map/obstacles_inflation; strings \$(rosparam get /rosout 2>/dev/null || true)" \
+  "$SRC_ROS; rosparam get /exploration_node/enable_no_frontier_look; rosparam get /exploration_node/sdf_map/obstacles_inflation" \
   >"$LOGDIR/effective_params.txt" 2>&1 || true
-# Record FSM binary identity
+# ################################
+# Record FSM binary identity WITHOUT rosrun (rosrun would spawn a second node).
+# ################################
 docker exec "$CONTAINER" bash -lc \
-  "$SRC_ROS; echo enable_param=\$(rosparam get /exploration_node/enable_no_frontier_look); BIN=\$(rosrun exploration_manager exploration_node --help 2>/dev/null || true); ls -la $APEX/devel/lib/exploration_manager/exploration_node 2>/dev/null || ls -la /workspace/VLN_Mobilemanipulator/.catkin_devel_agentB/lib/exploration_manager/exploration_node; strings /workspace/VLN_Mobilemanipulator/.catkin_devel_agentB/lib/exploration_manager/exploration_node 2>/dev/null | grep -E 'NoFrontierLook|enable_no_frontier' | head; strings $APEX/devel/lib/exploration_manager/exploration_node 2>/dev/null | grep -E 'NoFrontierLook|enable_no_frontier' | head" \
+  "$SRC_ROS; echo enable_param=\$(rosparam get /exploration_node/enable_no_frontier_look); ls -la /workspace/VLN_Mobilemanipulator/.catkin_devel_agentB/lib/exploration_manager/exploration_node; strings /workspace/VLN_Mobilemanipulator/.catkin_devel_agentB/lib/exploration_manager/exploration_node | grep -E 'NoFrontierLook|enable_no_frontier' | head" \
   >"$LOGDIR/fsm_binary_identity.txt" 2>&1 || true
 
-echo "[B][3/4] VLM servers on 12181-12184 (requires B host lock; do not clash with A)"
+echo "[B][3/4] VLM servers on 12181-12184 (reuse shared stable VLMs if already up)"
 docker exec "$CONTAINER" bash -lc 'ln -sfn /media/ubuntu/D/VLN_shared/cache/huggingface/bert-base-uncased /workspace/ApexNav/bert-base-uncased'
-HF_ENV="export TORCH_HOME=/media/ubuntu/D/VLN_shared/cache/torch HF_HOME=/media/ubuntu/D/VLN_shared/cache/huggingface TRANSFORMERS_CACHE=/media/ubuntu/D/VLN_shared/cache/huggingface HUGGINGFACE_HUB_CACHE=/media/ubuntu/D/VLN_shared/cache/huggingface/hub TRANSFORMERS_OFFLINE=1 HF_HUB_OFFLINE=1"
-docker exec -d "$CONTAINER" bash -lc "$SRC_ROS; $HF_ENV; python -m vlm.detector.yolov7 --port 12184 >$LOGDIR/yolov7.log 2>&1"
-docker exec -d "$CONTAINER" bash -lc "$SRC_ROS; $HF_ENV; python -m vlm.detector.grounding_dino --port 12181 >$LOGDIR/dino.log 2>&1"
-docker exec -d "$CONTAINER" bash -lc "$SRC_ROS; $HF_ENV; python -m vlm.itm.blip2itm --port 12182 >$LOGDIR/blip2.log 2>&1"
-docker exec -d "$CONTAINER" bash -lc "$SRC_ROS; $HF_ENV; python -m vlm.segmentor.sam --port 12183 >$LOGDIR/sam.log 2>&1"
+# ################################
+# Do not restart shared VLM (12181-12184) held by vln-rangercr10.
+# ################################
+vlm_ok=0
+if docker exec "$CONTAINER" bash -lc 'python - <<"PY"
+import socket
+ok=True
+for p in (12181,12182,12183,12184):
+  s=socket.socket(); s.settimeout(0.5)
+  try:
+    s.connect(("127.0.0.1",p)); s.close()
+  except Exception:
+    ok=False
+raise SystemExit(0 if ok else 1)
+PY'; then
+  vlm_ok=1
+  echo "[B] reuse existing VLM ports 12181-12184"
+fi
+if [[ "$vlm_ok" != "1" ]]; then
+  HF_ENV="export TORCH_HOME=/media/ubuntu/D/VLN_shared/cache/torch HF_HOME=/media/ubuntu/D/VLN_shared/cache/huggingface TRANSFORMERS_CACHE=/media/ubuntu/D/VLN_shared/cache/huggingface HUGGINGFACE_HUB_CACHE=/media/ubuntu/D/VLN_shared/cache/huggingface/hub TRANSFORMERS_OFFLINE=1 HF_HUB_OFFLINE=1"
+  docker exec -d "$CONTAINER" bash -lc "$SRC_ROS; $HF_ENV; python -m vlm.detector.yolov7 --port 12184 >$LOGDIR/yolov7.log 2>&1"
+  docker exec -d "$CONTAINER" bash -lc "$SRC_ROS; $HF_ENV; python -m vlm.detector.grounding_dino --port 12181 >$LOGDIR/dino.log 2>&1"
+  docker exec -d "$CONTAINER" bash -lc "$SRC_ROS; $HF_ENV; python -m vlm.itm.blip2itm --port 12182 >$LOGDIR/blip2.log 2>&1"
+  docker exec -d "$CONTAINER" bash -lc "$SRC_ROS; $HF_ENV; python -m vlm.segmentor.sam --port 12183 >$LOGDIR/sam.log 2>&1"
+fi
 
 ok=0
 for i in $(seq 1 60); do
@@ -122,6 +144,13 @@ done
 CAMERA_MODE="${CAMERA_MODE:-fixed_base_gimbal}"
 FORCE_SPAWN_JSON="${FORCE_SPAWN_JSON:-}"
 PPO_RAISE_JSON="${PPO_RAISE_JSON:-}"
+# ################################
+# Host paths under B clone are invisible in-container; map to /workspace mount.
+# ################################
+HOST_B_ROOT="/home/ubuntu/locomani/B_VLN_Mobilemanipulator"
+if [[ -n "$FORCE_SPAWN_JSON" && "$FORCE_SPAWN_JSON" == "$HOST_B_ROOT"* ]]; then
+  FORCE_SPAWN_JSON="/workspace/VLN_Mobilemanipulator${FORCE_SPAWN_JSON#$HOST_B_ROOT}"
+fi
 SCALE_ARGS="--robot_scale $ROBOT_SCALE --camera_mode $CAMERA_MODE"
 if [[ -n "$FORCE_SPAWN_JSON" ]]; then
   SCALE_ARGS="$SCALE_ARGS --force_spawn_json '$FORCE_SPAWN_JSON'"
@@ -142,7 +171,7 @@ docker exec \
   -e CHASSIS_LOOK_MODE="$LOOK_MODE" \
   -e CHASSIS_LOOK_EXTRA_PUBS="$LOOK_PUBS" \
   -e CHASSIS_LOOK_EXTRA_HZ="$LOOK_HZ" \
-  "$CONTAINER" bash -lc "$SRC_ROS; export PYTHONPATH=/workspace/VLN_Mobilemanipulator/adapters/habitat_rangercr10:\${PYTHONPATH}; python -m src.apexnav_real_episode --out_dir '$OUT_ROOT' --run_id '$RUN_ID' --max_steps $MAX_STEPS --max_explore_actions $MAX_EXPLORE_ACTIONS --gpu $GPU --scene_filter '${SCENE_FILTER:-TEEsavR23oF}' --category_filter '${CATEGORY_FILTER:-chair}' --episode_id '${EPISODE_ID:-4}' --llm_answer_path $APEX/llm/answers/llm_answer_hm3d.txt --llm_response_path $APEX/llm/answers/llm_response_list.txt $SCALE_ARGS"
+  "$CONTAINER" bash -lc "$SRC_ROS; export PYTHONPATH=/workspace/VLN_Mobilemanipulator/adapters/habitat_rangercr10:/workspace/ApexNav/GroundingDINO:/workspace/ApexNav:\${PYTHONPATH}; python -m src.apexnav_real_episode --out_dir '$OUT_ROOT' --run_id '$RUN_ID' --max_steps $MAX_STEPS --max_explore_actions $MAX_EXPLORE_ACTIONS --gpu $GPU --scene_filter '${SCENE_FILTER:-TEEsavR23oF}' --category_filter '${CATEGORY_FILTER:-chair}' --episode_id '${EPISODE_ID:-4}' --llm_answer_path $APEX/llm/answers/llm_answer_hm3d.txt --llm_response_path $APEX/llm/answers/llm_response_list.txt $SCALE_ARGS"
 rc=$?
 set -e
 

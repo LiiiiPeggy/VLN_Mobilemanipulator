@@ -150,3 +150,6 @@ node_modules/
 baselines/VLFM/bert-base-uncased/
 baselines/VLFM/data/bert-base-uncased/
 runs/ApexNav/batch_20261101/
+
+# Agent B private catkin devel (do not commit)
+.catkin_devel_agentB/

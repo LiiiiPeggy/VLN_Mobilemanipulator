@@ -7,7 +7,7 @@
       "scene_filter": "HY1NcmCgn3n",
       "category": "plant",
       "episode_id": 0,
-      "force_spawn_json": "/home/ubuntu/locomani/B_VLN_Mobilemanipulator/reports/ranger_target_discovery_followup/wrong_stop_audit/paired_b/frozen_spawns/hy1_plant_0_start_pose.json",
+      "force_spawn_json": "/workspace/VLN_Mobilemanipulator/reports/ranger_target_discovery_followup/wrong_stop_audit/paired_b/frozen_spawns/hy1_plant_0_start_pose.json",
       "audit_run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/execgimbal_dev24_after_dinofix_20261119_011332_hy1_plant_0",
       "audit_dtg_at_stop": 2.3129927576133165,
       "audit_expl_result": 4
@@ -21,7 +21,7 @@
       "scene_filter": "HY1NcmCgn3n",
       "category": "plant",
       "episode_id": 0,
-      "force_spawn_json": "/home/ubuntu/locomani/B_VLN_Mobilemanipulator/reports/ranger_target_discovery_followup/wrong_stop_audit/paired_b/frozen_spawns/hy1_plant_0_start_pose.json",
+      "force_spawn_json": "/workspace/VLN_Mobilemanipulator/reports/ranger_target_discovery_followup/wrong_stop_audit/paired_b/frozen_spawns/hy1_plant_0_start_pose.json",
       "audit_run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/execgimbal_dev24_after_dinofix_20261119_011332_hy1_plant_0",
       "audit_dtg_at_stop": 2.3129927576133165,
       "audit_expl_result": 4
@@ -33,7 +33,7 @@
       "scene_filter": "yr17PDCnDDW",
       "category": "tv_monitor",
       "episode_id": 0,
-      "force_spawn_json": "/home/ubuntu/locomani/B_VLN_Mobilemanipulator/reports/ranger_target_discovery_followup/wrong_stop_audit/paired_b/frozen_spawns/yr17_tv_0_start_pose.json",
+      "force_spawn_json": "/workspace/VLN_Mobilemanipulator/reports/ranger_target_discovery_followup/wrong_stop_audit/paired_b/frozen_spawns/yr17_tv_0_start_pose.json",
       "audit_run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/execgimbal_dev24_after_dinofix_20261119_011332_yr17_tv_0",
       "audit_dtg_at_stop": 2.622486177169348,
       "audit_expl_result": 4
@@ -45,7 +45,7 @@
       "scene_filter": "eF36g7L6Z9M",
       "category": "plant",
       "episode_id": 4,
-      "force_spawn_json": "/home/ubuntu/locomani/B_VLN_Mobilemanipulator/reports/ranger_target_discovery_followup/wrong_stop_audit/paired_b/frozen_spawns/ef36_plant_4_start_pose.json",
+      "force_spawn_json": "/workspace/VLN_Mobilemanipulator/reports/ranger_target_discovery_followup/wrong_stop_audit/paired_b/frozen_spawns/ef36_plant_4_start_pose.json",
       "audit_run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/execgimbal_dev24_after_dinofix_20261119_011332_ef36_plant_4",
       "audit_dtg_at_stop": 8.3305805666062,
       "audit_expl_result": 5
@@ -57,7 +57,7 @@
       "scene_filter": "HY1NcmCgn3n",
       "category": "chair",
       "episode_id": 3,
-      "force_spawn_json": "/home/ubuntu/locomani/B_VLN_Mobilemanipulator/reports/ranger_target_discovery_followup/wrong_stop_audit/paired_b/frozen_spawns/hy1_chair_3_start_pose.json",
+      "force_spawn_json": "/workspace/VLN_Mobilemanipulator/reports/ranger_target_discovery_followup/wrong_stop_audit/paired_b/frozen_spawns/hy1_chair_3_start_pose.json",
       "audit_run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/execgimbal_dev24_after_dinofix_20261119_011332_hy1_chair_3",
       "audit_dtg_at_stop": 6.257979094060331,
       "audit_expl_result": 4
@@ -69,7 +69,7 @@
       "scene_filter": "Dd4bFSTQ8gi",
       "category": "plant",
       "episode_id": 5,
-      "force_spawn_json": "/home/ubuntu/locomani/B_VLN_Mobilemanipulator/reports/ranger_target_discovery_followup/wrong_stop_audit/paired_b/frozen_spawns/dd4b_plant_5_start_pose.json",
+      "force_spawn_json": "/workspace/VLN_Mobilemanipulator/reports/ranger_target_discovery_followup/wrong_stop_audit/paired_b/frozen_spawns/dd4b_plant_5_start_pose.json",
       "audit_run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/execgimbal_dev24_after_dinofix_20261119_011332_dd4b_plant_5",
       "audit_dtg_at_stop": 0.034709006121742034,
       "audit_expl_result": 1

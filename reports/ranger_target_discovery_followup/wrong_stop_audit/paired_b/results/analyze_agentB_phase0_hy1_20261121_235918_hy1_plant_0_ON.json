@@ -1,0 +1,54 @@
+{
+  "run_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real_agentB_nofrontier/agentB_phase0_hy1_20261121_235918_hy1_plant_0_ON",
+  "enable_no_frontier_look": true,
+  "look_steps": 15,
+  "look_hits_tail": [
+    [
+      "11",
+      "24",
+      "2"
+    ],
+    [
+      "12",
+      "24",
+      "5"
+    ],
+    [
+      "13",
+      "24",
+      "2"
+    ],
+    [
+      "14",
+      "24",
+      "2"
+    ],
+    [
+      "15",
+      "24",
+      "2"
+    ]
+  ],
+  "new_usable_frontier": true,
+  "chassis_resumed_effective_move": false,
+  "moved_m_after_first_nf": 0.0,
+  "true_objectnav_success": false,
+  "delayed_stop": false,
+  "budget_exhausted": true,
+  "termination": "explore_budget_exhausted",
+  "final_dtg": 2.3129927576133165,
+  "sum_moved_m": 2.458333333333335,
+  "spawn_status": "ok",
+  "off_reproduced_nf_finish_stop": false,
+  "on_entered_lookaround": true,
+  "first_nf_step": 83,
+  "n_actions": 126,
+  "answers": {
+    "补视步数": 15,
+    "新可用frontier": true,
+    "底盘恢复有效移动": false,
+    "真正寻物成功": false,
+    "延迟STOP": false,
+    "预算耗尽": true
+  }
+}

@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # ################################
-# Safely ensure /workspace/ApexNav → baselines/ApexNav without wiping source.
-# NEVER rm -rf a real directory or bind-mount of ApexNav.
+# Safely ensure /workspace/ApexNav → baselines/ApexNav without wiping B source.
+# Image-baked /workspace/ApexNav is relocated to ApexNav.image_bak once.
+# NEVER rm -rf a host bind-mount of the B ApexNav tree.
 # ################################
 set -euo pipefail
 CONTAINER="${1:?container name}"
@@ -26,14 +27,24 @@ if [[ -L \"\$APEX\" ]]; then
   exit 0
 fi
 if [[ -e \"\$APEX\" ]]; then
-  # Real dir / bind-mount: only OK if it already resolves to the same source.
-  if [[ \"\$(readlink -f \"\$APEX\")\" == \"\$(readlink -f \"\$APEX_SRC\")\" ]]; then
-    echo \"OK \$APEX already same path as source (no rm)\"
+  # Detect bind-mount of the live B source (same device+inode as APEX_SRC).
+  src_id=\$(stat -c '%d:%i' \"\$APEX_SRC\")
+  apex_id=\$(stat -c '%d:%i' \"\$APEX\")
+  if [[ \"\$src_id\" == \"\$apex_id\" ]]; then
+    echo \"OK \$APEX is same inode as source (bind-mount); leave as-is (no rm)\"
     exit 0
   fi
-  echo \"REFUSE: \$APEX exists and is not a symlink to \$APEX_SRC\" >&2
-  echo \"REFUSE: will not rm -rf (would wipe source mount).\" >&2
-  exit 3
+  # Image-baked or foreign tree: relocate, do not destroy B mount.
+  bak=\"\${APEX}.image_bak\"
+  if [[ -e \"\$bak\" ]]; then
+    echo \"ERROR: \$APEX exists and \$bak already present; manual cleanup needed\" >&2
+    exit 3
+  fi
+  echo \"Relocating image/foreign \$APEX -> \$bak then symlink to B source\"
+  mv \"\$APEX\" \"\$bak\"
+  ln -sfn \"\$APEX_SRC\" \"\$APEX\"
+  echo \"OK symlink \$APEX -> \$(readlink -f \$APEX)\"
+  exit 0
 fi
 ln -sfn \"\$APEX_SRC\" \"\$APEX\"
 echo \"OK created symlink \$APEX -> \$(readlink -f \$APEX)\"

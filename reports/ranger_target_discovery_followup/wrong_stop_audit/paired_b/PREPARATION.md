@@ -13,8 +13,9 @@ B HEAD 须含本地提交 `a8d16ab`。A 容器 `vln-rangercr10-agentA-navinf` **
 | devel | `/workspace/VLN_Mobilemanipulator/.catkin_devel_agentB` |
 | 输出 | `/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real_agentB_nofrontier` |
 | 报告 | `reports/.../wrong_stop_audit/paired_b/results/` |
-| 主机锁 | `/home/ubuntu/locomani/B_followup_safe/host_lock/` |
-| A 释放旗标 | `.../host_lock/A_RELEASED_LOCK` 或 `A_RELEASED_LOCK=1` |
+| 主机锁（A/B 共用，启动以取得为准） | `/home/ubuntu/locomani/_sim_host_run.lock` |
+| 锁助手 | `adapters/habitat_rangercr10/scripts/host_sim_lock.sh` |
+| A 释放旗标（仅交接记录） | `/home/ubuntu/locomani/B_followup_safe/host_lock/A_RELEASED_LOCK` 或 `A_RELEASED_LOCK=1` |
 
 ## 源码安全
 
@@ -34,7 +35,9 @@ B HEAD 须含本地提交 `a8d16ab`。A 容器 `vln-rangercr10-agentA-navinf` **
 ## 启动（仅在 A 释放后）
 
 ```bash
-# 人工或协调方：touch /home/ubuntu/locomani/B_followup_safe/host_lock/A_RELEASED_LOCK
+# 交接旗标（非主机锁）：
+touch /home/ubuntu/locomani/B_followup_safe/host_lock/A_RELEASED_LOCK
+# 取得主机锁后再跑（脚本内会 acquire `_sim_host_run.lock`）：
 cd /home/ubuntu/locomani/B_VLN_Mobilemanipulator
 PHASE=phase0_switch_verify \
   bash adapters/habitat_rangercr10/scripts/run_nofrontier_look_paired_agentB.sh
@@ -44,8 +47,8 @@ PHASE=phase1_small_batch SKIP_BUILD=1 \
 ```
 
 每例四问见 `analyze_nofrontier_pair_run.py`；另标「延迟 STOP」「预算耗尽」。  
-结束后脚本 `trap` 释放 `b_host_lock_pid.txt`。
+结束后脚本 `trap` 释放 `_sim_host_run.lock`（owner=`agentB_nofrontier`）。
 
 ## 当前状态
 
-**已准备，未抢锁、未建容器、未构建、未跑仿真。**
+见最新配对 runs / `paired_b/results/`；A 容器可保留。

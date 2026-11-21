@@ -16,6 +16,11 @@ services:
     working_dir: /workspace/VLN_Mobilemanipulator
     volumes:
       - /home/ubuntu/locomani/B_VLN_Mobilemanipulator:/workspace/VLN_Mobilemanipulator
+      # ################################
+      # Editable groundingdino maps to /workspace/ApexNav/GroundingDINO (via symlink).
+      # Mount shared install so B clone need not vendor the package.
+      # ################################
+      - /home/ubuntu/locomani/VLN_Mobilemanipulator/baselines/ApexNav/GroundingDINO:/workspace/VLN_Mobilemanipulator/baselines/ApexNav/GroundingDINO:ro
       - /media/ubuntu/D/VLN_shared:/media/ubuntu/D/VLN_shared
       - /home/ubuntu/locomani/LocoManip_Lab:/workspace/LocoManip_Lab:ro
     environment:

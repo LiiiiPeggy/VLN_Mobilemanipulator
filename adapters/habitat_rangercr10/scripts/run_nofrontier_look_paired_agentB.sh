@@ -17,9 +17,15 @@ PHASE="${PHASE:-phase0_switch_verify}"
 MAX_STEPS="${MAX_STEPS:-150}"
 MAX_EXPLORE_ACTIONS="${MAX_EXPLORE_ACTIONS:-100}"
 REQUIRED_COMMIT="${REQUIRED_COMMIT:-a8d16ab35c8711ff346862a2101e788800207158}"
+# ################################
+# A_RELEASED_LOCK = handover record only.
+# Real host lock = /home/ubuntu/locomani/_sim_host_run.lock (A/B shared).
+# ################################
 LOCK_DIR="$SAFE/host_lock"
-LOCK_PID_FILE="$LOCK_DIR/b_host_lock_pid.txt"
 A_RELEASE_FLAG="${A_RELEASE_FLAG:-$LOCK_DIR/A_RELEASED_LOCK}"
+HOST_LOCK_SH="$ROOT/adapters/habitat_rangercr10/scripts/host_sim_lock.sh"
+export SIM_HOST_LOCK="${SIM_HOST_LOCK:-/home/ubuntu/locomani/_sim_host_run.lock}"
+export LOCK_OWNER="${LOCK_OWNER:-agentB_nofrontier}"
 
 mkdir -p "$REPORT_DIR" "$OUT_ROOT" "$LOCK_DIR"
 
@@ -34,31 +40,25 @@ if [[ "${A_RELEASED_LOCK:-0}" != "1" && ! -f "$A_RELEASE_FLAG" ]]; then
   echo "[B] WAIT: A has not released lock. Place $A_RELEASE_FLAG or set A_RELEASED_LOCK=1." >&2
   exit 75
 fi
-# A container must not be mid-episode (container may remain; active Habitat/python blocks us)
+# A container may remain; only block on live build/episode (ignore defunct zombies)
 if docker ps --format '{{.Names}}' | grep -qx 'vln-rangercr10-agentA-navinf'; then
   if docker exec vln-rangercr10-agentA-navinf bash -lc \
-      'pgrep -af "apexnav_real_episode|habitat|catkin_make|make -" 2>/dev/null | grep -v pgrep | head -5' \
+      'ps -eo pid,stat,cmd | grep -E "apexnav_real_episode|catkin_make|[Mm]ake -" | grep -v grep | grep -v " Z " | head -5' \
       | grep -q .; then
     echo "[B] WAIT: agentA container still has build/episode activity." >&2
     exit 75
   fi
 fi
 
-# Acquire host lock (exclusive among B; also write note for others)
-if [[ -f "$LOCK_PID_FILE" ]]; then
-  old=$(cat "$LOCK_PID_FILE" || true)
-  if [[ -n "${old:-}" ]] && kill -0 "$old" 2>/dev/null; then
-    echo "[B] BLOCKED: host lock held by pid=$old" >&2
-    exit 75
-  fi
+# Acquire shared host lock (authoritative)
+if ! LOCK_OWNER="$LOCK_OWNER" SIM_HOST_LOCK="$SIM_HOST_LOCK" bash "$HOST_LOCK_SH" acquire; then
+  echo "[B] BLOCKED: $(LOCK_OWNER="$LOCK_OWNER" SIM_HOST_LOCK="$SIM_HOST_LOCK" bash "$HOST_LOCK_SH" status)" >&2
+  exit 75
 fi
-echo $$ >"$LOCK_PID_FILE"
-echo "$(date -Is) batch=$BATCH_ID phase=$PHASE head=$HEAD" >"$LOCK_DIR/b_host_lock_meta.txt"
+echo "$(date -Is) batch=$BATCH_ID phase=$PHASE head=$HEAD lock=$SIM_HOST_LOCK" | tee -a "$LOCK_DIR/b_host_lock_meta.txt"
 cleanup_lock() {
-  if [[ -f "$LOCK_PID_FILE" ]] && [[ "$(cat "$LOCK_PID_FILE")" == "$$" ]]; then
-    rm -f "$LOCK_PID_FILE"
-    echo "$(date -Is) released by pid=$$" >>"$LOCK_DIR/b_host_lock_meta.txt"
-  fi
+  LOCK_OWNER="$LOCK_OWNER" SIM_HOST_LOCK="$SIM_HOST_LOCK" bash "$HOST_LOCK_SH" release || true
+  echo "$(date -Is) released owner=$LOCK_OWNER" >>"$LOCK_DIR/b_host_lock_meta.txt"
 }
 trap cleanup_lock EXIT
 
@@ -71,23 +71,31 @@ bash "$ROOT/adapters/habitat_rangercr10/scripts/ensure_apex_symlink_safe.sh" "$C
 
 # ---------- build private devel if needed ----------
 if [[ "${SKIP_BUILD:-0}" != "1" ]]; then
-  echo "[B] building exploration_manager into .catkin_devel_agentB"
+  echo "[B] building full ApexNav catkin into .catkin_devel_agentB"
   docker exec "$CONTAINER" bash -lc '
-    set -e
+    set -eo pipefail
+    export ROS_DISTRO=noetic
     source /opt/ros/noetic/setup.bash
     APEX=/workspace/ApexNav
     SRC=/workspace/VLN_Mobilemanipulator/baselines/ApexNav
+    DEVEL=/workspace/VLN_Mobilemanipulator/.catkin_devel_agentB
     if [[ ! -L $APEX ]]; then
       echo "ApexNav must be symlink; refusing build" >&2; exit 3
     fi
-    mkdir -p /workspace/VLN_Mobilemanipulator/.catkin_devel_agentB
-    cd $SRC
-    # top-level catkin workspace is ApexNav itself
-    catkin_make -DCMAKE_BUILD_TYPE=Release \
-      -DCATKIN_DEVEL_PREFIX=/workspace/VLN_Mobilemanipulator/.catkin_devel_agentB \
-      --pkg exploration_manager -j"$(nproc)" 2>&1 | tee /tmp/agentB_build.log | tail -40
-    strings /workspace/VLN_Mobilemanipulator/.catkin_devel_agentB/lib/exploration_manager/exploration_node \
-      | grep -E "NoFrontierLook" | head -5
+    mkdir -p "$DEVEL"
+    cd "$SRC"
+    # ################################
+    # Prefer system libtiff/curl over conda when linking exploration_node
+    # (otherwise gdal/opencv pull unresolved LIBTIFF_4.0 / CURL_OPENSSL_4).
+    # ################################
+    export LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:/lib/x86_64-linux-gnu
+    catkin_make -DCMAKE_BUILD_TYPE=Release -DCATKIN_ENABLE_TESTING=OFF \
+      -DCATKIN_DEVEL_PREFIX="$DEVEL" \
+      -DCMAKE_EXE_LINKER_FLAGS="-L/usr/lib/x86_64-linux-gnu -ltiff -lcurl" \
+      --pkg plan_env --pkg path_searching --pkg exploration_manager \
+      -j"$(nproc)" 2>&1 | tee /tmp/agentB_build.log
+    test -x "$DEVEL/lib/exploration_manager/exploration_node"
+    strings "$DEVEL/lib/exploration_manager/exploration_node" | grep -E "NoFrontierLook" | head -5
   '
 fi
 
