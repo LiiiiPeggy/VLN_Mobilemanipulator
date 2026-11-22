@@ -6,7 +6,7 @@
 # ################################
 services:
   vln-rangercr10-integrate:
-    image: vln-rangercr10:bullet
+    image: vln-rangercr10:agentA-from-shared
     container_name: vln-rangercr10-integrate
     runtime: nvidia
     network_mode: host
