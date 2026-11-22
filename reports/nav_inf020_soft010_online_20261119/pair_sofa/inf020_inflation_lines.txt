@@ -1,0 +1,9 @@
+ * /astar/soft_cost_range_m: 0.1
+ * /astar/soft_cost_weight: 2.0
+ * /exploration_node/astar/soft_cost_range_m: 0.1
+ * /exploration_node/astar/soft_cost_weight: 2.0
+ * /exploration_node/sdf_map/lock_obstacles_inflation: True
+ * /sdf_map/lock_obstacles_inflation: True
+[33m[WARN] [1795093402.194020293]: lock_obstacles_inflation=true: keep obstacles_inflation_=0.200 m (ignore habitat agent_radius=0.180)[0m
+[33m[WARN] [1795093402.194037806]: [SDFMap2D] effective obstacles_inflation_=0.2000 m  resolution=0.0500 ??? inf_step???4[0m
+[33m[WARN] [1795093402.267478230]: [Astar2D] soft_cost enabled: R=0.100 m  w=2.000 (d from inflate-only ESDF)[0m

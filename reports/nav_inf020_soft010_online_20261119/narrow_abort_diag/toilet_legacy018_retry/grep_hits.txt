@@ -1,0 +1,7 @@
+ * /exploration_node/exploration/tsp_dir: /workspace/ApexNa...
+ * /tsp_solver/exploration/tsp_dir: /workspace/ApexNa...
+    tsp_solver (lkh_mtsp_solver/tsp_node)
+[1mprocess[tsp_solver-2]: started with pid [6889][0m
+[33m[WARN] [1795324990.724121033]: [SDFMap2D] effective obstacles_inflation_=0.1800 m  resolution=0.0500 ??? inf_step???4[0m
+[31m[tsp_solver-2] process has died [pid 6889, exit code 1, cmd /workspace/VLN_Mobilemanipulator/baselines/ApexNav/devel/lib/lkh_mtsp_solver/tsp_node __name:=tsp_solver __log:=/root/.ros/log/cd5ee0ee-e634-11f1-a5b5-107c61411050/tsp_solver-2.log].
+log file: /root/.ros/log/cd5ee0ee-e634-11f1-a5b5-107c61411050/tsp_solver-2*.log[0m

@@ -1,0 +1,113 @@
+{
+  "pair_match": true,
+  "legacy": {
+    "run": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real_agentA_navinf/sofa_legacy_A_20261120_183120_sofa_legacy018",
+    "termination": "explore_budget_exhausted",
+    "n_steps": 126,
+    "success": false,
+    "near_goal": false,
+    "robot_scale": 0.7,
+    "camera_mode": "fixed_base_gimbal",
+    "executor": "kinematic_collision_v1.2",
+    "max_steps": 150,
+    "max_explore": 100,
+    "n_blocked_exec": 102,
+    "n_truncated_exec": 9,
+    "spawn": {
+      "x": -1.7573800086975098,
+      "z": -2.3178300857543945,
+      "yaw": 2.9158944064588135
+    },
+    "force_spawn": null,
+    "sdf": {
+      "infl": 0.18,
+      "res": 0.05,
+      "inf_step": 4
+    },
+    "soft": null,
+    "lock": false
+  },
+  "inf020": {
+    "run": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/navinf020_20261119_210100_sofa_inf020",
+    "termination": "explore_budget_exhausted",
+    "n_steps": 126,
+    "success": false,
+    "near_goal": false,
+    "robot_scale": 0.7,
+    "camera_mode": "fixed_base_gimbal",
+    "executor": "kinematic_collision_v1.2",
+    "max_steps": 150,
+    "max_explore": 100,
+    "n_blocked_exec": 106,
+    "n_truncated_exec": 7,
+    "spawn": {
+      "x": -1.7573800086975098,
+      "z": -2.3178300857543945,
+      "yaw": 2.9158944064588135
+    },
+    "force_spawn": null,
+    "sdf": {
+      "infl": 0.2,
+      "res": 0.05,
+      "inf_step": 4
+    },
+    "soft": {
+      "R": 0.1,
+      "w": 2.0
+    },
+    "lock": true
+  },
+  "clearance": {
+    "legacy_exec_full": {
+      "center_min": 0.397650538804966,
+      "center_p10": 0.4609721903372514,
+      "edge_min": 0.09336053880496603,
+      "edge_p10": 0.15668219033725145,
+      "n": 126
+    },
+    "inf020_exec_full": {
+      "center_min": 0.36368876902015584,
+      "center_p10": 0.4031128138360356,
+      "edge_min": 0.059398769020155895,
+      "edge_p10": 0.09882281383603564,
+      "n": 126
+    },
+    "legacy_exec_mid": {
+      "center_min": 0.38652867465706886,
+      "center_p10": 0.45068370877246133,
+      "edge_min": 0.08223867465706891,
+      "edge_p10": 0.14639370877246138,
+      "n": 63
+    },
+    "inf020_exec_mid": {
+      "center_min": 0.36368876902015584,
+      "center_p10": 0.4031128138360356,
+      "edge_min": 0.059398769020155895,
+      "edge_p10": 0.09882281383603564,
+      "n": 63
+    },
+    "legacy_plan": {
+      "center_min": 0.30899595466607627,
+      "center_p10": 0.4605818327579303,
+      "edge_min": 0.004705954666076317,
+      "edge_p10": 0.15629183275793035,
+      "n": 29
+    },
+    "inf020_plan": {
+      "center_min": 0.40311288741492735,
+      "center_p10": 0.5162901024534384,
+      "edge_min": 0.0988228874149274,
+      "edge_p10": 0.21200010245343848,
+      "n": 30
+    }
+  },
+  "path_len": {
+    "legacy_exec": 1.4083333333333337,
+    "inf020_exec": 1.4999999999999996,
+    "legacy_plan": 6.938736207720506,
+    "inf020_plan": 7.253853356455255
+  },
+  "delta_edge_p10_mid_inf_minus_leg": -0.047570894936425745,
+  "topdown": "/home/ubuntu/locomani/VLN_Mobilemanipulator_agentA_navinf/reports/nav_inf020_soft010_online_20261119/pair_sofa/sofa_pair_topdown.png",
+  "note_inf_step": "both hard inflate inf_step=4 at res=0.05 (0.18\u219237 disk cells, 0.20\u219249)"
+}

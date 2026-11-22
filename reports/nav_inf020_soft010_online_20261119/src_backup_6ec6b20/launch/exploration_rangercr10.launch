@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<!-- ################################
+  Adapter-only ApexNav launch for Ranger+CR10.
+  Same wiring as baselines/.../exploration.launch, plus footprint overlay.
+  Does NOT modify files under baselines/ApexNav.
+################################ -->
+<launch>
+  <arg name="map_size_x" value="80.0"/>
+  <arg name="map_size_y" value="80.0"/>
+  <arg name="is_real_world" default="false"/>
+  <arg name="odom_topic" value="/habitat/odom"/>
+  <arg name="sensor_pose_topic" value="/habitat/sensor_pose"/>
+  <arg name="depth_topic" value="/habitat/camera_depth"/>
+  <arg name="ranger_overlay"
+       default="/workspace/VLN_Mobilemanipulator/adapters/habitat_rangercr10/config/apexnav_rangercr10_overlay.yaml"/>
+  <!-- ################################
+    Native C++ plan + map pipeline diagnostics (observe-only).
+  ################################ -->
+  <arg name="plan_diag_enable" default="false"/>
+  <arg name="plan_diag_dir" default=""/>
+  <arg name="pipeline_diag_enable" default="false"/>
+  <arg name="pipeline_diag_dir" default=""/>
+  <arg name="startup_prior_mode" default="none"/>
+  <arg name="startup_prior_half_length" default="0.0"/>
+  <arg name="startup_prior_half_width" default="0.0"/>
+  <!-- ################################
+    Isotropic F0 margin beyond chassis half (m). 0 = exact footprint.
+  ################################ -->
+  <arg name="startup_prior_expand_m" default="0.0"/>
+  <arg name="obstacle_denoise" default="none"/>
+  <!-- ################################
+    Planning inflation knob (independent of Habitat radius when locked).
+  ################################ -->
+  <arg name="obstacles_inflation" default="0.18"/>
+  <arg name="lock_obstacles_inflation" default="false"/>
+  <arg name="soft_cost_range_m" default="0.0"/>
+  <arg name="soft_cost_weight" default="0.0"/>
+
+  <group unless="$(arg is_real_world)">
+    <rosparam file="$(find exploration_manager)/../../../config/habitat_eval_hm3dv2.yaml" command="load"/>
+    <!-- Override Habitat agent radius → sdf_map inflation at node init -->
+    <rosparam file="$(arg ranger_overlay)" command="load"/>
+  </group>
+
+  <!-- ################################
+    Use adapter algorithm_rangercr10.xml (depth_filter_mindist=0.50 for
+    arm-camera self-hit rejection). Upstream algorithm.xml unchanged.
+  ################################ -->
+  <include file="/workspace/VLN_Mobilemanipulator/adapters/habitat_rangercr10/launch/algorithm_rangercr10.xml">
+    <arg name="is_real_world_" value="$(arg is_real_world)"/>
+    <arg name="map_size_x_" value="$(arg map_size_x)"/>
+    <arg name="map_size_y_" value="$(arg map_size_y)"/>
+    <arg name="odometry_topic_" value="$(arg odom_topic)"/>
+    <arg name="sensor_pose_topic_" value="$(arg sensor_pose_topic)"/>
+    <arg name="depth_topic_" value="$(arg depth_topic)"/>
+    <!-- ################################
+      Square-pixel K from Habitat HFOV=79° @640×480: fx=fy≈388.191
+      (VFOV≈63.45°). Old fy=422.05 used wrong HFOV×H/W VFOV≈59.25°.
+    ################################ -->
+    <arg name="cx_" value="320"/>
+    <arg name="cy_" value="240"/>
+    <arg name="fx_" value="388.1910413097385"/>
+    <arg name="fy_" value="388.1910413097385"/>
+    <arg name="plan_diag_enable_" value="$(arg plan_diag_enable)"/>
+    <arg name="plan_diag_dir_" value="$(arg plan_diag_dir)"/>
+    <arg name="pipeline_diag_enable_" value="$(arg pipeline_diag_enable)"/>
+    <arg name="pipeline_diag_dir_" value="$(arg pipeline_diag_dir)"/>
+    <arg name="startup_prior_mode_" value="$(arg startup_prior_mode)"/>
+    <arg name="startup_prior_half_length_" value="$(arg startup_prior_half_length)"/>
+    <arg name="startup_prior_half_width_" value="$(arg startup_prior_half_width)"/>
+    <arg name="startup_prior_expand_m_" value="$(arg startup_prior_expand_m)"/>
+    <arg name="obstacle_denoise_" value="$(arg obstacle_denoise)"/>
+    <arg name="obstacles_inflation_" value="$(arg obstacles_inflation)"/>
+    <arg name="lock_obstacles_inflation_" value="$(arg lock_obstacles_inflation)"/>
+    <arg name="soft_cost_range_m_" value="$(arg soft_cost_range_m)"/>
+    <arg name="soft_cost_weight_" value="$(arg soft_cost_weight)"/>
+  </include>
+</launch>

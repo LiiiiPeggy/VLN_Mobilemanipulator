@@ -1,0 +1,42 @@
+{
+  "inf020_run": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/navinf020_20261119_210100_sofa_inf020",
+  "legacy_intended": {
+    "scene": "TEEsavR23oF",
+    "category": "sofa",
+    "episode_id": 0,
+    "spawn": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/formalgimbal_formal150_full_20261117_190344_TEEsavR23oF_sofa_0/start_pose.json",
+    "max_steps": 150,
+    "max_explore_actions": 100,
+    "camera_mode": "fixed_base_gimbal",
+    "robot_scale": 0.7,
+    "executor": "kinematic_collision_v1.2",
+    "startup_prior": "initial_footprint+0.3",
+    "profile": "legacy018",
+    "ROS_PORT": 11323,
+    "detection": "reuse stable VLM ports 12181-12184 on host (same as prior batch)"
+  },
+  "inf020_actual": {
+    "n_steps": 126,
+    "max_steps": 150,
+    "max_explore": 100,
+    "camera_mode": "fixed_base_gimbal",
+    "robot_scale": 0.7,
+    "executor": "kinematic_collision_v1.2",
+    "force_spawn": null,
+    "scene": null,
+    "category": null,
+    "episode": null,
+    "inflation": [
+      "0.2000",
+      "0.0500",
+      "4"
+    ],
+    "soft": [
+      "0.100",
+      "2.000"
+    ]
+  },
+  "spawn_match": false,
+  "spawn_match_note": "x/z/yaw/floor_y identical; base_y differs by ~4e-9 (float noise). Treat as same spawn. Reuse sofa_inf020.",
+  "reuse_inf020": true
+}

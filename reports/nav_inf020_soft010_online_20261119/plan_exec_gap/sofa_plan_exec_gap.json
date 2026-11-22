@@ -1,0 +1,47 @@
+{
+  "legacy018": {
+    "label": "legacy018",
+    "run": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real_agentA_navinf/sofa_legacy_A_20261121_153625_sofa_legacy018",
+    "n_steps": 126,
+    "n_traj": 126,
+    "n_plans": 95,
+    "plan_len": 6.9387,
+    "plan_edge_min": 0.004705954666076317,
+    "plan_edge_p10": 0.05570637609038943,
+    "exec_edge_min_full": 0.09336053880496603,
+    "overlap8_exec_edge_min": 0.09336053880496603,
+    "overlap8_exec_edge_p10": 0.15668219033725145,
+    "overlap8_exec_edge_mean": 0.2614643368066042,
+    "plan_minus_exec_edge_p10": -0.10097581424686203,
+    "first_diverge": null,
+    "yaw_jump_at_diverge": null,
+    "n_blocked_steps": 102
+  },
+  "inf020_soft010": {
+    "label": "inf020_soft010",
+    "run": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/navinf020_20261119_210100_sofa_inf020",
+    "n_steps": 126,
+    "n_traj": 126,
+    "n_plans": 101,
+    "plan_len": 7.2539,
+    "plan_edge_min": 0.0988228874149274,
+    "plan_edge_p10": 0.16525632761652204,
+    "exec_edge_min_full": 0.059398769020155895,
+    "overlap8_exec_edge_min": 0.059398769020155895,
+    "overlap8_exec_edge_p10": 0.09882281383603564,
+    "overlap8_exec_edge_mean": 0.2586711068925271,
+    "plan_minus_exec_edge_p10": 0.0664335137804864,
+    "first_diverge": {
+      "step_i": 0,
+      "xy": [
+        2.3178300857543945,
+        1.7573800086975098
+      ],
+      "yaw": -0.22569824713098008,
+      "dist_to_plan": 0.4745773281267052,
+      "edge_clear": 0.5488803452457605
+    },
+    "yaw_jump_at_diverge": null,
+    "n_blocked_steps": 106
+  }
+}

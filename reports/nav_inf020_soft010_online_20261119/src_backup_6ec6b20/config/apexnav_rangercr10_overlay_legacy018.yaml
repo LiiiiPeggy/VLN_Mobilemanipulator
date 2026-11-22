@@ -1,0 +1,17 @@
+# ################################
+# P0 / Diagnostic: keep baseline 0.18 m inflation (legacy018).
+# UNSAFE vs Ranger chassis half-width @0.7≈0.304 m. Soft cost OFF.
+# lock=false → Habitat agent_radius still overrides inflation (historical path).
+# ################################
+habitat:
+  simulator:
+    agents:
+      main_agent:
+        radius: 0.18
+sdf_map:
+  obstacles_inflation: 0.18
+  lock_obstacles_inflation: false
+  optimistic: false
+astar:
+  soft_cost_range_m: 0.0
+  soft_cost_weight: 0.0

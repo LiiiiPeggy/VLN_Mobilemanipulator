@@ -1,0 +1,109 @@
+[
+  {
+    "tag": "sofa_legacy018",
+    "termination": "exception",
+    "status": "failed",
+    "n_steps": 0,
+    "steps_jsonl": 0,
+    "success": false,
+    "near_goal": false,
+    "error": "RuntimeError: PLANNER_HANDSHAKE_TIMEOUT: ros_state stuck at 0 for 120.0s",
+    "executor": "kinematic_collision_v1.2",
+    "sdf": [
+      "0.1800",
+      "0.0500",
+      "4"
+    ],
+    "soft": null,
+    "lock": false,
+    "node_crash": true,
+    "sum_moved": null
+  },
+  {
+    "tag": "sofa_inf020",
+    "termination": "explore_budget_exhausted",
+    "status": "ok",
+    "n_steps": 126,
+    "steps_jsonl": 126,
+    "success": false,
+    "near_goal": false,
+    "error": "",
+    "executor": "kinematic_collision_v1.2",
+    "sdf": [
+      "0.2000",
+      "0.0500",
+      "4"
+    ],
+    "soft": [
+      "0.100",
+      "2.000"
+    ],
+    "lock": true,
+    "node_crash": true,
+    "sum_moved": null
+  },
+  {
+    "tag": "toilet_legacy018",
+    "termination": "planner_stop",
+    "status": "ok",
+    "n_steps": 82,
+    "steps_jsonl": 82,
+    "success": false,
+    "near_goal": false,
+    "error": "",
+    "executor": "kinematic_collision_v1.2",
+    "sdf": null,
+    "soft": null,
+    "lock": false,
+    "node_crash": true,
+    "sum_moved": null
+  },
+  {
+    "tag": "toilet_inf020",
+    "termination": "planner_stop",
+    "status": "ok",
+    "n_steps": 82,
+    "steps_jsonl": 82,
+    "success": false,
+    "near_goal": false,
+    "error": "",
+    "executor": "kinematic_collision_v1.2",
+    "sdf": null,
+    "soft": null,
+    "lock": false,
+    "node_crash": true,
+    "sum_moved": null
+  },
+  {
+    "tag": "dd4b_legacy018",
+    "termination": "explore_budget_exhausted",
+    "status": "ok",
+    "n_steps": 126,
+    "steps_jsonl": 126,
+    "success": false,
+    "near_goal": false,
+    "error": "",
+    "executor": "kinematic_collision_v1.2",
+    "sdf": null,
+    "soft": null,
+    "lock": false,
+    "node_crash": true,
+    "sum_moved": null
+  },
+  {
+    "tag": "dd4b_inf020",
+    "termination": "explore_budget_exhausted",
+    "status": "ok",
+    "n_steps": 126,
+    "steps_jsonl": 126,
+    "success": false,
+    "near_goal": false,
+    "error": "",
+    "executor": "kinematic_collision_v1.2",
+    "sdf": null,
+    "soft": null,
+    "lock": false,
+    "node_crash": true,
+    "sum_moved": null
+  }
+]

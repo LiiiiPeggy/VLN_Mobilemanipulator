@@ -1,0 +1,17 @@
+# ################################
+# P2: same hard inflation as P1 (half-width @ robot_scale) + soft clearance cost.
+# Edge cost: length × [1 + w × max(0, 1 − d/R)²], d from inflate-only known-obstacle ESDF.
+# Fixed validation knobs (no sweep): R=0.40 m, w=2.0.
+# ################################
+habitat:
+  simulator:
+    agents:
+      main_agent:
+        radius: 0.18
+sdf_map:
+  obstacles_inflation: 0.30429
+  lock_obstacles_inflation: true
+  optimistic: false
+astar:
+  soft_cost_range_m: 0.40
+  soft_cost_weight: 2.0
