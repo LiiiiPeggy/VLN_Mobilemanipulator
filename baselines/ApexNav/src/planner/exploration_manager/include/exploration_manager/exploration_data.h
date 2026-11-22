@@ -50,6 +50,7 @@ struct FSMData {
     stucking_points_.clear();
     // ################################
     object_hold_miss_count_ = 0;
+    no_frontier_look_count_ = 0;
     // ################################
 
     local_pos_ = Eigen::Vector2d(0, 0);
@@ -86,6 +87,10 @@ struct FSMData {
   // final_result_ was SEARCH_OBJECT (transient object-cloud miss).
   // ################################
   int object_hold_miss_count_;
+  // ################################
+  // Consecutive NO_FRONTIER outcomes before allowing FINISH→STOP.
+  // ################################
+  int no_frontier_look_count_;
 
   Eigen::Vector2d local_pos_;
   LocalTrajectory newest_traj_;  // Store latest planned trajectory
@@ -99,6 +104,9 @@ struct FSMParam {
     replan_traj_end_threshold_ = 1.0;
     replan_frontier_change_delay_ = 0.5;
     replan_timeout_ = 2.0;
+    // ################################
+    enable_no_frontier_look_ = false;  // legacy OFF group default
+    // ################################
 
     const double step_length = 0.25;
     const double angle_increment = M_PI / 6;
@@ -116,6 +124,10 @@ struct FSMParam {
   double replan_traj_end_threshold_;
   double replan_frontier_change_delay_;
   double replan_timeout_;
+  // ################################
+  // OFF (false): legacy NO_FRONTIER→FINISH→STOP. ON (true): bounded lookaround.
+  // ################################
+  bool enable_no_frontier_look_;
 };
 
 struct ExplorationData {

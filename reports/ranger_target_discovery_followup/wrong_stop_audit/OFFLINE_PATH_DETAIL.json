@@ -1,0 +1,837 @@
+{
+  "explained_by_transition": 12,
+  "elog_supported": 12,
+  "cases": [
+    {
+      "id": "yr17_plant_0",
+      "spawn_status": "ok",
+      "moved_m": 0.7500000000000006,
+      "dtg_at_stop": 5.1744316690288565,
+      "last_native_plan": [
+        "EXPLORATION",
+        "NO_PASSABLE_FRONTIER"
+      ],
+      "plan_results": {
+        "EXPLORATION": 52,
+        "NO_PASSABLE_FRONTIER": 1
+      },
+      "stop_step": 86,
+      "expl_result": 4,
+      "final_state": 3,
+      "ros_state": 5,
+      "planner_action_name": "STOP",
+      "n_detections_at_stop": 0,
+      "map_stats_at_stop": {
+        "occupied": 344,
+        "occupied_msgs": 564,
+        "free": 1362,
+        "free_msgs": 564,
+        "unknown": 36660,
+        "unknown_msgs": 564,
+        "occupied_inflate": 971,
+        "occupied_inflate_msgs": 565,
+        "value_map": 1362,
+        "value_map_msgs": 563,
+        "cosine_msgs": 88,
+        "last_cosine_x1000": 108
+      },
+      "pre_stop_actions": [
+        [
+          81,
+          "TURN_LEFT"
+        ],
+        [
+          82,
+          "TURN_LEFT"
+        ],
+        [
+          83,
+          "TURN_DOWN"
+        ],
+        [
+          84,
+          "TURN_LEFT"
+        ],
+        [
+          85,
+          "TURN_LEFT"
+        ]
+      ],
+      "stop_action": {
+        "step": 86,
+        "name": "STOP",
+        "ros_state": 5
+      },
+      "elog_key_lines": [
+        "839:\u001b[33m[WARN] [1795022164.605695711]: No (passable) frontier\u001b[0m",
+        "840:[ FSM]: from PLAN_ACTION to FINISH",
+        "841:\u001b[33m[WARN] [1795022165.454196696]: Finish One Episode!!!\u001b[0m",
+        "842:\u001b[33m[WARN] [1795022166.463459520]: Finish One Episode!!!\u001b[0m"
+      ],
+      "path": "NO_PASSABLE/NO_COVERABLE \u2192 FINAL NO_FRONTIER \u2192 ROS FINISH \u2192 ACTION STOP",
+      "log_supported": true
+    },
+    {
+      "id": "yr17_chair_0",
+      "spawn_status": "ok",
+      "moved_m": 0.7500000000000006,
+      "dtg_at_stop": 3.949363575994705,
+      "last_native_plan": [
+        "EXPLORATION",
+        "NO_PASSABLE_FRONTIER"
+      ],
+      "plan_results": {
+        "EXPLORATION": 52,
+        "NO_PASSABLE_FRONTIER": 1
+      },
+      "stop_step": 86,
+      "expl_result": 4,
+      "final_state": 3,
+      "ros_state": 5,
+      "planner_action_name": "STOP",
+      "n_detections_at_stop": 0,
+      "map_stats_at_stop": {
+        "occupied": 344,
+        "occupied_msgs": 539,
+        "free": 1362,
+        "free_msgs": 538,
+        "unknown": 36660,
+        "unknown_msgs": 539,
+        "occupied_inflate": 971,
+        "occupied_inflate_msgs": 539,
+        "value_map": 1362,
+        "value_map_msgs": 538,
+        "cosine_msgs": 88,
+        "last_cosine_x1000": 323
+      },
+      "pre_stop_actions": [
+        [
+          81,
+          "TURN_LEFT"
+        ],
+        [
+          82,
+          "TURN_LEFT"
+        ],
+        [
+          83,
+          "TURN_DOWN"
+        ],
+        [
+          84,
+          "TURN_LEFT"
+        ],
+        [
+          85,
+          "TURN_LEFT"
+        ]
+      ],
+      "stop_action": {
+        "step": 86,
+        "name": "STOP",
+        "ros_state": 5
+      },
+      "elog_key_lines": [
+        "837:\u001b[33m[WARN] [1795022314.471021531]: No (passable) frontier\u001b[0m",
+        "838:[ FSM]: from PLAN_ACTION to FINISH",
+        "839:\u001b[33m[WARN] [1795022315.333609381]: Finish One Episode!!!\u001b[0m",
+        "840:\u001b[33m[WARN] [1795022316.334741680]: Finish One Episode!!!\u001b[0m"
+      ],
+      "path": "NO_PASSABLE/NO_COVERABLE \u2192 FINAL NO_FRONTIER \u2192 ROS FINISH \u2192 ACTION STOP",
+      "log_supported": true
+    },
+    {
+      "id": "yr17_sofa_0",
+      "spawn_status": "ok",
+      "moved_m": 0.7500000000000006,
+      "dtg_at_stop": 10.63985073062389,
+      "last_native_plan": [
+        "EXPLORATION",
+        "NO_PASSABLE_FRONTIER"
+      ],
+      "plan_results": {
+        "EXPLORATION": 52,
+        "NO_PASSABLE_FRONTIER": 1
+      },
+      "stop_step": 86,
+      "expl_result": 4,
+      "final_state": 3,
+      "ros_state": 5,
+      "planner_action_name": "STOP",
+      "n_detections_at_stop": 0,
+      "map_stats_at_stop": {
+        "occupied": 344,
+        "occupied_msgs": 543,
+        "free": 1362,
+        "free_msgs": 543,
+        "unknown": 36660,
+        "unknown_msgs": 542,
+        "occupied_inflate": 971,
+        "occupied_inflate_msgs": 543,
+        "value_map": 1362,
+        "value_map_msgs": 542,
+        "cosine_msgs": 88,
+        "last_cosine_x1000": 206
+      },
+      "pre_stop_actions": [
+        [
+          81,
+          "TURN_LEFT"
+        ],
+        [
+          82,
+          "TURN_LEFT"
+        ],
+        [
+          83,
+          "TURN_DOWN"
+        ],
+        [
+          84,
+          "TURN_LEFT"
+        ],
+        [
+          85,
+          "TURN_LEFT"
+        ]
+      ],
+      "stop_action": {
+        "step": 86,
+        "name": "STOP",
+        "ros_state": 5
+      },
+      "elog_key_lines": [
+        "838:\u001b[33m[WARN] [1795022465.144098242]: No (passable) frontier\u001b[0m",
+        "839:[ FSM]: from PLAN_ACTION to FINISH",
+        "840:\u001b[33m[WARN] [1795022465.987612342]: Finish One Episode!!!\u001b[0m",
+        "841:\u001b[33m[WARN] [1795022466.990250612]: Finish One Episode!!!\u001b[0m"
+      ],
+      "path": "NO_PASSABLE/NO_COVERABLE \u2192 FINAL NO_FRONTIER \u2192 ROS FINISH \u2192 ACTION STOP",
+      "log_supported": true
+    },
+    {
+      "id": "yr17_tv_0",
+      "spawn_status": "ok",
+      "moved_m": 0.7500000000000006,
+      "dtg_at_stop": 2.622486177169348,
+      "last_native_plan": [
+        "EXPLORATION",
+        "NO_PASSABLE_FRONTIER"
+      ],
+      "plan_results": {
+        "EXPLORATION": 52,
+        "NO_PASSABLE_FRONTIER": 1
+      },
+      "stop_step": 86,
+      "expl_result": 4,
+      "final_state": 3,
+      "ros_state": 5,
+      "planner_action_name": "STOP",
+      "n_detections_at_stop": 1,
+      "map_stats_at_stop": {
+        "occupied": 344,
+        "occupied_msgs": 574,
+        "free": 1362,
+        "free_msgs": 572,
+        "unknown": 36660,
+        "unknown_msgs": 573,
+        "occupied_inflate": 971,
+        "occupied_inflate_msgs": 573,
+        "value_map": 1362,
+        "value_map_msgs": 574,
+        "cosine_msgs": 88,
+        "last_cosine_x1000": 205
+      },
+      "pre_stop_actions": [
+        [
+          81,
+          "TURN_LEFT"
+        ],
+        [
+          82,
+          "TURN_LEFT"
+        ],
+        [
+          83,
+          "TURN_DOWN"
+        ],
+        [
+          84,
+          "TURN_LEFT"
+        ],
+        [
+          85,
+          "TURN_LEFT"
+        ]
+      ],
+      "stop_action": {
+        "step": 86,
+        "name": "STOP",
+        "ros_state": 5
+      },
+      "elog_key_lines": [
+        "839:\u001b[33m[WARN] [1795022623.333012233]: No (passable) frontier\u001b[0m",
+        "840:[ FSM]: from PLAN_ACTION to FINISH",
+        "841:\u001b[33m[WARN] [1795022624.176674159]: Finish One Episode!!!\u001b[0m",
+        "842:\u001b[33m[WARN] [1795022625.178950343]: Finish One Episode!!!\u001b[0m"
+      ],
+      "path": "NO_PASSABLE/NO_COVERABLE \u2192 FINAL NO_FRONTIER \u2192 ROS FINISH \u2192 ACTION STOP",
+      "log_supported": true
+    },
+    {
+      "id": "ef36_plant_4",
+      "spawn_status": "ok",
+      "moved_m": 0.5250000000000004,
+      "dtg_at_stop": 8.3305805666062,
+      "last_native_plan": [
+        "EXPLORATION",
+        "NO_COVERABLE_FRONTIER"
+      ],
+      "plan_results": {
+        "EXPLORATION": 81,
+        "NO_COVERABLE_FRONTIER": 1
+      },
+      "stop_step": 111,
+      "expl_result": 5,
+      "final_state": 3,
+      "ros_state": 5,
+      "planner_action_name": "STOP",
+      "n_detections_at_stop": 1,
+      "map_stats_at_stop": {
+        "occupied": 490,
+        "occupied_msgs": 649,
+        "free": 1729,
+        "free_msgs": 648,
+        "unknown": 26441,
+        "unknown_msgs": 648,
+        "occupied_inflate": 966,
+        "occupied_inflate_msgs": 649,
+        "value_map": 1729,
+        "value_map_msgs": 648,
+        "cosine_msgs": 113,
+        "last_cosine_x1000": 226
+      },
+      "pre_stop_actions": [
+        [
+          106,
+          "TURN_LEFT"
+        ],
+        [
+          107,
+          "TURN_DOWN"
+        ],
+        [
+          108,
+          "TURN_LEFT"
+        ],
+        [
+          109,
+          "TURN_LEFT"
+        ],
+        [
+          110,
+          "TURN_LEFT"
+        ]
+      ],
+      "stop_action": {
+        "step": 111,
+        "name": "STOP",
+        "ros_state": 5
+      },
+      "elog_key_lines": [
+        "1069:\u001b[33m[WARN] [1795022801.329228964]: No (passable) frontier\u001b[0m",
+        "1070:[ FSM]: from PLAN_ACTION to FINISH",
+        "1071:\u001b[33m[WARN] [1795022802.195082151]: Finish One Episode!!!\u001b[0m",
+        "1072:\u001b[33m[WARN] [1795022803.196210817]: Finish One Episode!!!\u001b[0m"
+      ],
+      "path": "NO_PASSABLE/NO_COVERABLE \u2192 FINAL NO_FRONTIER \u2192 ROS FINISH \u2192 ACTION STOP",
+      "log_supported": true
+    },
+    {
+      "id": "ef36_tv_3",
+      "spawn_status": "ok",
+      "moved_m": 0.5250000000000004,
+      "dtg_at_stop": 7.730117551446761,
+      "last_native_plan": [
+        "EXPLORATION",
+        "NO_COVERABLE_FRONTIER"
+      ],
+      "plan_results": {
+        "EXPLORATION": 80,
+        "NO_COVERABLE_FRONTIER": 1
+      },
+      "stop_step": 110,
+      "expl_result": 5,
+      "final_state": 3,
+      "ros_state": 5,
+      "planner_action_name": "STOP",
+      "n_detections_at_stop": 0,
+      "map_stats_at_stop": {
+        "occupied": 493,
+        "occupied_msgs": 647,
+        "free": 1717,
+        "free_msgs": 647,
+        "unknown": 26432,
+        "unknown_msgs": 648,
+        "occupied_inflate": 984,
+        "occupied_inflate_msgs": 647,
+        "value_map": 1717,
+        "value_map_msgs": 648,
+        "cosine_msgs": 112,
+        "last_cosine_x1000": 252
+      },
+      "pre_stop_actions": [
+        [
+          105,
+          "TURN_RIGHT"
+        ],
+        [
+          106,
+          "TURN_RIGHT"
+        ],
+        [
+          107,
+          "TURN_DOWN"
+        ],
+        [
+          108,
+          "TURN_RIGHT"
+        ],
+        [
+          109,
+          "TURN_RIGHT"
+        ]
+      ],
+      "stop_action": {
+        "step": 110,
+        "name": "STOP",
+        "ros_state": 5
+      },
+      "elog_key_lines": [
+        "1062:\u001b[33m[WARN] [1795022978.590524876]: No (passable) frontier\u001b[0m",
+        "1063:[ FSM]: from PLAN_ACTION to FINISH",
+        "1064:\u001b[33m[WARN] [1795022979.433862833]: Finish One Episode!!!\u001b[0m",
+        "1065:\u001b[33m[WARN] [1795022980.435390262]: Finish One Episode!!!\u001b[0m"
+      ],
+      "path": "NO_PASSABLE/NO_COVERABLE \u2192 FINAL NO_FRONTIER \u2192 ROS FINISH \u2192 ACTION STOP",
+      "log_supported": true
+    },
+    {
+      "id": "ef36_toilet_3",
+      "spawn_status": "ok",
+      "moved_m": 0.6666666666666672,
+      "dtg_at_stop": 16.57531423487283,
+      "last_native_plan": [
+        "EXPLORATION",
+        "NO_COVERABLE_FRONTIER"
+      ],
+      "plan_results": {
+        "EXPLORATION": 80,
+        "NO_COVERABLE_FRONTIER": 1
+      },
+      "stop_step": 114,
+      "expl_result": 5,
+      "final_state": 3,
+      "ros_state": 5,
+      "planner_action_name": "STOP",
+      "n_detections_at_stop": 1,
+      "map_stats_at_stop": {
+        "occupied": 502,
+        "occupied_msgs": 639,
+        "free": 1765,
+        "free_msgs": 640,
+        "unknown": 26361,
+        "unknown_msgs": 639,
+        "occupied_inflate": 998,
+        "occupied_inflate_msgs": 638,
+        "value_map": 1765,
+        "value_map_msgs": 640,
+        "cosine_msgs": 116,
+        "last_cosine_x1000": 239
+      },
+      "pre_stop_actions": [
+        [
+          109,
+          "TURN_RIGHT"
+        ],
+        [
+          110,
+          "TURN_DOWN"
+        ],
+        [
+          111,
+          "TURN_RIGHT"
+        ],
+        [
+          112,
+          "TURN_RIGHT"
+        ],
+        [
+          113,
+          "TURN_RIGHT"
+        ]
+      ],
+      "stop_action": {
+        "step": 114,
+        "name": "STOP",
+        "ros_state": 5
+      },
+      "elog_key_lines": [
+        "1076:\u001b[33m[WARN] [1795023324.561460711]: No (passable) frontier\u001b[0m",
+        "1077:[ FSM]: from PLAN_ACTION to FINISH",
+        "1078:\u001b[33m[WARN] [1795023325.404740993]: Finish One Episode!!!\u001b[0m",
+        "1079:\u001b[33m[WARN] [1795023326.409848970]: Finish One Episode!!!\u001b[0m"
+      ],
+      "path": "NO_PASSABLE/NO_COVERABLE \u2192 FINAL NO_FRONTIER \u2192 ROS FINISH \u2192 ACTION STOP",
+      "log_supported": true
+    },
+    {
+      "id": "hy1_plant_0",
+      "spawn_status": "ok",
+      "moved_m": 2.458333333333335,
+      "dtg_at_stop": 2.3129927576133165,
+      "last_native_plan": [
+        "EXPLORATION",
+        "NO_PASSABLE_FRONTIER"
+      ],
+      "plan_results": {
+        "EXPLORATION": 41,
+        "NO_PASSABLE_FRONTIER": 1
+      },
+      "stop_step": 83,
+      "expl_result": 4,
+      "final_state": 3,
+      "ros_state": 5,
+      "planner_action_name": "STOP",
+      "n_detections_at_stop": 0,
+      "map_stats_at_stop": {
+        "occupied": 1708,
+        "occupied_msgs": 1206,
+        "free": 10784,
+        "free_msgs": 1207,
+        "unknown": 111754,
+        "unknown_msgs": 1205,
+        "occupied_inflate": 4347,
+        "occupied_inflate_msgs": 1206,
+        "value_map": 10784,
+        "value_map_msgs": 1207,
+        "cosine_msgs": 85,
+        "last_cosine_x1000": 197
+      },
+      "pre_stop_actions": [
+        [
+          78,
+          "TURN_LEFT"
+        ],
+        [
+          79,
+          "MOVE_FORWARD"
+        ],
+        [
+          80,
+          "TURN_LEFT"
+        ],
+        [
+          81,
+          "MOVE_FORWARD"
+        ],
+        [
+          82,
+          "TURN_LEFT"
+        ]
+      ],
+      "stop_action": {
+        "step": 83,
+        "name": "STOP",
+        "ros_state": 5
+      },
+      "elog_key_lines": [
+        "785:\u001b[33m[WARN] [1795023642.821910969]: No (passable) frontier\u001b[0m",
+        "786:[ FSM]: from PLAN_ACTION to FINISH",
+        "787:\u001b[33m[WARN] [1795023643.680194602]: Finish One Episode!!!\u001b[0m",
+        "788:\u001b[33m[WARN] [1795023644.685834141]: Finish One Episode!!!\u001b[0m",
+        "789:\u001b[33m[WARN] [1795023645.695236853]: Finish One Episode!!!\u001b[0m"
+      ],
+      "path": "NO_PASSABLE/NO_COVERABLE \u2192 FINAL NO_FRONTIER \u2192 ROS FINISH \u2192 ACTION STOP",
+      "log_supported": true
+    },
+    {
+      "id": "hy1_chair_3",
+      "spawn_status": "ok",
+      "moved_m": 2.458333333333335,
+      "dtg_at_stop": 6.257979094060331,
+      "last_native_plan": [
+        "EXPLORATION",
+        "NO_PASSABLE_FRONTIER"
+      ],
+      "plan_results": {
+        "EXPLORATION": 49,
+        "NO_PASSABLE_FRONTIER": 1
+      },
+      "stop_step": 91,
+      "expl_result": 4,
+      "final_state": 3,
+      "ros_state": 5,
+      "planner_action_name": "STOP",
+      "n_detections_at_stop": 0,
+      "map_stats_at_stop": {
+        "occupied": 1708,
+        "occupied_msgs": 1309,
+        "free": 10860,
+        "free_msgs": 1309,
+        "unknown": 111678,
+        "unknown_msgs": 1308,
+        "occupied_inflate": 4347,
+        "occupied_inflate_msgs": 1306,
+        "value_map": 10860,
+        "value_map_msgs": 1309,
+        "cosine_msgs": 93,
+        "last_cosine_x1000": 370
+      },
+      "pre_stop_actions": [
+        [
+          86,
+          "TURN_LEFT"
+        ],
+        [
+          87,
+          "MOVE_FORWARD"
+        ],
+        [
+          88,
+          "TURN_LEFT"
+        ],
+        [
+          89,
+          "MOVE_FORWARD"
+        ],
+        [
+          90,
+          "TURN_RIGHT"
+        ]
+      ],
+      "stop_action": {
+        "step": 91,
+        "name": "STOP",
+        "ros_state": 5
+      },
+      "elog_key_lines": [
+        "839:\u001b[33m[WARN] [1795024507.201344239]: No (passable) frontier\u001b[0m",
+        "840:[ FSM]: from PLAN_ACTION to FINISH",
+        "841:\u001b[33m[WARN] [1795024508.060872543]: Finish One Episode!!!\u001b[0m",
+        "842:\u001b[33m[WARN] [1795024509.061678910]: Finish One Episode!!!\u001b[0m",
+        "843:\u001b[33m[WARN] [1795024510.063831813]: Finish One Episode!!!\u001b[0m"
+      ],
+      "path": "NO_PASSABLE/NO_COVERABLE \u2192 FINAL NO_FRONTIER \u2192 ROS FINISH \u2192 ACTION STOP",
+      "log_supported": true
+    },
+    {
+      "id": "hy1_plant_1",
+      "spawn_status": "ok",
+      "moved_m": 2.458333333333335,
+      "dtg_at_stop": 2.3129927576133165,
+      "last_native_plan": [
+        "EXPLORATION",
+        "NO_PASSABLE_FRONTIER"
+      ],
+      "plan_results": {
+        "EXPLORATION": 41,
+        "NO_PASSABLE_FRONTIER": 1
+      },
+      "stop_step": 83,
+      "expl_result": 4,
+      "final_state": 3,
+      "ros_state": 5,
+      "planner_action_name": "STOP",
+      "n_detections_at_stop": 0,
+      "map_stats_at_stop": {
+        "occupied": 1708,
+        "occupied_msgs": 1206,
+        "free": 10784,
+        "free_msgs": 1207,
+        "unknown": 111754,
+        "unknown_msgs": 1207,
+        "occupied_inflate": 4347,
+        "occupied_inflate_msgs": 1207,
+        "value_map": 10784,
+        "value_map_msgs": 1208,
+        "cosine_msgs": 85,
+        "last_cosine_x1000": 197
+      },
+      "pre_stop_actions": [
+        [
+          78,
+          "TURN_LEFT"
+        ],
+        [
+          79,
+          "MOVE_FORWARD"
+        ],
+        [
+          80,
+          "TURN_LEFT"
+        ],
+        [
+          81,
+          "MOVE_FORWARD"
+        ],
+        [
+          82,
+          "TURN_LEFT"
+        ]
+      ],
+      "stop_action": {
+        "step": 83,
+        "name": "STOP",
+        "ros_state": 5
+      },
+      "elog_key_lines": [
+        "785:\u001b[33m[WARN] [1795024827.398781212]: No (passable) frontier\u001b[0m",
+        "786:[ FSM]: from PLAN_ACTION to FINISH",
+        "787:\u001b[33m[WARN] [1795024828.253705444]: Finish One Episode!!!\u001b[0m",
+        "788:\u001b[33m[WARN] [1795024829.259495863]: Finish One Episode!!!\u001b[0m",
+        "789:\u001b[33m[WARN] [1795024830.269299326]: Finish One Episode!!!\u001b[0m"
+      ],
+      "path": "NO_PASSABLE/NO_COVERABLE \u2192 FINAL NO_FRONTIER \u2192 ROS FINISH \u2192 ACTION STOP",
+      "log_supported": true
+    },
+    {
+      "id": "lt9_chair_1",
+      "spawn_status": "invalid_initial_penetration",
+      "moved_m": 0.0,
+      "dtg_at_stop": 5.049272872538462,
+      "last_native_plan": [
+        "EXPLORATION",
+        "NO_COVERABLE_FRONTIER"
+      ],
+      "plan_results": {
+        "EXPLORATION": 15,
+        "NO_COVERABLE_FRONTIER": 1
+      },
+      "stop_step": 51,
+      "expl_result": 5,
+      "final_state": 3,
+      "ros_state": 5,
+      "planner_action_name": "STOP",
+      "n_detections_at_stop": 0,
+      "map_stats_at_stop": {
+        "occupied": 107,
+        "occupied_msgs": 305,
+        "free": 2179,
+        "free_msgs": 307,
+        "unknown": 16330,
+        "unknown_msgs": 305,
+        "occupied_inflate": 547,
+        "occupied_inflate_msgs": 306,
+        "value_map": 2179,
+        "value_map_msgs": 305,
+        "cosine_msgs": 53,
+        "last_cosine_x1000": 393
+      },
+      "pre_stop_actions": [
+        [
+          46,
+          "MOVE_FORWARD"
+        ],
+        [
+          47,
+          "TURN_DOWN"
+        ],
+        [
+          48,
+          "MOVE_FORWARD"
+        ],
+        [
+          49,
+          "MOVE_FORWARD"
+        ],
+        [
+          50,
+          "MOVE_FORWARD"
+        ]
+      ],
+      "stop_action": {
+        "step": 51,
+        "name": "STOP",
+        "ros_state": 5
+      },
+      "elog_key_lines": [
+        "515:\u001b[33m[WARN] [1795025015.455823208]: No (passable) frontier\u001b[0m",
+        "516:[ FSM]: from PLAN_ACTION to FINISH",
+        "517:\u001b[33m[WARN] [1795025016.308961525]: Finish One Episode!!!\u001b[0m",
+        "518:\u001b[33m[WARN] [1795025017.311734517]: Finish One Episode!!!\u001b[0m"
+      ],
+      "path": "NO_PASSABLE/NO_COVERABLE \u2192 FINAL NO_FRONTIER \u2192 ROS FINISH \u2192 ACTION STOP",
+      "log_supported": true
+    },
+    {
+      "id": "lt9_toilet_2",
+      "spawn_status": "invalid_initial_penetration",
+      "moved_m": 0.0,
+      "dtg_at_stop": 2.62780369952202,
+      "last_native_plan": [
+        "EXPLORATION",
+        "NO_COVERABLE_FRONTIER"
+      ],
+      "plan_results": {
+        "EXPLORATION": 15,
+        "NO_COVERABLE_FRONTIER": 1
+      },
+      "stop_step": 51,
+      "expl_result": 5,
+      "final_state": 3,
+      "ros_state": 5,
+      "planner_action_name": "STOP",
+      "n_detections_at_stop": 0,
+      "map_stats_at_stop": {
+        "occupied": 107,
+        "occupied_msgs": 307,
+        "free": 2179,
+        "free_msgs": 307,
+        "unknown": 16330,
+        "unknown_msgs": 305,
+        "occupied_inflate": 547,
+        "occupied_inflate_msgs": 307,
+        "value_map": 2179,
+        "value_map_msgs": 307,
+        "cosine_msgs": 53,
+        "last_cosine_x1000": 140
+      },
+      "pre_stop_actions": [
+        [
+          46,
+          "MOVE_FORWARD"
+        ],
+        [
+          47,
+          "TURN_DOWN"
+        ],
+        [
+          48,
+          "MOVE_FORWARD"
+        ],
+        [
+          49,
+          "MOVE_FORWARD"
+        ],
+        [
+          50,
+          "MOVE_FORWARD"
+        ]
+      ],
+      "stop_action": {
+        "step": 51,
+        "name": "STOP",
+        "ros_state": 5
+      },
+      "elog_key_lines": [
+        "515:\u001b[33m[WARN] [1795025106.656452251]: No (passable) frontier\u001b[0m",
+        "516:[ FSM]: from PLAN_ACTION to FINISH",
+        "517:\u001b[33m[WARN] [1795025107.502982029]: Finish One Episode!!!\u001b[0m",
+        "518:\u001b[33m[WARN] [1795025108.504914678]: Finish One Episode!!!\u001b[0m"
+      ],
+      "path": "NO_PASSABLE/NO_COVERABLE \u2192 FINAL NO_FRONTIER \u2192 ROS FINISH \u2192 ACTION STOP",
+      "log_supported": true
+    }
+  ]
+}

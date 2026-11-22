@@ -260,3 +260,13 @@ VLN_Mobilemanipulator/
 | 动态相机 | 不可再用固定 +0.88 m | 适配层发真实 EE SE3；第三人称渲染勿覆盖 EE 观测 |
 | 桌边视点 pilot | 离线复用生产 `get_object`（YOLO:12184+SAM:12183）；`similar_answer=[]`；查询 cup/bowl/remote/bottle；mug→cup；命中=目标类∧指定实例 IoU≥0.5；确认=≤3 视角≥1 hit；指标名「桌边目标确认率」 | `adapters/.../tabletop_views/`；`reports/tabletop_views_pilot/`；共同起点 `492f53f` |
 | 桌边数据根 | A 大图在 D 盘；`reports/.../captures/<pair_id>` 为 symlink；夹具 `fixture_`/`smoke_synth_` 不进正式分母 | `CAPTURE_LAYOUT.md`；`locked_instances.md`（12 例） |
+
+## B：错误 STOP 与 NoFrontierLook（2026-11-20/22 验证）
+
+| 项 | 内容 |
+|----|------|
+| 独立工作区（历史） | `/home/ubuntu/locomani/B_VLN_Mobilemanipulator`；保全 `/home/ubuntu/locomani/B_followup_safe/` |
+| 错误 STOP 根因 | 12/12：`NO_PASSABLE/NO_COVERABLE`→`FINAL NO_FRONTIER`→`ROS FINISH`→`ACTION STOP`；非 SEARCH 选错 |
+| 开关 | ROS `enable_no_frontier_look`（默认 false=legacy）；ON 时最多 24 次 TURN_* 计入预算后再 FINISH |
+| V2 恢复（候选开关） | Look 左右交替；turn 连续挡：`opposite_turn`→`forced_forward`；仅 `moved_m>0` 清零 escalate；证据 `reports/integration_20261122/b_v2/` |
+| 证据 | `reports/ranger_target_discovery_followup/wrong_stop_audit/` |

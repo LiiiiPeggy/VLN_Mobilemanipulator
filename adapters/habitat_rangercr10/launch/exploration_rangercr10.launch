@@ -35,6 +35,11 @@
   <arg name="lock_obstacles_inflation" default="false"/>
   <arg name="soft_cost_range_m" default="0.0"/>
   <arg name="soft_cost_weight" default="0.0"/>
+  <!-- ################################
+    NoFrontierLook pairing switch (Agent B).
+    false = legacy NO_FRONTIER→FINISH→STOP; true = bounded lookaround.
+  ################################ -->
+  <arg name="enable_no_frontier_look" default="false"/>
 
   <group unless="$(arg is_real_world)">
     <rosparam file="$(find exploration_manager)/../../../config/habitat_eval_hm3dv2.yaml" command="load"/>
@@ -74,5 +79,8 @@
     <arg name="lock_obstacles_inflation_" value="$(arg lock_obstacles_inflation)"/>
     <arg name="soft_cost_range_m_" value="$(arg soft_cost_range_m)"/>
     <arg name="soft_cost_weight_" value="$(arg soft_cost_weight)"/>
+    <!-- ################################ -->
+    <arg name="enable_no_frontier_look_" value="$(arg enable_no_frontier_look)"/>
+    <!-- ################################ -->
   </include>
 </launch>

@@ -1,0 +1,59 @@
+{
+  "pass": true,
+  "failures": [],
+  "MAX": 24,
+  "results": {
+    "off_immediate_stop": {
+      "ok": true,
+      "n": 1,
+      "look_peak": 0,
+      "actions": [
+        0
+      ]
+    },
+    "on_bounded_then_stop": {
+      "ok": true,
+      "n": 25,
+      "look_peak": 24,
+      "n_looks": 24,
+      "first_8": [
+        2,
+        2,
+        2,
+        5,
+        2,
+        2,
+        2,
+        4
+      ],
+      "last_3": [
+        2,
+        4,
+        0
+      ]
+    },
+    "no_infinite_loop": {
+      "ok": true,
+      "n": 25
+    },
+    "on_frontier_recovers": {
+      "ok": true,
+      "look_peak": 5,
+      "saw_forward": true,
+      "n": 20
+    },
+    "budget_zero_finish": {
+      "ok": true,
+      "next": "FINISH",
+      "act": 0
+    },
+    "reach_object_immediate": {
+      "ok": true
+    },
+    "looks_consume_budget": {
+      "ok": true,
+      "looks": 10,
+      "budget": 0
+    }
+  }
+}

@@ -1132,3 +1132,35 @@
 **结论**：C 侧接口与批量画面已交付 D；导航六类入口未改。  
 
 **相关**：`adapters/habitat_rangercr10/experiments/tabletop_views/`；`reports/tabletop_views_pilot/capture/CAPTURE_REPORT.md`
+
+---
+
+## 2026-11-18/19 Ranger target-discovery followup（主目标 label=0）
+
+**模块**：ApexNav–Ranger / 检测→object map  
+
+**问题**：formal150 中 34 例 spawn-ok ebe 无 SEARCH_BEST；最常见断点为 A_no_label0（25/34）——plant/tv 仅 YOLO COCO 主名，llm_answer 全是 COCO 时 DINO 不跑主目标，绿框仅 aux。  
+
+**操作**：
+- `detect_label` 为 plant/tv 追加非 COCO 同义词并送入 `get_object`；`get_object_utils` 增加模糊 phrase 匹配。
+- 配对 4 例（formal spawn）@150/100；启动全量 dev24 回归 `dev24_after_dinofix_20261119_011332`。
+
+**实测结果**：
+- 配对 4/4 label0↑；mv2 新获 SEARCH_BEST；XB4 达 SEARCH_OVER_DEPTH；ziup 对照 SEARCH_BEST+sr 保持。
+- SR_proxy 未系统性抬升（近距花盆 over-depth / 错误 STOP 仍在）。
+
+**结论**：应修「主目标检测→label=0」；发现更多目标，但 SEARCH_BEST/SR 还需后续 over-depth/置信度路径。
+
+**相关**：`reports/ranger_target_discovery_followup/REPORT.md`；代码 `apexnav_real_episode.py` / `get_object_utils.py`
+
+---
+
+## 2026-11-22 统一分支整合（主会话）
+
+**模块**：umbrella / Ranger VLN  
+
+**问题**：A 膨胀软代价与 B 目标发现/V2 恢复分叉；需可回退整合后再联合验证。  
+
+**操作**：以 `66869af` scale070 为基，合并 `d7926f9` 与 `09fadf4`，保全 B V2 未提交补丁；桌面冲突保留 12 对/9 可靠 + category_map 别名。  
+
+**相关**：`reports/integration_20261122/`

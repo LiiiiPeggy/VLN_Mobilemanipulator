@@ -13,6 +13,35 @@ sam_segmentor = MobileSAMClient(port=12183)
 dino_detector = GroundingDINOClient(port=12181)
 
 
+# ################################
+# Target-discovery followup: DINO phrases are often near-matches of the caption
+# token ("flower pot" vs "flower"). Exact equality alone drops primary hits.
+# ################################
+def _matches_label(detected, candidates):
+    d = str(detected).lower().strip()
+    if not d:
+        return False
+    for c in candidates:
+        c = str(c).lower().strip()
+        if not c:
+            continue
+        if d == c or c in d or d in c:
+            return True
+    return False
+
+
+def _first_match_index(detected, candidates):
+    d = str(detected).lower().strip()
+    for i, c in enumerate(candidates):
+        c_norm = str(c).lower().strip()
+        if not c_norm:
+            continue
+        if d == c_norm or c_norm in d or d in c_norm:
+            return i
+    return None
+# ################################
+
+
 def get_segmentation(segmented_img, idx, detections, img, label, score, color):
     object_mask = np.zeros((480, 640), dtype=np.uint8)
     bbox_denorm = detections.boxes[idx] * np.array(
@@ -92,20 +121,27 @@ def get_object(right_label, img, cfg, similar_answer):
         for idx in range(len(detections.logits)):
             label_detected = detections.phrases[idx]
             score = detections.logits[idx].item()
-            if detections.phrases[idx] in right_label_list:
+            # ################################
+            # Prefer primary (right_label) over aux when both fuzzy-match.
+            # ################################
+            if _matches_label(label_detected, right_label_list):
                 segmented_img, object_mask = get_segmentation(
                     segmented_img, idx, detections, img, label_detected, score, color=(255, 0, 0)
                 )
                 score_list.append(score)
                 object_masks_list.append(object_mask)
                 label_list.append(0)
-            elif detections.phrases[idx] in coco_label:
+            elif _matches_label(label_detected, coco_label):
                 segmented_img, object_mask = get_segmentation(
                     segmented_img, idx, detections, img, label_detected, score, color=(0, 255, 0)
                 )
                 score_list.append(score)
                 object_masks_list.append(object_mask)
-                label_list.append(list(all_answer).index(label_detected) - len(right_label_list)+1)
+                mi = _first_match_index(label_detected, all_answer)
+                if mi is None:
+                    continue
+                label_list.append(mi - len(right_label_list) + 1)
+            # ################################
 
     if dino_label:
         caption = ' '.join(f'{item}.  ' for item in dino_label)
@@ -114,7 +150,8 @@ def get_object(right_label, img, cfg, similar_answer):
         for idx in range(len(detections.logits)):
             label_detected = detections.phrases[idx]
             score = detections.logits[idx].item()
-            if label_detected in right_label_list:
+            # ################################
+            if _matches_label(label_detected, right_label_list):
                 segmented_img, object_mask = get_segmentation(
                     segmented_img, idx, detections, img, label_detected, score, color=(255, 0, 0)
                 )
@@ -122,13 +159,17 @@ def get_object(right_label, img, cfg, similar_answer):
                 object_masks_list.append(object_mask)
                 label_list.append(0)
 
-            elif label_detected in dino_label:
+            elif _matches_label(label_detected, dino_label):
                 segmented_img, object_mask = get_segmentation(
                     segmented_img, idx, detections, img, label_detected, score, color=(0, 255, 0)
                 )
                 score_list.append(score)
                 object_masks_list.append(object_mask)
-                label_list.append(list(all_answer).index(label_detected) - len(right_label_list)+1)
+                mi = _first_match_index(label_detected, all_answer)
+                if mi is None:
+                    continue
+                label_list.append(mi - len(right_label_list) + 1)
+            # ################################
 
     return segmented_img, score_list, object_masks_list, label_list
 

@@ -57,6 +57,12 @@ constexpr int MAX_STUCKING_NEXT_POS_COUNT = 14;  // times next_pos unchanged whi
 // ################################
 constexpr int MAX_OBJECT_HOLD_MISS = 12;
 constexpr double OBJECT_HOLD_MAX_DIST = 3.0;  // drop hold if farther from last goal
+// ################################
+// No-frontier lookaround (Ranger ObjectNav): NO_PASSABLE/NO_COVERABLE used to
+// jump straight to FINISH→STOP, causing early wrong stops far from the goal
+// before budget was spent. Allow a short look/turn burst to reopen coverage.
+// ################################
+constexpr int MAX_NO_FRONTIER_LOOK = 24;  // ~full yaw sweep at ACTION_ANGLE
 
 // Cost weights
 constexpr double TARGET_WEIGHT = 150.0;
