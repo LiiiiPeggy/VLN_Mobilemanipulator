@@ -4,6 +4,13 @@
 # container-local ROS are not disturbed. Does NOT fall back to scripted_policy.
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/../../.." && pwd)"
+# ################################
+# Unified entry: set CONTAINER to the worktree-bound runtime.
+# Default remains shared vln-rangercr10; integrate uses vln-rangercr10-integrate.
+# Historical agentA/agentB wrappers remain for archive replay only.
+# ################################
+CONTAINER="${CONTAINER:-vln-rangercr10}"
+CATKIN_DEVEL_PREFIX="${CATKIN_DEVEL_PREFIX:-}"
 OUT_ROOT="${OUT_DIR:-/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real}"
 RUN_ID="${RUN_ID:-$(date +%Y%m%d_%H%M%S)}"
 OUT="$OUT_ROOT/$RUN_ID"
@@ -13,22 +20,22 @@ ROS_PORT="${ROS_PORT:-11312}"
 LOGDIR="$OUT/launch_logs"
 mkdir -p "$LOGDIR"
 
-bash "$ROOT/adapters/habitat_rangercr10/scripts/ensure_egl_icd.sh" vln-rangercr10
-
-# Catkin devel was built at /workspace/ApexNav (vln-apexnav mount). Mirror that path
-# inside rangercr10 so ROS packages resolve without rebuilding.
+bash "$ROOT/adapters/habitat_rangercr10/scripts/ensure_egl_icd.sh" "$CONTAINER"
+# ################################
+# Safe ApexNav path mirror (never rm -rf a bind-mounted source tree).
+# ################################
+bash "$ROOT/adapters/habitat_rangercr10/scripts/ensure_apex_symlink_safe.sh" "$CONTAINER"
 APEX_SRC="/workspace/VLN_Mobilemanipulator/baselines/ApexNav"
 APEX="/workspace/ApexNav"
-docker exec vln-rangercr10 bash -lc "
-  if [[ ! -L '$APEX' || \$(readlink -f '$APEX') != \$(readlink -f '$APEX_SRC') ]]; then
-    rm -rf '$APEX'
-    ln -sfn '$APEX_SRC' '$APEX'
-  fi
-"
-SRC_ROS="source /opt/ros/noetic/setup.bash; source $APEX/devel/setup.bash; export ROS_MASTER_URI=http://127.0.0.1:${ROS_PORT}; export ROS_IP=127.0.0.1; export ROS_HOSTNAME=127.0.0.1; cd $APEX"
+if [[ -n "$CATKIN_DEVEL_PREFIX" ]]; then
+  DEVEL_SETUP="$CATKIN_DEVEL_PREFIX/setup.bash"
+else
+  DEVEL_SETUP="$APEX/devel/setup.bash"
+fi
+SRC_ROS="source /opt/ros/noetic/setup.bash; source $DEVEL_SETUP; export ROS_MASTER_URI=http://127.0.0.1:${ROS_PORT}; export ROS_IP=127.0.0.1; export ROS_HOSTNAME=127.0.0.1; cd $APEX"
 
 echo "[1/4] start isolated roscore :${ROS_PORT}"
-docker exec -d vln-rangercr10 bash -lc "$SRC_ROS; roscore -p ${ROS_PORT} >$LOGDIR/roscore.log 2>&1"
+docker exec -d "$CONTAINER" bash -lc "$SRC_ROS; roscore -p ${ROS_PORT} >$LOGDIR/roscore.log 2>&1"
 sleep 2
 
 # ################################
@@ -90,7 +97,7 @@ fi
 OBSTACLE_DENOISE="${OBSTACLE_DENOISE:-none}"
 read -r STARTUP_PRIOR_HALF_L STARTUP_PRIOR_HALF_W < <(python3 - <<PY
 import sys
-sys.path.insert(0, "/home/ubuntu/locomani/VLN_Mobilemanipulator/adapters/habitat_rangercr10")
+sys.path.insert(0, "$ROOT/adapters/habitat_rangercr10")
 from src.robot_scale import footprint_at_scale
 fp = footprint_at_scale(float("${ROBOT_SCALE}"))
 print(fp["chassis_half_length_m"], fp["chassis_half_width_m"])
@@ -142,27 +149,35 @@ case "$PROFILE" in
 esac
 DIAG_DIR="$OUT/native_diag"
 mkdir -p "$DIAG_DIR"
-echo "[2/4] start exploration_rangercr10.launch (profile=$PROFILE overlay=$(basename "$OVERLAY") inflate=$OBSTACLES_INFLATION lock=$LOCK_OBSTACLES_INFLATION soft_R=$SOFT_COST_RANGE_M soft_w=$SOFT_COST_WEIGHT plan_diag=$PLAN_DIAG_ENABLE startup_prior=$STARTUP_PRIOR_MODE half=${STARTUP_PRIOR_HALF_L}x${STARTUP_PRIOR_HALF_W} expand_m=$STARTUP_PRIOR_EXPAND_M denoise=$OBSTACLE_DENOISE)"
-docker exec -d vln-rangercr10 bash -lc \
-  "$SRC_ROS; roslaunch $LAUNCH_FILE ranger_overlay:=$OVERLAY plan_diag_enable:=$PLAN_DIAG_ENABLE plan_diag_dir:=$DIAG_DIR pipeline_diag_enable:=$PIPELINE_DIAG_ENABLE pipeline_diag_dir:=$DIAG_DIR startup_prior_mode:=$STARTUP_PRIOR_MODE startup_prior_half_length:=$STARTUP_PRIOR_HALF_L startup_prior_half_width:=$STARTUP_PRIOR_HALF_W startup_prior_expand_m:=$STARTUP_PRIOR_EXPAND_M obstacle_denoise:=$OBSTACLE_DENOISE obstacles_inflation:=$OBSTACLES_INFLATION lock_obstacles_inflation:=$LOCK_OBSTACLES_INFLATION soft_cost_range_m:=$SOFT_COST_RANGE_M soft_cost_weight:=$SOFT_COST_WEIGHT >$LOGDIR/exploration.log 2>&1"
+# ################################
+# Candidate switches (unified entry).
+# ENABLE_NO_FRONTIER_LOOK: false=legacy STOP; true=bounded lookaround.
+# BLOCKED_RECOVERY_MODE: legacy | v2 (opposite_turn → forced_forward).
+# ################################
+ENABLE_NO_FRONTIER_LOOK="${ENABLE_NO_FRONTIER_LOOK:-false}"
+BLOCKED_RECOVERY_MODE="${BLOCKED_RECOVERY_MODE:-legacy}"
+
+echo "[2/4] start exploration_rangercr10.launch (container=$CONTAINER profile=$PROFILE overlay=$(basename "$OVERLAY") inflate=$OBSTACLES_INFLATION lock=$LOCK_OBSTACLES_INFLATION soft_R=$SOFT_COST_RANGE_M soft_w=$SOFT_COST_WEIGHT nf_look=$ENABLE_NO_FRONTIER_LOOK recovery=$BLOCKED_RECOVERY_MODE plan_diag=$PLAN_DIAG_ENABLE startup_prior=$STARTUP_PRIOR_MODE half=${STARTUP_PRIOR_HALF_L}x${STARTUP_PRIOR_HALF_W} expand_m=$STARTUP_PRIOR_EXPAND_M denoise=$OBSTACLE_DENOISE)"
+docker exec -d "$CONTAINER" bash -lc \
+  "$SRC_ROS; roslaunch $LAUNCH_FILE ranger_overlay:=$OVERLAY plan_diag_enable:=$PLAN_DIAG_ENABLE plan_diag_dir:=$DIAG_DIR pipeline_diag_enable:=$PIPELINE_DIAG_ENABLE pipeline_diag_dir:=$DIAG_DIR startup_prior_mode:=$STARTUP_PRIOR_MODE startup_prior_half_length:=$STARTUP_PRIOR_HALF_L startup_prior_half_width:=$STARTUP_PRIOR_HALF_W startup_prior_expand_m:=$STARTUP_PRIOR_EXPAND_M obstacle_denoise:=$OBSTACLE_DENOISE obstacles_inflation:=$OBSTACLES_INFLATION lock_obstacles_inflation:=$LOCK_OBSTACLES_INFLATION soft_cost_range_m:=$SOFT_COST_RANGE_M soft_cost_weight:=$SOFT_COST_WEIGHT enable_no_frontier_look:=$ENABLE_NO_FRONTIER_LOOK >$LOGDIR/exploration.log 2>&1"
 sleep 4
 # Record effective params
-docker exec vln-rangercr10 bash -lc \
-  "$SRC_ROS; rosparam get /habitat/simulator/agents/main_agent/radius; rosparam get /exploration_node/sdf_map/obstacles_inflation; rosparam get /exploration_node/sdf_map/lock_obstacles_inflation; rosparam get /exploration_node/astar/soft_cost_range_m; rosparam get /exploration_node/astar/soft_cost_weight; rosparam get /exploration_node/sdf_map/optimistic; rosparam get /exploration_node/map_ros/depth_filter_mindist; rosparam get /exploration_node/map_ros/filter_min_height; rosparam get /exploration_node/map_ros/filter_max_height; rosparam get /exploration_node/exploration/startup_prior_mode; rosparam get /exploration_node/exploration/startup_prior_half_length; rosparam get /exploration_node/exploration/startup_prior_half_width; rosparam get /exploration_node/exploration/startup_prior_expand_m; rosparam get /exploration_node/sdf_map/obstacle_denoise; rosparam get /exploration_node/sdf_map/resolution" \
+docker exec "$CONTAINER" bash -lc \
+  "$SRC_ROS; rosparam get /habitat/simulator/agents/main_agent/radius; rosparam get /exploration_node/sdf_map/obstacles_inflation; rosparam get /exploration_node/sdf_map/lock_obstacles_inflation; rosparam get /exploration_node/astar/soft_cost_range_m; rosparam get /exploration_node/astar/soft_cost_weight; rosparam get /exploration_node/sdf_map/optimistic; rosparam get /exploration_node/map_ros/depth_filter_mindist; rosparam get /exploration_node/map_ros/filter_min_height; rosparam get /exploration_node/map_ros/filter_max_height; rosparam get /exploration_node/exploration/startup_prior_mode; rosparam get /exploration_node/exploration/startup_prior_half_length; rosparam get /exploration_node/exploration/startup_prior_half_width; rosparam get /exploration_node/exploration/startup_prior_expand_m; rosparam get /exploration_node/sdf_map/obstacle_denoise; rosparam get /exploration_node/sdf_map/resolution; rosparam get /exploration_node/enable_no_frontier_look" \
   >"$LOGDIR/effective_params.txt" 2>&1 || true
 
 echo "[3/4] start VLM servers (yolo/dino/blip2/sam) if not up"
-docker exec vln-rangercr10 bash -lc 'ln -sfn /media/ubuntu/D/VLN_shared/cache/huggingface/bert-base-uncased /workspace/ApexNav/bert-base-uncased'
+docker exec "$CONTAINER" bash -lc 'ln -sfn /media/ubuntu/D/VLN_shared/cache/huggingface/bert-base-uncased /workspace/ApexNav/bert-base-uncased'
 HF_ENV="export TORCH_HOME=/media/ubuntu/D/VLN_shared/cache/torch HF_HOME=/media/ubuntu/D/VLN_shared/cache/huggingface TRANSFORMERS_CACHE=/media/ubuntu/D/VLN_shared/cache/huggingface HUGGINGFACE_HUB_CACHE=/media/ubuntu/D/VLN_shared/cache/huggingface/hub TRANSFORMERS_OFFLINE=1 HF_HUB_OFFLINE=1"
-docker exec -d vln-rangercr10 bash -lc "$SRC_ROS; $HF_ENV; python -m vlm.detector.yolov7 --port 12184 >$LOGDIR/yolov7.log 2>&1"
-docker exec -d vln-rangercr10 bash -lc "$SRC_ROS; $HF_ENV; python -m vlm.detector.grounding_dino --port 12181 >$LOGDIR/dino.log 2>&1"
-docker exec -d vln-rangercr10 bash -lc "$SRC_ROS; $HF_ENV; python -m vlm.itm.blip2itm --port 12182 >$LOGDIR/blip2.log 2>&1"
-docker exec -d vln-rangercr10 bash -lc "$SRC_ROS; $HF_ENV; python -m vlm.segmentor.sam --port 12183 >$LOGDIR/sam.log 2>&1"
+docker exec -d "$CONTAINER" bash -lc "$SRC_ROS; $HF_ENV; python -m vlm.detector.yolov7 --port 12184 >$LOGDIR/yolov7.log 2>&1"
+docker exec -d "$CONTAINER" bash -lc "$SRC_ROS; $HF_ENV; python -m vlm.detector.grounding_dino --port 12181 >$LOGDIR/dino.log 2>&1"
+docker exec -d "$CONTAINER" bash -lc "$SRC_ROS; $HF_ENV; python -m vlm.itm.blip2itm --port 12182 >$LOGDIR/blip2.log 2>&1"
+docker exec -d "$CONTAINER" bash -lc "$SRC_ROS; $HF_ENV; python -m vlm.segmentor.sam --port 12183 >$LOGDIR/sam.log 2>&1"
 
 # wait for planner node + a VLM port
 ok=0
 for i in $(seq 1 60); do
-  if docker exec vln-rangercr10 bash -lc "$SRC_ROS; rosnode list 2>/dev/null | grep -q exploration_node"; then
+  if docker exec "$CONTAINER" bash -lc "$SRC_ROS; rosnode list 2>/dev/null | grep -q exploration_node"; then
     ok=1
     break
   fi
@@ -170,14 +185,14 @@ for i in $(seq 1 60); do
 done
 if [[ "$ok" != "1" ]]; then
   echo "ERROR: exploration_node failed to start; see $LOGDIR/exploration.log" >&2
-  docker exec vln-rangercr10 bash -lc "tail -80 $LOGDIR/exploration.log" || true
+  docker exec "$CONTAINER" bash -lc "tail -80 $LOGDIR/exploration.log" || true
   exit 2
 fi
 echo "exploration_node OK"
 
 # brief VLM readiness (non-fatal wait; episode will hard-fail on perception errors)
 for i in $(seq 1 90); do
-  if docker exec vln-rangercr10 bash -lc 'python - <<"PY"
+  if docker exec "$CONTAINER" bash -lc 'python - <<"PY"
 import socket
 ok=True
 for p in (12181,12182,12183,12184):
@@ -211,7 +226,7 @@ if [[ -n "$PPO_RAISE_JSON" ]]; then
 fi
 
 MAX_EXPLORE_ACTIONS="${MAX_EXPLORE_ACTIONS:-20}"
-echo "[4/4] run real ApexNav episode → $OUT (robot_scale=$ROBOT_SCALE camera_mode=$CAMERA_MODE max_explore=$MAX_EXPLORE_ACTIONS)"
+echo "[4/4] run real ApexNav episode → $OUT (robot_scale=$ROBOT_SCALE camera_mode=$CAMERA_MODE max_explore=$MAX_EXPLORE_ACTIONS recovery=$BLOCKED_RECOVERY_MODE)"
 # ################################
 # Forward optional experimental chassis-look burst env (default none).
 # ################################
@@ -226,26 +241,26 @@ docker exec \
   -e CHASSIS_LOOK_MODE="$LOOK_MODE" \
   -e CHASSIS_LOOK_EXTRA_PUBS="$LOOK_PUBS" \
   -e CHASSIS_LOOK_EXTRA_HZ="$LOOK_HZ" \
-  vln-rangercr10 bash -lc "$SRC_ROS; export PYTHONPATH=/workspace/VLN_Mobilemanipulator/adapters/habitat_rangercr10:\${PYTHONPATH}; python -m src.apexnav_real_episode --out_dir '$OUT_ROOT' --run_id '$RUN_ID' --max_steps $MAX_STEPS --max_explore_actions $MAX_EXPLORE_ACTIONS --gpu $GPU --scene_filter '${SCENE_FILTER:-TEEsavR23oF}' --category_filter '${CATEGORY_FILTER:-chair}' --episode_id '${EPISODE_ID:-4}' --llm_answer_path $APEX/llm/answers/llm_answer_hm3d.txt --llm_response_path $APEX/llm/answers/llm_response_list.txt $SCALE_ARGS"
+  "$CONTAINER" bash -lc "$SRC_ROS; export PYTHONPATH=/workspace/VLN_Mobilemanipulator/adapters/habitat_rangercr10:\${PYTHONPATH}; python -m src.apexnav_real_episode --out_dir '$OUT_ROOT' --run_id '$RUN_ID' --max_steps $MAX_STEPS --max_explore_actions $MAX_EXPLORE_ACTIONS --blocked_recovery_mode $BLOCKED_RECOVERY_MODE --gpu $GPU --scene_filter '${SCENE_FILTER:-TEEsavR23oF}' --category_filter '${CATEGORY_FILTER:-chair}' --episode_id '${EPISODE_ID:-4}' --llm_answer_path $APEX/llm/answers/llm_answer_hm3d.txt --llm_response_path $APEX/llm/answers/llm_response_list.txt $SCALE_ARGS"
 rc=$?
 set -e
 
 # stop ONLY our isolated ROS tree (do not touch host :11311 / vln-apexnav)
-docker exec vln-rangercr10 bash -lc "$SRC_ROS; rosnode kill -a 2>/dev/null || true; kill \$(pgrep -f 'roscore -p ${ROS_PORT}') 2>/dev/null || true" || true
+docker exec "$CONTAINER" bash -lc "$SRC_ROS; rosnode kill -a 2>/dev/null || true; kill \$(pgrep -f 'roscore -p ${ROS_PORT}') 2>/dev/null || true" || true
 
 # ################################
 # SKIP_DEMO=1：批评测跳过 ffmpeg，避免拖慢；代表性成功/失败再单独编码。
 # ################################
 SKIP_DEMO="${SKIP_DEMO:-0}"
-if [[ "$SKIP_DEMO" != "1" ]] && docker exec vln-rangercr10 bash -lc "compgen -G '$OUT/demo/frame_*.png' >/dev/null"; then
+if [[ "$SKIP_DEMO" != "1" ]] && docker exec "$CONTAINER" bash -lc "compgen -G '$OUT/demo/frame_*.png' >/dev/null"; then
   echo "[demo] encode apexnav_ranger_paper_demo.mp4"
-  docker exec vln-rangercr10 bash -lc \
+  docker exec "$CONTAINER" bash -lc \
     "ffmpeg -y -framerate 2 -i '$OUT/demo/frame_%04d.png' -c:v libx264 -pix_fmt yuv420p -crf 23 \
      '$OUT/demo/apexnav_ranger_paper_demo.mp4' >/dev/null 2>&1; chown -R 1000:1000 '$OUT' || true" \
     || true
 elif [[ "$SKIP_DEMO" == "1" ]]; then
   echo "[demo] SKIP_DEMO=1 — leave frames unencoded"
-  docker exec vln-rangercr10 bash -lc "chown -R 1000:1000 '$OUT' || true" || true
+  docker exec "$CONTAINER" bash -lc "chown -R 1000:1000 '$OUT' || true" || true
 fi
 # ################################
 

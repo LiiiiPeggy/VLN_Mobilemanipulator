@@ -133,12 +133,17 @@ void ExplorationFSM::FSMCallback(const ros::TimerEvent& e)
                  fd_->final_result_ == FINAL_RESULT::NO_FRONTIER &&
                  fd_->no_frontier_look_count_ < FSMConstants::MAX_NO_FRONTIER_LOOK) {
           fd_->no_frontier_look_count_++;
-          // Alternate left turns with occasional look-down/up to refresh map.
+          // ################################
+          // Alternate TURN_LEFT / TURN_RIGHT (one side often robot_env_collision
+          // in narrow space) with occasional look-down/up to refresh map.
+          // ################################
           const int k = fd_->no_frontier_look_count_;
           if (k % 8 == 0)
             fd_->newest_action_ = ACTION::TURN_DOWN;
           else if (k % 8 == 4)
             fd_->newest_action_ = ACTION::TURN_UP;
+          else if (k % 2 == 0)
+            fd_->newest_action_ = ACTION::TURN_RIGHT;
           else
             fd_->newest_action_ = ACTION::TURN_LEFT;
           ROS_WARN("[NoFrontierLook] %d/%d — defer STOP, action=%d",

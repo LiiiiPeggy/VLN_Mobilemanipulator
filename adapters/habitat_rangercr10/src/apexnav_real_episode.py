@@ -353,6 +353,12 @@ class ApexNavRangerBridge:
         self._consec_blocked_same = 0
         self._last_blocked_action: Optional[int] = None
         self.n_blocked_recovery = 0
+        # ################################
+        # VLN adapt: escalate chassis recovery after repeated turn blocks (B V2).
+        # Mode selected by --blocked_recovery_mode {legacy,v2}.
+        # 0 → opposite turn; 1 → forced MOVE_FORWARD (gimbal look cannot yaw).
+        # ################################
+        self._turn_recovery_stage = 0
         self.sum_moved_m = 0.0
         self.sum_abs_yaw_delta = 0.0
         self.n_blocked_exec = 0
@@ -1171,35 +1177,70 @@ class ApexNavRangerBridge:
                 # ################################
                 # VLN adapt: bounded failure feedback — if planner re-requests the
                 # same fully-blocked base action ≥3 times, spend this step on a
-                # recovery LOOK (gimbal) / opposite turn so obs changes. Counts
-                # against max_steps / max_explore like any other action.
+                # recovery that can change observation / chassis pose.
+                # legacy: gimbal LOOK / opposite turn (pre-B-V2).
+                # v2: turn blocks escalate opposite_turn → forced MOVE_FORWARD;
+                #     MOVE_FORWARD blocks still use gimbal look / forced turn.
+                # Counts against max_steps / max_explore like any other action.
                 # ################################
                 recovery_meta: Optional[Dict[str, Any]] = None
                 BASE_ACTS = {ACTION.MOVE_FORWARD, ACTION.TURN_LEFT, ACTION.TURN_RIGHT}
+                recovery_mode = str(
+                    getattr(args, "blocked_recovery_mode", "legacy") or "legacy"
+                ).lower()
                 if (
                     action in BASE_ACTS
                     and self._last_blocked_action == action
                     and self._consec_blocked_same >= 3
                 ):
                     requested = int(action)
-                    if getattr(self.env, "camera_mode", "") == CAMERA_MODE_FIXED_BASE_GIMBAL:
-                        action = ACTION.TURN_DOWN
-                        recovery_kind = "gimbal_look_down"
-                    elif requested == ACTION.TURN_LEFT:
-                        action = ACTION.TURN_RIGHT
-                        recovery_kind = "opposite_turn"
-                    elif requested == ACTION.TURN_RIGHT:
-                        action = ACTION.TURN_LEFT
-                        recovery_kind = "opposite_turn"
+                    gimbal = (
+                        getattr(self.env, "camera_mode", "")
+                        == CAMERA_MODE_FIXED_BASE_GIMBAL
+                    )
+                    if recovery_mode == "v2":
+                        if requested in (ACTION.TURN_LEFT, ACTION.TURN_RIGHT):
+                            if self._turn_recovery_stage == 0:
+                                action = (
+                                    ACTION.TURN_RIGHT
+                                    if requested == ACTION.TURN_LEFT
+                                    else ACTION.TURN_LEFT
+                                )
+                                recovery_kind = "opposite_turn"
+                                self._turn_recovery_stage = 1
+                            else:
+                                action = ACTION.MOVE_FORWARD
+                                recovery_kind = "forced_forward_after_turn_block"
+                                self._turn_recovery_stage = 0
+                        elif gimbal:
+                            action = ACTION.TURN_DOWN
+                            recovery_kind = "gimbal_look_down"
+                            self._turn_recovery_stage = 0
+                        else:
+                            action = ACTION.TURN_LEFT
+                            recovery_kind = "forced_turn_left"
+                            self._turn_recovery_stage = 0
                     else:
-                        action = ACTION.TURN_LEFT
-                        recovery_kind = "forced_turn_left"
+                        if gimbal:
+                            action = ACTION.TURN_DOWN
+                            recovery_kind = "gimbal_look_down"
+                        elif requested == ACTION.TURN_LEFT:
+                            action = ACTION.TURN_RIGHT
+                            recovery_kind = "opposite_turn"
+                        elif requested == ACTION.TURN_RIGHT:
+                            action = ACTION.TURN_LEFT
+                            recovery_kind = "opposite_turn"
+                        else:
+                            action = ACTION.TURN_LEFT
+                            recovery_kind = "forced_turn_left"
                     recovery_meta = {
                         "blocked_recovery": True,
+                        "blocked_recovery_mode": recovery_mode,
                         "requested_action": ACTION_NAME.get(requested, str(requested)),
                         "recovery_action": ACTION_NAME.get(action, str(action)),
                         "recovery_kind": recovery_kind,
                         "consec_blocked_before": int(self._consec_blocked_same),
+                        "turn_recovery_stage_after": int(self._turn_recovery_stage),
                     }
                     self.n_blocked_recovery += 1
                     self._consec_blocked_same = 0
@@ -1271,8 +1312,18 @@ class ApexNavRangerBridge:
                     self.n_blocked_exec += 1
                 if exec_info.get("truncated"):
                     self.n_truncated_exec += 1
-                self.sum_moved_m += float(exec_info.get("moved_m") or 0.0)
-                self.sum_abs_yaw_delta += abs(float(exec_info.get("yaw_delta") or 0.0))
+                moved_m = float(exec_info.get("moved_m") or 0.0)
+                yaw_delta = abs(float(exec_info.get("yaw_delta") or 0.0))
+                self.sum_moved_m += moved_m
+                self.sum_abs_yaw_delta += yaw_delta
+                # ################################
+                # Only translation clears escalate stage (v2). Yaw-only opposite
+                # turns must NOT reset — otherwise we never reach forced MOVE_FORWARD
+                # while oscillating in place (post-look / narrow-gap stuck).
+                # ################################
+                if moved_m > 1e-3:
+                    self._turn_recovery_stage = 0
+                # ################################
 
                 # new observation after motion
                 ee = self.env.observe_ee_only()
@@ -1577,6 +1628,9 @@ class ApexNavRangerBridge:
             "n_blocked_exec": int(self.n_blocked_exec),
             "n_truncated_exec": int(self.n_truncated_exec),
             "n_blocked_recovery": int(self.n_blocked_recovery),
+            "blocked_recovery_mode": str(
+                getattr(args, "blocked_recovery_mode", "legacy") or "legacy"
+            ),
             "spawn_status": spawn_status,
             "spawn": self.spawn_info,
             "adapted_episode": bool(
@@ -1752,6 +1806,16 @@ def main(argv=None) -> int:
     # Max explore_planner decisions after 26-step init lookaround (0=unlimited).
     # ################################
     p.add_argument("--max_explore_actions", type=int, default=20)
+    # ################################
+    # Blocked-exec recovery: legacy = pre-B-V2 gimbal-first; v2 = opposite→forced_forward.
+    # Default stays legacy until joint verification sets the deploy default.
+    # ################################
+    p.add_argument(
+        "--blocked_recovery_mode",
+        default="legacy",
+        choices=["legacy", "v2"],
+        help="Chassis blocked recovery policy after ≥3 identical full rejects.",
+    )
     p.add_argument("--success_distance", type=float, default=1.0)
     p.add_argument("--handshake_timeout_s", type=float, default=120.0)
     p.add_argument("--action_timeout_s", type=float, default=90.0)

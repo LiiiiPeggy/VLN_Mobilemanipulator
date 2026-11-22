@@ -99,3 +99,14 @@
 | `reports/`、`runs/` | 实验报告与完整/摘要数据 |
 
 更新记忆前先读现有内容并保留有效信息。
+
+## 主会话与子代理（Ranger 整合期）
+
+- **主会话唯一统筹**：分支整合、公共文件、编译、仿真调度、结果验收与最终交付。工作树默认：`/home/ubuntu/locomani/VLN_Mobilemanipulator_integrate`；统一工作分支目标：`cursor/habitat-rangercr10-scale070`（本地整合分支可带 `-integrate` 后缀）。
+- **子代理**：仅承担边界清晰的任务（审查、日志分析、指标汇总、隔离实现）。每项任务须写明输入、负责文件、输出；**同一文件串行**；需并行改码时用隔离工作区，由主会话合入。
+- **子代理 Git**：只许在自己的隔离目录操作；**不得**改公共分支、不得 push 公共远端、不得动他人容器。
+- **在线仿真锁**：主会话统一调度。取得 `/home/ubuntu/locomani/_sim_host_run.lock` 后方可启动仿真；持有至相关运行结束再释放。等跑期间可并行分析已有日志。
+- **统一运行入口**：`adapters/habitat_rangercr10/scripts/run_apexnav_real_episode.sh`  
+  关键开关：`INFLATION_PROFILE`、`ENABLE_NO_FRONTIER_LOOK`、`BLOCKED_RECOVERY_MODE`、`CONTAINER`、`CATKIN_DEVEL_PREFIX`。  
+  `run_apexnav_real_episode_agentA.sh` / `_agentB.sh` 及 reports 内一次性脚本仅作历史复现，不作新实验入口。
+- **容器**：整合评测用 `vln-rangercr10-integrate`（`docker-compose.integrate.yml`）；不复用/不停杀 `agentA`/`agentB`/他人容器，除非任务明确交接归属。
