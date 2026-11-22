@@ -2,8 +2,9 @@
 
 Sources (do not invent numbers):
 - LocoManip_Lab branch `rangercr10-teleop`
-- stage 4.10d: commit `ec5fd65`, policy `stage410d_ppo/model_5999.pt`
-- URDF `rangerboxcr10lidar_description/urdf/rangercr10lidar.urdf` (D455 top mount)
+- URDF / ARM_DEFAULT pin: stage 4.10d commit `ec5fd65` (D455 top mount)
+- Default teleop PPO: published `models/ranger_cr10/model_9999.pt`
+  (tag `ranger-cr10-model-9999`, commit `6772068`)
 """
 
 from __future__ import annotations
@@ -12,20 +13,36 @@ from __future__ import annotations
 LOCOMANIP_REPO = "/home/ubuntu/locomani/LocoManip_Lab"
 LOCOMANIP_BRANCH = "rangercr10-teleop"
 # ################################
-# Stage 4.10d pin (URDF + ARM_DEFAULT + PPO). Do NOT mix with stage45j side-mount URDF.
-# Historical stage45j kept for comparison only (DEFAULT_TELEOP_CKPT_LEGACY).
+# URDF + ARM_DEFAULT pin (stage 4.10d). Do NOT mix with stage45j side-mount URDF.
+# Default PPO weight is the published model_9999 (below); historical stage410d /
+# stage45j checkpoints remain selectable via POLICY / --policy.
 # ################################
 LOCOMANIP_COMMIT = "ec5fd6584bd3d562812c12ef2d8e2f87fba98175"
 LOCOMANIP_HEAD_READ = "2d6d1f526c32b0f2965fdf624840155cf96ad586"
 LOCOMANIP_ARM_SOURCE = (
     "ranger_policy.py ARM_DEFAULT + ranger_cr10_articulation_cfg init_state (stage 4.10)"
 )
-DEFAULT_TELEOP_CKPT = (
+# ################################
+# VLN adapt: default teleop PPO → LocoManip published model_9999 baseline.
+# Relative to LOCOMANIP_REPO / --loco_root. Companion params/agent.yaml sits
+# next to the checkpoint (used by Isaac OnPolicyRunner loaders; MuJoCo
+# deploy load_actor hardcodes the same 117→512-256-128→8 MLP).
+# ################################
+DEFAULT_TELEOP_CKPT = "models/ranger_cr10/model_9999.pt"
+DEFAULT_TELEOP_CKPT_RELEASE_TAG = "ranger-cr10-model-9999"
+DEFAULT_TELEOP_CKPT_RELEASE_COMMIT = "677206834f617c14f92b8782eb6247ac522e3df7"
+DEFAULT_TELEOP_CKPT_SHA256 = (
+    "94ffb7af2f9d0d8864920fb2a38f799938f2b7afffe8c7a75a1050057a5d7ce5"
+)
+DEFAULT_TELEOP_CKPT_PARAMS = "models/ranger_cr10/params/agent.yaml"
+# Historical stage 4.10d raise default (explicit override / replay only).
+DEFAULT_TELEOP_CKPT_LEGACY_STAGE410D = (
     "logs/rsl_rl/ranger_cr10_teleop/2026-11-03_16-30-44_stage410d_ppo/model_5999.pt"
 )
 DEFAULT_TELEOP_CKPT_LEGACY_STAGE45J = (
     "logs/rsl_rl/ranger_cr10_teleop/2026-10-29_19-12-08_stage45j_ppo/model_5999.pt"
 )
+# ################################
 
 # ---- Habitat target ----
 HABITAT_SIM_VERSION = "0.3.1"

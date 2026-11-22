@@ -23,6 +23,13 @@ void ExplorationFSM::init(ros::NodeHandle& nh)
   ROS_WARN("[NoFrontierLook] enable=%s max=%d",
       fp_->enable_no_frontier_look_ ? "true" : "false", FSMConstants::MAX_NO_FRONTIER_LOOK);
   // ################################
+  // VLN adapt: ObjectHold distance gate (hy1 g3 drop at dist=5.00m with 3.0).
+  // Default 3.0 preserves legacy; fix ON sets object_hold_max_dist:=8.0.
+  // ################################
+  nh.param("object_hold_max_dist", fp_->object_hold_max_dist_, FSMConstants::OBJECT_HOLD_MAX_DIST);
+  ROS_WARN("[ObjectHold] max_dist=%.2fm miss_cap=%d", fp_->object_hold_max_dist_,
+      FSMConstants::MAX_OBJECT_HOLD_MISS);
+  // ################################
 
   state_ = ROS_STATE::INIT;
 
@@ -322,25 +329,26 @@ int ExplorationFSM::callActionPlanner()
   // does not apply (replan_flag_ was set true on prior SEARCH). Without hold,
   // robot immediately switches to a frontier and never resumes approach.
   // Behavior change: reuse last next_pos_/path for ≤ MAX_OBJECT_HOLD_MISS
-  // cycles while still within OBJECT_HOLD_MAX_DIST of that goal.
+  // cycles while still within object_hold_max_dist_ of that goal.
   // ################################
   else if (expl_res == EXPL_RESULT::EXPLORATION &&
            fd_->final_result_ == FINAL_RESULT::SEARCH_OBJECT && !last_next_best_path.empty()) {
     const double hold_dist = (current_pos - last_next_pos).norm();
-    if (hold_dist <= FSMConstants::OBJECT_HOLD_MAX_DIST &&
+    if (hold_dist <= fp_->object_hold_max_dist_ &&
         fd_->object_hold_miss_count_ < FSMConstants::MAX_OBJECT_HOLD_MISS) {
       fd_->object_hold_miss_count_++;
       expl_manager_->ed_->next_best_path_ = last_next_best_path;
       expl_manager_->ed_->next_pos_ = last_next_pos;
       expl_res = EXPL_RESULT::SEARCH_BEST_OBJECT;
       ROS_WARN(
-          "[ObjectHold] miss=%d/%d dist_to_goal=%.2fm — keep last approach point",
-          fd_->object_hold_miss_count_, FSMConstants::MAX_OBJECT_HOLD_MISS, hold_dist);
+          "[ObjectHold] miss=%d/%d dist_to_goal=%.2fm max_dist=%.2fm — keep last approach point",
+          fd_->object_hold_miss_count_, FSMConstants::MAX_OBJECT_HOLD_MISS, hold_dist,
+          fp_->object_hold_max_dist_);
     } else {
       fd_->object_hold_miss_count_ = 0;
       ROS_WARN(
-          "[ObjectHold] drop hold (miss would be %d, dist=%.2fm)",
-          fd_->object_hold_miss_count_ + 1, hold_dist);
+          "[ObjectHold] drop hold (miss would be %d, dist=%.2fm max_dist=%.2fm)",
+          fd_->object_hold_miss_count_ + 1, hold_dist, fp_->object_hold_max_dist_);
     }
   } else if (fd_->final_result_ != FINAL_RESULT::SEARCH_OBJECT) {
     fd_->object_hold_miss_count_ = 0;

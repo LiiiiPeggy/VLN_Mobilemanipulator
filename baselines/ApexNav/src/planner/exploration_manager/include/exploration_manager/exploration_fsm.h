@@ -56,7 +56,12 @@ constexpr int MAX_STUCKING_NEXT_POS_COUNT = 14;  // times next_pos unchanged whi
 // immediately switching to frontier exploration. yr17 plan_seq 66→67.
 // ################################
 constexpr int MAX_OBJECT_HOLD_MISS = 12;
-constexpr double OBJECT_HOLD_MAX_DIST = 3.0;  // drop hold if farther from last goal
+// ################################
+// VLN adapt: default 3.0 kept for pairing OFF / legacy. Over-depth SEARCH
+// approach points are often ~5 m (hy1 g3 ObjectHold drop dist=5.00m); fix ON
+// raises via ROS param object_hold_max_dist (e.g. 8.0). Not a success-distance.
+// ################################
+constexpr double OBJECT_HOLD_MAX_DIST = 3.0;  // fallback if param unset
 // ################################
 // No-frontier lookaround (Ranger ObjectNav): NO_PASSABLE/NO_COVERABLE used to
 // jump straight to FINISH→STOP, causing early wrong stops far from the goal

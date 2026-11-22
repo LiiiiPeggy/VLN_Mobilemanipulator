@@ -45,6 +45,10 @@
       NoFrontierLook: false=legacy STOP; true=bounded look (≤24).
     ################################ -->
     <arg name="enable_no_frontier_look_" default="false"/>
+    <!-- ################################
+      ObjectHold max dist (m). 3.0=legacy (joint4 OFF); 8.0=fix ON (hy1 g3).
+    ################################ -->
+    <arg name="object_hold_max_dist_" default="3.0"/>
 
     <!-- main node -->
     <node pkg="exploration_manager" name="exploration_node" type="exploration_node" output="screen">
@@ -135,6 +139,10 @@
           Private nh("~") reads enable_no_frontier_look (see exploration_fsm.cpp).
         ################################ -->
         <param name="enable_no_frontier_look" value="$(arg enable_no_frontier_look_)" type="bool"/>
+        <!-- ################################
+          Private nh("~") reads object_hold_max_dist (see exploration_fsm.cpp).
+        ################################ -->
+        <param name="object_hold_max_dist" value="$(arg object_hold_max_dist_)" type="double"/>
         <!-- ################################
           Gated native plan / map pipeline diagnostics (off unless dir set).
           Does not change planning or free-update decisions.

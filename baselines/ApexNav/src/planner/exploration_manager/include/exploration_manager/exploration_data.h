@@ -106,6 +106,8 @@ struct FSMParam {
     replan_timeout_ = 2.0;
     // ################################
     enable_no_frontier_look_ = false;  // legacy OFF group default
+    // ObjectHold max dist to last approach goal (m). 3.0=legacy; 8.0=fix ON.
+    object_hold_max_dist_ = 3.0;
     // ################################
 
     const double step_length = 0.25;
@@ -128,6 +130,10 @@ struct FSMParam {
   // OFF (false): legacy NO_FRONTIER→FINISH→STOP. ON (true): bounded lookaround.
   // ################################
   bool enable_no_frontier_look_;
+  // ################################
+  // Max |current−last_next_pos| to keep ObjectHold (m). See exploration_fsm.h.
+  // ################################
+  double object_hold_max_dist_;
 };
 
 struct ExplorationData {

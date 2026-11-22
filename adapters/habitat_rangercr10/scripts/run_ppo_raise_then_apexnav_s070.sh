@@ -5,8 +5,18 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/../../.." && pwd)"
 LOCO="${LOCOMANIP_ROOT:-/home/ubuntu/locomani/LocoManip_Lab}"
 OUT_ROOT="${OUT_DIR:-/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real}"
+# ################################
+# RAISE_OUT keeps the historical filename for downstream scripts that still
+# point at ppo_raise_stage410d_z040.json; new raises from model_9999 should
+# use a distinct RAISE_OUT (do not relabel old JSON as model_9999 results).
+# ################################
 RAISE_OUT="${RAISE_OUT:-/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/ppo_raise_stage410d_z040.json}"
-POLICY="${POLICY:-logs/rsl_rl/ranger_cr10_teleop/2026-11-03_16-30-44_stage410d_ppo/model_5999.pt}"
+# ################################
+# VLN adapt: default POLICY → published model_9999 (relative to LOCOMANIP_ROOT).
+# Override with POLICY=... to keep stage410d/stage45j or any other checkpoint.
+# ################################
+POLICY="${POLICY:-models/ranger_cr10/model_9999.pt}"
+# ################################
 PYBIN="${PYBIN:-/home/ubuntu/miniconda3/envs/env_isaaclab5/bin/python}"
 MAX_STEPS="${MAX_STEPS:-50}"
 GPU="${GPU:-0}"
@@ -14,7 +24,13 @@ PROFILE="${INFLATION_PROFILE:-legacy018}"
 
 mkdir -p "$(dirname "$RAISE_OUT")" "$OUT_ROOT"
 
+# Resolve relative POLICY against LOCO (same rule as ppo_mujoco_raise).
+POLICY_RESOLVED="$POLICY"
+if [[ ! -f "$POLICY_RESOLVED" ]]; then
+  POLICY_RESOLVED="$LOCO/$POLICY"
+fi
 echo "[1/2] MuJoCo teleop-PPO raise → $RAISE_OUT"
+echo "POLICY=$POLICY → $POLICY_RESOLVED (LOCOMANIP_ROOT=$LOCO)"
 export MUJOCO_GL="${MUJOCO_GL:-egl}"
 export PYTHONPATH="$ROOT/adapters/habitat_rangercr10:${PYTHONPATH:-}"
 "$PYBIN" -m src.ppo_mujoco_raise \

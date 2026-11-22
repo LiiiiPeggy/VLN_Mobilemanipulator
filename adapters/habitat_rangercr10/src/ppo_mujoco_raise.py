@@ -1,10 +1,15 @@
 """MuJoCo-native teleop PPO arm raise, then joint sync for Habitat (adapter-only).
 
 ################################
-Contract (stage410d, unchanged):
+Contract (unchanged vs stage 4.10d / published model_9999):
   obs=117 hist=3 @10Hz; act=8 = [vx,wz, j1..j6 raw];
   arm targets = ARM_DEFAULT + ACTION_SCALE * raw[2:];
   teleop commands: vel_cmd=(vx,wz), ee_cmd=ee_command_from_offset(dpos, drpy).
+
+Default --policy is constants.DEFAULT_TELEOP_CKPT
+(= models/ranger_cr10/model_9999.pt under --loco_root).
+Loader: LocoManip deploy_mujoco.ranger_cr10.ranger_policy.load_actor
+(hardcoded 117→512-256-128→8; does not read params/agent.yaml).
 
 Raise uses vx=wz=0 and +Z EE offset (keyboard box). No IK joint targets.
 MuJoCo stays 1.0× (training geometry). Habitat 0.7× consumes final arm joints only.

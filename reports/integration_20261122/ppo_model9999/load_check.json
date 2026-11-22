@@ -1,0 +1,118 @@
+{
+  "mujoco_loader_uses_agent_yaml": false,
+  "agent_yaml_path": "/home/ubuntu/locomani/LocoManip_Lab/models/ranger_cr10/params/agent.yaml",
+  "agent_yaml_actor_hidden": [
+    512,
+    256,
+    128
+  ],
+  "load_actor_hidden": [
+    512,
+    256,
+    128
+  ],
+  "architecture_aligned": true,
+  "num_obs": 117,
+  "num_actions": 8,
+  "obs_history": 3,
+  "action_scale": 0.25,
+  "arm_default": [
+    0.236,
+    0.086,
+    -2.398,
+    -0.83,
+    -1.335,
+    0.0
+  ],
+  "checks": [
+    {
+      "label": "default_model_9999",
+      "path": "/home/ubuntu/locomani/LocoManip_Lab/models/ranger_cr10/model_9999.pt",
+      "exists": true,
+      "sha256": "94ffb7af2f9d0d8864920fb2a38f799938f2b7afffe8c7a75a1050057a5d7ce5",
+      "loader": "deploy_mujoco.ranger_cr10.ranger_policy.load_actor",
+      "kind": "rsl_rl",
+      "param_shapes": {
+        "0.weight": [
+          512,
+          117
+        ],
+        "0.bias": [
+          512
+        ],
+        "2.weight": [
+          256,
+          512
+        ],
+        "2.bias": [
+          256
+        ],
+        "4.weight": [
+          128,
+          256
+        ],
+        "4.bias": [
+          128
+        ],
+        "6.weight": [
+          8,
+          128
+        ],
+        "6.bias": [
+          8
+        ]
+      },
+      "shape_match": true,
+      "forward_out_shape": [
+        8
+      ],
+      "forward_ok": true,
+      "ok": true,
+      "sha256_match_expected": true
+    },
+    {
+      "label": "explicit_legacy_stage410d",
+      "path": "/home/ubuntu/locomani/LocoManip_Lab/logs/rsl_rl/ranger_cr10_teleop/2026-11-03_16-30-44_stage410d_ppo/model_5999.pt",
+      "exists": true,
+      "sha256": "58e804c14d2f4bd28166449015050b560d6a59d741cf43252acae77ebda293bc",
+      "loader": "deploy_mujoco.ranger_cr10.ranger_policy.load_actor",
+      "kind": "rsl_rl",
+      "param_shapes": {
+        "0.weight": [
+          512,
+          117
+        ],
+        "0.bias": [
+          512
+        ],
+        "2.weight": [
+          256,
+          512
+        ],
+        "2.bias": [
+          256
+        ],
+        "4.weight": [
+          128,
+          256
+        ],
+        "4.bias": [
+          128
+        ],
+        "6.weight": [
+          8,
+          128
+        ],
+        "6.bias": [
+          8
+        ]
+      },
+      "shape_match": true,
+      "forward_out_shape": [
+        8
+      ],
+      "forward_ok": true,
+      "ok": true
+    }
+  ]
+}

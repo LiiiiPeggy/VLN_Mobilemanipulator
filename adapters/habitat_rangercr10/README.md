@@ -7,8 +7,11 @@
 | 项 | 值 |
 |----|----|
 | LocoManip 分支 | `rangercr10-teleop` |
-| LocoManip commit | `1973cb4` |
-| Teleop PPO 默认权重 | `.../2026-10-29_19-12-08_stage45j_ppo/model_5999.pt` |
+| URDF / ARM_DEFAULT pin | stage 4.10d @ `ec5fd65` |
+| Teleop PPO 默认权重 | `models/ranger_cr10/model_9999.pt`（相对 `LOCOMANIP_ROOT`） |
+| 发布 tag / commit | `ranger-cr10-model-9999` / `677206834f617c14f92b8782eb6247ac522e3df7` |
+| 权重 SHA-256 | `94ffb7af2f9d0d8864920fb2a38f799938f2b7afffe8c7a75a1050057a5d7ce5` |
+| 配套配置 | `models/ranger_cr10/params/agent.yaml`（Isaac `OnPolicyRunner` 用；MuJoCo `load_actor` 硬编码同构 MLP） |
 | Habitat-Sim | **0.3.1 + Bullet**（专用镜像 `vln-rangercr10:bullet`） |
 | 观测/动作 | 117-D / 8-D，3 帧历史，10 Hz（MuJoCo 侧） |
 

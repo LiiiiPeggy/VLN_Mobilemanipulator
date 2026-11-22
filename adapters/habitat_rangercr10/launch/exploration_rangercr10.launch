@@ -40,6 +40,11 @@
     false = legacy NO_FRONTIER→FINISH→STOP; true = bounded lookaround.
   ################################ -->
   <arg name="enable_no_frontier_look" default="false"/>
+  <!-- ################################
+    ObjectHold max |pos−next_pos| to keep approach after confidence miss (m).
+    3.0 = legacy; 8.0 = approach-fix ON (over-depth goals ~5 m).
+  ################################ -->
+  <arg name="object_hold_max_dist" default="3.0"/>
 
   <group unless="$(arg is_real_world)">
     <rosparam file="$(find exploration_manager)/../../../config/habitat_eval_hm3dv2.yaml" command="load"/>
@@ -81,6 +86,7 @@
     <arg name="soft_cost_weight_" value="$(arg soft_cost_weight)"/>
     <!-- ################################ -->
     <arg name="enable_no_frontier_look_" value="$(arg enable_no_frontier_look)"/>
+    <arg name="object_hold_max_dist_" value="$(arg object_hold_max_dist)"/>
     <!-- ################################ -->
   </include>
 </launch>

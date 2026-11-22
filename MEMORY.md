@@ -133,7 +133,7 @@ VLN_Mobilemanipulator/
 | SG-Nav/UniGoal VLM：OpenAI 兼容 `image_url` 必须 `{"url":"data:..."}`；model8 易超时 → 重试 + soft-fail | `scenegraph.py`；UniGoal `src/utils/llm.py` |
 | SG-Nav 容器需 `pytorch3d==0.7.4`；GLIP CUDA 去 THC（`common.hpp`） | `vln-sgnav`；`GLIP/.../cuda/*.cu` |
 | Ranger+CR10 适配落在 `adapters/habitat_rangercr10/`，不改 baseline 默认配置 | 目录 + compose `vln-rangercr10:bullet` |
-| LocoManip 钉扎 `rangercr10-teleop` @ **`ec5fd65`（stage 4.10d）**；PPO `stage410d_ppo/model_5999.pt`；obs=117 act=8 hist=3 @10Hz；stage45j 仅历史对照 | `constants.py`；`VERSION_stage410d.json`；MuJoCo `teleop_eval` |
+| LocoManip URDF/ARM 钉扎 `rangercr10-teleop` @ **`ec5fd65`（stage 4.10d）**；默认 PPO **`models/ranger_cr10/model_9999.pt`**（tag `ranger-cr10-model-9999` / commit `6772068` / SHA-256 `94ffb7af…7ce5`）；obs=117 act=8 hist=3 @10Hz；配套 `params/agent.yaml` 供 Isaac runner，MuJoCo `load_actor` 硬编码同构；stage410d/`model_5999` 与 stage45j 仅显式覆盖 | `constants.py`；`run_ppo_raise_then_apexnav_s070.sh` |
 | 现网 VLN 镜像均 `built_with_bullet=False`；URDF 需专用 bullet 构建 | `habitat_sim.built_with_bullet` |
 | EGL 修复后原生 URDF-in-Habitat 可用；混合 Demo 仍作后备 | `run_kinematic_demo.sh`；`reports/habitat_rangercr10_integration.md` |
 | URDF Z-up→Habitat Y-up 根旋转必须 `Ry(-π/2)*Rx(-π/2)`，否则底盘倾倒 | `kinematic_demo._urdf_to_habitat`；`up_dot_hab_y≈1` |
@@ -270,3 +270,12 @@ VLN_Mobilemanipulator/
 | 开关 | ROS `enable_no_frontier_look`（默认 false=legacy）；ON 时最多 24 次 TURN_* 计入预算后再 FINISH |
 | V2 恢复（候选开关） | Look 左右交替；turn 连续挡：`opposite_turn`→`forced_forward`；仅 `moved_m>0` 清零 escalate；证据 `reports/integration_20261122/b_v2/` |
 | 证据 | `reports/ranger_target_discovery_followup/wrong_stop_audit/` |
+
+## ObjectHold 距离门（2026-11-22 approach_fix）
+
+| 项 | 内容 |
+|----|------|
+| 现象 | over-depth SEARCH 的 `next_pos` 常约 5 m；`OBJECT_HOLD_MAX_DIST=3.0` 首 miss 即 drop |
+| 开关 | ROS/`OBJECT_HOLD_MAX_DIST`（launch→exploration_node）；默认 **3.0**；候选 **8.0** |
+| 证据 | hy1：hold 8.0 时 keep×26，dtg 0.485→0.167，moved↑；仍无 REACH/STOP |
+| 注意 | `success_claimed` 恒 False；SR_proxy=`planner_stop∧near_goal`；eval VIEW_POINTS 不进在线 STOP |

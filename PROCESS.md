@@ -1164,3 +1164,31 @@
 **操作**：以 `66869af` scale070 为基，合并 `d7926f9` 与 `09fadf4`，保全 B V2 未提交补丁；桌面冲突保留 12 对/9 可靠 + category_map 别名。  
 
 **相关**：`reports/integration_20261122/`
+
+---
+
+## 2026-11-22 joint4 膨胀×恢复对照（主会话）
+
+**模块**：habitat_rangercr10 / ApexNav Ranger  
+
+**问题**：A 规划净空未转寻物收益；B V2 恢复是否与膨胀可叠加。  
+
+**操作**：统一分支 `a77f7d9` 上跑 hy1_plant_0 + Dd4b toilet_0 × {legacy018,inf020} × {legacy,v2}；补视 OFF；无 PPO。  
+
+**实测**：8/8 有效无成功。hy1 上 legacy+v2 最佳（dtg 0.485、near_goal）；dd4b 上 v2 未改善。默认保持 legacy018+legacy；下一项近距 3D 碰撞（g3 step106 d455/夹爪）。  
+
+**相关**：`reports/integration_20261122/joint4/JOINT4_REPORT.md`
+
+---
+
+## 2026-11-22 approach_fix ObjectHold max_dist
+
+**模块**：exploration_fsm ObjectHold  
+
+**问题**：hy1 短暂 SEARCH 后因 dist=5.0>3.0 丢弃接近，near_goal 仍无 STOP。  
+
+**操作**：`object_hold_max_dist` 可配；配对 ON=8.0 / OFF=3.0（复用 joint4 g3）；nf_look OFF；无 PPO。  
+
+**实测**：hy1 接近/移动改善、仍无成功；Dd4b 持平；tee 回归缺口（非法 spawn）。默认保持 3.0。  
+
+**相关**：`reports/integration_20261122/approach_fix/APPROACH_FIX_REPORT.md`
