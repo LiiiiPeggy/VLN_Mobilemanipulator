@@ -33,6 +33,14 @@
       obstacle_denoise: none | median3 (current-frame OCC projection filter).
     ################################ -->
     <arg name="obstacle_denoise_" default="none"/>
+    <!-- ################################
+      Planning inflation (decoupled from Habitat agent_radius when locked).
+      soft_cost: length×[1+w·max(0,1−d/R)²]; w=0 disables (P0/P1).
+    ################################ -->
+    <arg name="obstacles_inflation_" default="0.18"/>
+    <arg name="lock_obstacles_inflation_" default="false"/>
+    <arg name="soft_cost_range_m_" default="0.0"/>
+    <arg name="soft_cost_weight_" default="0.0"/>
 
     <!-- main node -->
     <node pkg="exploration_manager" name="exploration_node" type="exploration_node" output="screen">
@@ -52,7 +60,11 @@
         <param name="sdf_map/resolution" value="0.05" />
         <param name="sdf_map/map_size_x" value="$(arg map_size_x_)" />
         <param name="sdf_map/map_size_y" value="$(arg map_size_y_)" />
-        <param name="sdf_map/obstacles_inflation" value="0.18" />
+        <param name="sdf_map/obstacles_inflation" value="$(arg obstacles_inflation_)" />
+        <!-- ################################
+          When true, Habitat agent_radius does NOT overwrite obstacles_inflation.
+        ################################ -->
+        <param name="sdf_map/lock_obstacles_inflation" value="$(arg lock_obstacles_inflation_)" type="bool"/>
         <param name="sdf_map/local_bound" value="5.0"/>
 
         <param name="sdf_map/p_hit" value="0.90"/>
@@ -144,6 +156,11 @@
         <!-- path searching -->
         <param name="astar/lambda_heu" value="1.0" type="double"/>
         <param name="astar/resolution_astar" value="0.1" type="double"/>
+        <!-- ################################
+          Soft clearance cost outside hard inflate (P2). Units: R in meters, w dimensionless.
+        ################################ -->
+        <param name="astar/soft_cost_range_m" value="$(arg soft_cost_range_m_)" type="double"/>
+        <param name="astar/soft_cost_weight" value="$(arg soft_cost_weight_)" type="double"/>
     </node>
 
     <!-- ATSP solver -->

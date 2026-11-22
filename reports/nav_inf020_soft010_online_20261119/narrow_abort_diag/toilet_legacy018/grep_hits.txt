@@ -1,0 +1,6 @@
+ * /astar/soft_cost_range_m: 0.0
+ * /astar/soft_cost_weight: 0.0
+ * /exploration_node/astar/soft_cost_range_m: 0.0
+ * /exploration_node/astar/soft_cost_weight: 0.0
+[33m[WARN] [1795323989.471649223]: [SDFMap2D] effective obstacles_inflation_=0.1800 m  resolution=0.0500 ??? inf_step???4[0m
+[31m[tsp_solver-2] process has died [pid 3021, exit code 1, cmd /workspace/VLN_Mobilemanipulator/baselines/ApexNav/devel/lib/lkh_mtsp_solver/tsp_node __name:=tsp_solver __log:=/root/.ros/log/7890c0c0-e632-11f1-b40b-107c61411050/tsp_solver-2.log].

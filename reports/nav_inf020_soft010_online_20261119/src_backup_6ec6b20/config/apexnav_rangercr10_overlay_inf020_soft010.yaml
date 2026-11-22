@@ -1,0 +1,18 @@
+# ################################
+# Candidate: hard inflate 0.20 m + soft clearance R=0.10 m (w=2.0).
+# Habitat agent radius stays 0.18 (sim / execution collision unchanged).
+# lock_obstacles_inflation keeps planning inflation independent of radius.
+# Soft: length × [1 + w × max(0, 1 − d/R)²], d from inflate-only known-obstacle ESDF.
+# ################################
+habitat:
+  simulator:
+    agents:
+      main_agent:
+        radius: 0.18
+sdf_map:
+  obstacles_inflation: 0.20
+  lock_obstacles_inflation: true
+  optimistic: false
+astar:
+  soft_cost_range_m: 0.10
+  soft_cost_weight: 2.0

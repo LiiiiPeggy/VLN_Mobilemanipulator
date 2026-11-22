@@ -22,6 +22,20 @@ void Astar2D::init(ros::NodeHandle& nh, const SDFMap2D::Ptr& sdf_map)
 
   nh.param("astar/resolution_astar", resolution_, -1.0);
   nh.param("astar/lambda_heu", lambda_heu_, -1.0);
+  // ################################
+  // Soft clearance cost outside hard inflate (meters / dimensionless weight).
+  // Default w=0 → P0/P1 behavior unchanged.
+  // ################################
+  nh.param("astar/soft_cost_range_m", soft_cost_range_m_, 0.0);
+  nh.param("astar/soft_cost_weight", soft_cost_weight_, 0.0);
+  if (soft_cost_range_m_ < 0.0)
+    soft_cost_range_m_ = 0.0;
+  if (soft_cost_weight_ < 0.0)
+    soft_cost_weight_ = 0.0;
+  if (soft_cost_weight_ > 0.0 && soft_cost_range_m_ > 0.0)
+    ROS_WARN("[Astar2D] soft_cost enabled: R=%.3f m  w=%.3f (d from inflate-only ESDF)",
+        soft_cost_range_m_, soft_cost_weight_);
+  // ################################
   allocate_num_ = 1000000;
 
   this->sdf_map_ = sdf_map;
@@ -285,7 +299,10 @@ int Astar2D::astarSearch(const Eigen::Vector2d& start_pt, const Eigen::Vector2d&
         continue;
 
       Node2DPtr neighbor;
-      double tmp_g_score = step.norm() + cur_node->g_score;
+      // ################################
+      // Edge cost: geometric length, optionally × soft clearance factor (P2).
+      // ################################
+      double tmp_g_score = edgeTraversalCost(cur_pos, nbr_pos) + cur_node->g_score;
       auto node_iter = open_set_map_.find(nbr_idx);
       if (node_iter == open_set_map_.end()) {
         neighbor = path_node_pool_[use_node_num_];
@@ -487,5 +504,43 @@ bool Astar2D::checkPointSafety(const Eigen::Vector2d& pos, int safety_mode)
   }
 
   return true;
+}
+
+// ################################
+// Soft clearance edge cost for P2.
+// length × [1 + w × max(0, 1 − d/R)²], d from inflate-only known-obstacle ESDF.
+// Samples along the edge (incl. diagonal) so corner-cutting is penalized.
+// ################################
+double Astar2D::edgeTraversalCost(const Eigen::Vector2d& from, const Eigen::Vector2d& to) const
+{
+  const Eigen::Vector2d dir = to - from;
+  const double len = dir.norm();
+  if (len < 1e-12)
+    return 0.0;
+  if (soft_cost_weight_ <= 0.0 || soft_cost_range_m_ <= 1e-9)
+    return len;
+
+  auto softFactor = [this](double d) -> double {
+    if (d < 0.0)
+      return 1.0 + soft_cost_weight_;  // unknown / OOB: mild penalty, not a wall
+    const double t = 1.0 - d / soft_cost_range_m_;
+    if (t <= 0.0)
+      return 1.0;
+    return 1.0 + soft_cost_weight_ * (t * t);
+  };
+
+  const Eigen::Vector2d unit = dir / len;
+  const double step = std::max(0.025, resolution_ * 0.5);
+  double sum = 0.0;
+  int n = 0;
+  for (double l = 0.0; l <= len + 1e-9; l += step) {
+    const Eigen::Vector2d p = from + std::min(l, len) * unit;
+    sum += softFactor(sdf_map_->getDistanceToKnownObstacle(p));
+    ++n;
+  }
+  if (n == 0) {
+    return len * softFactor(sdf_map_->getDistanceToKnownObstacle(to));
+  }
+  return len * (sum / static_cast<double>(n));
 }
 }  // namespace apexnav_planner

@@ -28,6 +28,13 @@
   ################################ -->
   <arg name="startup_prior_expand_m" default="0.0"/>
   <arg name="obstacle_denoise" default="none"/>
+  <!-- ################################
+    Planning inflation knob (independent of Habitat radius when locked).
+  ################################ -->
+  <arg name="obstacles_inflation" default="0.18"/>
+  <arg name="lock_obstacles_inflation" default="false"/>
+  <arg name="soft_cost_range_m" default="0.0"/>
+  <arg name="soft_cost_weight" default="0.0"/>
 
   <group unless="$(arg is_real_world)">
     <rosparam file="$(find exploration_manager)/../../../config/habitat_eval_hm3dv2.yaml" command="load"/>
@@ -63,5 +70,9 @@
     <arg name="startup_prior_half_width_" value="$(arg startup_prior_half_width)"/>
     <arg name="startup_prior_expand_m_" value="$(arg startup_prior_expand_m)"/>
     <arg name="obstacle_denoise_" value="$(arg obstacle_denoise)"/>
+    <arg name="obstacles_inflation_" value="$(arg obstacles_inflation)"/>
+    <arg name="lock_obstacles_inflation_" value="$(arg lock_obstacles_inflation)"/>
+    <arg name="soft_cost_range_m_" value="$(arg soft_cost_range_m)"/>
+    <arg name="soft_cost_weight_" value="$(arg soft_cost_weight)"/>
   </include>
 </launch>

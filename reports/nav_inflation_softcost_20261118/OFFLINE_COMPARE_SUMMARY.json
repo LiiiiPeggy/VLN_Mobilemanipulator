@@ -1,0 +1,157 @@
+{
+  "case_narrow_dd4b_toilet0_seq5": {
+    "source": "e2e_sp_ab24_20261107_015625_initial_footprint_dd4b_toilet_0",
+    "plan_seq": 5,
+    "half_w": 0.30428999999999995,
+    "soft_R": 0.4,
+    "soft_w": 2.0,
+    "P0": {
+      "n_reachable": 4,
+      "best_len": 0.5823146714647165,
+      "edge_min": 0.3523213157721242,
+      "edge_p10": 0.38454959992522003,
+      "center_min": 0.6566113157721242
+    },
+    "P1": {
+      "n_reachable": 3,
+      "best_len": 0.5823146714647165,
+      "edge_min": 0.3523213157721242,
+      "edge_p10": 0.38454959992522003,
+      "center_min": 0.6566113157721242
+    },
+    "P2": {
+      "n_reachable": 3,
+      "best_len": 0.5823146714647163,
+      "edge_min": 0.3523213157721242,
+      "edge_p10": 0.39103791986364633,
+      "center_min": 0.6566113157721242
+    },
+    "exec_edge_min": 0.2577640749846949,
+    "orig_edge_min": 0.3523213157721242,
+    "png": "/home/ubuntu/locomani/VLN_Mobilemanipulator/reports/nav_inflation_softcost_20261118/case_narrow_dd4b_toilet0_seq5/p0p1p2_topdown.png"
+  },
+  "case_narrow_teesav_toilet2_seq16": {
+    "source": "formalgimbal_formal150_full_20261117_190344_TEEsavR23oF_toilet_2",
+    "plan_seq": 16,
+    "half_w": 0.30428999999999995,
+    "soft_R": 0.4,
+    "soft_w": 2.0,
+    "P0": {
+      "n_reachable": 4,
+      "best_len": 0.8657915541432797,
+      "edge_min": 0.09923983780632634,
+      "edge_p10": 0.17881340082133884,
+      "center_min": 0.4035298378063263
+    },
+    "P1": {
+      "n_reachable": 4,
+      "best_len": 0.8657915541432797,
+      "edge_min": 0.09923983780632634,
+      "edge_p10": 0.17881340082133884,
+      "center_min": 0.4035298378063263
+    },
+    "P2": {
+      "n_reachable": 4,
+      "best_len": 0.8663595699761045,
+      "edge_min": 0.09923983780632634,
+      "edge_p10": 0.2287516568138168,
+      "center_min": 0.4035298378063263
+    },
+    "exec_edge_min": 0.5442314606391304,
+    "orig_edge_min": 0.09923983780632634,
+    "png": "/home/ubuntu/locomani/VLN_Mobilemanipulator/reports/nav_inflation_softcost_20261118/case_narrow_teesav_toilet2_seq16/p0p1p2_topdown.png"
+  },
+  "case_wide_teesav_sofa0_seq15": {
+    "source": "formalgimbal_formal150_full_20261117_190344_TEEsavR23oF_sofa_0",
+    "plan_seq": 15,
+    "half_w": 0.30428999999999995,
+    "soft_R": 0.4,
+    "soft_w": 2.0,
+    "P0": {
+      "n_reachable": 2,
+      "best_len": 2.0564096400551404,
+      "edge_min": -0.12153858413681165,
+      "edge_p10": -0.09199668144437884,
+      "center_min": 0.1827514158631883
+    },
+    "P1": {
+      "n_reachable": 2,
+      "best_len": 1.8813708498984765,
+      "edge_min": 0.016736603258982186,
+      "edge_p10": 0.0529747197807251,
+      "center_min": 0.32102660325898214
+    },
+    "P2": {
+      "n_reachable": 2,
+      "best_len": 2.076345596729059,
+      "edge_min": 0.016736603258982186,
+      "edge_p10": 0.16295956901572287,
+      "center_min": 0.32102660325898214
+    },
+    "exec_edge_min": 0.13065576846515053,
+    "orig_edge_min": -0.12841717663038432,
+    "png": "/home/ubuntu/locomani/VLN_Mobilemanipulator/reports/nav_inflation_softcost_20261118/case_wide_teesav_sofa0_seq15/p0p1p2_topdown.png"
+  },
+  "case_wide_teesav_sofa0_seq20": {
+    "source": "formalgimbal_formal150_full_20261117_190344_TEEsavR23oF_sofa_0",
+    "plan_seq": 20,
+    "half_w": 0.30428999999999995,
+    "soft_R": 0.4,
+    "soft_w": 2.0,
+    "P0": {
+      "n_reachable": 0,
+      "best_len": null,
+      "edge_min": null,
+      "edge_p10": null,
+      "center_min": null
+    },
+    "P1": {
+      "n_reachable": 0,
+      "best_len": null,
+      "edge_min": null,
+      "edge_p10": null,
+      "center_min": null
+    },
+    "P2": {
+      "n_reachable": 0,
+      "best_len": null,
+      "edge_min": null,
+      "edge_p10": null,
+      "center_min": null
+    },
+    "exec_edge_min": 0.14205988362195837,
+    "orig_edge_min": -0.09755004256554564,
+    "png": "/home/ubuntu/locomani/VLN_Mobilemanipulator/reports/nav_inflation_softcost_20261118/case_wide_teesav_sofa0_seq20/p0p1p2_topdown.png"
+  },
+  "case_wide_teesav_sofa0_seq9": {
+    "source": "formalgimbal_formal150_full_20261117_190344_TEEsavR23oF_sofa_0",
+    "plan_seq": 9,
+    "half_w": 0.30428999999999995,
+    "soft_R": 0.4,
+    "soft_w": 2.0,
+    "P0": {
+      "n_reachable": 2,
+      "best_len": 2.0884776310850244,
+      "edge_min": -0.12477554375761263,
+      "edge_p10": -0.09418183737893496,
+      "center_min": 0.17951445624238732
+    },
+    "P1": {
+      "n_reachable": 2,
+      "best_len": 2.267766952966369,
+      "edge_min": 0.02018717947492077,
+      "edge_p10": 0.02798386893920085,
+      "center_min": 0.3244771794749207
+    },
+    "P2": {
+      "n_reachable": 2,
+      "best_len": 2.50208152801713,
+      "edge_min": 0.024899064216902467,
+      "edge_p10": 0.07156024500252893,
+      "center_min": 0.3291890642169024
+    },
+    "exec_edge_min": -0.024503839561542062,
+    "orig_edge_min": -0.1299655897758436,
+    "png": "/home/ubuntu/locomani/VLN_Mobilemanipulator/reports/nav_inflation_softcost_20261118/case_wide_teesav_sofa0_seq9/p0p1p2_topdown.png"
+  }
+}

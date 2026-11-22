@@ -50,3 +50,10 @@ target_link_libraries(path_searching
 add_executable(test_startup_prior_astar test/test_startup_prior_astar.cpp)
 target_link_libraries(test_startup_prior_astar path_searching ${catkin_LIBRARIES})
 add_dependencies(test_startup_prior_astar ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
+# ################################
+# Offline P0/P1/P2 inflation + soft-cost A* on frozen local_map.
+# ################################
+add_executable(test_inflation_softcost_astar test/test_inflation_softcost_astar.cpp)
+target_link_libraries(test_inflation_softcost_astar path_searching ${catkin_LIBRARIES})
+add_dependencies(test_inflation_softcost_astar ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})

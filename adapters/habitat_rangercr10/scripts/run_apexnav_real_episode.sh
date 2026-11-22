@@ -37,10 +37,13 @@ sleep 2
 # ################################
 LAUNCH_FILE="/workspace/VLN_Mobilemanipulator/adapters/habitat_rangercr10/launch/exploration_rangercr10.launch"
 # INFLATION_PROFILE:
-#   legacy018 (default for Habitat kinematic demos): 0.18 m — matches ApexNav HM3D agent;
-#     UNSAFE vs Ranger chassis half-width≈0.435 m (see reports).
-#   mid030: 0.30 m sensitivity — still UNSAFE vs half-width; offline/online A/B only.
-#   ranger_safe: 0.485 m oriented footprint — correct clearance, may starve free on sparse maps.
+#   legacy018 (P0): 0.18 m hard; soft off.
+#   halfwidth (P1): footprint half_w @ scale; lock; soft off.
+#   halfwidth_softcost (P2旧): half_w + soft R=0.40/w=2.0.
+# ################################
+#   inf020_soft010 (当前候选): hard 0.20 m + soft R=0.10 m / w=2.0; lock=true.
+# ################################
+#   mid030 / ranger_safe: legacy sensitivity profiles.
 PROFILE="${INFLATION_PROFILE:-legacy018}"
 case "$PROFILE" in
   ranger_safe)
@@ -49,6 +52,17 @@ case "$PROFILE" in
   mid030)
     OVERLAY="/workspace/VLN_Mobilemanipulator/adapters/habitat_rangercr10/config/apexnav_rangercr10_overlay_mid030.yaml"
     ;;
+  halfwidth)
+    OVERLAY="/workspace/VLN_Mobilemanipulator/adapters/habitat_rangercr10/config/apexnav_rangercr10_overlay_halfwidth.yaml"
+    ;;
+  halfwidth_softcost)
+    OVERLAY="/workspace/VLN_Mobilemanipulator/adapters/habitat_rangercr10/config/apexnav_rangercr10_overlay_halfwidth_softcost.yaml"
+    ;;
+  # ################################
+  inf020_soft010)
+    OVERLAY="/workspace/VLN_Mobilemanipulator/adapters/habitat_rangercr10/config/apexnav_rangercr10_overlay_inf020_soft010.yaml"
+    ;;
+  # ################################
   *)
     OVERLAY="/workspace/VLN_Mobilemanipulator/adapters/habitat_rangercr10/config/apexnav_rangercr10_overlay_legacy018.yaml"
     ;;
@@ -82,15 +96,59 @@ fp = footprint_at_scale(float("${ROBOT_SCALE}"))
 print(fp["chassis_half_length_m"], fp["chassis_half_width_m"])
 PY
 )
+# ################################
+# Planning inflation / soft-cost launch args (node-private; lock decouples Habitat radius).
+# ################################
+case "$PROFILE" in
+  halfwidth)
+    OBSTACLES_INFLATION="${OBSTACLES_INFLATION:-$STARTUP_PRIOR_HALF_W}"
+    LOCK_OBSTACLES_INFLATION="${LOCK_OBSTACLES_INFLATION:-true}"
+    SOFT_COST_RANGE_M="${SOFT_COST_RANGE_M:-0.0}"
+    SOFT_COST_WEIGHT="${SOFT_COST_WEIGHT:-0.0}"
+    ;;
+  halfwidth_softcost)
+    OBSTACLES_INFLATION="${OBSTACLES_INFLATION:-$STARTUP_PRIOR_HALF_W}"
+    LOCK_OBSTACLES_INFLATION="${LOCK_OBSTACLES_INFLATION:-true}"
+    SOFT_COST_RANGE_M="${SOFT_COST_RANGE_M:-0.40}"
+    SOFT_COST_WEIGHT="${SOFT_COST_WEIGHT:-2.0}"
+    ;;
+  # ################################
+  # Current candidate: 0.20 m hard inflate + soft band 0.10 m (w=2.0).
+  # ################################
+  inf020_soft010)
+    OBSTACLES_INFLATION="${OBSTACLES_INFLATION:-0.20}"
+    LOCK_OBSTACLES_INFLATION="${LOCK_OBSTACLES_INFLATION:-true}"
+    SOFT_COST_RANGE_M="${SOFT_COST_RANGE_M:-0.10}"
+    SOFT_COST_WEIGHT="${SOFT_COST_WEIGHT:-2.0}"
+    ;;
+  mid030)
+    OBSTACLES_INFLATION="${OBSTACLES_INFLATION:-0.30}"
+    LOCK_OBSTACLES_INFLATION="${LOCK_OBSTACLES_INFLATION:-false}"
+    SOFT_COST_RANGE_M="${SOFT_COST_RANGE_M:-0.0}"
+    SOFT_COST_WEIGHT="${SOFT_COST_WEIGHT:-0.0}"
+    ;;
+  ranger_safe)
+    OBSTACLES_INFLATION="${OBSTACLES_INFLATION:-0.485}"
+    LOCK_OBSTACLES_INFLATION="${LOCK_OBSTACLES_INFLATION:-false}"
+    SOFT_COST_RANGE_M="${SOFT_COST_RANGE_M:-0.0}"
+    SOFT_COST_WEIGHT="${SOFT_COST_WEIGHT:-0.0}"
+    ;;
+  *)
+    OBSTACLES_INFLATION="${OBSTACLES_INFLATION:-0.18}"
+    LOCK_OBSTACLES_INFLATION="${LOCK_OBSTACLES_INFLATION:-false}"
+    SOFT_COST_RANGE_M="${SOFT_COST_RANGE_M:-0.0}"
+    SOFT_COST_WEIGHT="${SOFT_COST_WEIGHT:-0.0}"
+    ;;
+esac
 DIAG_DIR="$OUT/native_diag"
 mkdir -p "$DIAG_DIR"
-echo "[2/4] start exploration_rangercr10.launch (profile=$PROFILE overlay=$(basename "$OVERLAY") plan_diag=$PLAN_DIAG_ENABLE startup_prior=$STARTUP_PRIOR_MODE half=${STARTUP_PRIOR_HALF_L}x${STARTUP_PRIOR_HALF_W} expand_m=$STARTUP_PRIOR_EXPAND_M denoise=$OBSTACLE_DENOISE)"
+echo "[2/4] start exploration_rangercr10.launch (profile=$PROFILE overlay=$(basename "$OVERLAY") inflate=$OBSTACLES_INFLATION lock=$LOCK_OBSTACLES_INFLATION soft_R=$SOFT_COST_RANGE_M soft_w=$SOFT_COST_WEIGHT plan_diag=$PLAN_DIAG_ENABLE startup_prior=$STARTUP_PRIOR_MODE half=${STARTUP_PRIOR_HALF_L}x${STARTUP_PRIOR_HALF_W} expand_m=$STARTUP_PRIOR_EXPAND_M denoise=$OBSTACLE_DENOISE)"
 docker exec -d vln-rangercr10 bash -lc \
-  "$SRC_ROS; roslaunch $LAUNCH_FILE ranger_overlay:=$OVERLAY plan_diag_enable:=$PLAN_DIAG_ENABLE plan_diag_dir:=$DIAG_DIR pipeline_diag_enable:=$PIPELINE_DIAG_ENABLE pipeline_diag_dir:=$DIAG_DIR startup_prior_mode:=$STARTUP_PRIOR_MODE startup_prior_half_length:=$STARTUP_PRIOR_HALF_L startup_prior_half_width:=$STARTUP_PRIOR_HALF_W startup_prior_expand_m:=$STARTUP_PRIOR_EXPAND_M obstacle_denoise:=$OBSTACLE_DENOISE >$LOGDIR/exploration.log 2>&1"
+  "$SRC_ROS; roslaunch $LAUNCH_FILE ranger_overlay:=$OVERLAY plan_diag_enable:=$PLAN_DIAG_ENABLE plan_diag_dir:=$DIAG_DIR pipeline_diag_enable:=$PIPELINE_DIAG_ENABLE pipeline_diag_dir:=$DIAG_DIR startup_prior_mode:=$STARTUP_PRIOR_MODE startup_prior_half_length:=$STARTUP_PRIOR_HALF_L startup_prior_half_width:=$STARTUP_PRIOR_HALF_W startup_prior_expand_m:=$STARTUP_PRIOR_EXPAND_M obstacle_denoise:=$OBSTACLE_DENOISE obstacles_inflation:=$OBSTACLES_INFLATION lock_obstacles_inflation:=$LOCK_OBSTACLES_INFLATION soft_cost_range_m:=$SOFT_COST_RANGE_M soft_cost_weight:=$SOFT_COST_WEIGHT >$LOGDIR/exploration.log 2>&1"
 sleep 4
 # Record effective params
 docker exec vln-rangercr10 bash -lc \
-  "$SRC_ROS; rosparam get /habitat/simulator/agents/main_agent/radius; rosparam get /exploration_node/sdf_map/obstacles_inflation; rosparam get /exploration_node/sdf_map/optimistic; rosparam get /exploration_node/map_ros/depth_filter_mindist; rosparam get /exploration_node/map_ros/filter_min_height; rosparam get /exploration_node/map_ros/filter_max_height; rosparam get /exploration_node/exploration/startup_prior_mode; rosparam get /exploration_node/exploration/startup_prior_half_length; rosparam get /exploration_node/exploration/startup_prior_half_width; rosparam get /exploration_node/exploration/startup_prior_expand_m; rosparam get /exploration_node/sdf_map/obstacle_denoise; rosparam get /exploration_node/sdf_map/resolution" \
+  "$SRC_ROS; rosparam get /habitat/simulator/agents/main_agent/radius; rosparam get /exploration_node/sdf_map/obstacles_inflation; rosparam get /exploration_node/sdf_map/lock_obstacles_inflation; rosparam get /exploration_node/astar/soft_cost_range_m; rosparam get /exploration_node/astar/soft_cost_weight; rosparam get /exploration_node/sdf_map/optimistic; rosparam get /exploration_node/map_ros/depth_filter_mindist; rosparam get /exploration_node/map_ros/filter_min_height; rosparam get /exploration_node/map_ros/filter_max_height; rosparam get /exploration_node/exploration/startup_prior_mode; rosparam get /exploration_node/exploration/startup_prior_half_length; rosparam get /exploration_node/exploration/startup_prior_half_width; rosparam get /exploration_node/exploration/startup_prior_expand_m; rosparam get /exploration_node/sdf_map/obstacle_denoise; rosparam get /exploration_node/sdf_map/resolution" \
   >"$LOGDIR/effective_params.txt" 2>&1 || true
 
 echo "[3/4] start VLM servers (yolo/dino/blip2/sam) if not up"

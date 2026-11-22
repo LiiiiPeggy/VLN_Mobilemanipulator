@@ -1,0 +1,9 @@
+main=2214550fa5f1b7c98e89b8b31f33fe15150c5415
+scale070=66869af295099bc6ab5d5eef8d627b0a67538221
+navinf=d7926f9cd5710ea14219ce54afaeb6a22e5fcd37
+followup=09fadf4890ce3ff8f55d9639ec87269fde3fc064
+merge_base=492f53fd567c2be207a28a6fd5f9b6dbe7ee2da1
+integrate_branch=cursor/habitat-rangercr10-scale070-integrate
+integrate_HEAD=66869af295099bc6ab5d5eef8d627b0a67538221
+B_V2_source=/home/ubuntu/locomani/B_VLN_Mobilemanipulator (uncommitted) + B_followup_safe/patches_v2_20261122
+recorded_at=2026-11-22T15:55:53+08:00

@@ -72,6 +72,13 @@ void SDFMap2D::initMap(ros::NodeHandle& nh)
   // Check if using habitat simulator and override parameters if necessary
   bool is_real_world;
   nh.param("is_real_world", is_real_world, false);
+  // ################################
+  // VLN adapt: lock planning inflation so Habitat agent_radius cannot override
+  // sdf_map/obstacles_inflation. Keeps sim robot geometry / execution collision
+  // unchanged while inflation is a pure planning knob (P1 half-width etc.).
+  // ################################
+  bool lock_obstacles_inflation = false;
+  nh.param("sdf_map/lock_obstacles_inflation", lock_obstacles_inflation, false);
 
   if (!is_real_world) {
     double habitat_max_depth, agent_radius;
@@ -84,11 +91,22 @@ void SDFMap2D::initMap(ros::NodeHandle& nh)
           "Using habitat simulator params, set max_ray_length_ = %.2f m", mp_->max_ray_length_);
     }
     if (agent_radius != -1.0) {
-      mp_->obstacles_inflation_ = agent_radius;
-      ROS_WARN("Using habitat simulator params, set obstacles_inflation_ = %.2f m",
-          mp_->obstacles_inflation_);
+      if (lock_obstacles_inflation) {
+        ROS_WARN(
+            "lock_obstacles_inflation=true: keep obstacles_inflation_=%.3f m "
+            "(ignore habitat agent_radius=%.3f)",
+            mp_->obstacles_inflation_, agent_radius);
+      } else {
+        mp_->obstacles_inflation_ = agent_radius;
+        ROS_WARN("Using habitat simulator params, set obstacles_inflation_ = %.2f m",
+            mp_->obstacles_inflation_);
+      }
     }
   }
+  ROS_WARN("[SDFMap2D] effective obstacles_inflation_=%.4f m  resolution=%.4f → inf_step≈%d",
+      mp_->obstacles_inflation_, mp_->resolution_,
+      (int)ceil(mp_->obstacles_inflation_ / mp_->resolution_));
+  // ################################
 
   // Convert probabilities to log-odds for efficient computation
   auto logit = [](const double& x) { return log(x / (1 - x)); };
@@ -111,6 +129,11 @@ void SDFMap2D::initMap(ros::NodeHandle& nh)
   md_->flag_rayend_ = vector<char>(mp_->buffer_size_, -1);
   md_->distance_buffer_neg_ = vector<double>(mp_->buffer_size_, mp_->default_dist_);
   md_->distance_buffer_ = vector<double>(mp_->buffer_size_, mp_->default_dist_);
+  // ################################
+  // Inflate-only ESDF for soft edge costs (known obstacles). Ignores UNKNOWN so
+  // frontier exploration is not punished by soft cost.
+  // ################################
+  md_->distance_buffer_obs_ = vector<double>(mp_->buffer_size_, mp_->default_dist_);
   md_->tmp_buffer_ = vector<double>(mp_->buffer_size_, 0);
   md_->virtual_ground_buffer_ = vector<char>(mp_->buffer_size_, 0);
 
@@ -598,6 +621,21 @@ void SDFMap2D::diagClearAndInflateLocalMap()
   clearAndInflateLocalMap();
 }
 
+// ################################
+void SDFMap2D::diagSetLocalBounds(const Eigen::Vector2d& bmin, const Eigen::Vector2d& bmax)
+{
+  md_->local_update_mind_ = bmin;
+  md_->local_update_maxd_ = bmax;
+  posToIndex(md_->local_update_mind_, md_->local_update_min_);
+  posToIndex(md_->local_update_maxd_, md_->local_update_max_);
+  boundIndex(md_->local_update_min_);
+  boundIndex(md_->local_update_max_);
+  md_->local_bound_min_ = md_->local_update_min_;
+  md_->local_bound_max_ = md_->local_update_max_;
+  md_->occupancy_need_clear_.clear();
+}
+// ################################
+
 void SDFMap2D::getLocalUpdateIndexBox(Eigen::Vector2i& bmin, Eigen::Vector2i& bmax) const
 {
   bmin = md_->local_update_min_;
@@ -714,6 +752,29 @@ void SDFMap2D::updateESDFMap()
         },
         min_esdf[0], max_esdf[0], 0);
   }
+
+  // ################################
+  // Always maintain inflate-only distance (known obstacles), independent of
+  // optimistic/UNKNOWN policy used for distance_buffer_ above.
+  // ################################
+  for (int x = min_esdf[0]; x <= max_esdf[0]; x++) {
+    fillESDF(
+        [&](int y) {
+          int adr = toAddress(x, y);
+          return md_->occupancy_buffer_inflate_[adr] == 1 ? 0 :
+                                                            std::numeric_limits<double>::max();
+        },
+        [&](int y, double val) { md_->tmp_buffer_[toAddress(x, y)] = val; }, min_esdf[1],
+        max_esdf[1], 1);
+  }
+  for (int y = min_esdf[1]; y <= max_esdf[1]; y++) {
+    fillESDF([&](int x) { return md_->tmp_buffer_[toAddress(x, y)]; },
+        [&](int x, double val) {
+          md_->distance_buffer_obs_[toAddress(x, y)] = mp_->resolution_ * std::sqrt(val);
+        },
+        min_esdf[0], max_esdf[0], 0);
+  }
+  // ################################
 
   // Compute signed distance field if requested
   if (mp_->signed_dist_) {

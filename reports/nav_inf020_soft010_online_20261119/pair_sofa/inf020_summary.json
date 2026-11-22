@@ -1,0 +1,1047 @@
+{
+  "status": "ok",
+  "run_id": "navinf020_20261119_210100_sofa_inf020",
+  "control_mode": "kinematic_state_set",
+  "apexnav_planner": "exploration_node_real",
+  "scripted_policy_used": false,
+  "termination": "explore_budget_exhausted",
+  "error": null,
+  "elapsed_sec": 263.23266315460205,
+  "n_steps": 126,
+  "seen_plan_actions": 127,
+  "n_init_lookaround_actions": 26,
+  "n_explore_planner_actions": 100,
+  "entered_callActionPlanner": true,
+  "apexnav_init_lookaround_budget": 26,
+  "max_steps": 150,
+  "max_explore_actions": 100,
+  "effective_budget": {
+    "max_steps": 150,
+    "max_explore_actions": 100,
+    "n_init_lookaround_actions": 26,
+    "n_explore_planner_actions": 100,
+    "n_blocked_recovery": 24,
+    "termination": "explore_budget_exhausted"
+  },
+  "sum_moved_m": 1.4999999999999993,
+  "sum_abs_yaw_delta": 6.295651944693833,
+  "n_blocked_exec": 106,
+  "n_truncated_exec": 7,
+  "n_blocked_recovery": 24,
+  "spawn_status": "ok",
+  "spawn": {
+    "x": -1.7573800086975098,
+    "z": -2.3178300857543945,
+    "yaw": 2.9158944064588135,
+    "floor_y": 0.01338,
+    "base_y": 0.32270078661680224,
+    "contacts": 0,
+    "upright": {
+      "up_dot_hab_y": 1.0,
+      "fwd_xz_norm": 1.0000000168320895,
+      "wheel_y_min": 0.10030248761177063,
+      "wheel_y_max": 0.10145752131938934,
+      "wheel_y_spread": 0.0011550337076187134
+    },
+    "wheels": {
+      "fr_wheel_link": 0.10145750641822815,
+      "fl_wheel_link": 0.10030250251293182,
+      "rl_wheel_link": 0.10030248761177063,
+      "rr_wheel_link": 0.10145752131938934
+    },
+    "wheel_mean_agl": 0.08750000446557998,
+    "ok": true,
+    "offset_from_episode_m": 1.2000000857543944,
+    "nav_clearance_m": 0.5555620789527893,
+    "adapted_episode": true,
+    "episode_start_xz": [
+      -1.75738,
+      -1.11783
+    ],
+    "n_trials": 60,
+    "trial_summary": [
+      {
+        "contacts": 15,
+        "ok": true,
+        "offset": 3.905154602478328e-08,
+        "nav_clearance_m": 0.6896214485168457,
+        "x": -1.7573800086975098,
+        "z": -1.1178300380706787
+      },
+      {
+        "contacts": 39,
+        "ok": true,
+        "offset": 0.4999999913024916,
+        "nav_clearance_m": 0.4458092451095581,
+        "x": -1.2573800086975098,
+        "z": -1.1178300380706787
+      },
+      {
+        "contacts": 11,
+        "ok": true,
+        "offset": 0.5000000223137002,
+        "nav_clearance_m": 0.6731966137886047,
+        "x": -1.3243672847747803,
+        "z": -0.8678299784660339
+      },
+      {
+        "contacts": 16,
+        "ok": true,
+        "offset": 0.4999999817600517,
+        "nav_clearance_m": 0.6497610807418823,
+        "x": -1.5073800086975098,
+        "z": -0.6848173141479492
+      },
+      {
+        "contacts": 13,
+        "ok": true,
+        "offset": 0.5000000215339662,
+        "nav_clearance_m": 0.41337135434150696,
+        "x": -1.7573800086975098,
+        "z": -0.6178299784660339
+      },
+      {
+        "contacts": 26,
+        "ok": true,
+        "offset": 0.4999999904575618,
+        "nav_clearance_m": 0.31332263350486755,
+        "x": -2.0073800086975098,
+        "z": -0.6848173141479492
+      },
+      {
+        "contacts": 28,
+        "ok": true,
+        "offset": 0.500000037378229,
+        "nav_clearance_m": 0.2566087245941162,
+        "x": -2.1903927326202393,
+        "z": -0.8678299784660339
+      },
+      {
+        "contacts": 52,
+        "ok": false,
+        "offset": 0.5000000086975113,
+        "nav_clearance_m": 0.1896214485168457,
+        "x": -2.2573800086975098,
+        "z": -1.1178300380706787
+      },
+      {
+        "contacts": 20,
+        "ok": true,
+        "offset": 0.5000000456465855,
+        "nav_clearance_m": 0.2566087245941162,
+        "x": -2.1903927326202393,
+        "z": -1.3678300380706787
+      },
+      {
+        "contacts": 12,
+        "ok": true,
+        "offset": 0.49999995315963947,
+        "nav_clearance_m": 0.4396214485168457,
+        "x": -2.0073800086975098,
+        "z": -1.5508426427841187
+      },
+      {
+        "contacts": 9,
+        "ok": true,
+        "offset": 0.5000000380706786,
+        "nav_clearance_m": 0.5210773944854736,
+        "x": -1.7573800086975098,
+        "z": -1.6178300380706787
+      },
+      {
+        "contacts": 30,
+        "ok": true,
+        "offset": 0.4999999444621287,
+        "nav_clearance_m": 0.31207990646362305,
+        "x": -1.5073800086975098,
+        "z": -1.5508426427841187
+      },
+      {
+        "contacts": 83,
+        "ok": false,
+        "offset": 0.500000030582057,
+        "nav_clearance_m": 0.31069687008857727,
+        "x": -1.3243672847747803,
+        "z": -1.3678300380706787
+      },
+      {
+        "contacts": 65,
+        "ok": false,
+        "offset": 0.80000000322342,
+        "nav_clearance_m": 0.2391844540834427,
+        "x": -0.9573799967765808,
+        "z": -1.1178300380706787
+      },
+      {
+        "contacts": 14,
+        "ok": true,
+        "offset": 0.7999999805448509,
+        "nav_clearance_m": 0.6030042767524719,
+        "x": -1.0645596981048584,
+        "z": -0.7178300023078918
+      },
+      {
+        "contacts": 9,
+        "ok": true,
+        "offset": 0.7999999916103395,
+        "nav_clearance_m": 0.6109405159950256,
+        "x": -1.3573800325393677,
+        "z": -0.42500966787338257
+      }
+    ],
+    "arm_q_used": [
+      0.236,
+      0.086,
+      -2.398,
+      -0.83,
+      -1.335,
+      0.0
+    ],
+    "spawn_policy": "prefer_open_clearance",
+    "robot_scale": 0.7,
+    "scale_tag": "scaled_robot_proxy_070",
+    "forced_from": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/formalgimbal_formal150_full_20261117_190344_TEEsavR23oF_sofa_0/start_pose.json"
+  },
+  "adapted_episode": true,
+  "robot_scale": 0.7,
+  "scale_tag": "scaled_robot_proxy_070",
+  "urdf": "/workspace/VLN_Mobilemanipulator/adapters/habitat_rangercr10/assets/urdf/rangercr10lidar_habitat_stage410d_ec5fd65_s070.urdf",
+  "footprint": {
+    "robot_scale": 0.7,
+    "scale_tag": "scaled_robot_proxy_070",
+    "chassis_half_length_m": 0.4557,
+    "chassis_half_width_m": 0.30428999999999995,
+    "chassis_length_m": 0.9114,
+    "chassis_width_m": 0.6085799999999999,
+    "chassis_circumscribed_radius_m": 0.5479551935149441,
+    "wheel_track_half_y_m": 0.196,
+    "wheel_base_half_x_m": 0.3115,
+    "wheel_radius_mesh_m": 0.10717,
+    "wheel_radius_snap_m": 0.0875,
+    "default_base_y_m": 0.30933,
+    "arm_home_xy_reach_m": 0.735,
+    "cam_height_target_m": 0.616,
+    "min_corridor_width_for_straight_m": 0.7085799999999999,
+    "min_turn_in_place_diameter_m": 1.1959103870298884,
+    "source_1x": "MuJoCo base_link_col Stage4.10d + URDF wheel origins",
+    "note": "proxy geometric scale; not a real Ranger resize"
+  },
+  "planner_inflation_note": "ApexNav overlay still legacy018 (0.18m) unless INFLATION_PROFILE overridden; planner success \u2260 scaled footprint safety.",
+  "online_grid_map": {
+    "has_data": true,
+    "has_value_map": true,
+    "last_cosine": 0.24962587654590607,
+    "stats": {
+      "occupied": 639,
+      "occupied_msgs": 1034,
+      "free": 4160,
+      "free_msgs": 1034,
+      "unknown": 13864,
+      "unknown_msgs": 1032,
+      "occupied_inflate": 2686,
+      "occupied_inflate_msgs": 1034,
+      "value_map": 4160,
+      "value_map_msgs": 1029,
+      "cosine_msgs": 127,
+      "last_cosine_x1000": 250
+    },
+    "note": "Demo overlays /grid_map/value_map (ApexNav.rviz yellow\u2192red) on free cells"
+  },
+  "floor_y_hab": 0.01338,
+  "ros_z_mode": "hab_y_minus_floor_y_agl",
+  "first_plan_diag": {
+    "resolution_m": 0.05,
+    "base_ros_xy": [
+      2.3178300857543945,
+      1.7573800086975098
+    ],
+    "base_yaw_ros": -2.0832272367535154,
+    "base_grid_ij": [
+      46,
+      35
+    ],
+    "base_cell_state": "unknown",
+    "counts": {
+      "free_pts": 4145,
+      "occupied_pts": 639,
+      "unknown_pts": 13879,
+      "inflate_pts": 2686,
+      "free_voxels": 4145,
+      "occ_voxels": 639,
+      "unk_voxels": 13879,
+      "inflate_voxels": 2686
+    },
+    "free_component_from_start": 1688,
+    "frontier_seed_cells": 357,
+    "frontier_clusters": 12,
+    "frontier_clusters_top": [
+      {
+        "n_cells": 114,
+        "center_xy": [
+          2.8394736842105264,
+          1.7701754385964912
+        ]
+      },
+      {
+        "n_cells": 54,
+        "center_xy": [
+          2.672222222222222,
+          6.152777777777779
+        ]
+      },
+      {
+        "n_cells": 49,
+        "center_xy": [
+          1.7474489795918366,
+          1.698469387755102
+        ]
+      },
+      {
+        "n_cells": 46,
+        "center_xy": [
+          3.5880434782608694,
+          7.026086956521739
+        ]
+      },
+      {
+        "n_cells": 24,
+        "center_xy": [
+          2.145833333333333,
+          3.9791666666666665
+        ]
+      },
+      {
+        "n_cells": 13,
+        "center_xy": [
+          2.536538461538462,
+          4.001923076923077
+        ]
+      },
+      {
+        "n_cells": 12,
+        "center_xy": [
+          5.170833333333334,
+          0.9458333333333334
+        ]
+      },
+      {
+        "n_cells": 10,
+        "center_xy": [
+          2.4,
+          4.45
+        ]
+      },
+      {
+        "n_cells": 10,
+        "center_xy": [
+          0.7400000000000001,
+          -0.165
+        ]
+      },
+      {
+        "n_cells": 9,
+        "center_xy": [
+          3.7583333333333337,
+          3.8416666666666663
+        ]
+      },
+      {
+        "n_cells": 9,
+        "center_xy": [
+          2.275,
+          3.825
+        ]
+      },
+      {
+        "n_cells": 7,
+        "center_xy": [
+          4.2821428571428575,
+          0.8321428571428572
+        ]
+      }
+    ],
+    "astar_trials_n": 12,
+    "astar_ok_n": 0,
+    "astar_trials": [
+      {
+        "ok": false,
+        "reason": "start_not_free_no_nearby_free",
+        "start_ij": [
+          46,
+          35
+        ],
+        "goal_ij": [
+          56,
+          35
+        ],
+        "start_state_hint": "blocked_or_unknown",
+        "frontier_center_xy": [
+          2.8394736842105264,
+          1.7701754385964912
+        ],
+        "frontier_n_cells": 114
+      },
+      {
+        "ok": false,
+        "reason": "start_not_free_no_nearby_free",
+        "start_ij": [
+          46,
+          35
+        ],
+        "goal_ij": [
+          53,
+          123
+        ],
+        "start_state_hint": "blocked_or_unknown",
+        "frontier_center_xy": [
+          2.672222222222222,
+          6.152777777777779
+        ],
+        "frontier_n_cells": 54
+      },
+      {
+        "ok": false,
+        "reason": "start_not_free_no_nearby_free",
+        "start_ij": [
+          46,
+          35
+        ],
+        "goal_ij": [
+          34,
+          33
+        ],
+        "start_state_hint": "blocked_or_unknown",
+        "frontier_center_xy": [
+          1.7474489795918366,
+          1.698469387755102
+        ],
+        "frontier_n_cells": 49
+      },
+      {
+        "ok": false,
+        "reason": "start_not_free_no_nearby_free",
+        "start_ij": [
+          46,
+          35
+        ],
+        "goal_ij": [
+          71,
+          140
+        ],
+        "start_state_hint": "blocked_or_unknown",
+        "frontier_center_xy": [
+          3.5880434782608694,
+          7.026086956521739
+        ],
+        "frontier_n_cells": 46
+      },
+      {
+        "ok": false,
+        "reason": "start_not_free_no_nearby_free",
+        "start_ij": [
+          46,
+          35
+        ],
+        "goal_ij": [
+          42,
+          79
+        ],
+        "start_state_hint": "blocked_or_unknown",
+        "frontier_center_xy": [
+          2.145833333333333,
+          3.9791666666666665
+        ],
+        "frontier_n_cells": 24
+      },
+      {
+        "ok": false,
+        "reason": "start_not_free_no_nearby_free",
+        "start_ij": [
+          46,
+          35
+        ],
+        "goal_ij": [
+          50,
+          80
+        ],
+        "start_state_hint": "blocked_or_unknown",
+        "frontier_center_xy": [
+          2.536538461538462,
+          4.001923076923077
+        ],
+        "frontier_n_cells": 13
+      },
+      {
+        "ok": false,
+        "reason": "start_not_free_no_nearby_free",
+        "start_ij": [
+          46,
+          35
+        ],
+        "goal_ij": [
+          103,
+          18
+        ],
+        "start_state_hint": "blocked_or_unknown",
+        "frontier_center_xy": [
+          5.170833333333334,
+          0.9458333333333334
+        ],
+        "frontier_n_cells": 12
+      },
+      {
+        "ok": false,
+        "reason": "start_not_free_no_nearby_free",
+        "start_ij": [
+          46,
+          35
+        ],
+        "goal_ij": [
+          47,
+          89
+        ],
+        "start_state_hint": "blocked_or_unknown",
+        "frontier_center_xy": [
+          2.4,
+          4.45
+        ],
+        "frontier_n_cells": 10
+      },
+      {
+        "ok": false,
+        "reason": "start_not_free_no_nearby_free",
+        "start_ij": [
+          46,
+          35
+        ],
+        "goal_ij": [
+          14,
+          -4
+        ],
+        "start_state_hint": "blocked_or_unknown",
+        "frontier_center_xy": [
+          0.7400000000000001,
+          -0.165
+        ],
+        "frontier_n_cells": 10
+      },
+      {
+        "ok": false,
+        "reason": "start_not_free_no_nearby_free",
+        "start_ij": [
+          46,
+          35
+        ],
+        "goal_ij": [
+          75,
+          76
+        ],
+        "start_state_hint": "blocked_or_unknown",
+        "frontier_center_xy": [
+          3.7583333333333337,
+          3.8416666666666663
+        ],
+        "frontier_n_cells": 9
+      },
+      {
+        "ok": false,
+        "reason": "start_not_free_no_nearby_free",
+        "start_ij": [
+          46,
+          35
+        ],
+        "goal_ij": [
+          45,
+          76
+        ],
+        "start_state_hint": "blocked_or_unknown",
+        "frontier_center_xy": [
+          2.275,
+          3.825
+        ],
+        "frontier_n_cells": 9
+      },
+      {
+        "ok": false,
+        "reason": "start_not_free_no_nearby_free",
+        "start_ij": [
+          46,
+          35
+        ],
+        "goal_ij": [
+          85,
+          16
+        ],
+        "start_state_hint": "blocked_or_unknown",
+        "frontier_center_xy": [
+          4.2821428571428575,
+          0.8321428571428572
+        ],
+        "frontier_n_cells": 7
+      }
+    ],
+    "hypothesis": "If base_cell_state!=free or free_component small and astar_ok_n==0, NO_PASSABLE is map connectivity / start occupancy \u2014 not missing frontiers.",
+    "diag_kind": "python_approx_frontier_astar_NOT_native_cpp_planner",
+    "odom_xy_source": "chassis_base_link",
+    "chassis_ros_xy": [
+      2.3178300857543945,
+      1.7573800086975098
+    ],
+    "published_odom_xy": [
+      2.3178300857543945,
+      1.7573800086975098
+    ],
+    "publish_meta": {
+      "stamp": 1795093460.9164507,
+      "floor_y_hab": 0.01338,
+      "base_ros_chassis": [
+        2.3178300857543945,
+        1.7573800086975098,
+        0.30932078661680223
+      ],
+      "odom_ros": [
+        2.3178300857543945,
+        1.7573800086975098,
+        0.30932078661680223
+      ],
+      "odom_xy_source": "chassis_base_link",
+      "odom_xy_mode": "chassis",
+      "base_q_xyzw": [
+        0.0,
+        0.0,
+        -0.8632199504502058,
+        0.5048280074884357
+      ],
+      "base_yaw_hab": 7.341550724015865,
+      "base_yaw_ros": -2.0832272367535154,
+      "camera_ros": [
+        1.9394621849060059,
+        1.23707914352417,
+        0.5997463971328736
+      ],
+      "camera_q_xyzw": [
+        0.25324562058660266,
+        0.9670841514551534,
+        -0.023976455811573778,
+        -0.006326865154878957
+      ],
+      "camera_frame_published": "optical",
+      "depth_norm_mean": 0.12545812129974365,
+      "depth_m_mean": 0.6272906064987183,
+      "depth_validity": {
+        "n_pixels": 307200.0,
+        "n_invalid_range": 0.0,
+        "n_self_hit": 266810.0,
+        "n_nan_published": 266810.0,
+        "frac_invalid_range": 0.0,
+        "frac_self_hit": 0.8685221354166667,
+        "frac_nan_published": 0.8685221354166667,
+        "geometric_self_hit": 1.0,
+        "fallback_near_m": 0.0,
+        "camera_frame": "optical",
+        "note": "invalid\u2192NaN; never rewritten as max-range"
+      },
+      "invalid_depth_policy": "nan_skip_not_max_range",
+      "base_ros": [
+        2.3178300857543945,
+        1.7573800086975098,
+        0.30932078661680223
+      ],
+      "odom_ros_plan_proxy": [
+        2.3178300857543945,
+        1.7573800086975098,
+        0.30932078661680223
+      ]
+    },
+    "expl_result": 0,
+    "final_state": 0,
+    "planner_action": "TURN_LEFT",
+    "floor_y_hab": 0.01338,
+    "camera_ros_z_agl": 0.5997463971328736
+  },
+  "final_distance_to_goal_eval_only": 6.339533062922137,
+  "final_distance_to_goal_point_eval_only": 8.534759942745346,
+  "distance_to_goal_mode": "VIEW_POINTS",
+  "success_claimed": false,
+  "near_goal": false,
+  "locomanip_commit": "ec5fd6584bd3d562812c12ef2d8e2f87fba98175",
+  "out_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/navinf020_20261119_210100_sofa_inf020",
+  "executor_version": "kinematic_collision_v1.2",
+  "camera_mode": "fixed_base_gimbal",
+  "simulated_gimbal": true,
+  "camera_mode_meta": {
+    "camera_mode": "fixed_base_gimbal",
+    "simulated_gimbal": true,
+    "arm_baseline": [
+      0.236,
+      0.086,
+      -2.398,
+      -0.83,
+      -1.335,
+      0.0
+    ],
+    "hfov_deg": 79.0,
+    "resolution_hw": [
+      480,
+      640
+    ],
+    "fixed_cam_pos_base_m": [
+      0.6389837265014648,
+      -0.07466650009155273,
+      0.290425568819046
+    ],
+    "init_optical_pitch_rad": 0.00019989907874678223,
+    "gimbal_pitch_step_rad": 0.5235987755982988,
+    "gimbal_pitch_limit_rad": 1.5207963267948965,
+    "warning_cam_inside_body": false,
+    "note": "LOOK changes orientation only; arm joints frozen. simulated_gimbal \u2014 not a physical pan-tilt unit."
+  },
+  "initial_penetration": {
+    "initial_penetration": false,
+    "contacts": {
+      "wheel_support": 14,
+      "robot_env": 0,
+      "self_collision": 0,
+      "other": 0,
+      "total": 14,
+      "robot_env_links": [],
+      "min_robot_env_distance": null,
+      "blocking": false,
+      "details": [
+        {
+          "kind": "wheel_support",
+          "robot_link": "fr_wheel_link",
+          "other_object_id": 0,
+          "other_object": "stage_static",
+          "vs_stage": true,
+          "position_xyz": [
+            -1.4938827753067017,
+            -0.0051030442118644714,
+            -2.601045846939087
+          ],
+          "normal_on_b_xyz": [
+            -0.0320109948515892,
+            0.9872254133224487,
+            0.15608151257038116
+          ],
+          "normal_y_abs": 0.9872254133224487,
+          "distance": -0.0443120039999485,
+          "near_floor": true,
+          "upright": true,
+          "shallow": true,
+          "is_wheel": true
+        },
+        {
+          "kind": "wheel_support",
+          "robot_link": "fr_wheel_link",
+          "other_object_id": 0,
+          "other_object": "stage_static",
+          "vs_stage": true,
+          "position_xyz": [
+            -1.4939672946929932,
+            -0.005626186728477478,
+            -2.5972707271575928
+          ],
+          "normal_on_b_xyz": [
+            0.0012663387460634112,
+            0.999998927116394,
+            0.000692675297614187
+          ],
+          "normal_y_abs": 0.999998927116394,
+          "distance": -0.044573843479156494,
+          "near_floor": true,
+          "upright": true,
+          "shallow": true,
+          "is_wheel": true
+        },
+        {
+          "kind": "wheel_support",
+          "robot_link": "fl_wheel_link",
+          "other_object_id": 0,
+          "other_object": "stage_static",
+          "vs_stage": true,
+          "position_xyz": [
+            -1.8673079013824463,
+            -0.006802402436733246,
+            -2.6718809604644775
+          ],
+          "normal_on_b_xyz": [
+            0.0023639833088964224,
+            0.9999943375587463,
+            -0.002392340684309602
+          ],
+          "normal_y_abs": 0.9999943375587463,
+          "distance": -0.04624183848500252,
+          "near_floor": true,
+          "upright": true,
+          "shallow": true,
+          "is_wheel": true
+        },
+        {
+          "kind": "wheel_support",
+          "robot_link": "fl_wheel_link",
+          "other_object_id": 0,
+          "other_object": "stage_static",
+          "vs_stage": true,
+          "position_xyz": [
+            -1.8956836462020874,
+            0.01011522114276886,
+            -2.651435613632202
+          ],
+          "normal_on_b_xyz": [
+            0.4811670482158661,
+            0.8739864826202393,
+            -0.06801477074623108
+          ],
+          "normal_y_abs": 0.8739864826202393,
+          "distance": -0.02789938449859619,
+          "near_floor": true,
+          "upright": true,
+          "shallow": true,
+          "is_wheel": true
+        },
+        {
+          "kind": "wheel_support",
+          "robot_link": "fl_wheel_link",
+          "other_object_id": 0,
+          "other_object": "stage_static",
+          "vs_stage": true,
+          "position_xyz": [
+            -1.87239670753479,
+            0.014846183359622955,
+            -2.621230125427246
+          ],
+          "normal_on_b_xyz": [
+            0.13906054198741913,
+            0.9303091168403625,
+            -0.33939218521118164
+          ],
+          "normal_y_abs": 0.9303091168403625,
+          "distance": -0.019471952691674232,
+          "near_floor": true,
+          "upright": true,
+          "shallow": true,
+          "is_wheel": true
+        },
+        {
+          "kind": "wheel_support",
+          "robot_link": "fl_wheel_link",
+          "other_object_id": 0,
+          "other_object": "stage_static",
+          "vs_stage": true,
+          "position_xyz": [
+            -1.8992823362350464,
+            0.00603242963552475,
+            -2.6532974243164062
+          ],
+          "normal_on_b_xyz": [
+            0.32802751660346985,
+            0.943574070930481,
+            -0.04545293748378754
+          ],
+          "normal_y_abs": 0.943574070930481,
+          "distance": -0.033233437687158585,
+          "near_floor": true,
+          "upright": true,
+          "shallow": true,
+          "is_wheel": true
+        },
+        {
+          "kind": "wheel_support",
+          "robot_link": "fl_wheel_link",
+          "other_object_id": 0,
+          "other_object": "stage_static",
+          "vs_stage": true,
+          "position_xyz": [
+            -1.84270441532135,
+            0.001461915671825409,
+            -2.690171957015991
+          ],
+          "normal_on_b_xyz": [
+            -0.7783762812614441,
+            0.626057505607605,
+            -0.0467149093747139
+          ],
+          "normal_y_abs": 0.626057505607605,
+          "distance": -0.03671322762966156,
+          "near_floor": true,
+          "upright": true,
+          "shallow": true,
+          "is_wheel": true
+        },
+        {
+          "kind": "wheel_support",
+          "robot_link": "fl_wheel_link",
+          "other_object_id": 0,
+          "other_object": "stage_static",
+          "vs_stage": true,
+          "position_xyz": [
+            -1.8446564674377441,
+            -0.0008822530508041382,
+            -2.6927859783172607
+          ],
+          "normal_on_b_xyz": [
+            -0.45713555812835693,
+            0.8819271922111511,
+            0.11502861976623535
+          ],
+          "normal_y_abs": 0.8819271922111511,
+          "distance": -0.04089830815792084,
+          "near_floor": true,
+          "upright": true,
+          "shallow": true,
+          "is_wheel": true
+        },
+        {
+          "kind": "wheel_support",
+          "robot_link": "fl_wheel_link",
+          "other_object_id": 0,
+          "other_object": "stage_static",
+          "vs_stage": true,
+          "position_xyz": [
+            -1.8572813272476196,
+            -0.0040368810296058655,
+            -2.6974680423736572
+          ],
+          "normal_on_b_xyz": [
+            -0.21339015662670135,
+            0.9638920426368713,
+            0.15930059552192688
+          ],
+          "normal_y_abs": 0.9638920426368713,
+          "distance": -0.043456971645355225,
+          "near_floor": true,
+          "upright": true,
+          "shallow": true,
+          "is_wheel": true
+        },
+        {
+          "kind": "wheel_support",
+          "robot_link": "fl_wheel_link",
+          "other_object_id": 0,
+          "other_object": "stage_static",
+          "vs_stage": true,
+          "position_xyz": [
+            -1.8731904029846191,
+            -0.006095655262470245,
+            -2.686133861541748
+          ],
+          "normal_on_b_xyz": [
+            -0.012790399603545666,
+            0.9983454346656799,
+            0.05606016144156456
+          ],
+          "normal_y_abs": 0.9983454346656799,
+          "distance": -0.04514245688915253,
+          "near_floor": true,
+          "upright": true,
+          "shallow": true,
+          "is_wheel": true
+        },
+        {
+          "kind": "wheel_support",
+          "robot_link": "rl_wheel_link",
+          "other_object_id": 0,
+          "other_object": "stage_static",
+          "vs_stage": true,
+          "position_xyz": [
+            -2.017770767211914,
+            -0.0065193772315979,
+            -2.080392599105835
+          ],
+          "normal_on_b_xyz": [
+            0.10385154187679291,
+            0.9884588718414307,
+            0.11028990149497986
+          ],
+          "normal_y_abs": 0.9884588718414307,
+          "distance": -0.043678056448698044,
+          "near_floor": true,
+          "upright": true,
+          "shallow": true,
+          "is_wheel": true
+        },
+        {
+          "kind": "wheel_support",
+          "robot_link": "rl_wheel_link",
+          "other_object_id": 0,
+          "other_object": "stage_static",
+          "vs_stage": true,
+          "position_xyz": [
+            -2.0143730640411377,
+            -0.006729647517204285,
+            -2.078211545944214
+          ],
+          "normal_on_b_xyz": [
+            -0.014235269278287888,
+            0.9997459650039673,
+            -0.017476260662078857
+          ],
+          "normal_y_abs": 0.9997459650039673,
+          "distance": -0.04369668662548065,
+          "near_floor": true,
+          "upright": true,
+          "shallow": true,
+          "is_wheel": true
+        }
+      ],
+      "contact_test_raw": true,
+      "note": "contact_test_raw is True whenever any contact exists (incl. wheel support); do NOT treat contact_test_raw==False as clear, or True as blocking."
+    },
+    "executor_version": "kinematic_collision_v1.2",
+    "spawn_status": "ok",
+    "note": "Initial penetration is reported separately and is NOT a legal motion baseline. Do not enlarge contact tolerance to clear invalid spawns."
+  },
+  "camera_runtime": {
+    "camera_mode": "fixed_base_gimbal",
+    "simulated_gimbal": true,
+    "gimbal_pitch_rad": -1.5207963267948965,
+    "arm_q": [
+      0.236,
+      0.086,
+      -2.398,
+      -0.83,
+      -1.335,
+      0.0
+    ],
+    "arm_is_apexnav_init": true,
+    "fixed_cam_pos_base_m": [
+      0.6389837265014648,
+      -0.07466650009155273,
+      0.290425568819046
+    ],
+    "optical_pos_world": [
+      -0.4528558850288391,
+      0.6131263971328735,
+      -0.7355591058731079
+    ]
+  },
+  "notes": [
+    "Executor kinematic_collision_v1.2: probe/commit; start/first_blocking/committed contacts logged.",
+    "Wheel support requires upright normal; vs_stage alone does not exempt side hits.",
+    "ApexNav primary camera_mode=fixed_base_gimbal (simulated_gimbal); LOOK does not move optical center.",
+    "legacy_arm_look keeps joint3 LOOK for old-result review only.",
+    "F0/expand affect map query only \u2014 do not exempt execution collision.",
+    "Initial EE uses ARM_APEXNAV_INIT FK (height \u00d7 robot_scale); runtime sensor_pose is full SE3.",
+    "ROS Z = Habitat AGL (hab_y - floor_y) so ApexNav map_ros height filter [0.28,1.18] matches furniture.",
+    "Goal distance is eval-only (Habitat VIEW_POINTS; POINT kept as diagnostic) and not fed to planner.",
+    "near_goal is distance diagnostic only \u2014 never auto-STOP or success.",
+    "ACTION_FINISH means handler done, not that requested yaw/translation completed.",
+    "Blocked-recovery LOOK/opposite-turn after 3 identical full rejects; counts against budget.",
+    "Initial penetration \u2192 spawn_status=invalid_initial_penetration; do not enlarge contact tolerance.",
+    "URDF Z-up\u2192Habitat Y-up via Ry(-90)*Rx(-90); wheels snapped to floor_y.",
+    "Init lookaround \u2260 adaptive explore; explore starts after 26 FSM init actions.",
+    "Demo map panel uses ApexNav /grid_map/* (not Habitat GT).",
+    "scaled_robot_proxy_* results are Habitat adapter proxies \u2014 NOT real Ranger+CR10 scores.",
+    "New execution/camera protocol baselines are NOT causally comparable to pre-fix trajectories."
+  ],
+  "initial_camera": {
+    "config": "ARM_APEXNAV_INIT",
+    "record_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/navinf020_20261119_210100_sofa_inf020/camera_init",
+    "cam_height_target_m": 0.616
+  },
+  "demo": {
+    "layout": "16:9 third + EE semantic + /grid_map",
+    "frames_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/navinf020_20261119_210100_sofa_inf020/demo"
+  }
+}

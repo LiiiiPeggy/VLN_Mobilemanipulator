@@ -1,0 +1,38 @@
+{
+  "source_run": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/formalgimbal_formal150_full_20261117_190344_TEEsavR23oF_toilet_2",
+  "plan_seq": 16,
+  "chassis": [
+    5.8493,
+    -0.1174
+  ],
+  "yaw_ros": -0.40101588693727663,
+  "resolution": 0.05,
+  "selected_path": [
+    [
+      5.8493,
+      -0.1174
+    ],
+    [
+      6.0658,
+      -0.2424
+    ],
+    [
+      6.3158,
+      -0.2424
+    ],
+    [
+      6.5658,
+      -0.2424
+    ],
+    [
+      6.6426,
+      -0.3162
+    ]
+  ],
+  "selected_path_len": 0.8565,
+  "result": "EXPLORATION",
+  "stop_reason": "frontier_path_ok",
+  "robot_scale": 0.7,
+  "n_traj": 82,
+  "note": "dev case from formal/e2e dump; not user video"
+}

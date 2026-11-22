@@ -130,6 +130,11 @@ private:
   bool edgeWouldFailSafetySilent(const Eigen::Vector2d& from, const Eigen::Vector2d& to,
       int safety_mode) const;
   bool unknownAllowedByStartupPrior(const Eigen::Vector2d& pos) const;
+  // ################################
+  // Soft clearance cost outside hard inflate: length × [1 + w·max(0,1−d/R)²].
+  // d = getDistanceToKnownObstacle (from inflate boundary; do NOT subtract half_w).
+  // ################################
+  double edgeTraversalCost(const Eigen::Vector2d& from, const Eigen::Vector2d& to) const;
 
   // main data structure
   std::vector<Node2DPtr> path_node_pool_;
@@ -168,6 +173,9 @@ private:
   double f0_half_l_ = 0.0;
   double f0_half_w_ = 0.0;
   std::vector<Eigen::Vector2i> f0_cells_;
+  // Soft cost (P2); w=0 disables.
+  double soft_cost_range_m_ = 0.0;
+  double soft_cost_weight_ = 0.0;
   // ################################
 };
 

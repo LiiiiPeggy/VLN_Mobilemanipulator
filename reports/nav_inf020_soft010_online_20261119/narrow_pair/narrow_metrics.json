@@ -1,0 +1,169 @@
+{
+  "toilet_legacy018": {
+    "run": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real_agentA_navinf/navinf_narrow_A_20261122_130624_toilet_legacy018",
+    "termination": "exception",
+    "n_steps": 0,
+    "blocked": 0,
+    "truncated": 0,
+    "success": false,
+    "error": "RuntimeError: PLANNER_HANDSHAKE_TIMEOUT: ros_state stuck at 0 for 120.0s",
+    "infl": {
+      "inflation_m": 0.18,
+      "resolution": 0.05,
+      "inf_step": 4,
+      "soft": null,
+      "lock": false,
+      "tsp_died": true
+    },
+    "plan_len": 0.0,
+    "exec_len": 0.0,
+    "plan_clear": {},
+    "exec_clear": {},
+    "diverge": null,
+    "pair_usable": false
+  },
+  "toilet_inf020": {
+    "run": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real_agentA_navinf/navinf_narrow_A_20261122_130624_toilet_inf020",
+    "termination": "planner_stop",
+    "n_steps": 66,
+    "blocked": 54,
+    "truncated": 0,
+    "success": false,
+    "error": "",
+    "infl": {
+      "inflation_m": 0.2,
+      "resolution": 0.05,
+      "inf_step": 4,
+      "soft": {
+        "R": 0.1,
+        "w": 2.0
+      },
+      "lock": true,
+      "tsp_died": true
+    },
+    "plan_len": 0.8565059077792222,
+    "exec_len": 0.0,
+    "plan_clear": {
+      "n": 5,
+      "edge_min": 0.09923983780632634,
+      "edge_p10": 0.12794249970359337,
+      "edge_mean": 0.2619575120043128
+    },
+    "exec_clear": {
+      "n": 66,
+      "edge_min": 0.5442314606391304,
+      "edge_p10": 0.5442314606391304,
+      "edge_mean": 0.5442314606391304
+    },
+    "diverge": null,
+    "pair_usable": true
+  },
+  "dd4b_legacy018": {
+    "run": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real_agentA_navinf/navinf_narrow_A_20261122_130624_dd4b_legacy018",
+    "termination": "explore_budget_exhausted",
+    "n_steps": 126,
+    "blocked": 42,
+    "truncated": 7,
+    "success": false,
+    "error": "",
+    "infl": {
+      "inflation_m": 0.18,
+      "resolution": 0.05,
+      "inf_step": 4,
+      "soft": null,
+      "lock": false,
+      "tsp_died": true
+    },
+    "plan_len": 5.165414374445955,
+    "exec_len": 2.3750000000000004,
+    "plan_clear": {
+      "n": 22,
+      "edge_min": -0.10864938560718013,
+      "edge_p10": 0.017375142605196712,
+      "edge_mean": 1.1304334358226478
+    },
+    "exec_clear": {
+      "n": 126,
+      "edge_min": 0.3367870884054629,
+      "edge_p10": 0.34714557557807,
+      "edge_mean": 0.4560043396372309
+    },
+    "diverge": {
+      "i": 0,
+      "xy": [
+        1.2264126539230347,
+        -0.35986998677253723
+      ],
+      "yaw": -1.8978694770178564,
+      "dist": 0.7144197441615906
+    },
+    "pair_usable": true
+  },
+  "dd4b_inf020": {
+    "run": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real_agentA_navinf/navinf_narrow_A_20261122_130624_dd4b_inf020",
+    "termination": "explore_budget_exhausted",
+    "n_steps": 126,
+    "blocked": 49,
+    "truncated": 13,
+    "success": false,
+    "error": "",
+    "infl": {
+      "inflation_m": 0.2,
+      "resolution": 0.05,
+      "inf_step": 4,
+      "soft": {
+        "R": 0.1,
+        "w": 2.0
+      },
+      "lock": true,
+      "tsp_died": true
+    },
+    "plan_len": 5.165414374445955,
+    "exec_len": 4.55,
+    "plan_clear": {
+      "n": 22,
+      "edge_min": -0.04453530803082678,
+      "edge_p10": 0.024648536986483074,
+      "edge_mean": 1.1363002026929985
+    },
+    "exec_clear": {
+      "n": 126,
+      "edge_min": 0.33709530483793637,
+      "edge_p10": 0.35078379923553904,
+      "edge_mean": 0.6567518982692977
+    },
+    "diverge": {
+      "i": 0,
+      "xy": [
+        1.2264126539230347,
+        -0.35986998677253723
+      ],
+      "yaw": -1.8978694770178564,
+      "dist": 0.7144197441615906
+    },
+    "pair_usable": true
+  },
+  "toilet_legacy018_retry": {
+    "run": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real_agentA_navinf/navinf_narrow_A_20261122_132305_toilet_legacy018_retry",
+    "termination": "exception",
+    "n_steps": 0,
+    "blocked": 0,
+    "truncated": 0,
+    "success": false,
+    "error": "RuntimeError: PLANNER_HANDSHAKE_TIMEOUT: ros_state stuck at 0 for 120.0s",
+    "infl": {
+      "inflation_m": 0.18,
+      "resolution": 0.05,
+      "inf_step": 4,
+      "soft": null,
+      "lock": false,
+      "tsp_died": true
+    },
+    "plan_len": 0.0,
+    "exec_len": 0.0,
+    "plan_clear": {},
+    "exec_clear": {},
+    "diverge": null,
+    "pair_usable": false
+  }
+}

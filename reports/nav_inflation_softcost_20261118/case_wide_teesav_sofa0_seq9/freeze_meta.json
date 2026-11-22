@@ -1,0 +1,66 @@
+{
+  "source_run": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/formalgimbal_formal150_full_20261117_190344_TEEsavR23oF_sofa_0",
+  "plan_seq": 9,
+  "chassis": [
+    2.0788,
+    1.684
+  ],
+  "yaw_ros": 0.29790052846731285,
+  "resolution": 0.05,
+  "selected_path": [
+    [
+      2.0788,
+      1.684
+    ],
+    [
+      1.9538,
+      1.4675
+    ],
+    [
+      1.8288,
+      1.251
+    ],
+    [
+      1.5788,
+      1.251
+    ],
+    [
+      1.3623,
+      1.126
+    ],
+    [
+      1.2373,
+      0.9095
+    ],
+    [
+      1.1123,
+      0.693
+    ],
+    [
+      0.8958,
+      0.568
+    ],
+    [
+      0.7708,
+      0.3515
+    ],
+    [
+      0.6458,
+      0.135
+    ],
+    [
+      0.6458,
+      -0.115
+    ],
+    [
+      0.7333,
+      -0.15
+    ]
+  ],
+  "selected_path_len": 2.5942,
+  "result": "EXPLORATION",
+  "stop_reason": "frontier_path_ok",
+  "robot_scale": 0.7,
+  "n_traj": 111,
+  "note": "dev case from formal/e2e dump; not user video"
+}

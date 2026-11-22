@@ -1,0 +1,7 @@
+tag	profile	scene	category	episode	spawn
+sofa_legacy018	legacy018	TEEsavR23oF	sofa	0	/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/formalgimbal_formal150_full_20261117_190344_TEEsavR23oF_sofa_0/start_pose.json
+sofa_inf020	inf020_soft010	TEEsavR23oF	sofa	0	/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/formalgimbal_formal150_full_20261117_190344_TEEsavR23oF_sofa_0/start_pose.json
+toilet_legacy018	legacy018	TEEsavR23oF	toilet	2	/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/formalgimbal_formal150_full_20261117_190344_TEEsavR23oF_toilet_2/start_pose.json
+toilet_inf020	inf020_soft010	TEEsavR23oF	toilet	2	/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/formalgimbal_formal150_full_20261117_190344_TEEsavR23oF_toilet_2/start_pose.json
+dd4b_legacy018	legacy018	Dd4bFSTQ8gi	toilet	0	/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/execgimbal_dev24_after_dinofix_20261119_011332_dd4b_toilet_0/start_pose.json
+dd4b_inf020	inf020_soft010	Dd4bFSTQ8gi	toilet	0	/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/execgimbal_dev24_after_dinofix_20261119_011332_dd4b_toilet_0/start_pose.json

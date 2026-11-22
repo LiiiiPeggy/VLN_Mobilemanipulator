@@ -1,0 +1,642 @@
+{
+  "status": "failed",
+  "run_id": "navinf_narrow_A_20261122_132305_toilet_legacy018_retry",
+  "control_mode": "kinematic_state_set",
+  "apexnav_planner": "exploration_node_real",
+  "scripted_policy_used": false,
+  "termination": "exception",
+  "error": "RuntimeError: PLANNER_HANDSHAKE_TIMEOUT: ros_state stuck at 0 for 120.0s",
+  "elapsed_sec": 127.20400357246399,
+  "n_steps": 0,
+  "seen_plan_actions": 0,
+  "n_init_lookaround_actions": 0,
+  "n_explore_planner_actions": 0,
+  "entered_callActionPlanner": false,
+  "apexnav_init_lookaround_budget": 26,
+  "max_steps": 150,
+  "max_explore_actions": 100,
+  "effective_budget": {
+    "max_steps": 150,
+    "max_explore_actions": 100,
+    "n_init_lookaround_actions": 0,
+    "n_explore_planner_actions": 0,
+    "n_blocked_recovery": 0,
+    "termination": "exception"
+  },
+  "sum_moved_m": 0.0,
+  "sum_abs_yaw_delta": 0.0,
+  "n_blocked_exec": 0,
+  "n_truncated_exec": 0,
+  "n_blocked_recovery": 0,
+  "spawn_status": "invalid_initial_penetration",
+  "spawn": {
+    "x": 0.11739999800920486,
+    "z": -5.84930944442749,
+    "yaw": 2.7405767666525156,
+    "floor_y": 0.01338,
+    "base_y": 0.32270080896854403,
+    "contacts": 12,
+    "upright": {
+      "up_dot_hab_y": 1.0,
+      "fwd_xz_norm": 1.0000000340525272,
+      "wheel_y_min": 0.10030248761177063,
+      "wheel_y_max": 0.10145747661590576,
+      "wheel_y_spread": 0.0011549890041351318
+    },
+    "wheels": {
+      "fr_wheel_link": 0.10145747661590576,
+      "fl_wheel_link": 0.10030251741409302,
+      "rl_wheel_link": 0.10030248761177063,
+      "rr_wheel_link": 0.10145744681358337
+    },
+    "wheel_mean_agl": 0.08749998211383819,
+    "ok": true,
+    "offset_from_episode_m": 0.8000002003944533,
+    "nav_clearance_m": 0.614401638507843,
+    "adapted_episode": true,
+    "episode_start_xz": [
+      -0.2826,
+      -6.54213
+    ],
+    "n_trials": 59,
+    "trial_summary": [
+      {
+        "contacts": 22,
+        "ok": true,
+        "offset": 1.5824799411084544e-08,
+        "nav_clearance_m": 0.21440166234970093,
+        "x": -0.2825999855995178,
+        "z": -6.542129993438721
+      },
+      {
+        "contacts": 9,
+        "ok": true,
+        "offset": 0.499999999499321,
+        "nav_clearance_m": 0.33559852838516235,
+        "x": 0.21739999949932098,
+        "z": -6.542129993438721
+      },
+      {
+        "contacts": 11,
+        "ok": true,
+        "offset": 0.5000000090212363,
+        "nav_clearance_m": 0.40375852584838867,
+        "x": 0.15041270852088928,
+        "z": -6.292129993438721
+      },
+      {
+        "contacts": 11,
+        "ok": true,
+        "offset": 0.4999998180343414,
+        "nav_clearance_m": 0.4644016623497009,
+        "x": -0.032600000500679016,
+        "z": -6.10911750793457
+      },
+      {
+        "contacts": 28,
+        "ok": true,
+        "offset": 0.5000000065612797,
+        "nav_clearance_m": 0.21440166234970093,
+        "x": -0.2825999855995178,
+        "z": -6.042129993438721
+      },
+      {
+        "contacts": 26,
+        "ok": true,
+        "offset": 0.48318514559954634,
+        "nav_clearance_m": 0.0,
+        "x": -0.49700164794921875,
+        "z": -6.10911750793457
+      },
+      {
+        "contacts": 39,
+        "ok": true,
+        "offset": 0.3293449102748979,
+        "nav_clearance_m": 0.0,
+        "x": -0.49700164794921875,
+        "z": -6.292129993438721
+      },
+      {
+        "contacts": 131,
+        "ok": false,
+        "offset": 0.6644014572143555,
+        "nav_clearance_m": 0.0,
+        "x": -0.9470014572143555,
+        "z": -6.542129993438721
+      },
+      {
+        "contacts": 55,
+        "ok": false,
+        "offset": 0.5446622583795216,
+        "nav_clearance_m": 0.0,
+        "x": -0.6576143503189087,
+        "z": -6.937125205993652
+      },
+      {
+        "contacts": 61,
+        "ok": false,
+        "offset": 0.4999997997199692,
+        "nav_clearance_m": 0.08172740787267685,
+        "x": -0.5325999855995178,
+        "z": -6.975142478942871
+      },
+      {
+        "contacts": 54,
+        "ok": false,
+        "offset": 0.4999999934387207,
+        "nav_clearance_m": 0.27315497398376465,
+        "x": -0.2825999855995178,
+        "z": -7.042129993438721
+      },
+      {
+        "contacts": 9,
+        "ok": true,
+        "offset": 0.4999998066698733,
+        "nav_clearance_m": 0.4755276143550873,
+        "x": -0.032600000500679016,
+        "z": -6.975142478942871
+      },
+      {
+        "contacts": 8,
+        "ok": true,
+        "offset": 0.5000000024599569,
+        "nav_clearance_m": 0.40258583426475525,
+        "x": 0.15041270852088928,
+        "z": -6.792129993438721
+      },
+      {
+        "contacts": 114,
+        "ok": false,
+        "offset": 0.8000000263214111,
+        "nav_clearance_m": 0.0355985164642334,
+        "x": 0.5174000263214111,
+        "z": -6.542129993438721
+      },
+      {
+        "contacts": 122,
+        "ok": false,
+        "offset": 0.8000000526666047,
+        "nav_clearance_m": 0.23033955693244934,
+        "x": 0.41022032499313354,
+        "z": -6.142129898071289
+      },
+      {
+        "contacts": 12,
+        "ok": true,
+        "offset": 0.8000002003944533,
+        "nav_clearance_m": 0.614401638507843,
+        "x": 0.11739999800920486,
+        "z": -5.84930944442749
+      }
+    ],
+    "arm_q_used": [
+      0.236,
+      0.086,
+      -2.398,
+      -0.83,
+      -1.335,
+      0.0
+    ],
+    "spawn_policy": "prefer_open_clearance",
+    "robot_scale": 0.7,
+    "scale_tag": "scaled_robot_proxy_070",
+    "forced_from": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/formalgimbal_formal150_full_20261117_190344_TEEsavR23oF_toilet_2/start_pose.json"
+  },
+  "adapted_episode": true,
+  "robot_scale": 0.7,
+  "scale_tag": "scaled_robot_proxy_070",
+  "urdf": "/workspace/VLN_Mobilemanipulator/adapters/habitat_rangercr10/assets/urdf/rangercr10lidar_habitat_stage410d_ec5fd65_s070.urdf",
+  "footprint": {
+    "robot_scale": 0.7,
+    "scale_tag": "scaled_robot_proxy_070",
+    "chassis_half_length_m": 0.4557,
+    "chassis_half_width_m": 0.30428999999999995,
+    "chassis_length_m": 0.9114,
+    "chassis_width_m": 0.6085799999999999,
+    "chassis_circumscribed_radius_m": 0.5479551935149441,
+    "wheel_track_half_y_m": 0.196,
+    "wheel_base_half_x_m": 0.3115,
+    "wheel_radius_mesh_m": 0.10717,
+    "wheel_radius_snap_m": 0.0875,
+    "default_base_y_m": 0.30933,
+    "arm_home_xy_reach_m": 0.735,
+    "cam_height_target_m": 0.616,
+    "min_corridor_width_for_straight_m": 0.7085799999999999,
+    "min_turn_in_place_diameter_m": 1.1959103870298884,
+    "source_1x": "MuJoCo base_link_col Stage4.10d + URDF wheel origins",
+    "note": "proxy geometric scale; not a real Ranger resize"
+  },
+  "planner_inflation_note": "ApexNav overlay still legacy018 (0.18m) unless INFLATION_PROFILE overridden; planner success \u2260 scaled footprint safety.",
+  "online_grid_map": {
+    "has_data": false,
+    "has_value_map": false,
+    "last_cosine": 0.12146668136119843,
+    "stats": {
+      "occupied": 0,
+      "occupied_msgs": 0,
+      "free": 0,
+      "free_msgs": 0,
+      "unknown": 0,
+      "unknown_msgs": 0,
+      "occupied_inflate": 0,
+      "occupied_inflate_msgs": 0,
+      "value_map": 0,
+      "value_map_msgs": 0,
+      "cosine_msgs": 1,
+      "last_cosine_x1000": 121
+    },
+    "note": "Demo overlays /grid_map/value_map (ApexNav.rviz yellow\u2192red) on free cells"
+  },
+  "floor_y_hab": 0.01338,
+  "ros_z_mode": "hab_y_minus_floor_y_agl",
+  "first_plan_diag": null,
+  "final_distance_to_goal_eval_only": null,
+  "final_distance_to_goal_point_eval_only": null,
+  "distance_to_goal_mode": "VIEW_POINTS",
+  "success_claimed": false,
+  "near_goal": false,
+  "locomanip_commit": "ec5fd6584bd3d562812c12ef2d8e2f87fba98175",
+  "out_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real_agentA_navinf/navinf_narrow_A_20261122_132305_toilet_legacy018_retry",
+  "executor_version": "kinematic_collision_v1.2",
+  "camera_mode": "fixed_base_gimbal",
+  "simulated_gimbal": true,
+  "camera_mode_meta": {
+    "camera_mode": "fixed_base_gimbal",
+    "simulated_gimbal": true,
+    "arm_baseline": [
+      0.236,
+      0.086,
+      -2.398,
+      -0.83,
+      -1.335,
+      0.0
+    ],
+    "hfov_deg": 79.0,
+    "resolution_hw": [
+      480,
+      640
+    ],
+    "fixed_cam_pos_base_m": [
+      0.6389832496643066,
+      -0.07466650009155273,
+      0.2904253602027893
+    ],
+    "init_optical_pitch_rad": 0.00020003314554446162,
+    "gimbal_pitch_step_rad": 0.5235987755982988,
+    "gimbal_pitch_limit_rad": 1.5207963267948965,
+    "warning_cam_inside_body": false,
+    "note": "LOOK changes orientation only; arm joints frozen. simulated_gimbal \u2014 not a physical pan-tilt unit."
+  },
+  "initial_penetration": {
+    "initial_penetration": true,
+    "contacts": {
+      "wheel_support": 8,
+      "robot_env": 4,
+      "self_collision": 0,
+      "other": 0,
+      "total": 12,
+      "robot_env_links": [
+        "fl_wheel_link",
+        "fr_wheel_link",
+        "rl_wheel_link"
+      ],
+      "min_robot_env_distance": -0.050660304725170135,
+      "blocking": true,
+      "details": [
+        {
+          "kind": "wheel_support",
+          "robot_link": "fr_wheel_link",
+          "other_object_id": 0,
+          "other_object": "stage_static",
+          "vs_stage": true,
+          "position_xyz": [
+            0.4345272183418274,
+            0.0036256983876228333,
+            -6.027730941772461
+          ],
+          "normal_on_b_xyz": [
+            -0.22149351239204407,
+            0.8913914561271667,
+            -0.3954261839389801
+          ],
+          "normal_y_abs": 0.8913914561271667,
+          "distance": -0.04069557040929794,
+          "near_floor": true,
+          "upright": true,
+          "shallow": true,
+          "is_wheel": true
+        },
+        {
+          "kind": "robot_env",
+          "robot_link": "fr_wheel_link",
+          "other_object_id": 0,
+          "other_object": "stage_static",
+          "vs_stage": true,
+          "position_xyz": [
+            0.4309965670108795,
+            -0.005647413432598114,
+            -6.062165260314941
+          ],
+          "normal_on_b_xyz": [
+            -0.004976240918040276,
+            0.999973475933075,
+            -0.005322736222296953
+          ],
+          "normal_y_abs": 0.999973475933075,
+          "distance": -0.050660304725170135,
+          "near_floor": true,
+          "upright": true,
+          "shallow": false,
+          "is_wheel": true
+        },
+        {
+          "kind": "wheel_support",
+          "robot_link": "fl_wheel_link",
+          "other_object_id": 0,
+          "other_object": "stage_static",
+          "vs_stage": true,
+          "position_xyz": [
+            0.0626426711678505,
+            0.025300562381744385,
+            -6.148659706115723
+          ],
+          "normal_on_b_xyz": [
+            -0.31040138006210327,
+            0.5493407845497131,
+            -0.7758064270019531
+          ],
+          "normal_y_abs": 0.5493407845497131,
+          "distance": -0.0002556538092903793,
+          "near_floor": true,
+          "upright": true,
+          "shallow": true,
+          "is_wheel": true
+        },
+        {
+          "kind": "wheel_support",
+          "robot_link": "fl_wheel_link",
+          "other_object_id": 0,
+          "other_object": "stage_static",
+          "vs_stage": true,
+          "position_xyz": [
+            0.07068784534931183,
+            0.013614259660243988,
+            -6.163879871368408
+          ],
+          "normal_on_b_xyz": [
+            -0.37799912691116333,
+            0.6420793533325195,
+            -0.6669713854789734
+          ],
+          "normal_y_abs": 0.6420793533325195,
+          "distance": -0.02483004704117775,
+          "near_floor": true,
+          "upright": true,
+          "shallow": true,
+          "is_wheel": true
+        },
+        {
+          "kind": "wheel_support",
+          "robot_link": "fl_wheel_link",
+          "other_object_id": 0,
+          "other_object": "stage_static",
+          "vs_stage": true,
+          "position_xyz": [
+            0.06724424660205841,
+            0.020840302109718323,
+            -6.155300617218018
+          ],
+          "normal_on_b_xyz": [
+            -0.34549278020858765,
+            0.5887656807899475,
+            -0.7307460308074951
+          ],
+          "normal_y_abs": 0.5887656807899475,
+          "distance": -0.010823719203472137,
+          "near_floor": true,
+          "upright": true,
+          "shallow": true,
+          "is_wheel": true
+        },
+        {
+          "kind": "robot_env",
+          "robot_link": "fl_wheel_link",
+          "other_object_id": 0,
+          "other_object": "stage_static",
+          "vs_stage": true,
+          "position_xyz": [
+            0.07091106474399567,
+            -0.006802387535572052,
+            -6.217107772827148
+          ],
+          "normal_on_b_xyz": [
+            -0.005646480713039637,
+            0.9999827146530151,
+            0.0016388663789257407
+          ],
+          "normal_y_abs": 0.9999827146530151,
+          "distance": -0.050626251846551895,
+          "near_floor": true,
+          "upright": true,
+          "shallow": false,
+          "is_wheel": true
+        },
+        {
+          "kind": "robot_env",
+          "robot_link": "rl_wheel_link",
+          "other_object_id": 0,
+          "other_object": "stage_static",
+          "vs_stage": true,
+          "position_xyz": [
+            -0.17815618216991425,
+            -0.006019674241542816,
+            -5.664432048797607
+          ],
+          "normal_on_b_xyz": [
+            0.08298822492361069,
+            0.9728687405586243,
+            0.21596136689186096
+          ],
+          "normal_y_abs": 0.9728687405586243,
+          "distance": -0.050186093896627426,
+          "near_floor": true,
+          "upright": true,
+          "shallow": false,
+          "is_wheel": true
+        },
+        {
+          "kind": "robot_env",
+          "robot_link": "rl_wheel_link",
+          "other_object_id": 0,
+          "other_object": "stage_static",
+          "vs_stage": true,
+          "position_xyz": [
+            -0.17237654328346252,
+            -0.006802037358283997,
+            -5.64382266998291
+          ],
+          "normal_on_b_xyz": [
+            0.0009515411220490932,
+            0.9999980926513672,
+            -0.0017140500713139772
+          ],
+          "normal_y_abs": 0.9999980926513672,
+          "distance": -0.050213880836963654,
+          "near_floor": true,
+          "upright": true,
+          "shallow": false,
+          "is_wheel": true
+        },
+        {
+          "kind": "wheel_support",
+          "robot_link": "rl_wheel_link",
+          "other_object_id": 0,
+          "other_object": "stage_static",
+          "vs_stage": true,
+          "position_xyz": [
+            -0.1813185214996338,
+            0.0024433284997940063,
+            -5.688967704772949
+          ],
+          "normal_on_b_xyz": [
+            0.2742081880569458,
+            0.823082685470581,
+            0.4973377585411072
+          ],
+          "normal_y_abs": 0.823082685470581,
+          "distance": -0.04347681254148483,
+          "near_floor": true,
+          "upright": true,
+          "shallow": true,
+          "is_wheel": true
+        },
+        {
+          "kind": "wheel_support",
+          "robot_link": "rl_wheel_link",
+          "other_object_id": 0,
+          "other_object": "stage_static",
+          "vs_stage": true,
+          "position_xyz": [
+            -0.1963406205177307,
+            0.027257665991783142,
+            -5.573021411895752
+          ],
+          "normal_on_b_xyz": [
+            0.21311268210411072,
+            0.7156044244766235,
+            -0.6652017831802368
+          ],
+          "normal_y_abs": 0.7156044244766235,
+          "distance": -0.00694902241230011,
+          "near_floor": true,
+          "upright": true,
+          "shallow": true,
+          "is_wheel": true
+        },
+        {
+          "kind": "wheel_support",
+          "robot_link": "rr_wheel_link",
+          "other_object_id": 0,
+          "other_object": "stage_static",
+          "vs_stage": true,
+          "position_xyz": [
+            0.1878061145544052,
+            -0.005647443234920502,
+            -5.488592147827148
+          ],
+          "normal_on_b_xyz": [
+            0.0009100211318582296,
+            0.9999979138374329,
+            -0.0017762444913387299
+          ],
+          "normal_y_abs": 0.9999979138374329,
+          "distance": -0.04899255931377411,
+          "near_floor": true,
+          "upright": true,
+          "shallow": true,
+          "is_wheel": true
+        },
+        {
+          "kind": "wheel_support",
+          "robot_link": "rr_wheel_link",
+          "other_object_id": 0,
+          "other_object": "stage_static",
+          "vs_stage": true,
+          "position_xyz": [
+            0.1691591590642929,
+            0.012525148689746857,
+            -5.437093257904053
+          ],
+          "normal_on_b_xyz": [
+            0.14861489832401276,
+            0.8746317625045776,
+            -0.4614464044570923
+          ],
+          "normal_y_abs": 0.8746317625045776,
+          "distance": -0.02965201810002327,
+          "near_floor": true,
+          "upright": true,
+          "shallow": true,
+          "is_wheel": true
+        }
+      ],
+      "contact_test_raw": true,
+      "note": "contact_test_raw is True whenever any contact exists (incl. wheel support); do NOT treat contact_test_raw==False as clear, or True as blocking."
+    },
+    "executor_version": "kinematic_collision_v1.2",
+    "spawn_status": "invalid_initial_penetration",
+    "note": "Initial penetration is reported separately and is NOT a legal motion baseline. Do not enlarge contact tolerance to clear invalid spawns."
+  },
+  "camera_runtime": {
+    "camera_mode": "fixed_base_gimbal",
+    "simulated_gimbal": true,
+    "gimbal_pitch_rad": 0.0,
+    "arm_q": [
+      0.236,
+      0.086,
+      -2.398,
+      -0.83,
+      -1.335,
+      0.0
+    ],
+    "arm_is_apexnav_init": true,
+    "fixed_cam_pos_base_m": [
+      0.6389832496643066,
+      -0.07466650009155273,
+      0.2904253602027893
+    ],
+    "optical_pos_world": [
+      0.43557241559028625,
+      0.6131261587142944,
+      -6.40845251083374
+    ]
+  },
+  "notes": [
+    "Executor kinematic_collision_v1.2: probe/commit; start/first_blocking/committed contacts logged.",
+    "Wheel support requires upright normal; vs_stage alone does not exempt side hits.",
+    "ApexNav primary camera_mode=fixed_base_gimbal (simulated_gimbal); LOOK does not move optical center.",
+    "legacy_arm_look keeps joint3 LOOK for old-result review only.",
+    "F0/expand affect map query only \u2014 do not exempt execution collision.",
+    "Initial EE uses ARM_APEXNAV_INIT FK (height \u00d7 robot_scale); runtime sensor_pose is full SE3.",
+    "ROS Z = Habitat AGL (hab_y - floor_y) so ApexNav map_ros height filter [0.28,1.18] matches furniture.",
+    "Goal distance is eval-only (Habitat VIEW_POINTS; POINT kept as diagnostic) and not fed to planner.",
+    "near_goal is distance diagnostic only \u2014 never auto-STOP or success.",
+    "ACTION_FINISH means handler done, not that requested yaw/translation completed.",
+    "Blocked-recovery LOOK/opposite-turn after 3 identical full rejects; counts against budget.",
+    "Initial penetration \u2192 spawn_status=invalid_initial_penetration; do not enlarge contact tolerance.",
+    "URDF Z-up\u2192Habitat Y-up via Ry(-90)*Rx(-90); wheels snapped to floor_y.",
+    "Init lookaround \u2260 adaptive explore; explore starts after 26 FSM init actions.",
+    "Demo map panel uses ApexNav /grid_map/* (not Habitat GT).",
+    "scaled_robot_proxy_* results are Habitat adapter proxies \u2014 NOT real Ranger+CR10 scores.",
+    "New execution/camera protocol baselines are NOT causally comparable to pre-fix trajectories."
+  ],
+  "initial_camera": {
+    "config": "ARM_APEXNAV_INIT",
+    "record_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real_agentA_navinf/navinf_narrow_A_20261122_132305_toilet_legacy018_retry/camera_init",
+    "cam_height_target_m": 0.616
+  },
+  "demo": {
+    "layout": "16:9 third + EE semantic + /grid_map",
+    "frames_dir": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real_agentA_navinf/navinf_narrow_A_20261122_132305_toilet_legacy018_retry/demo"
+  }
+}

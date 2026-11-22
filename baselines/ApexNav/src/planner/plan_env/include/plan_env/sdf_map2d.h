@@ -74,6 +74,12 @@ public:
   int getOccupancy(const Eigen::Vector2i& id);
   double getDistance(const Eigen::Vector2d& pos);
   double getDistance(const Eigen::Vector2i& id);
+  // ################################
+  // Distance to inflated known obstacles only (ignores UNKNOWN). For soft edge
+  // costs; does not change occupancy / inflate safety predicates.
+  // ################################
+  double getDistanceToKnownObstacle(const Eigen::Vector2d& pos);
+  double getDistanceToKnownObstacle(const Eigen::Vector2i& id);
   double getDistWithGrad(const Eigen::Vector2d& pos, Eigen::Vector2d& grad);
   int getInflateOccupancy(const Eigen::Vector2d& pos);
   int getInflateOccupancy(const Eigen::Vector2i& id);
@@ -98,6 +104,10 @@ public:
   // Force cell occupancy/inflate for offline planner replay (does not run online).
   // state: UNKNOWN=0, FREE=1, OCCUPIED=2 (GRID_STATE).
   void diagSetOccupancyState(const Eigen::Vector2d& pos, int state, int inflate = -1);
+  // ################################
+  // Offline replay: set local_update + local_bound boxes so inflate/ESDF cover a ROI.
+  // ################################
+  void diagSetLocalBounds(const Eigen::Vector2d& bmin, const Eigen::Vector2d& bmax);
   // ################################
   // Diagnostic access to MapROS (3D-keep-Z filter path). No online behavior change.
   // ################################
@@ -161,6 +171,10 @@ struct MapData2D {
   std::vector<char> occupancy_buffer_inflate_;  ///< Inflated occupancy map for collision checking
   std::vector<double> distance_buffer_neg_;     ///< Negative distance field (inside obstacles)
   std::vector<double> distance_buffer_;         ///< Positive distance field (outside obstacles)
+  // ################################
+  // Inflate-only positive distance (known OCC inflate); soft-cost source.
+  // ################################
+  std::vector<double> distance_buffer_obs_;
   std::vector<double> tmp_buffer_;              ///< Temporary buffer for computations
   std::vector<char> virtual_ground_buffer_;     ///< Virtual ground plane representation
   std::vector<Eigen::Vector2i> occupancy_need_clear_;  ///< List of cells needing to be cleared
@@ -290,6 +304,23 @@ inline double SDFMap2D::getDistance(const Eigen::Vector2d& pos)
   Eigen::Vector2i id;
   posToIndex(pos, id);
   return getDistance(id);
+}
+
+/// Distance to known inflated obstacles (soft-cost); -1 if out of map
+inline double SDFMap2D::getDistanceToKnownObstacle(const Eigen::Vector2i& id)
+{
+  if (!isInMap(id))
+    return -1;
+  if (md_->distance_buffer_obs_.empty())
+    return getDistance(id);
+  return md_->distance_buffer_obs_[toAddress(id)];
+}
+
+inline double SDFMap2D::getDistanceToKnownObstacle(const Eigen::Vector2d& pos)
+{
+  Eigen::Vector2i id;
+  posToIndex(pos, id);
+  return getDistanceToKnownObstacle(id);
 }
 
 /// Get inflated occupancy state at grid index

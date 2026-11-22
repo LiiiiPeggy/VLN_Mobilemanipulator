@@ -1,0 +1,170 @@
+<launch>
+    <arg name="map_size_x_"/>
+    <arg name="map_size_y_"/>
+
+    <arg name="odometry_topic_"/>
+    <arg name="sensor_pose_topic_"/>
+    <arg name="depth_topic_"/>
+
+    <arg name="cx_"/>
+    <arg name="cy_"/>
+    <arg name="fx_"/>
+    <arg name="fy_"/>
+
+    <!-- Real-world mode flag (default to false for simulation) -->
+    <arg name="is_real_world_" default="false"/>
+    <!-- ################################
+      Gated diagnostics (default off). Pass dirs from exploration_rangercr10.launch.
+    ################################ -->
+    <arg name="plan_diag_enable_" default="false"/>
+    <arg name="plan_diag_dir_" default=""/>
+    <arg name="pipeline_diag_enable_" default="false"/>
+    <arg name="pipeline_diag_dir_" default=""/>
+    <!-- ################################
+      startup_prior_mode: none | initial_footprint (default none).
+      half_l/half_w from footprint_at_scale(robot_scale); unused when none.
+      expand_m: isotropic margin beyond chassis half (default 0).
+    ################################ -->
+    <arg name="startup_prior_mode_" default="none"/>
+    <arg name="startup_prior_half_length_" default="0.0"/>
+    <arg name="startup_prior_half_width_" default="0.0"/>
+    <arg name="startup_prior_expand_m_" default="0.0"/>
+    <!-- ################################
+      obstacle_denoise: none | median3 (current-frame OCC projection filter).
+    ################################ -->
+    <arg name="obstacle_denoise_" default="none"/>
+    <!-- ################################
+      Planning inflation (decoupled from Habitat agent_radius when locked).
+      soft_cost: length×[1+w·max(0,1−d/R)²]; w=0 disables (P0/P1).
+    ################################ -->
+    <arg name="obstacles_inflation_" default="0.18"/>
+    <arg name="lock_obstacles_inflation_" default="false"/>
+    <arg name="soft_cost_range_m_" default="0.0"/>
+    <arg name="soft_cost_weight_" default="0.0"/>
+
+    <!-- main node -->
+    <node pkg="exploration_manager" name="exploration_node" type="exploration_node" output="screen">
+        <!-- Load trajectory planning parameters for real-world mode (Only Trajectory Use) -->
+        <rosparam file="$(find trajectory_manager)/config/planning_param.yaml" command="load" />
+
+        <remap from ="/odom_world"    to = "$(arg odometry_topic_)"/>
+        <remap from ="/map_ros/pose"  to = "$(arg sensor_pose_topic_)"/>
+        <remap from ="/map_ros/depth" to = "$(arg depth_topic_)"/>
+
+        <!-- FSM mode selection -->
+        <param name="is_real_world" value="$(arg is_real_world_)" type="bool"/>
+        
+        <!-- Mapping -->
+        <!-- ray_mode = 0: penetrate ; ray_mode = 1: non-penetrate -->
+        <param name="sdf_map/ray_mode" value="0" />
+        <param name="sdf_map/resolution" value="0.05" />
+        <param name="sdf_map/map_size_x" value="$(arg map_size_x_)" />
+        <param name="sdf_map/map_size_y" value="$(arg map_size_y_)" />
+        <param name="sdf_map/obstacles_inflation" value="$(arg obstacles_inflation_)" />
+        <!-- ################################
+          When true, Habitat agent_radius does NOT overwrite obstacles_inflation.
+        ################################ -->
+        <param name="sdf_map/lock_obstacles_inflation" value="$(arg lock_obstacles_inflation_)" type="bool"/>
+        <param name="sdf_map/local_bound" value="5.0"/>
+
+        <param name="sdf_map/p_hit" value="0.90"/>
+        <param name="sdf_map/p_miss" value="0.48"/>
+        <param name="sdf_map/p_min" value="0.10"/>
+        <param name="sdf_map/p_max" value="0.98"/>
+        <param name="sdf_map/p_occ" value="0.80"/>
+        <param name="sdf_map/max_ray_length" value="4.99"/>
+        <param name="sdf_map/optimistic" value="false" type="bool"/>
+        <param name="sdf_map/signed_dist" value="false" type="bool"/>
+        <!-- ################################
+          Current-frame obstacle projection denoise before persistent OCC+inflate.
+          none = original; median3 = cv::medianBlur ksize=3 (HomeRobot-style).
+        ################################ -->
+        <param name="sdf_map/obstacle_denoise" value="$(arg obstacle_denoise_)" type="string"/>
+
+        <param name="map_ros/cx" value="$(arg cx_)"/>
+        <param name="map_ros/cy" value="$(arg cy_)"/>
+        <param name="map_ros/fx" value="$(arg fx_)"/>
+        <param name="map_ros/fy" value="$(arg fy_)"/>
+        <param name="map_ros/depth_filter_maxdist" value="4.99"/>
+        <!-- ################################
+          Ranger D455 is arm-mounted; body/arm often appear at <0.5 m.
+          Upstream default 0.0 lets self-hits become OCCUPIED around the
+          camera after ROS Z=AGL alignment → start cell in inflate →
+          NO_PASSABLE_FRONTIER. Adapter-only; baselines/ApexNav untouched.
+        ################################ -->
+        <param name="map_ros/depth_filter_mindist" value="0.50"/>
+        <param name="map_ros/depth_filter_margin" value="2"/>
+        <param name="map_ros/filter_min_height" value="0.28"/>
+        <param name="map_ros/filter_max_height" value="1.18"/>
+        <param name="map_ros/k_depth_scaling_factor" value="65535.0"/>
+        <param name="map_ros/skip_pixel" value="1"/>
+        <param name="map_ros/frame_id" value="world"/>
+        <param name="map_ros/virtual_ground_height" value="-0.34"/>
+        <!-- ################################
+          Ground free-ray (adapter): only near-floor AGL + planar patch may
+          carve FREE. AGL (max_agl, filter_min] → low OCCUPIED. Does not change
+          inflation radius / lookaround / unknown policy / A*.
+        ################################ -->
+        <param name="map_ros/ground_free_ray_enable" value="true" type="bool"/>
+        <param name="map_ros/ground_free_max_agl" value="0.03" type="double"/>
+        <param name="map_ros/ground_free_planar_radius" value="0.12" type="double"/>
+        <param name="map_ros/ground_free_planar_z_tol" value="0.02" type="double"/>
+        <param name="map_ros/ground_free_planar_min_neighbors" value="5" type="int"/>
+
+        <!-- Exploration manager -->
+        <!-- 0: distance 1: semantic 2: hybrid(TSP sem + closest dist) 3: TSP(distance) -->
+        <param name="exploration/policy" value="2" type="int"/>
+        <param name="exploration/sigma_threshold" value="0.015" type="double"/>
+        <param name="exploration/max_to_mean_threshold" value="1.10" type="double"/>
+        <param name="exploration/max_to_mean_percentage" value="0.90" type="double"/>
+        <param name="exploration/tsp_dir" value="$(find lkh_mtsp_solver)/resource" type="string"/>
+        <!-- ################################
+          Initial footprint traversability prior (planning query only).
+          Default none. Does NOT rewrite occupancy / restore 0.25 m skip.
+          expand_m grows F0 beyond chassis footprint (still query-only).
+        ################################ -->
+        <param name="exploration/startup_prior_mode" value="$(arg startup_prior_mode_)" type="string"/>
+        <param name="exploration/startup_prior_half_length" value="$(arg startup_prior_half_length_)" type="double"/>
+        <param name="exploration/startup_prior_half_width" value="$(arg startup_prior_half_width_)" type="double"/>
+        <param name="exploration/startup_prior_expand_m" value="$(arg startup_prior_expand_m_)" type="double"/>
+        <!-- ################################
+          Gated native plan / map pipeline diagnostics (off unless dir set).
+          Does not change planning or free-update decisions.
+        ################################ -->
+        <param name="exploration/plan_diag_enable" value="$(arg plan_diag_enable_)" type="bool"/>
+        <param name="exploration/plan_diag_dir" value="$(arg plan_diag_dir_)" type="string"/>
+        <param name="map_ros/pipeline_diag_enable" value="$(arg pipeline_diag_enable_)" type="bool"/>
+        <param name="map_ros/pipeline_diag_dir" value="$(arg pipeline_diag_dir_)" type="string"/>
+
+        <param name="frontier/cluster_min" value="2" type="int"/>
+        <param name="frontier/cluster_size_xy" value="0.65" type="double"/>
+        <param name="frontier/min_view_finish_fraction" value="0.2" type="double"/>
+        <param name="frontier/min_contain_unknown" value="30" type="int"/>
+
+        <param name="object/min_observation_num" value="2" type="int"/>
+        <!-- 0: no_fusion 1: ours_fusion 2: max_fusion-->
+        <param name="object/fusion_type" value="1" type="int"/>
+        <param name="object/use_observation" value="true" type="bool"/>
+        <param name="object/vis_cloud" value="true" type="bool"/>
+
+        <!-- Perception utils -->
+        <param name="perception_utils/left_angle" value="$(eval 30 * 3.1415926 / 180.0)" type="double"/>
+        <param name="perception_utils/right_angle" value="$(eval 30 * 3.1415926 / 180.0)" type="double"/>
+        <param name="perception_utils/max_dist" value="4.0" type="double"/>
+        <param name="perception_utils/vis_dist" value="1.0" type="double"/>
+
+        <!-- path searching -->
+        <param name="astar/lambda_heu" value="1.0" type="double"/>
+        <param name="astar/resolution_astar" value="0.1" type="double"/>
+        <!-- ################################
+          Soft clearance cost outside hard inflate (P2). Units: R in meters, w dimensionless.
+        ################################ -->
+        <param name="astar/soft_cost_range_m" value="$(arg soft_cost_range_m_)" type="double"/>
+        <param name="astar/soft_cost_weight" value="$(arg soft_cost_weight_)" type="double"/>
+    </node>
+
+    <!-- ATSP solver -->
+    <node pkg="lkh_mtsp_solver" name="tsp_solver" type="tsp_node" output="log">
+        <param name="exploration/tsp_dir" value="$(find lkh_mtsp_solver)/resource" type="string"/>
+    </node>
+</launch>

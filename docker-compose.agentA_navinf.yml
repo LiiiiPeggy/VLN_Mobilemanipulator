@@ -1,0 +1,17 @@
+# Agent A private runtime — mounts A clone, keeps vln-rangercr10 for others.
+services:
+  vln-rangercr10-agentA-navinf:
+    image: vln-apexnav:single-ep-deps
+    container_name: vln-rangercr10-agentA-navinf
+    runtime: nvidia
+    network_mode: bridge
+    volumes:
+      - /home/ubuntu/locomani/VLN_Mobilemanipulator_agentA_navinf:/workspace/VLN_Mobilemanipulator
+      - /home/ubuntu/locomani/VLN_Mobilemanipulator_agentA_navinf/baselines/ApexNav:/workspace/ApexNav
+      - /media/ubuntu/D/VLN_shared:/media/ubuntu/D/VLN_shared
+      - /home/ubuntu/locomani/LocoManip_Lab:/workspace/LocoManip_Lab:ro
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=0
+    command: sleep infinity
+    stdin_open: true
+    tty: true

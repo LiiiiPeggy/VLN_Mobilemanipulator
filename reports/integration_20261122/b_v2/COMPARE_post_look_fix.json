@@ -1,0 +1,335 @@
+{
+  "before": {
+    "tag": "BEFORE",
+    "term": "explore_budget_exhausted",
+    "sum_moved": 2.458333333333335,
+    "dtg": 2.3129927576133165,
+    "n_nf": 15,
+    "first_nf": 83,
+    "n_rec": 10,
+    "n_forced_forward": 0,
+    "forced_sample": [],
+    "n_move_events": 18,
+    "move_steps": [
+      40,
+      46,
+      51,
+      52,
+      56,
+      57,
+      59,
+      61,
+      62,
+      63,
+      65,
+      67,
+      69,
+      71,
+      73,
+      75,
+      79,
+      81
+    ],
+    "move_detail_tail": [
+      [
+        65,
+        "MOVE_FORWARD",
+        "MOVE_FORWARD",
+        0.24999999999999994,
+        false
+      ],
+      [
+        67,
+        "MOVE_FORWARD",
+        "MOVE_FORWARD_BLOCKED",
+        0.0,
+        false
+      ],
+      [
+        69,
+        "MOVE_FORWARD",
+        "MOVE_FORWARD_TRUNCATED",
+        0.2083333333333336,
+        false
+      ],
+      [
+        71,
+        "MOVE_FORWARD",
+        "MOVE_FORWARD_TRUNCATED",
+        0.0416666666666663,
+        false
+      ],
+      [
+        73,
+        "MOVE_FORWARD",
+        "MOVE_FORWARD_BLOCKED",
+        0.0,
+        false
+      ],
+      [
+        75,
+        "MOVE_FORWARD",
+        "MOVE_FORWARD_BLOCKED",
+        0.0,
+        false
+      ],
+      [
+        79,
+        "MOVE_FORWARD",
+        "MOVE_FORWARD_BLOCKED",
+        0.0,
+        false
+      ],
+      [
+        81,
+        "MOVE_FORWARD",
+        "MOVE_FORWARD_BLOCKED",
+        0.0,
+        false
+      ]
+    ],
+    "final_pose": {
+      "x": 22.617889144434038,
+      "z": -3.443061720308169,
+      "yaw": 3.515262024319511
+    },
+    "expl_hist": {
+      "null": 26,
+      "0": 85,
+      "4": 15
+    }
+  },
+  "v1_opposite_only_reset_yaw": {
+    "tag": "V1",
+    "term": "explore_budget_exhausted",
+    "sum_moved": 1.4166666666666698,
+    "dtg": 3.096949722126655,
+    "n_nf": 0,
+    "first_nf": null,
+    "n_rec": 14,
+    "n_forced_forward": 0,
+    "forced_sample": [],
+    "n_move_events": 7,
+    "move_steps": [
+      32,
+      33,
+      34,
+      37,
+      38,
+      40,
+      42
+    ],
+    "move_detail_tail": [
+      [
+        32,
+        "MOVE_FORWARD",
+        "MOVE_FORWARD",
+        0.250000000000001,
+        false
+      ],
+      [
+        33,
+        "MOVE_FORWARD",
+        "MOVE_FORWARD",
+        0.250000000000001,
+        false
+      ],
+      [
+        34,
+        "MOVE_FORWARD",
+        "MOVE_FORWARD",
+        0.250000000000001,
+        false
+      ],
+      [
+        37,
+        "MOVE_FORWARD",
+        "MOVE_FORWARD_TRUNCATED",
+        0.16666666666666669,
+        false
+      ],
+      [
+        38,
+        "MOVE_FORWARD",
+        "MOVE_FORWARD_BLOCKED",
+        0.0,
+        false
+      ],
+      [
+        40,
+        "MOVE_FORWARD",
+        "MOVE_FORWARD",
+        0.24999999999999994,
+        false
+      ],
+      [
+        42,
+        "MOVE_FORWARD",
+        "MOVE_FORWARD",
+        0.2500000000000002,
+        false
+      ]
+    ],
+    "final_pose": {
+      "x": 22.898945851876842,
+      "z": -2.5563242001111703,
+      "yaw": 3.7022615870331896
+    },
+    "expl_hist": {
+      "null": 26,
+      "0": 100
+    }
+  },
+  "v2_escalate_on_no_trans": {
+    "tag": "V2",
+    "term": "explore_budget_exhausted",
+    "sum_moved": 4.2583333333333435,
+    "dtg": 1.1002032364036922,
+    "n_nf": 0,
+    "first_nf": null,
+    "n_rec": 11,
+    "n_forced_forward": 5,
+    "forced_sample": [
+      [
+        22,
+        "forced_forward_after_turn_block",
+        "MOVE_FORWARD_BLOCKED",
+        0.0,
+        0.0,
+        true
+      ],
+      [
+        53,
+        "forced_forward_after_turn_block",
+        "MOVE_FORWARD",
+        0.25000000000000017,
+        0.0,
+        false
+      ],
+      [
+        85,
+        "forced_forward_after_turn_block",
+        "MOVE_FORWARD",
+        0.25000000000000105,
+        0.0,
+        false
+      ],
+      [
+        95,
+        "forced_forward_after_turn_block",
+        "MOVE_FORWARD",
+        0.2500000000000001,
+        0.0,
+        false
+      ],
+      [
+        124,
+        "forced_forward_after_turn_block",
+        "MOVE_FORWARD_BLOCKED",
+        0.0,
+        0.0,
+        true
+      ]
+    ],
+    "n_move_events": 28,
+    "move_steps": [
+      22,
+      32,
+      33,
+      34,
+      37,
+      38,
+      40,
+      42,
+      53,
+      55,
+      61,
+      62,
+      64,
+      65,
+      67,
+      69,
+      71,
+      73,
+      75,
+      76,
+      85,
+      95,
+      105,
+      106,
+      108,
+      110,
+      114,
+      124
+    ],
+    "move_detail_tail": [
+      [
+        85,
+        "MOVE_FORWARD",
+        "MOVE_FORWARD",
+        0.25000000000000105,
+        true
+      ],
+      [
+        95,
+        "MOVE_FORWARD",
+        "MOVE_FORWARD",
+        0.2500000000000001,
+        true
+      ],
+      [
+        105,
+        "MOVE_FORWARD",
+        "MOVE_FORWARD_TRUNCATED",
+        0.05000000000000053,
+        false
+      ],
+      [
+        106,
+        "MOVE_FORWARD",
+        "MOVE_FORWARD_BLOCKED",
+        0.0,
+        false
+      ],
+      [
+        108,
+        "MOVE_FORWARD",
+        "MOVE_FORWARD_BLOCKED",
+        0.0,
+        false
+      ],
+      [
+        110,
+        "MOVE_FORWARD",
+        "MOVE_FORWARD_BLOCKED",
+        0.0,
+        false
+      ],
+      [
+        114,
+        "MOVE_FORWARD",
+        "MOVE_FORWARD",
+        0.25000000000000044,
+        false
+      ],
+      [
+        124,
+        "MOVE_FORWARD",
+        "MOVE_FORWARD_BLOCKED",
+        0.0,
+        true
+      ]
+    ],
+    "final_pose": {
+      "x": 23.812588436298977,
+      "z": -4.506565098478966,
+      "yaw": 3.0415297987781935
+    },
+    "expl_hist": {
+      "null": 26,
+      "0": 72,
+      "2": 6,
+      "1": 22
+    }
+  }
+}

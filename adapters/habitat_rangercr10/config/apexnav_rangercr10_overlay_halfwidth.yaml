@@ -1,0 +1,19 @@
+# ################################
+# P1: hard inflation = chassis half-width at robot_scale (not a fixed 0.30).
+# Habitat agent radius stays 0.18 (sim geometry / execution collision unchanged).
+# lock_obstacles_inflation prevents SDFMap2D from overwriting inflation with radius.
+# Soft cost OFF (w=0). Use INFLATION_PROFILE=halfwidth in run_apexnav_real_episode.sh.
+# ################################
+habitat:
+  simulator:
+    agents:
+      main_agent:
+        radius: 0.18
+sdf_map:
+  # Placeholder; run script overwrites with footprint_at_scale(robot_scale) half_w.
+  obstacles_inflation: 0.30429
+  lock_obstacles_inflation: true
+  optimistic: false
+astar:
+  soft_cost_range_m: 0.0
+  soft_cost_weight: 0.0

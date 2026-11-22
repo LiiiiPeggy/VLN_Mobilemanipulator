@@ -1,0 +1,17 @@
+{
+  "run_id": "navinf_narrow_A_20261122_132305_toilet_legacy018_retry",
+  "rc": 1,
+  "summary": {
+    "termination": "exception",
+    "n_steps": 0,
+    "error": "RuntimeError: PLANNER_HANDSHAKE_TIMEOUT: ros_state stuck at 0 for 120.0s",
+    "status": "failed",
+    "n_blocked_exec": 0,
+    "n_truncated_exec": 0
+  },
+  "sdf": [
+    "0.1800",
+    "0.0500",
+    "4"
+  ]
+}
