@@ -1,0 +1,2 @@
+baseline_sha=383691d3becf0372b575dceecefb355d542ecb9c
+soft_reach_pair: OFF=reuse approach_fix hy1_hold8_on; ON=this batch

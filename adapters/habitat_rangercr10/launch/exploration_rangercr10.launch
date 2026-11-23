@@ -45,6 +45,10 @@
     3.0 = legacy; 8.0 = approach-fix ON (over-depth goals ~5 m).
   ################################ -->
   <arg name="object_hold_max_dist" default="3.0"/>
+  <!-- ################################
+    Soft REACH when SEARCH+near next_pos+pose stuck on any action (default false).
+  ################################ -->
+  <arg name="soft_reach_on_any_stuck" default="false"/>
 
   <group unless="$(arg is_real_world)">
     <rosparam file="$(find exploration_manager)/../../../config/habitat_eval_hm3dv2.yaml" command="load"/>
@@ -87,6 +91,7 @@
     <!-- ################################ -->
     <arg name="enable_no_frontier_look_" value="$(arg enable_no_frontier_look)"/>
     <arg name="object_hold_max_dist_" value="$(arg object_hold_max_dist)"/>
+    <arg name="soft_reach_on_any_stuck_" value="$(arg soft_reach_on_any_stuck)"/>
     <!-- ################################ -->
   </include>
 </launch>

@@ -108,6 +108,8 @@ struct FSMParam {
     enable_no_frontier_look_ = false;  // legacy OFF group default
     // ObjectHold max dist to last approach goal (m). 3.0=legacy; 8.0=fix ON.
     object_hold_max_dist_ = 3.0;
+    // Soft REACH only after MOVE_FORWARD stuck (false) vs any-action stuck (true).
+    soft_reach_on_any_stuck_ = false;
     // ################################
 
     const double step_length = 0.25;
@@ -134,6 +136,12 @@ struct FSMParam {
   // Max |current−last_next_pos| to keep ObjectHold (m). See exploration_fsm.h.
   // ################################
   double object_hold_max_dist_;
+  // ################################
+  // Soft REACH when SEARCH + dist<soft_reach + pose stuck: require MOVE_FORWARD
+  // (false, legacy) or allow any last action (true). hy1 ON approach_fix:
+  // blocked TURN near next_pos=0.25 m never satisfied MOVE_FORWARD gate.
+  // ################################
+  bool soft_reach_on_any_stuck_;
 };
 
 struct ExplorationData {

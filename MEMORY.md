@@ -277,5 +277,15 @@ VLN_Mobilemanipulator/
 |----|------|
 | 现象 | over-depth SEARCH 的 `next_pos` 常约 5 m；`OBJECT_HOLD_MAX_DIST=3.0` 首 miss 即 drop |
 | 开关 | ROS/`OBJECT_HOLD_MAX_DIST`（launch→exploration_node）；默认 **3.0**；候选 **8.0** |
-| 证据 | hy1：hold 8.0 时 keep×26，dtg 0.485→0.167，moved↑；仍无 REACH/STOP |
+| 证据 | hy1：hold 8.0 时 keep×26，dtg 0.485→0.167，moved↑；仍无 REACH/STOP（阻断见 soft_reach） |
 | 注意 | `success_claimed` 恒 False；SR_proxy=`planner_stop∧near_goal`；eval VIEW_POINTS 不进在线 STOP |
+
+## soft REACH any-stuck（2026-11-23 stop_fix）
+
+| 项 | 内容 |
+|----|------|
+| 现象 | SEARCH + next_pos≈0.25 m（&lt;soft 0.45）时 TURN 被碰撞拒；`newest_action_` 非 MOVE_FORWARD → 旧 soft REACH 不触发 |
+| 开关 | `SOFT_REACH_ON_ANY_STUCK` / `soft_reach_on_any_stuck`；默认 **false**；候选 **true** |
+| 行为 | ON 时 pose stuck + dist&lt;0.45 允许任意 last_action → REACH→STOP |
+| 证据 | hy1 配对：ON→STOP soft_reach dist=0.25；Dd4b/ziup 未近距无 STOP |
+| 相关 | `reports/integration_20261122/stop_fix/STOP_FIX_REPORT.md` |

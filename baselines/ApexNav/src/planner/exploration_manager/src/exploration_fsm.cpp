@@ -30,6 +30,13 @@ void ExplorationFSM::init(ros::NodeHandle& nh)
   ROS_WARN("[ObjectHold] max_dist=%.2fm miss_cap=%d", fp_->object_hold_max_dist_,
       FSMConstants::MAX_OBJECT_HOLD_MISS);
   // ################################
+  // Soft REACH gate: false=legacy (MOVE_FORWARD stuck only); true=any-action stuck.
+  // ################################
+  nh.param("soft_reach_on_any_stuck", fp_->soft_reach_on_any_stuck_, false);
+  ROS_WARN("[SoftReach] on_any_stuck=%s soft_dist=%.2fm hard_dist=%.2fm",
+      fp_->soft_reach_on_any_stuck_ ? "true" : "false", FSMConstants::SOFT_REACH_DISTANCE,
+      FSMConstants::REACH_DISTANCE);
+  // ################################
 
   state_ = ROS_STATE::INIT;
 
@@ -215,15 +222,27 @@ int ExplorationFSM::callActionPlanner()
   /*******  Escape-from-stuck logic START *******/
   // Detect if robot is stuck and initiate escape sequence
   int last_action = fd_->newest_action_;
-  if (!fd_->escape_stucking_flag_ && (current_pos - last_pos).norm() < stucking_distance &&
-      last_action == ACTION::MOVE_FORWARD) {
+  const bool pose_stuck = (current_pos - last_pos).norm() < stucking_distance;
+  // ################################
+  // Soft REACH: SEARCH + within soft_reach + pose stuck.
+  // Legacy requires last_action==MOVE_FORWARD. Fix ON (soft_reach_on_any_stuck)
+  // also accepts TURN_* stuck — hy1 ON held next_pos≈0.25 m while blocked turns
+  // never updated newest_action_ to MOVE_FORWARD (recovery FF is Habitat-side).
+  // ################################
+  const bool soft_reach_action_ok =
+      (last_action == ACTION::MOVE_FORWARD) || fp_->soft_reach_on_any_stuck_;
+  if (!fd_->escape_stucking_flag_ && pose_stuck && soft_reach_action_ok) {
     if (fd_->final_result_ == FINAL_RESULT::SEARCH_OBJECT &&
         (current_pos - expl_manager_->ed_->next_pos_).norm() < soft_reach_distance) {
-      ROS_ERROR("Reach the object successfully!!!");
+      ROS_ERROR(
+          "Reach the object successfully!!! (soft_reach dist=%.2fm last_action=%d any_stuck=%d)",
+          (current_pos - expl_manager_->ed_->next_pos_).norm(), last_action,
+          fp_->soft_reach_on_any_stuck_ ? 1 : 0);
       final_res = FINAL_RESULT::REACH_OBJECT;
       return final_res;
     }
-
+  }
+  if (!fd_->escape_stucking_flag_ && pose_stuck && last_action == ACTION::MOVE_FORWARD) {
     bool past_stucking_flag = false;
     for (auto stucking_point : fd_->stucking_points_) {
       Vector2d stucking_pos = Vector2d(stucking_point(0), stucking_point(1));

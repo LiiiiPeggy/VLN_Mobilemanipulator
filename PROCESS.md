@@ -1192,3 +1192,17 @@
 **实测**：hy1 接近/移动改善、仍无成功；Dd4b 持平；tee 回归缺口（非法 spawn）。默认保持 3.0。  
 
 **相关**：`reports/integration_20261122/approach_fix/APPROACH_FIX_REPORT.md`
+
+---
+
+## 2026-11-23 stop_fix soft_reach_on_any_stuck
+
+**模块**：exploration_fsm REACH/STOP  
+
+**问题**：hy1 hold=8 ON 已 next_pos≈0.25 m 仍无 STOP；soft REACH 要求 last_action=MOVE_FORWARD，被拒转向不更新。  
+
+**操作**：加候选开关 `soft_reach_on_any_stuck`（默认 false）；hy1 OFF/ON 配对 + Dd4b/ziup 回归；无 PPO。  
+
+**实测**：hy1 ON→STOP（soft_reach）；Dd4b/ziup 未进入近距。默认保持 false。  
+
+**相关**：`reports/integration_20261122/stop_fix/STOP_FIX_REPORT.md`、基线 `383691d`

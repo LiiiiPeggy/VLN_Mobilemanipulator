@@ -2,7 +2,8 @@
 
 ## Pushed
 - Branch: `origin/cursor/habitat-rangercr10-scale070`
-- SHA: `72684e2b848de494e8e36bdee07f5edc5e40df5a`
+- SHA（整合交付）: `72684e2b848de494e8e36bdee07f5edc5e40df5a`
+- SHA（远端 ops 记录后基线，stop_fix 起点）: `383691d3becf0372b575dceecefb355d542ecb9c`
 - Method: FF-merge from `cursor/habitat-rangercr10-scale070-integrate` then normal push (no force)
 
 ## Deleted remotes
