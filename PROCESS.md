@@ -1279,7 +1279,33 @@
 - **决策：默认保持 PPO**（`LOOK_BACKEND=ppo_ee_rpy`，`EXEC_BACKEND=ppo_chassis`）；不切回 kinematic-only。
 - Demo 地图 inset 意图：橙=已执行 traj，紫=原生 A* `selected_path`（`plan_xy` / `overlay_astar_path_on_demo.py`）；与并行 overlay 工作不冲突。
 
-**结论**：轮 viz 正常；观影用 7fps；评测默认继续 PPO 控制。
+**结论**：轮 viz 正常；评测默认继续 PPO 控制。  
+**后续约定（用户 2026-11-23）**：**demo 录制仍用默认 2fps**；**除非用户明确要求，否则不生成 7fps**。
 
-**相关**：`PROGRESS.md`；`MEMORY.md` Demo/轮行；`run_integrate_defaults.env`
+**相关**：`PROGRESS.md`；`MEMORY.md` Demo/轮行；`run_integrate_defaults.env`；`AGENTS.md`
 
+
+---
+
+## 2026-11-24 HY1 倒车规划 A/B/C 消融（主会话）
+
+**模块**：habitat_rangercr10 / reverse_planning / ApexNav 执行层  
+
+**问题**：HY1 plant 贴墙后二维 A* 只请求 TURN_*，原地转向碰撞，预算耗尽；需要比较「路径引导倒车」与「SE(2) 倒车规划」。  
+
+**操作**：
+- 核对 HEAD=`0ef0f8f`；确认 `KinoAstar` 为 Dubins+非负 arc（非 Reeds–Shepp）。
+- 实测 PPO `model_9999` 负 vx 倒车（0.15/0.25/0.40 m）并写入 `move_backward.json`。
+- 新增 `REVERSE_PLANNING_MODE=A|B|C`（默认 A）：B=路径引导倒车；C=PPO 基元 Hybrid A* lattice。
+- 同 `FORCE_SPAWN` HY1 plant 配对：A 不可变基线；B/C 实测。
+
+**实测（orig 预算）**：
+- A：moved≈0.85 m，blocked=29。
+- B：moved≈2.92 m，blocked=23，rev×4≈1.16 m。
+- C：moved≈4.23 m，blocked=13，rev×6≈1.74 m，hybrid=4。
+- 三者均 `explore_budget_exhausted`；未改 STOP/SR 定义。
+- C 曾因容器残留 exploration_node 出现 handshake timeout（已清理后重跑成功）。
+
+**结论**：倒车可改善该狭窄案例的位移与碰撞次数；**单场景不得外推 SR**；正式默认仍为 mode A。  
+
+**相关**：`reports/hy1_reverse_planning_ablation.md`；`reverse_planning.py`；`run_abc_hy1.sh`

@@ -849,6 +849,15 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             target_forward_m=None,
             target_yaw_rad=-CHASSIS_TURN_RAD,
         ),
+        # ################################
+        # Real reverse unit segment (negative vx). Not negated forward ΔSE2.
+        # ################################
+        "move_backward": dict(
+            vx=-CHASSIS_VX_CMD,
+            wz=0.0,
+            target_forward_m=CHASSIS_FORWARD_M,
+            target_yaw_rad=None,
+        ),
     }
 
     if args.mode == "chassis_bundle":

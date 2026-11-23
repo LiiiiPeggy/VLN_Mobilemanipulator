@@ -1,0 +1,129 @@
+{
+  "created": "2026-11-24T00:45:54",
+  "policy": "models/ranger_cr10/model_9999.pt",
+  "loco_root": "/home/ubuntu/locomani/LocoManip_Lab",
+  "z_hold": 0.4,
+  "vel_cmd_vx": -0.25,
+  "vel_cmd_wz": 0.0,
+  "targets_m": [
+    0.15,
+    0.25,
+    0.4
+  ],
+  "note": "Real MuJoCo teleop-PPO reverse; not negated forward segment.",
+  "trials": [
+    {
+      "tag": "move_backward_0p15",
+      "target_m": 0.15,
+      "file": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/ppo_reverse_validation_model9999/move_backward_0p15.json",
+      "stop_reason": "path_target",
+      "n_policy_steps": 6,
+      "d_forward": -0.1937095877088911,
+      "d_left": 0.002324297898323678,
+      "d_yaw": 0.001066676619219109,
+      "path_m": 0.1937235316916061,
+      "reverse_distance_m": 0.1937095877088911,
+      "yaw_drift_rad": 0.001066676619219109,
+      "lateral_offset_m": 0.002324297898323678,
+      "arm_q_final": [
+        0.29009395497811086,
+        0.3299290246869407,
+        -1.8333911916012302,
+        -1.6102432401055171,
+        -1.2637846584975856,
+        0.024290550684071346
+      ],
+      "steer_q_final": [
+        -0.0013376749346209415,
+        -0.006580168389460564,
+        -0.013818167015077982,
+        -0.002851410473696186
+      ],
+      "wheel_q_final": [
+        1.2710574599937479,
+        -1.246014772409092,
+        -1.3072913904437276,
+        1.2900440617784656
+      ],
+      "elapsed_wall_s": 0.05424857139587402,
+      "ok_reverse": true
+    },
+    {
+      "tag": "move_backward_0p25",
+      "target_m": 0.25,
+      "file": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/ppo_reverse_validation_model9999/move_backward_0p25.json",
+      "stop_reason": "path_target",
+      "n_policy_steps": 9,
+      "d_forward": -0.28972333595651767,
+      "d_left": 0.0024419624407832825,
+      "d_yaw": 0.0016685083250798094,
+      "path_m": 0.28973362693746024,
+      "reverse_distance_m": 0.28972333595651767,
+      "yaw_drift_rad": 0.0016685083250798094,
+      "lateral_offset_m": 0.0024419624407832825,
+      "arm_q_final": [
+        0.29000159617000154,
+        0.3299089819887381,
+        -1.8333389666561473,
+        -1.6102692568001042,
+        -1.2639830959450433,
+        0.024157203550661203
+      ],
+      "steer_q_final": [
+        -0.00023567012349386395,
+        -0.006901572496058725,
+        -0.014037725516632418,
+        -0.00312294084437021
+      ],
+      "wheel_q_final": [
+        1.8957981288946721,
+        -1.8748392817075692,
+        -1.9352203518891238,
+        1.9176214604473603
+      ],
+      "elapsed_wall_s": 0.05569124221801758,
+      "ok_reverse": true
+    },
+    {
+      "tag": "move_backward_0p4",
+      "target_m": 0.4,
+      "file": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/ppo_reverse_validation_model9999/move_backward_0p4.json",
+      "stop_reason": "path_target",
+      "n_policy_steps": 13,
+      "d_forward": -0.41745712279676817,
+      "d_left": 0.0023139246776285494,
+      "d_yaw": 0.0022525829927269037,
+      "path_m": 0.4174635356784706,
+      "reverse_distance_m": 0.41745712279676817,
+      "yaw_drift_rad": 0.0022525829927269037,
+      "lateral_offset_m": 0.0023139246776285494,
+      "arm_q_final": [
+        0.2899855120989293,
+        0.3299176787651194,
+        -1.833344907004807,
+        -1.6102518044296141,
+        -1.2640223362559775,
+        0.024180947928694255
+      ],
+      "steer_q_final": [
+        8.448537998062645e-06,
+        -0.006919679969813004,
+        -0.014051017159341655,
+        -0.0031149825754812257
+      ],
+      "wheel_q_final": [
+        2.7287490657665407,
+        -2.7094674687476004,
+        -2.7699776952294957,
+        2.7500266923078494
+      ],
+      "elapsed_wall_s": 0.06083822250366211,
+      "ok_reverse": true
+    }
+  ],
+  "policy_sha256": "94ffb7af2f9d0d8864920fb2a38f799938f2b7afffe8c7a75a1050057a5d7ce5",
+  "policy_resolved": "/home/ubuntu/locomani/LocoManip_Lab/models/ranger_cr10/model_9999.pt",
+  "nav_unit_segment": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/ppo_reverse_validation_model9999/move_backward.json",
+  "nav_unit_from": "move_backward_0p25",
+  "n_ok": 3
+}

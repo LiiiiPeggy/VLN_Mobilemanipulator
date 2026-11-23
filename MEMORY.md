@@ -202,7 +202,7 @@ VLN_Mobilemanipulator/
 | GT occ 探针是 navmesh **邻域**审计，不是 precise false-occupied rate | `gt_false_occupied_probe` |
 | ITM cosine 须在同帧 RGB-D 之前发布到 `/blip2/cosine_score`，否则 value_map 融旧分 | `apexnav_real_episode` 发布顺序；`value_map2d.cpp` |
 | 7fps 离线重渲染勿对已含价值热力的 paper map 做 legacy 重映射 | `demo_7fps_from_run._is_paper_or_value_map` |
-| Demo 观影：**优先 7fps**（`apexnav_ranger_paper_demo_7fps.mp4`）看运动/轮胎；2fps paper demo 为一帧一动作，轮转易被离散掩盖；勿用 ffmpeg 加速 2 FPS 冒充 7 Hz | `demo_7fps_from_run.py`；`run_demo_7fps.sh`；`demo_7fps_rates.json` |
+| Demo **录制默认 2fps**（`apexnav_ranger_paper_demo.mp4`）；**仅用户明确要求时**再离线 7fps。7fps 可看清轮胎滚动，但勿默认生成；勿用 ffmpeg 加速 2fps 冒充 7 Hz | `run_apexnav_real_episode.sh` ffmpeg；`demo_7fps_from_run.py`；`run_demo_7fps.sh` |
 | Demo 7 Hz：按真实时间戳插值重渲染，检测/地图内容 hold | 同上 |
 | Demo 地图 inset：橙=已执行 traj，紫=原生 A* `selected_path`（有 `plan_diag`/`astar_plan_ros` 时）；在线 `render_panel(plan_xy=...)`，离线 `overlay_astar_path_on_demo.py` | `map_listener.py`；`apexnav_real_episode`；`scripts/overlay_astar_path_on_demo.py` |
 | Ranger 底盘碰撞半长/半宽 ≈0.651/0.435 m；外接 R≈0.783 m；ApexNav 默认膨胀 0.18 m **小于** 足迹 | MuJoCo `base_link_col`；`apexnav_rangercr10_frontier_inflation.md` |
@@ -230,7 +230,10 @@ VLN_Mobilemanipulator/
 | 0.7× FK：抬臂后 TCP AGL≈0.811 m（目标 0.88±0.02 未达）；D455 optical≈0.881 m 且水平（≠TCP） | `ppo_raise_habitat_fk_070.json`；`apexnav_rangercr10_ppo_raise_s070.md` |
 | PPO/ApexNav 交接：抬臂完成保持 `arm_q`，再 26 步环视；二者不同时控底盘/臂 | `--ppo_raise_json`；`handover.json` |
 | 底盘 MOVE/TURN（**默认保持** `EXEC_BACKEND=ppo_chassis`，勿擅自切回 kinematic-only）：宿主 MuJoCo `vel_cmd` unit segment（`move_forward`/`turn_*`）→ Habitat 回放 body-frame ΔSE2 + `probe_base_motion`；MuJoCo 无 HM3D；对照回退 `kinematic` | `run_mujoco_chassis_segment`；`run_ppo_chassis_bundle_host.sh`；`run_integrate_defaults.env`；`--exec_backend` |
-| hy1 ppo_chassis 冒烟（2026-11-23）：`.../apexnav_real_integrate/ppo_chassis_hy1_20261123_220210_hy1_plant_0`；观影用 `demo/apexnav_ranger_paper_demo_7fps.mp4`（用户确认可见轮运动） | 该 run 目录；`PROGRESS.md` |
+| hy1 ppo_chassis 冒烟（2026-11-23）：`.../apexnav_real_integrate/ppo_chassis_hy1_20261123_220210_hy1_plant_0`；默认 demo 2fps；同目录 7fps 仅作点名复查（用户曾确认可见轮运动） | 该 run 目录；`PROGRESS.md` |
+| PPO 倒车（`model_9999`，`vx=-0.25`，z040）：0.15/0.25/0.40 m 目标均真实后退（Δ≈−0.19/−0.29/−0.42，yaw/横漂 <3 mm）；unit=`move_backward.json`；**禁止**用前进片段取负伪造 | `ppo_reverse_validation_model9999/`；`run_ppo_reverse_validation.sh` |
+| `REVERSE_PLANNING_MODE=A\|B\|C`（**默认 A**，未改正式部署）：B=路径引导倒车；C=PPO 基元 Hybrid A*（非 KinoAstar/非 Reeds–Shepp）；KinoAstar 现为 Dubins+非负 arc | `reverse_planning.py`；`run_abc_hy1.sh` |
+| HY1 plant 同 spawn 消融（orig 预算）：A moved≈0.85/blocked=29；B≈2.92/23/rev≈1.16 m；C≈4.23/13/rev≈1.74 m；三者均 budget exhausted（非 ObjectNav 成功） | `reports/hy1_reverse_planning_ablation.md`；`reports/hy1_reverse_planning/` |
 | BaseCommandFilter 官方：`lock_output=True, hysteresis=0`（抬臂/LOOK/底盘共用） | `ppo_mujoco_raise._official_base_filter` |
 | `ARM_DEFAULT` 水平投影仍超出底盘轮廓；用户拟重训更收拢 home 后再换 ckpt/bundle | `pose_look_views/ppo_arm_default_side.png` |
 | ROS Z 必须发 **AGL**（`hab_y - floor_y`）；绝对 Habitat Y 会使 map_ros 高度滤波错位 | `coord_habitat_ros.hab_pos_to_ros` |

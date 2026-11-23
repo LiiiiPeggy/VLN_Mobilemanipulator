@@ -56,6 +56,9 @@ from .initial_camera_pose import apply_and_record_initial_camera, verify_arm_con
 from .kinematic_demo import DEFAULT_BASE_Y, RangerCr10KinematicEnv
 from .map_listener import ApexNavMapListener
 from .planner_first_call_diag import analyze_map_listener
+# ################################
+from . import reverse_planning as revplan
+# ################################
 from .pointcloud_dynamic import object_clouds_from_masks
 from .ppo_mujoco_raise import (
     LOOK_PITCH_STEP_RAD,
@@ -111,6 +114,10 @@ class ACTION:
     TURN_RIGHT = 3
     TURN_DOWN = 4
     TURN_UP = 5
+    # ################################
+    # Adapter-only reverse (scheme B/C). Never published by ApexNav FSM.
+    # ################################
+    MOVE_BACKWARD = 6
 
 
 ACTION_NAME = {
@@ -120,6 +127,7 @@ ACTION_NAME = {
     3: "TURN_RIGHT",
     4: "TURN_DOWN",
     5: "TURN_UP",
+    6: "MOVE_BACKWARD",
 }
 
 FORWARD_M = 0.25
@@ -407,6 +415,19 @@ class ApexNavRangerBridge:
         self.sum_abs_yaw_delta = 0.0
         self.n_blocked_exec = 0
         self.n_truncated_exec = 0
+        # ################################
+        # Reverse planning ablation: A=baseline, B=path-guided, C=Hybrid A* lattice.
+        # Default A — formal nav unchanged until ablation validated.
+        # ################################
+        _rpm = str(
+            getattr(args, "reverse_planning_mode", revplan.MODE_A) or revplan.MODE_A
+        ).upper()
+        if _rpm not in revplan.MODES:
+            _rpm = revplan.MODE_A
+        self._rev_state = revplan.ReversePlannerState(mode=_rpm)
+        self._blocked_turn_streak = 0
+        self._last_path_geom: Dict[str, Any] = {}
+        self._last_rev_decision: Optional[Dict[str, Any]] = None
 
     def _callbacks(self):
         def on_action(msg):
@@ -677,6 +698,26 @@ class ApexNavRangerBridge:
                 )
                 res["exec_backend"] = EXEC_BACKEND_KINEMATIC
             _pack_base_res(res, "MOVE_FORWARD")
+        # ################################
+        # Real PPO reverse segment (negative vx calibrated). Not negated forward.
+        # ################################
+        elif action == ACTION.MOVE_BACKWARD:
+            res = None
+            if self._exec_backend == EXEC_BACKEND_PPO_CHASSIS:
+                res = self._apply_ppo_chassis_segment(
+                    "move_backward", "MOVE_BACKWARD"
+                )
+                if res.get("missing_segment"):
+                    res = None
+            if res is None:
+                # kinematic fallback: step back along body -forward
+                nx = x - FORWARD_M * math.sin(yaw)
+                nz = z - FORWARD_M * math.cos(yaw)
+                res = probe_base_motion(
+                    self.env, nx, nz, yaw, action_hint="MOVE_BACKWARD"
+                )
+                res["exec_backend"] = EXEC_BACKEND_KINEMATIC
+            _pack_base_res(res, "MOVE_BACKWARD")
         elif action == ACTION.TURN_LEFT:
             res = None
             if self._exec_backend == EXEC_BACKEND_PPO_CHASSIS:
@@ -1129,7 +1170,15 @@ class ApexNavRangerBridge:
             if self._exec_backend == EXEC_BACKEND_PPO_CHASSIS:
                 loaded_c: Dict[str, dict] = {}
                 if chassis_dir and Path(chassis_dir).is_dir():
-                    for name in ("move_forward", "turn_left", "turn_right"):
+                    # ################################
+                    # move_backward optional — required only for reverse modes B/C.
+                    # ################################
+                    for name in (
+                        "move_forward",
+                        "turn_left",
+                        "turn_right",
+                        "move_backward",
+                    ):
                         jp = Path(chassis_dir) / f"{name}.json"
                         if not jp.is_file():
                             continue
@@ -1139,12 +1188,20 @@ class ApexNavRangerBridge:
                 self._ppo_chassis_segments = loaded_c
                 cam_mode_meta["ppo_chassis_dir"] = chassis_dir
                 cam_mode_meta["ppo_chassis_segments_loaded"] = sorted(loaded_c.keys())
+                cam_mode_meta["reverse_planning_mode"] = self._rev_state.mode
                 need = ("move_forward", "turn_left", "turn_right")
                 if any(n not in loaded_c for n in need):
                     (self.out / "ppo_chassis_TARGETS_MISSING.txt").write_text(
                         "EXEC_BACKEND=ppo_chassis requires move_forward/turn_left/turn_right.json "
                         f"under --ppo_chassis_dir (got {chassis_dir!r}, "
                         f"loaded={sorted(loaded_c.keys())}); MOVE/TURN fall back to kinematic.\n"
+                    )
+                if self._rev_state.mode in (revplan.MODE_B, revplan.MODE_C) and (
+                    "move_backward" not in loaded_c
+                ):
+                    (self.out / "ppo_chassis_REVERSE_MISSING.txt").write_text(
+                        f"reverse_planning_mode={self._rev_state.mode} needs move_backward.json "
+                        f"under --ppo_chassis_dir (got {chassis_dir!r}).\n"
                     )
             (self.out / "camera_mode.json").write_text(json.dumps(cam_mode_meta, indent=2))
             init_pen = report_initial_penetration(self.env)
@@ -1396,6 +1453,74 @@ class ApexNavRangerBridge:
 
                 action = int(self.global_action)
                 self.global_action = None
+                planner_requested_action = int(action)
+                # ################################
+                # Path geometry from latest native A* (ROS) for reverse modes B/C.
+                # ################################
+                path_xy = self._refresh_astar_plan_ros()
+                path_geom: Dict[str, Any] = {}
+                if path_xy:
+                    hx, hz = float(self.env.base_xyz[0]), float(self.env.base_xyz[2])
+                    hyaw = float(self.env.base_yaw)
+                    # selected_goal unknown here; use path tail
+                    path_geom = revplan.path_geometry(
+                        hx, hz, hyaw, path_xy, selected_goal_ros=path_xy[-1]
+                    )
+                    self._last_path_geom = path_geom
+                rev_decision: Optional[Dict[str, Any]] = None
+                # ################################
+                # Scheme B/C overrides (explore only). Mode A never enters.
+                # Reverse / hybrid actions count against the same explore budget.
+                # ################################
+                phase_pre = (
+                    "init_lookaround"
+                    if step < APEXNAV_INIT_LOOKAROUND_ACTIONS
+                    else "explore_planner"
+                )
+                if (
+                    phase_pre == "explore_planner"
+                    and self._rev_state.mode in (revplan.MODE_B, revplan.MODE_C)
+                ):
+                    occ = None
+                    if self.map_listener is not None:
+                        occ = revplan.OnlineOccMap.from_map_listener(
+                            self.map_listener,
+                            robot_scale=float(self.env.robot_scale),
+                        )
+                    if self._rev_state.mode == revplan.MODE_B:
+                        rev_decision = revplan.scheme_b_decide(
+                            state=self._rev_state,
+                            x=float(self.env.base_xyz[0]),
+                            z=float(self.env.base_xyz[2]),
+                            yaw=float(self.env.base_yaw),
+                            requested_action=planner_requested_action,
+                            path_geom=path_geom or {"path_behind": False},
+                            segments=self._ppo_chassis_segments,
+                            occ=occ,
+                            blocked_turn_streak=self._blocked_turn_streak,
+                        )
+                    else:
+                        rev_decision = revplan.scheme_c_decide(
+                            state=self._rev_state,
+                            x=float(self.env.base_xyz[0]),
+                            z=float(self.env.base_xyz[2]),
+                            yaw=float(self.env.base_yaw),
+                            requested_action=planner_requested_action,
+                            path_geom=path_geom or {"path_behind": False},
+                            segments=self._ppo_chassis_segments,
+                            occ=occ,
+                            blocked_turn_streak=self._blocked_turn_streak,
+                        )
+                    self._last_rev_decision = rev_decision
+                    if (
+                        rev_decision
+                        and rev_decision.get("accepted")
+                        and rev_decision.get("override_action") is not None
+                    ):
+                        action = int(rev_decision["override_action"])
+                        # clear legacy blocked streak — reverse changes pose/obs
+                        self._consec_blocked_same = 0
+                        self._last_blocked_action = None
                 # ################################
                 # VLN adapt: bounded failure feedback — if planner re-requests the
                 # same fully-blocked base action ≥3 times, spend this step on a
@@ -1404,6 +1529,7 @@ class ApexNavRangerBridge:
                 # v2: turn blocks escalate opposite_turn → forced MOVE_FORWARD;
                 #     MOVE_FORWARD blocks still use gimbal look / forced turn.
                 # Counts against max_steps / max_explore like any other action.
+                # Skipped when B/C already overrode to reverse/hybrid action.
                 # ################################
                 recovery_meta: Optional[Dict[str, Any]] = None
                 BASE_ACTS = {ACTION.MOVE_FORWARD, ACTION.TURN_LEFT, ACTION.TURN_RIGHT}
@@ -1411,6 +1537,12 @@ class ApexNavRangerBridge:
                     getattr(args, "blocked_recovery_mode", "legacy") or "legacy"
                 ).lower()
                 if (
+                    rev_decision
+                    and rev_decision.get("accepted")
+                    and rev_decision.get("override_action") is not None
+                ):
+                    pass  # B/C already chose action
+                elif (
                     action in BASE_ACTS
                     and self._last_blocked_action == action
                     and self._consec_blocked_same >= 3
@@ -1496,13 +1628,37 @@ class ApexNavRangerBridge:
                             "step": step,
                             "action": action,
                             "name": ACTION_NAME.get(action, str(action)),
+                            "planner_requested": ACTION_NAME.get(
+                                planner_requested_action, str(planner_requested_action)
+                            ),
                             "phase": phase,
                             "ros_state": self.ros_state,
                             "t": time.time(),
+                            "reverse_planning_mode": self._rev_state.mode,
+                            "rev_decision": rev_decision,
+                            "path_geom": {
+                                k: path_geom.get(k)
+                                for k in (
+                                    "path_behind",
+                                    "behind_frac",
+                                    "look_df",
+                                    "look_dl",
+                                    "goal_df",
+                                )
+                            }
+                            if path_geom
+                            else None,
                         }
                     )
                     + "\n"
                 )
+                # ################################
+                # Persist hybrid / reverse planner path snapshots for ablation.
+                # ################################
+                if self._rev_state.planner_paths_log:
+                    revplan.write_planner_paths_jsonl(
+                        self.out / "planner_paths.jsonl", self._rev_state
+                    )
 
                 _pub_int(state_pub, HABITAT_STATE.ACTION_EXEC)
                 exec_info = self._execute_action(action)
@@ -1510,6 +1666,13 @@ class ApexNavRangerBridge:
                     exec_info["blocked_recovery"] = recovery_meta
                     exec_info["requested_action"] = recovery_meta["requested_action"]
                     exec_info["action_name"] = recovery_meta["recovery_action"]
+                if rev_decision and rev_decision.get("accepted"):
+                    exec_info["reverse_planning"] = rev_decision
+                    exec_info["planner_requested_action"] = ACTION_NAME.get(
+                        planner_requested_action, str(planner_requested_action)
+                    )
+                    if int(action) == ACTION.MOVE_BACKWARD:
+                        exec_info["requested_action"] = "MOVE_BACKWARD"
                 # ################################
                 # Track consecutive full rejects (no motion). Truncation resets
                 # the streak because the committed pose did change.
@@ -1520,6 +1683,33 @@ class ApexNavRangerBridge:
                     exec_info.get("blocked")
                     and not exec_info.get("executed")
                     and not exec_info.get("truncated")
+                )
+                # ################################
+                # Turn-block streak for path-guided reverse (planner intent).
+                # ################################
+                planner_was_turn = planner_requested_action in (
+                    ACTION.TURN_LEFT,
+                    ACTION.TURN_RIGHT,
+                )
+                turn_failed = planner_was_turn and (
+                    fully_blocked or bool(exec_info.get("truncated"))
+                )
+                if turn_failed and not (
+                    rev_decision
+                    and rev_decision.get("accepted")
+                    and int(action) == ACTION.MOVE_BACKWARD
+                ):
+                    self._blocked_turn_streak += 1
+                elif exec_info.get("executed") and not fully_blocked:
+                    if float(exec_info.get("moved_m") or 0.0) > 0.05 or abs(
+                        float(exec_info.get("yaw_delta") or 0.0)
+                    ) > math.radians(10):
+                        self._blocked_turn_streak = 0
+                revplan.update_after_exec(
+                    self._rev_state,
+                    actual_action=str(exec_info.get("actual_action") or ""),
+                    moved_m=exec_info.get("moved_m"),
+                    ppo_delta=exec_info.get("ppo_delta"),
                 )
                 if fully_blocked and action in BASE_ACTS and recovery_meta is None:
                     if self._last_blocked_action == action:
@@ -1739,8 +1929,25 @@ class ApexNavRangerBridge:
                     "step": step,
                     "planner_action": action,
                     "planner_action_name": ACTION_NAME.get(action, str(action)),
+                    # ################################
+                    "planner_requested_action": ACTION_NAME.get(
+                        planner_requested_action, str(planner_requested_action)
+                    ),
+                    "reverse_planning_mode": self._rev_state.mode,
+                    "path_geom": self._last_path_geom or None,
+                    "rev_decision": rev_decision,
+                    "blocked_turn_streak": int(self._blocked_turn_streak),
+                    # ################################
                     "phase": phase,
-                    "action_source": "apexnav_/habitat/plan_action",
+                    "action_source": (
+                        "reverse_planning_override"
+                        if (
+                            rev_decision
+                            and rev_decision.get("accepted")
+                            and rev_decision.get("override_action") is not None
+                        )
+                        else "apexnav_/habitat/plan_action"
+                    ),
                     "ros_state": self.ros_state,
                     "final_state": self.final_state,
                     "expl_result": self.expl_result,
@@ -1900,6 +2107,22 @@ class ApexNavRangerBridge:
             "camera_mode": getattr(self.env, "camera_mode", None) if self.env else getattr(args, "camera_mode", None),
             "look_backend": self._look_backend,
             "exec_backend": self._exec_backend,
+            # ################################
+            "reverse_planning": {
+                "mode": self._rev_state.mode,
+                "n_reverse_actions": int(self._rev_state.n_reverse_actions),
+                "sum_reverse_m": float(self._rev_state.sum_reverse_m),
+                "n_gear_switches": int(self._rev_state.n_gear_switches),
+                "n_hybrid_calls": int(self._rev_state.n_hybrid_calls),
+                "n_hybrid_fail": int(self._rev_state.n_hybrid_fail),
+                "n_path_guided_reverse": int(self._rev_state.n_path_guided_reverse),
+                "blocked_turn_streak_final": int(self._blocked_turn_streak),
+                "note": (
+                    "A=2D A* baseline; B=path-guided PPO reverse; "
+                    "C=PPO-primitive Hybrid A* lattice (not KinoAstar/Reeds-Shepp)"
+                ),
+            },
+            # ################################
             "simulated_gimbal": bool(getattr(self.env, "simulated_gimbal", False)) if self.env else False,
             "camera_mode_meta": getattr(self, "_camera_mode_meta", None),
             "initial_penetration": getattr(self, "_initial_penetration", None),
@@ -2086,6 +2309,15 @@ def main(argv=None) -> int:
         default="legacy",
         choices=["legacy", "v2"],
         help="Chassis blocked recovery policy after ≥3 identical full rejects.",
+    )
+    # ################################
+    # Ablation only — default A keeps formal nav unchanged.
+    # ################################
+    p.add_argument(
+        "--reverse_planning_mode",
+        default=revplan.MODE_A,
+        choices=list(revplan.MODES),
+        help="A=baseline 2D A*; B=path-guided reverse; C=PPO Hybrid A* lattice.",
     )
     p.add_argument("--success_distance", type=float, default=1.0)
     p.add_argument("--handshake_timeout_s", type=float, default=120.0)

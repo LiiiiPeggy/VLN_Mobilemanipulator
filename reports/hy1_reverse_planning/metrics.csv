@@ -1,0 +1,12 @@
+mode,budget,rep,run_id,termination,n_steps,sum_moved_m,executed_path_length_m,n_forward,n_turn,n_reverse,n_blocked_exec,n_truncated_exec,n_no_progress_explore,sum_reverse_m,n_gear_switches,n_hybrid_calls,elapsed_sec,escape_success,nav_resumption,near_goal,final_dtg,source
+A,orig,,ppo_chassis_hy1_20261123_220210_hy1_plant_0,explore_budget_exhausted,46,0.8466465523562836,0.8466465523562836,2,42,0,29,9,10,None,None,None,206.86755514144897,False,False,False,4.5853981974130384,immutable_original
+A,orig,1,ppo_chassis_hy1_20261123_220210_hy1_plant_0,explore_budget_exhausted,46,0.8466465523562836,0.8466465523562836,2,42,0,29,9,10,None,None,None,206.86755514144897,False,False,False,4.5853981974130384,ablation
+B,orig,1,hy1_rev_B_orig_r1_20261124_050148_hy1_plant_0,explore_budget_exhausted,46,2.921682131387746,2.921682131387746,6,34,4,23,5,8,1.1588933438260707,8,0,216.53050875663757,True,True,False,4.554453139712986,ablation
+C,orig,1,hy1_rev_C_orig_r1_20261124_050807_hy1_plant_0,exception,0,0.0,0.0,0,0,0,0,0,0,0.0,0,0,134.51301193237305,False,False,False,None,ablation
+C,orig,2,hy1_rev_C_orig_r2_20261124_065348_hy1_plant_0,exception,0,0.0,0.0,0,0,0,0,0,0,0.0,0,0,133.67185759544373,False,False,False,None,ablation
+C,orig,3,hy1_rev_C_orig_r3_20261124_065931_hy1_plant_0,explore_budget_exhausted,46,4.225223079039464,4.225223079039464,8,30,6,13,3,0,1.738340015739106,6,4,186.872572183609,True,True,False,4.386245714743565,ablation
+C,orig,3,hy1_rev_C_orig_r3_20261124_065931_hy1_plant_0,explore_budget_exhausted,46,4.225223079039464,4.225223079039464,8,30,6,13,3,0,1.738340015739106,6,4,186.872572183609,True,True,False,4.386245714743565,ablation
+B,ext,1,hy1_rev_B_ext_r1_20261124_070540_hy1_plant_0,explore_budget_exhausted,86,3.8359624038082822,3.8359624038082822,7,71,6,60,16,38,1.738340015739106,11,0,395.868043422699,True,False,False,4.469009016556561,ablation
+B,ext,1,hy1_rev_B_ext_r1_20261124_070540_hy1_plant_0,explore_budget_exhausted,86,3.8359624038082822,3.8359624038082822,7,71,6,60,16,38,1.738340015739106,11,0,395.868043422699,True,False,False,4.469009016556561,ablation
+C,ext,1,hy1_rev_C_ext_r1_20261124_071619_hy1_plant_0,explore_budget_exhausted,86,5.268243924232032,5.268243924232032,13,65,6,50,18,33,1.738340015739106,6,38,366.0433728694916,True,False,False,5.362116724041249,ablation
+C,ext,1,hy1_rev_C_ext_r1_20261124_071619_hy1_plant_0,explore_budget_exhausted,86,5.268243924232032,5.268243924232032,13,65,6,50,18,33,1.738340015739106,6,38,366.0433728694916,True,False,False,5.362116724041249,ablation

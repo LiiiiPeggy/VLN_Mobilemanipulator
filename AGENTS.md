@@ -108,9 +108,9 @@
 - **子代理 Git**：不得另开并列 clone 作长期工作区；不得 push 公共远端（除非主会话明确要求）；不得动他人容器。
 - **在线仿真锁**：主会话统一调度。取得 `/home/ubuntu/locomani/_sim_host_run.lock` 后方可启动仿真；持有至相关运行结束再释放。等跑期间可并行分析已有日志。
 - **统一运行入口**：`adapters/habitat_rangercr10/scripts/run_apexnav_real_episode.sh`（可先 `source .../run_integrate_defaults.env`）。  
-  关键开关：`INFLATION_PROFILE`、`ENABLE_NO_FRONTIER_LOOK`、`BLOCKED_RECOVERY_MODE`、`LOOK_BACKEND`（**默认 `ppo_ee_rpy`**|`gimbal`）、`EXEC_BACKEND`（**默认 `ppo_chassis`**|`kinematic`）、`PPO_LOOK_DIR`、`PPO_CHASSIS_DIR`、`PPO_RAISE_JSON`（默认 z040）、`CONTAINER`、`CATKIN_DEVEL_PREFIX`。  
-  **默认保持 PPO**：未经用户明确要求，勿把 LOOK/EXEC 默认改回 `gimbal` / `kinematic-only`。  
-  **Demo 观影**：查轮胎/底盘运动用 `apexnav_ranger_paper_demo_7fps.mp4`（2fps 一帧一动作，轮转难辨）。  
+  关键开关：`INFLATION_PROFILE`、`ENABLE_NO_FRONTIER_LOOK`、`BLOCKED_RECOVERY_MODE`、`LOOK_BACKEND`（**默认 `ppo_ee_rpy`**|`gimbal`）、`EXEC_BACKEND`（**默认 `ppo_chassis`**|`kinematic`）、`REVERSE_PLANNING_MODE`（**默认 `A`**|`B`|`C` 消融）、`PPO_LOOK_DIR`、`PPO_CHASSIS_DIR`、`PPO_RAISE_JSON`（默认 z040）、`CONTAINER`、`CATKIN_DEVEL_PREFIX`。 
+  **默认保持 PPO**：未经用户明确要求，勿把 LOOK/EXEC 默认改回 `gimbal` / `kinematic-only`；**勿把 `REVERSE_PLANNING_MODE` 默认改离 A**（除非用户明确要求）。
+  **Demo 录制默认 2fps**（`apexnav_ranger_paper_demo.mp4` / `ffmpeg -framerate 2`）；**未经用户明确要求勿自动跑 7fps**。仅当用户点名要 7fps / 查轮胎运动时再用 `run_demo_7fps.sh`。  
   `run_apexnav_real_episode_agentA.sh` / `_agentB.sh` 及 reports 内一次性脚本仅作历史复现，不作新实验入口。
 - **容器**：整合评测用 `vln-rangercr10-integrate`（`docker-compose.integrate.yml`，挂载本仓根目录）。`vln-rangercr10-agentA-navinf` / `vln-rangercr10-agentB-nofrontier` 已退役，勿再启动。
 - **机载 RGB 截图**：用 `env.observe_ee_only()`；禁止只调 `sync_agent_sensors()` 后读 `ee_rgb`（会贴地假视角）。

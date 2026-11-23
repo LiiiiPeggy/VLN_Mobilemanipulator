@@ -241,7 +241,12 @@ if [[ -n "$PPO_CHASSIS_DIR" ]]; then
 fi
 
 MAX_EXPLORE_ACTIONS="${MAX_EXPLORE_ACTIONS:-20}"
-echo "[4/4] run real ApexNav episode → $OUT (robot_scale=$ROBOT_SCALE camera_mode=$CAMERA_MODE look_backend=$LOOK_BACKEND exec_backend=$EXEC_BACKEND max_explore=$MAX_EXPLORE_ACTIONS recovery=$BLOCKED_RECOVERY_MODE)"
+# ################################
+# Ablation: A|B|C — default A (no reverse). Does not change formal deploy default.
+# ################################
+REVERSE_PLANNING_MODE="${REVERSE_PLANNING_MODE:-A}"
+SCALE_ARGS="$SCALE_ARGS --reverse_planning_mode $REVERSE_PLANNING_MODE"
+echo "[4/4] run real ApexNav episode → $OUT (robot_scale=$ROBOT_SCALE camera_mode=$CAMERA_MODE look_backend=$LOOK_BACKEND exec_backend=$EXEC_BACKEND max_explore=$MAX_EXPLORE_ACTIONS recovery=$BLOCKED_RECOVERY_MODE reverse=$REVERSE_PLANNING_MODE)"
 # ################################
 # Forward optional experimental chassis-look burst env (default none).
 # ################################
