@@ -280,12 +280,12 @@ VLN_Mobilemanipulator/
 | 证据 | hy1：hold 8.0 时 keep×26，dtg 0.485→0.167，moved↑；仍无 REACH/STOP（阻断见 soft_reach） |
 | 注意 | `success_claimed` 恒 False；SR_proxy=`planner_stop∧near_goal`；eval VIEW_POINTS 不进在线 STOP |
 
-## soft REACH any-stuck（2026-11-23 stop_fix）
+## soft REACH any-stuck（2026-11-23 stop_fix，yaw-aware 修正）
 
 | 项 | 内容 |
 |----|------|
-| 现象 | SEARCH + next_pos≈0.25 m（&lt;soft 0.45）时 TURN 被碰撞拒；`newest_action_` 非 MOVE_FORWARD → 旧 soft REACH 不触发 |
+| 现象 | SEARCH + next_pos≈0.25 m 时受阻 TURN 需 soft REACH；但首版 any_stuck 用 **XY pose_stuck**，会把成功原地转向误判为卡住 |
 | 开关 | `SOFT_REACH_ON_ANY_STUCK` / `soft_reach_on_any_stuck`；默认 **false**；候选 **true** |
-| 行为 | ON 时 pose stuck + dist&lt;0.45 允许任意 last_action → REACH→STOP |
-| 证据 | hy1 配对：ON→STOP soft_reach dist=0.25；Dd4b/ziup 未近距无 STOP |
-| 相关 | `reports/integration_20261122/stop_fix/STOP_FIX_REPORT.md` |
+| 行为 | ON：MOVE→\|Δxy\| stuck；TURN_L/R→\|Δyaw\|&lt;ACTION_ANGLE/2；LOOK（UP/DOWN）不因 XY 闲置触发 |
+| 证据 | 已发布 ON 误 STOP（成功 TURN−30°）；yaw-aware ON：TRUNC TURN dyaw=−0.087 → 合法 STOP；`SOFT_REACH_YAW_AUDIT.md` |
+| 相关 | `reports/integration_20261122/stop_fix/` |

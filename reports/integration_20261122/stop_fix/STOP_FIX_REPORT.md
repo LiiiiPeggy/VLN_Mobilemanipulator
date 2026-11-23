@@ -55,3 +55,6 @@
 - hy1 ON：`.../stop_fix_20261123_002141/..._hy1_soft_reach_on`
 - Dd4b/ziup ON：`.../stop_fix_ext_20261123_154208/...`
 - 入口：`adapters/habitat_rangercr10/scripts/run_apexnav_real_episode.sh`
+
+
+> 后续核验：已发布 any_stuck 存在成功转向误判；见 `SOFT_REACH_YAW_AUDIT.md`（yaw-aware 修正）。

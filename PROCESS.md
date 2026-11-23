@@ -1206,3 +1206,18 @@
 **实测**：hy1 ON→STOP（soft_reach）；Dd4b/ziup 未进入近距。默认保持 false。  
 
 **相关**：`reports/integration_20261122/stop_fix/STOP_FIX_REPORT.md`、基线 `383691d`
+
+---
+
+## 2026-11-23 soft_reach yaw-aware 核验
+
+**模块**：exploration_fsm soft REACH  
+
+**问题**：已发布 `soft_reach_on_any_stuck` 在成功 TURN 后因 XY pose_stuck 误 STOP。  
+
+**操作**：改为动作感知卡住（MOVE→Δxy，TURN→Δyaw，LOOK 排除）；hy1 三组对照 + Dd4b 回归；边界脚本。  
+
+**实测**：hy1 修正后仍在受阻 TURN（dyaw≈5°）合法 STOP；Dd4b 无近距无 STOP；正向配对缺口。  
+
+**相关**：`reports/integration_20261122/stop_fix/SOFT_REACH_YAW_AUDIT.md`
+

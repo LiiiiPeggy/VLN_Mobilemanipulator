@@ -35,6 +35,10 @@ struct FSMData {
     start_vel_ = Eigen::Vector3d::Zero();
     start_yaw_ = Eigen::Vector3d::Zero();
     last_start_pos_ = Eigen::Vector3d(-100, -100, -100);
+    // ################################
+    // Previous PLAN_ACTION yaw for action-aware soft_reach stuck (turn vs translate).
+    // ################################
+    last_start_yaw_ = -1000.0;
     last_next_pos_ = Eigen::Vector2d(-100, -100);
     newest_action_ = -1;
     init_action_count_ = 0;
@@ -69,6 +73,9 @@ struct FSMData {
 
   Eigen::Vector3d start_pt_, start_vel_, start_yaw_;
   Eigen::Vector3d last_start_pos_;
+  // ################################
+  double last_start_yaw_;
+  // ################################
   Eigen::Vector2d last_next_pos_;
   int newest_action_;
   int init_action_count_;
@@ -108,7 +115,8 @@ struct FSMParam {
     enable_no_frontier_look_ = false;  // legacy OFF group default
     // ObjectHold max dist to last approach goal (m). 3.0=legacy; 8.0=fix ON.
     object_hold_max_dist_ = 3.0;
-    // Soft REACH only after MOVE_FORWARD stuck (false) vs any-action stuck (true).
+    // Soft REACH: false=MOVE_FORWARD+XY stuck only; true=also TURN with yaw stuck
+    // (not successful in-place turn / LOOK with XY unchanged).
     soft_reach_on_any_stuck_ = false;
     // ################################
 
@@ -137,9 +145,10 @@ struct FSMParam {
   // ################################
   double object_hold_max_dist_;
   // ################################
-  // Soft REACH when SEARCH + dist<soft_reach + pose stuck: require MOVE_FORWARD
-  // (false, legacy) or allow any last action (true). hy1 ON approach_fix:
-  // blocked TURN near next_pos=0.25 m never satisfied MOVE_FORWARD gate.
+  // Soft REACH when SEARCH + dist<soft_reach + action-stuck:
+  // false: MOVE_FORWARD + XY stuck only (legacy).
+  // true: also TURN_LEFT/RIGHT when |Δyaw| < ACTION_ANGLE/2 (obstructed turn);
+  //       LOOK (TURN_UP/DOWN) never counts as stuck from XY alone.
   // ################################
   bool soft_reach_on_any_stuck_;
 };

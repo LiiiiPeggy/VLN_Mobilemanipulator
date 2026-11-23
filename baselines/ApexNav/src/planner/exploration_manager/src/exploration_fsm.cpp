@@ -30,10 +30,11 @@ void ExplorationFSM::init(ros::NodeHandle& nh)
   ROS_WARN("[ObjectHold] max_dist=%.2fm miss_cap=%d", fp_->object_hold_max_dist_,
       FSMConstants::MAX_OBJECT_HOLD_MISS);
   // ################################
-  // Soft REACH gate: false=legacy (MOVE_FORWARD stuck only); true=any-action stuck.
+  // Soft REACH gate: false=legacy (MOVE_FORWARD+XY stuck); true=also yaw-stuck TURN
+  // (successful in-place turn / LOOK must NOT count as stuck via XY alone).
   // ################################
   nh.param("soft_reach_on_any_stuck", fp_->soft_reach_on_any_stuck_, false);
-  ROS_WARN("[SoftReach] on_any_stuck=%s soft_dist=%.2fm hard_dist=%.2fm",
+  ROS_WARN("[SoftReach] on_any_stuck=%s soft_dist=%.2fm hard_dist=%.2fm (turn uses |dyaw|)",
       fp_->soft_reach_on_any_stuck_ ? "true" : "false", FSMConstants::SOFT_REACH_DISTANCE,
       FSMConstants::REACH_DISTANCE);
   // ################################
@@ -209,7 +210,11 @@ int ExplorationFSM::callActionPlanner()
   Eigen::Vector2d current_pos = Eigen::Vector2d(fd_->start_pt_(0), fd_->start_pt_(1));
   Eigen::Vector2d last_pos = Eigen::Vector2d(fd_->last_start_pos_(0), fd_->last_start_pos_(1));
   double current_yaw = fd_->start_yaw_(0);
+  const double last_yaw = fd_->last_start_yaw_;
   fd_->last_start_pos_ = fd_->start_pt_;
+  // ################################
+  fd_->last_start_yaw_ = current_yaw;
+  // ################################
 
   // Reach the object - check if close enough to target object
   if (fd_->final_result_ == FINAL_RESULT::SEARCH_OBJECT &&
@@ -224,20 +229,33 @@ int ExplorationFSM::callActionPlanner()
   int last_action = fd_->newest_action_;
   const bool pose_stuck = (current_pos - last_pos).norm() < stucking_distance;
   // ################################
-  // Soft REACH: SEARCH + within soft_reach + pose stuck.
-  // Legacy requires last_action==MOVE_FORWARD. Fix ON (soft_reach_on_any_stuck)
-  // also accepts TURN_* stuck — hy1 ON held next_pos≈0.25 m while blocked turns
-  // never updated newest_action_ to MOVE_FORWARD (recovery FF is Habitat-side).
+  // Soft REACH stuck must be action-aware (hy1 published any_stuck STOP after a
+  // *successful* TURN_RIGHT: XY unchanged is normal for turns). Feedback:
+  // MOVE → |Δxy|; TURN_L/R → |Δyaw| from odom; LOOK (UP/DOWN) → never via XY.
+  // Legacy OFF: MOVE_FORWARD + XY stuck only. Candidate ON: also yaw-stuck TURN.
   // ################################
-  const bool soft_reach_action_ok =
-      (last_action == ACTION::MOVE_FORWARD) || fp_->soft_reach_on_any_stuck_;
-  if (!fd_->escape_stucking_flag_ && pose_stuck && soft_reach_action_ok) {
+  double dyaw = current_yaw - last_yaw;
+  while (dyaw > M_PI) dyaw -= 2.0 * M_PI;
+  while (dyaw < -M_PI) dyaw += 2.0 * M_PI;
+  const double yaw_stuck_thresh = FSMConstants::ACTION_ANGLE * 0.5;  // <~15° ⇒ turn obstructed
+  const bool yaw_stuck = std::fabs(dyaw) < yaw_stuck_thresh;
+  bool soft_reach_stuck = false;
+  if (last_action == ACTION::MOVE_FORWARD) {
+    soft_reach_stuck = pose_stuck;
+  } else if (fp_->soft_reach_on_any_stuck_ &&
+             (last_action == ACTION::TURN_LEFT || last_action == ACTION::TURN_RIGHT)) {
+    soft_reach_stuck = yaw_stuck;  // successful ±30° turn must NOT fire
+  } else {
+    soft_reach_stuck = false;  // LOOK / other: do not treat chassis-XY idle as arrival
+  }
+  if (!fd_->escape_stucking_flag_ && soft_reach_stuck) {
     if (fd_->final_result_ == FINAL_RESULT::SEARCH_OBJECT &&
         (current_pos - expl_manager_->ed_->next_pos_).norm() < soft_reach_distance) {
       ROS_ERROR(
-          "Reach the object successfully!!! (soft_reach dist=%.2fm last_action=%d any_stuck=%d)",
+          "Reach the object successfully!!! (soft_reach dist=%.2fm last_action=%d "
+          "any_stuck=%d pose_stuck=%d yaw_stuck=%d dyaw=%.3f)",
           (current_pos - expl_manager_->ed_->next_pos_).norm(), last_action,
-          fp_->soft_reach_on_any_stuck_ ? 1 : 0);
+          fp_->soft_reach_on_any_stuck_ ? 1 : 0, pose_stuck ? 1 : 0, yaw_stuck ? 1 : 0, dyaw);
       final_res = FINAL_RESULT::REACH_OBJECT;
       return final_res;
     }

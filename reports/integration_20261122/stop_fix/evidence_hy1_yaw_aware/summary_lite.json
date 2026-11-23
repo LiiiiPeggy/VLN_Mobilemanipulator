@@ -1,0 +1,14 @@
+{
+  "run_id": "stop_fix_yaw_20261123_174959_hy1_yaw_aware_on",
+  "source_path": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real_integrate/stop_fix_yaw_20261123_174959/stop_fix_yaw_20261123_174959_hy1_yaw_aware_on",
+  "termination": "planner_stop",
+  "sr_proxy": true,
+  "near_goal": true,
+  "dtg_eval": 0.4829352455140253,
+  "end_action": "STOP",
+  "n_steps": 97,
+  "sum_moved_m": 6.958333333333343,
+  "n_blocked_exec": 30,
+  "stop_line": "soft_reach dist=0.25 last_action=3 pose_stuck=1 yaw_stuck=1 dyaw=-0.087",
+  "pre_stop": "TURN_RIGHT_TRUNCATED yaw=-5deg blocked=1 (true obstructed turn)"
+}
