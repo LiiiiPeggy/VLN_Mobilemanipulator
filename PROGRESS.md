@@ -15,6 +15,7 @@
 |----|-----|
 | 工作分支目标 | `origin/cursor/habitat-rangercr10-scale070` |
 | 修复前基线 SHA | `383691d3becf0372b575dceecefb355d542ecb9c` |
+| 当前 tip（含 soft_reach 候选） | `ef71d3190a1f78191f9d4bee1de4970cd9dcf64e` |
 | 已删远端 | `cursor/nav-inflation-halfwidth-softcost`、`cursor/ranger-target-discovery-followup` |
 | 保留 | `main`、`cursor/habitat-rangercr10-scale070` |
 | 记录 | `reports/integration_20261122/REMOTE_OPS_DONE.md` |
