@@ -17,10 +17,12 @@ from .map_style import (
     PAPER_BG,
     PAPER_FREE,
     PAPER_OCCUPIED,
+    PAPER_PATH,
     PAPER_ROBOT,
     PAPER_TEXT,
     PAPER_TRAJ,
     PAPER_UNKNOWN,
+    PAPER_WAYPOINT,
     VALUE_MAX_COLOR,
     VALUE_MAX_INTENSITY,
     VALUE_MIN_COLOR,
@@ -146,6 +148,10 @@ class ApexNavMapListener:
         robot_xy: Optional[Tuple[float, float]] = None,
         robot_yaw: float = 0.0,
         traj_xy: Optional[List[Tuple[float, float]]] = None,
+        # ################################
+        # Native ApexNav A* selected_path (ROS planar XY). Demo overlay only.
+        # ################################
+        plan_xy: Optional[List[Tuple[float, float]]] = None,
         meters_span: float = 12.0,
         target_label: str = "",
         value_score: Optional[float] = None,
@@ -157,6 +163,7 @@ class ApexNavMapListener:
         Paper occ base + ApexNav.rviz value heat (yellow→red) on free cells only.
         Each /grid_map cell is filled as a slightly enlarged footprint
         (demo-only; hides 1px white seam grids). Occupied never covered by heat.
+        Overlay: purple A* plan, orange executed traj, blue robot.
         ################################
         """
         h, w = size[1], size[0]
@@ -179,7 +186,7 @@ class ApexNavMapListener:
             return px, py
 
         # ################################
-        # Layer order: unknown → free → value heat → occupied → traj → robot.
+        # Layer order: unknown → free → value heat → occupied → A* plan → traj → robot.
         # Fill cell footprints (resolution-matched); do NOT morphologically
         # grow/smooth away radial structure present in /grid_map.
         # ################################
@@ -237,9 +244,29 @@ class ApexNavMapListener:
             scale=scale,
             resolution_m=res_m,
         )
+        # ################################
+        # A* plan under executed traj so executed history stays readable.
+        # ################################
+        if plan_xy and len(plan_xy) >= 2:
+            for i in range(1, len(plan_xy)):
+                self._line(
+                    canvas,
+                    to_pix(plan_xy[i - 1]),
+                    to_pix(plan_xy[i]),
+                    PAPER_PATH,
+                    thickness=2,
+                )
+            gx, gy = to_pix(plan_xy[-1])
+            self._draw_goal(canvas, gx, gy, PAPER_WAYPOINT)
         if traj_xy:
             for i in range(1, len(traj_xy)):
-                self._line(canvas, to_pix(traj_xy[i - 1]), to_pix(traj_xy[i]), PAPER_TRAJ)
+                self._line(
+                    canvas,
+                    to_pix(traj_xy[i - 1]),
+                    to_pix(traj_xy[i]),
+                    PAPER_TRAJ,
+                    thickness=2,
+                )
 
         if robot_xy is not None:
             px, py = to_pix((cx, cy))
@@ -265,13 +292,13 @@ class ApexNavMapListener:
         target_label: str,
         value_score: Optional[float],
     ) -> None:
-        """Compact Target / Value / Occupancy legend (top-left)."""
+        """Compact Target / Value / Occupancy / traj+A* legend (top-left)."""
         try:
             import cv2
         except Exception:
             return
         h, w = img.shape[:2]
-        box_w, box_h = min(168, w - 8), 54
+        box_w, box_h = min(188, w - 8), 66
         x0, y0 = 4, 4
         overlay = img.copy()
         cv2.rectangle(overlay, (x0, y0), (x0 + box_w, y0 + box_h), (255, 255, 255), -1)
@@ -286,28 +313,33 @@ class ApexNavMapListener:
             vs = f"Value: {float(value_score):.3f}"
         self._put_text(img, vs, (x0 + 6, y0 + 28), PAPER_TEXT)
 
-        # Mini colorbar + occ swatches
+        # Mini colorbar + occ/free + traj/A* swatches
         bar_x, bar_y = x0 + 6, y0 + 36
-        for i in range(48):
-            t = i / 47.0
+        for i in range(40):
+            t = i / 39.0
             inten = VALUE_MIN_INTENSITY + t * (VALUE_MAX_INTENSITY - VALUE_MIN_INTENSITY)
             c = value_intensity_to_rgb(inten)
             cv2.line(img, (bar_x + i, bar_y), (bar_x + i, bar_y + 8), c, 1)
         cv2.rectangle(
             img,
-            (bar_x + 54, bar_y),
-            (bar_x + 62, bar_y + 8),
+            (bar_x + 44, bar_y),
+            (bar_x + 52, bar_y + 8),
             PAPER_OCCUPIED,
             -1,
         )
         cv2.rectangle(
             img,
-            (bar_x + 66, bar_y),
-            (bar_x + 74, bar_y + 8),
+            (bar_x + 56, bar_y),
+            (bar_x + 64, bar_y + 8),
             PAPER_FREE,
             -1,
         )
-        self._put_text(img, "occ", (bar_x + 78, bar_y + 8), PAPER_TEXT)
+        # ################################
+        # Orange = executed traj; purple = native A* selected_path.
+        # ################################
+        cv2.line(img, (bar_x + 70, bar_y + 4), (bar_x + 86, bar_y + 4), PAPER_TRAJ, 2)
+        cv2.line(img, (bar_x + 92, bar_y + 4), (bar_x + 108, bar_y + 4), PAPER_PATH, 2)
+        self._put_text(img, "traj/A*", (bar_x + 112, bar_y + 8), PAPER_TEXT)
 
     @staticmethod
     def _put_text(img, text, org, color):
@@ -321,11 +353,21 @@ class ApexNavMapListener:
             pass
 
     @staticmethod
-    def _line(img, p0, p1, color):
+    def _line(img, p0, p1, color, thickness: int = 1):
         try:
             import cv2
 
-            cv2.line(img, p0, p1, color, 1, cv2.LINE_AA)
+            cv2.line(img, p0, p1, color, int(thickness), cv2.LINE_AA)
+        except Exception:
+            pass
+
+    @staticmethod
+    def _draw_goal(img, px, py, color):
+        try:
+            import cv2
+
+            cv2.circle(img, (px, py), 4, color, -1)
+            cv2.circle(img, (px, py), 6, color, 1)
         except Exception:
             pass
 

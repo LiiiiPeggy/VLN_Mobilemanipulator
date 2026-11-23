@@ -213,23 +213,35 @@ done
 
 # ################################
 # ROBOT_SCALE=1.0 (real) or 0.7 (scaled_robot_proxy_070). Optional FORCE_SPAWN_JSON.
-# CAMERA_MODE: fixed_base | fixed_base_gimbal (ApexNav primary) | legacy_arm_look.
-# PPO_RAISE_JSON left empty for deployment baseline (no PPO).
+# CAMERA_MODE: fixed_base | fixed_base_gimbal | legacy_arm_look (ppo LOOK forces FK).
+# Default LOOK_BACKEND=ppo_ee_rpy + PPO_LOOK_DIR + PPO_RAISE_JSON (trained teleop-PPO).
+# Default EXEC_BACKEND=ppo_chassis + PPO_CHASSIS_DIR (MOVE/TURN unit segments).
+# Legacy: LOOK_BACKEND=gimbal EXEC_BACKEND=kinematic PPO_RAISE_JSON= .
 # ################################
 ROBOT_SCALE="${ROBOT_SCALE:-0.7}"
 CAMERA_MODE="${CAMERA_MODE:-fixed_base_gimbal}"
+LOOK_BACKEND="${LOOK_BACKEND:-ppo_ee_rpy}"
+PPO_LOOK_DIR="${PPO_LOOK_DIR:-/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/ppo_look_bundle_model9999}"
 FORCE_SPAWN_JSON="${FORCE_SPAWN_JSON:-}"
-PPO_RAISE_JSON="${PPO_RAISE_JSON:-}"
-SCALE_ARGS="--robot_scale $ROBOT_SCALE --camera_mode $CAMERA_MODE"
+PPO_RAISE_JSON="${PPO_RAISE_JSON:-/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/ppo_raise_stage410d_z040.json}"
+EXEC_BACKEND="${EXEC_BACKEND:-ppo_chassis}"
+PPO_CHASSIS_DIR="${PPO_CHASSIS_DIR:-/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/ppo_chassis_bundle_model9999}"
+SCALE_ARGS="--robot_scale $ROBOT_SCALE --camera_mode $CAMERA_MODE --look_backend $LOOK_BACKEND --exec_backend $EXEC_BACKEND"
 if [[ -n "$FORCE_SPAWN_JSON" ]]; then
   SCALE_ARGS="$SCALE_ARGS --force_spawn_json '$FORCE_SPAWN_JSON'"
 fi
 if [[ -n "$PPO_RAISE_JSON" ]]; then
   SCALE_ARGS="$SCALE_ARGS --ppo_raise_json '$PPO_RAISE_JSON'"
 fi
+if [[ -n "$PPO_LOOK_DIR" ]]; then
+  SCALE_ARGS="$SCALE_ARGS --ppo_look_dir '$PPO_LOOK_DIR'"
+fi
+if [[ -n "$PPO_CHASSIS_DIR" ]]; then
+  SCALE_ARGS="$SCALE_ARGS --ppo_chassis_dir '$PPO_CHASSIS_DIR'"
+fi
 
 MAX_EXPLORE_ACTIONS="${MAX_EXPLORE_ACTIONS:-20}"
-echo "[4/4] run real ApexNav episode → $OUT (robot_scale=$ROBOT_SCALE camera_mode=$CAMERA_MODE max_explore=$MAX_EXPLORE_ACTIONS recovery=$BLOCKED_RECOVERY_MODE)"
+echo "[4/4] run real ApexNav episode → $OUT (robot_scale=$ROBOT_SCALE camera_mode=$CAMERA_MODE look_backend=$LOOK_BACKEND exec_backend=$EXEC_BACKEND max_explore=$MAX_EXPLORE_ACTIONS recovery=$BLOCKED_RECOVERY_MODE)"
 # ################################
 # Forward optional experimental chassis-look burst env (default none).
 # ################################

@@ -1,8 +1,8 @@
 # ################################
-# Main-session integrate runtime.
-# Mounts VLN_Mobilemanipulator_integrate only; does not reuse agentA/agentB
-# containers or shared vln-rangercr10 bind of the old shared tree.
-# Private catkin devel under the integrate worktree.
+# Main-session integrate runtime (single workspace).
+# Mounts /home/ubuntu/locomani/VLN_Mobilemanipulator only.
+# agentA/agentB isolation trees retired — do not reuse their containers.
+# Private catkin devel: .catkin_devel_integrate under this repo root.
 # ################################
 services:
   vln-rangercr10-integrate:
@@ -12,7 +12,7 @@ services:
     network_mode: host
     working_dir: /workspace/VLN_Mobilemanipulator
     volumes:
-      - /home/ubuntu/locomani/VLN_Mobilemanipulator_integrate:/workspace/VLN_Mobilemanipulator
+      - /home/ubuntu/locomani/VLN_Mobilemanipulator:/workspace/VLN_Mobilemanipulator
       # ################################
       # Editable groundingdino from shared install (read-only).
       # ################################

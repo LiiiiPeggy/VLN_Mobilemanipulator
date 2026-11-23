@@ -25,7 +25,13 @@ from PIL import Image
 from .constants import MODE_KINEMATIC, URDF_HABITAT
 from .demo_compose import compose_frame
 from .kinematic_demo import RangerCr10KinematicEnv
-from .map_style import PAPER_ROBOT, PAPER_TRAJ, remap_legacy_map_to_paper
+from .map_style import (
+    PAPER_PATH,
+    PAPER_ROBOT,
+    PAPER_TRAJ,
+    PAPER_WAYPOINT,
+    remap_legacy_map_to_paper,
+)
 
 DEMO_FPS = 7.0
 FRAME_DT = 1.0 / DEMO_FPS
@@ -42,14 +48,50 @@ def _is_paper_or_value_map(rgb: np.ndarray) -> bool:
     return float(np.mean(rgb)) > 160.0
 
 
+def _plan_for_step(
+    plans: List[dict],
+    step: dict,
+    acts_by_step: Dict[int, dict],
+) -> List[Tuple[float, float]]:
+    """Match native_plan_diag selected_path to a recorded step (by stamp ≤ action t)."""
+    # ################################
+    # Prefer step-recorded astar_plan_ros (new runs); else stamp-match jsonl.
+    # ################################
+    rec = step.get("astar_plan_ros")
+    if isinstance(rec, list) and len(rec) >= 2:
+        out = []
+        for p in rec:
+            if isinstance(p, (list, tuple)) and len(p) >= 2:
+                out.append((float(p[0]), float(p[1])))
+        if len(out) >= 2:
+            return out
+    if not plans:
+        return []
+    si = int(step.get("step", 0))
+    t = float((acts_by_step.get(si) or {}).get("t", 0.0) or 0.0)
+    latest = None
+    for p in plans:
+        if t <= 0.0 or float(p.get("stamp", 0.0)) <= t + 0.5:
+            latest = p
+    if not latest:
+        return []
+    out = []
+    for p in latest.get("selected_path") or []:
+        if isinstance(p, (list, tuple)) and len(p) >= 2:
+            out.append((float(p[0]), float(p[1])))
+    return out
+
+
 def _paper_map_with_traj(
     run_dir: Path,
     steps: List[dict],
     hold_i: int,
     size: Tuple[int, int] = (320, 240),
     meters_span: float = 12.0,
+    plans: Optional[List[dict]] = None,
+    acts_by_step: Optional[Dict[int, dict]] = None,
 ) -> np.ndarray:
-    """White-bg map (+ value heat if present) + orange traj + blue robot."""
+    """White-bg map (+ value heat) + purple A* plan + orange traj + blue robot."""
     from PIL import ImageDraw
 
     from .coord_habitat_ros import hab_yaw_to_ros
@@ -82,6 +124,15 @@ def _paper_map_with_traj(
 
     im = Image.fromarray(canvas)
     dr = ImageDraw.Draw(im)
+    # ################################
+    # Draw A* under traj (same layer order as online map_listener).
+    # ################################
+    plan = _plan_for_step(plans or [], steps[hold_i], acts_by_step or {})
+    if len(plan) >= 2:
+        dr.line([to_pix(p) for p in plan], fill=PAPER_PATH, width=2)
+        gx, gy = to_pix(plan[-1])
+        dr.ellipse([gx - 4, gy - 4, gx + 4, gy + 4], fill=PAPER_WAYPOINT)
+        dr.ellipse([gx - 6, gy - 6, gx + 6, gy + 6], outline=PAPER_WAYPOINT)
     traj = []
     for i in range(hold_i + 1):
         pm = steps[i].get("publish_meta") or {}
@@ -185,6 +236,12 @@ def run(run_dir: Path, *, gpu: int = 0, hm3d_root: str, max_frames: int = 0) -> 
     assert len(steps) == len(acts), (len(steps), len(acts))
     ep = json.loads((run_dir / "episode.json").read_text())
     spawn = json.loads((run_dir / "start_pose.json").read_text())["spawn"]
+    # ################################
+    # Native A* paths for map overlay (optional if plan_diag was enabled).
+    # ################################
+    plan_path = run_dir / "native_diag" / "native_plan_diag.jsonl"
+    plans = _load_jsonl(plan_path) if plan_path.is_file() else []
+    acts_by_step = {int(a["step"]): a for a in acts}
 
     times = np.asarray([float(a["t"]) for a in acts], dtype=np.float64)
     t0, t1 = float(times[0]), float(times[-1])
@@ -256,7 +313,13 @@ def run(run_dir: Path, *, gpu: int = 0, hm3d_root: str, max_frames: int = 0) -> 
                 sem = ee
             map_path = run_dir / "maps" / f"frame_{hold_i:04d}.png"
             if map_path.is_file():
-                map_rgb = _paper_map_with_traj(run_dir, steps, hold_i)
+                map_rgb = _paper_map_with_traj(
+                    run_dir,
+                    steps,
+                    hold_i,
+                    plans=plans,
+                    acts_by_step=acts_by_step,
+                )
             else:
                 map_rgb = np.full((240, 320, 3), 255, dtype=np.uint8)
 

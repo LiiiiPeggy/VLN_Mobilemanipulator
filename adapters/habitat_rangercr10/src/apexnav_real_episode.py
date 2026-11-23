@@ -57,10 +57,32 @@ from .kinematic_demo import DEFAULT_BASE_Y, RangerCr10KinematicEnv
 from .map_listener import ApexNavMapListener
 from .planner_first_call_diag import analyze_map_listener
 from .pointcloud_dynamic import object_clouds_from_masks
-from .ppo_mujoco_raise import apply_raise_to_habitat, replay_raise_on_habitat
+from .ppo_mujoco_raise import (
+    LOOK_PITCH_STEP_RAD,
+    apply_raise_to_habitat,
+    habitat_tcp_and_camera_metrics,
+    look_offset_rpy,
+    replay_raise_on_habitat,
+)
 from .ros_dynamic_publisher import DynamicROSPublisher
 from .spawn_utils import find_adapted_start
 from .traj_utils import save_depth_mm
+
+# ################################
+# LOOK backends: gimbal (legacy ApexNav optical) | ppo_ee_rpy (trained teleop-PPO EE).
+# ################################
+LOOK_BACKEND_GIMBAL = "gimbal"
+LOOK_BACKEND_PPO_EE_RPY = "ppo_ee_rpy"
+LOOK_BACKENDS = (LOOK_BACKEND_GIMBAL, LOOK_BACKEND_PPO_EE_RPY)
+# ################################
+# Chassis exec: kinematic (legacy SE2 teleport) | ppo_chassis (MuJoCo unit-segment replay).
+# ################################
+EXEC_BACKEND_KINEMATIC = "kinematic"
+EXEC_BACKEND_PPO_CHASSIS = "ppo_chassis"
+EXEC_BACKENDS = (EXEC_BACKEND_KINEMATIC, EXEC_BACKEND_PPO_CHASSIS)
+DEFAULT_PPO_CHASSIS_DIR = (
+    "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/ppo_chassis_bundle_model9999"
+)
 
 # ApexNav exploration_fsm.cpp: 1 TURN_DOWN + 12 TURN_LEFT + 1 TURN_UP + 12 TURN_LEFT
 APEXNAV_INIT_LOOKAROUND_ACTIONS = 26
@@ -333,6 +355,10 @@ class ApexNavRangerBridge:
         self.ros_pub: Optional[DynamicROSPublisher] = None
         self.map_listener: Optional[ApexNavMapListener] = None
         self.traj_ros: List[Tuple[float, float]] = []
+        # ################################
+        # Latest native A* selected_path (ROS XY) for demo map overlay.
+        # ################################
+        self.plan_ros: List[Tuple[float, float]] = []
         self.n_init_actions = 0
         self.n_explore_actions = 0
         self.spawn_info: Optional[dict] = None
@@ -344,6 +370,24 @@ class ApexNavRangerBridge:
         # ################################
         self.floor_y = 0.0
         self._first_plan_diag_done = False
+        # ################################
+        # Precomputed teleop-PPO LOOK joint targets (Habitat sync only).
+        # Keys: look_up / look_down / look_level → arm_q list[6].
+        # ################################
+        self._ppo_look_targets: Dict[str, List[float]] = {}
+        # ################################
+        # Default LOOK backend is ppo_ee_rpy (trained EE pitch).
+        # ################################
+        self._look_backend = str(
+            getattr(args, "look_backend", LOOK_BACKEND_PPO_EE_RPY) or LOOK_BACKEND_PPO_EE_RPY
+        )
+        # ################################
+        # Chassis low-level: default ppo_chassis (trained vel_cmd unit segments).
+        # ################################
+        self._exec_backend = str(
+            getattr(args, "exec_backend", EXEC_BACKEND_PPO_CHASSIS) or EXEC_BACKEND_PPO_CHASSIS
+        )
+        self._ppo_chassis_segments: Dict[str, dict] = {}
         self.first_plan_diag: Optional[dict] = None
         # ################################
         # VLN adapt: bounded exec failure feedback (no native ApexNav blocked topic).
@@ -419,6 +463,35 @@ class ApexNavRangerBridge:
             )
         self.planner_alive = True
 
+    def _refresh_astar_plan_ros(self) -> List[Tuple[float, float]]:
+        """Read latest native A* selected_path from plan_diag jsonl (ROS planar)."""
+        # ################################
+        # C++ ExplorationManager flushPlanDiag → native_diag/native_plan_diag.jsonl
+        # Demo-only overlay; does not change planning.
+        # ################################
+        path = self.out / "native_diag" / "native_plan_diag.jsonl"
+        if not path.is_file():
+            self.plan_ros = []
+            return []
+        last = None
+        try:
+            for line in path.read_text().splitlines():
+                line = line.strip()
+                if line:
+                    last = json.loads(line)
+        except Exception:
+            return list(self.plan_ros)
+        if not last:
+            self.plan_ros = []
+            return []
+        pts = last.get("selected_path") or []
+        out: List[Tuple[float, float]] = []
+        for p in pts:
+            if isinstance(p, (list, tuple)) and len(p) >= 2:
+                out.append((float(p[0]), float(p[1])))
+        self.plan_ros = out
+        return out
+
     def _publish_obs_bundle(self, rgb, depth, step_i: int) -> dict:
         assert self.env and self.ros_pub
         # ################################
@@ -460,8 +533,63 @@ class ApexNavRangerBridge:
                 (self.out / "depth_validity_error.txt").write_text(traceback.format_exc())
         return meta
 
+    def _habitat_pose_from_body_delta(
+        self, x: float, z: float, yaw: float, d_forward: float, d_left: float, d_yaw: float
+    ) -> Tuple[float, float, float]:
+        """Apply MuJoCo body-frame chassis delta in Habitat SE2 (Y-up)."""
+        # ################################
+        # Hab forward=(sin,cos), left=(-cos,sin); see ppo_mujoco_raise frame note.
+        # ################################
+        nx = float(x + d_forward * math.sin(yaw) - d_left * math.cos(yaw))
+        nz = float(z + d_forward * math.cos(yaw) + d_left * math.sin(yaw))
+        nyaw = float(yaw + d_yaw)
+        return nx, nz, nyaw
+
+    def _apply_ppo_chassis_segment(self, seg_name: str, action_hint: str) -> Dict[str, Any]:
+        """Replay precomputed PPO chassis ΔSE2 with Habitat collision probe."""
+        assert self.env
+        x, y, z = map(float, self.env.base_xyz)
+        yaw = float(self.env.base_yaw)
+        seg = self._ppo_chassis_segments.get(seg_name) or {}
+        delta = seg.get("delta_final") or {}
+        if not delta:
+            # ################################
+            # Missing segment → caller falls back to kinematic constants.
+            # ################################
+            return {"ok": False, "missing_segment": True, "seg_name": seg_name}
+
+        df = float(delta.get("d_forward", 0.0))
+        dl = float(delta.get("d_left", 0.0))
+        dy = float(delta.get("d_yaw", 0.0))
+        nx, nz, nyaw = self._habitat_pose_from_body_delta(x, z, yaw, df, dl, dy)
+        res = probe_base_motion(self.env, nx, nz, nyaw, action_hint=action_hint)
+        res["exec_backend"] = EXEC_BACKEND_PPO_CHASSIS
+        res["ppo_chassis_segment"] = seg_name
+        res["ppo_delta"] = {"d_forward": df, "d_left": dl, "d_yaw": dy}
+        # ################################
+        # Sync arm/wheel joints from PPO segment when motion committed.
+        # ################################
+        if res.get("executed"):
+            aq = seg.get("arm_q_final")
+            if aq and len(aq) == 6:
+                try:
+                    self.env.set_arm_joints([float(v) for v in aq])
+                except Exception:
+                    pass
+            sq = seg.get("steer_q_final")
+            wq = seg.get("wheel_q_final")
+            if sq and len(sq) == 4:
+                self.env.steer_q = np.array(sq, dtype=np.float64)
+            if wq and len(wq) == 4:
+                self.env.wheel_q = np.array(wq, dtype=np.float64)
+            try:
+                self.env._apply_state()
+            except Exception:
+                pass
+        return res
+
     def _execute_action(self, action: int) -> dict:
-        """Kinematic execution: probe/commit collision gate + camera-mode LOOK."""
+        """Kinematic / PPO-chassis execution: probe/commit collision gate + LOOK."""
         assert self.env
         before = {
             "base": self.env.base_xyz.copy(),
@@ -476,6 +604,7 @@ class ApexNavRangerBridge:
             "requested_action": ACTION_NAME.get(int(action), str(action)),
             "action_name": ACTION_NAME.get(int(action), str(action)),
             "look_equivalence": "base_discrete",
+            "exec_backend": self._exec_backend,
             "executed": False,
             "blocked": False,
             "truncated": False,
@@ -494,16 +623,9 @@ class ApexNavRangerBridge:
             return info
 
         # ################################
-        # Base SE(2): discrete candidate checks; reject or truncate on robot–env hit.
+        # Base SE(2): PPO chassis unit-segment replay or kinematic constants.
         # ################################
-        if action == ACTION.MOVE_FORWARD:
-            nx = x + FORWARD_M * math.sin(yaw)
-            nz = z + FORWARD_M * math.cos(yaw)
-            # ################################
-            res = probe_base_motion(
-                self.env, nx, nz, yaw, action_hint="MOVE_FORWARD"
-            )
-            # ################################
+        def _pack_base_res(res: dict, name: str) -> None:
             info.update(
                 {
                     "executed": bool(res.get("executed")),
@@ -517,6 +639,9 @@ class ApexNavRangerBridge:
                     "first_blocking_contacts": res.get("first_blocking_contacts"),
                     "committed_contacts": res.get("committed_contacts"),
                     "blocking_evidence": res.get("blocking_evidence"),
+                    "exec_backend": res.get("exec_backend", self._exec_backend),
+                    "ppo_chassis_segment": res.get("ppo_chassis_segment"),
+                    "ppo_delta": res.get("ppo_delta"),
                     "motion_probe": {
                         k: res.get(k)
                         for k in (
@@ -527,84 +652,126 @@ class ApexNavRangerBridge:
                             "samples_preview",
                         )
                     },
-                    "actual_action": "MOVE_FORWARD"
+                    "actual_action": name
                     if res.get("executed") and not res.get("truncated")
-                    else ("MOVE_FORWARD_TRUNCATED" if res.get("truncated") else "MOVE_FORWARD_BLOCKED"),
+                    else (
+                        f"{name}_TRUNCATED"
+                        if res.get("truncated")
+                        else f"{name}_BLOCKED"
+                    ),
                 }
             )
             info["upright"] = self.env.upright_diagnostics()
+
+        if action == ACTION.MOVE_FORWARD:
+            res = None
+            if self._exec_backend == EXEC_BACKEND_PPO_CHASSIS:
+                res = self._apply_ppo_chassis_segment("move_forward", "MOVE_FORWARD")
+                if res.get("missing_segment"):
+                    res = None
+            if res is None:
+                nx = x + FORWARD_M * math.sin(yaw)
+                nz = z + FORWARD_M * math.cos(yaw)
+                res = probe_base_motion(
+                    self.env, nx, nz, yaw, action_hint="MOVE_FORWARD"
+                )
+                res["exec_backend"] = EXEC_BACKEND_KINEMATIC
+            _pack_base_res(res, "MOVE_FORWARD")
         elif action == ACTION.TURN_LEFT:
-            # ################################
-            res = probe_base_motion(
-                self.env, x, z, yaw + TURN_RAD, action_hint="TURN_LEFT"
-            )
-            # ################################
-            info.update(
-                {
-                    "executed": bool(res.get("executed")),
-                    "blocked": bool(res.get("blocked")),
-                    "truncated": bool(res.get("truncated")),
-                    "block_reason": res.get("block_reason"),
-                    "moved_m": res.get("moved_m"),
-                    "yaw_delta": res.get("yaw_delta"),
-                    "collision": res.get("contacts"),
-                    "start_contacts": res.get("start_contacts"),
-                    "first_blocking_contacts": res.get("first_blocking_contacts"),
-                    "committed_contacts": res.get("committed_contacts"),
-                    "blocking_evidence": res.get("blocking_evidence"),
-                    "motion_probe": {
-                        k: res.get(k)
-                        for k in (
-                            "n_samples",
-                            "trans_step_m",
-                            "yaw_step_rad",
-                            "blocked_sample",
-                        )
-                    },
-                    "actual_action": "TURN_LEFT"
-                    if res.get("executed") and not res.get("truncated")
-                    else ("TURN_LEFT_TRUNCATED" if res.get("truncated") else "TURN_LEFT_BLOCKED"),
-                }
-            )
-            info["upright"] = self.env.upright_diagnostics()
+            res = None
+            if self._exec_backend == EXEC_BACKEND_PPO_CHASSIS:
+                res = self._apply_ppo_chassis_segment("turn_left", "TURN_LEFT")
+                if res.get("missing_segment"):
+                    res = None
+            if res is None:
+                res = probe_base_motion(
+                    self.env, x, z, yaw + TURN_RAD, action_hint="TURN_LEFT"
+                )
+                res["exec_backend"] = EXEC_BACKEND_KINEMATIC
+            _pack_base_res(res, "TURN_LEFT")
         elif action == ACTION.TURN_RIGHT:
-            # ################################
-            res = probe_base_motion(
-                self.env, x, z, yaw - TURN_RAD, action_hint="TURN_RIGHT"
-            )
-            # ################################
-            info.update(
-                {
-                    "executed": bool(res.get("executed")),
-                    "blocked": bool(res.get("blocked")),
-                    "truncated": bool(res.get("truncated")),
-                    "block_reason": res.get("block_reason"),
-                    "moved_m": res.get("moved_m"),
-                    "yaw_delta": res.get("yaw_delta"),
-                    "collision": res.get("contacts"),
-                    "start_contacts": res.get("start_contacts"),
-                    "first_blocking_contacts": res.get("first_blocking_contacts"),
-                    "committed_contacts": res.get("committed_contacts"),
-                    "blocking_evidence": res.get("blocking_evidence"),
-                    "motion_probe": {
-                        k: res.get(k)
-                        for k in (
-                            "n_samples",
-                            "trans_step_m",
-                            "yaw_step_rad",
-                            "blocked_sample",
-                        )
-                    },
-                    "actual_action": "TURN_RIGHT"
-                    if res.get("executed") and not res.get("truncated")
-                    else ("TURN_RIGHT_TRUNCATED" if res.get("truncated") else "TURN_RIGHT_BLOCKED"),
-                }
-            )
-            info["upright"] = self.env.upright_diagnostics()
+            res = None
+            if self._exec_backend == EXEC_BACKEND_PPO_CHASSIS:
+                res = self._apply_ppo_chassis_segment("turn_right", "TURN_RIGHT")
+                if res.get("missing_segment"):
+                    res = None
+            if res is None:
+                res = probe_base_motion(
+                    self.env, x, z, yaw - TURN_RAD, action_hint="TURN_RIGHT"
+                )
+                res["exec_backend"] = EXEC_BACKEND_KINEMATIC
+            _pack_base_res(res, "TURN_RIGHT")
         elif action in (ACTION.TURN_UP, ACTION.TURN_DOWN):
             cam_mode = before["cam_mode"]
             direction = "up" if action == ACTION.TURN_UP else "down"
-            if cam_mode == CAMERA_MODE_FIXED_BASE:
+            look_backend = self._look_backend
+            # ################################
+            # Prefer trained teleop-PPO EE orientation when LOOK_BACKEND=ppo_ee_rpy.
+            # Habitat only applies precomputed arm_q (MuJoCo ran on host).
+            # ################################
+            if look_backend == LOOK_BACKEND_PPO_EE_RPY:
+                key = "look_up" if direction == "up" else "look_down"
+                q_tgt = self._ppo_look_targets.get(key)
+                if not q_tgt:
+                    info.update(
+                        {
+                            "executed": False,
+                            "blocked": True,
+                            "block_reason": "ppo_look_targets_missing",
+                            "look_equivalence": "ppo_ee_rpy_missing_json",
+                            "look_backend": look_backend,
+                            "actual_action": "LOOK_BLOCKED_PPO_TARGETS",
+                        }
+                    )
+                else:
+                    q_before = self.env.arm_q.copy()
+                    # ################################
+                    res = probe_arm_motion(
+                        self.env,
+                        q_tgt,
+                        action_hint=f"LOOK_{direction.upper()}_PPO_EE",
+                    )
+                    # ################################
+                    after_f = self.env.camera_forward_hab()
+                    cosang = float(np.clip(np.dot(before["forward"], after_f), -1, 1))
+                    cam_met = habitat_tcp_and_camera_metrics(self.env)
+                    info.update(
+                        {
+                            "executed": bool(res.get("executed")),
+                            "blocked": bool(res.get("blocked")),
+                            "truncated": bool(res.get("truncated")),
+                            "block_reason": res.get("block_reason"),
+                            "collision": res.get("contacts"),
+                            "start_contacts": res.get("start_contacts"),
+                            "first_blocking_contacts": res.get("first_blocking_contacts"),
+                            "committed_contacts": res.get("committed_contacts"),
+                            "blocking_evidence": res.get("blocking_evidence"),
+                            "pitch_delta_rad": float(math.acos(cosang)),
+                            "look_equivalence": "teleop_ppo_ee_offset_rpy",
+                            "look_backend": look_backend,
+                            "ee_offset_rpy": list(
+                                look_offset_rpy(direction, LOOK_PITCH_STEP_RAD)
+                            ),
+                            "d455_optical_agl_m": cam_met.get("d455_optical_agl_m"),
+                            "d455_pitch_deg": cam_met.get("d455_pitch_deg"),
+                            "arm_q_before": q_before.astype(float).tolist(),
+                            "arm_q_target": [float(x) for x in q_tgt],
+                            "actual_action": (
+                                "LOOK_UP_PPO_EE"
+                                if direction == "up"
+                                else "LOOK_DOWN_PPO_EE"
+                            ),
+                        }
+                    )
+                    info["pitch_verify"] = (
+                        "ok"
+                        if info["pitch_delta_rad"] >= math.radians(5)
+                        else "weak_change"
+                    )
+                    if info["blocked"] and not info["executed"]:
+                        info["actual_action"] = "LOOK_BLOCKED_PPO_EE_COLLISION"
+                        self.env.set_arm_joints(q_before)
+            elif cam_mode == CAMERA_MODE_FIXED_BASE:
                 info.update(
                     {
                         "executed": False,
@@ -914,16 +1081,71 @@ class ApexNavRangerBridge:
                     )
 
             # ################################
-            # Camera mode baseline (ApexNav primary: fixed_base_gimbal).
-            # Freeze optical mount in base; LOOK uses simulated gimbal pitch.
-            # No PPO in this deployment path unless explicitly handed over above.
+            # Camera mode baseline.
+            # - gimbal LOOK: fixed_base_gimbal (legacy ApexNav optical).
+            # - ppo_ee_rpy LOOK: FK optical (legacy_arm_look) so EE pitch moves the cam.
             # ################################
             cam_mode = str(getattr(args, "camera_mode", CAMERA_MODE_FIXED_BASE_GIMBAL))
+            if self._look_backend == LOOK_BACKEND_PPO_EE_RPY:
+                cam_mode = CAMERA_MODE_LEGACY_ARM_LOOK
             if cam_mode in (CAMERA_MODE_FIXED_BASE, CAMERA_MODE_FIXED_BASE_GIMBAL):
                 # Ensure baseline arm for ApexNav primary (skip if PPO handover kept joints).
                 if not (ppo_raise_json and Path(ppo_raise_json).is_file()):
                     self.env.set_arm_joints(ARM_APEXNAV_INIT)
-            cam_mode_meta = activate_camera_mode(self.env, cam_mode, freeze_arm=True)
+            cam_mode_meta = activate_camera_mode(
+                self.env,
+                cam_mode,
+                freeze_arm=(cam_mode != CAMERA_MODE_LEGACY_ARM_LOOK),
+            )
+            cam_mode_meta["look_backend"] = self._look_backend
+            # ################################
+            # Load host-precomputed teleop-PPO LOOK joint bundles (optional).
+            # ################################
+            look_dir = str(getattr(args, "ppo_look_dir", "") or "")
+            if self._look_backend == LOOK_BACKEND_PPO_EE_RPY:
+                loaded = {}
+                if look_dir and Path(look_dir).is_dir():
+                    for name in ("look_up", "look_down", "look_level"):
+                        jp = Path(look_dir) / f"{name}.json"
+                        if not jp.is_file():
+                            continue
+                        rep = json.loads(jp.read_text())
+                        aq = rep.get("arm_q_final")
+                        if aq and len(aq) == 6:
+                            loaded[name] = [float(x) for x in aq]
+                self._ppo_look_targets = loaded
+                cam_mode_meta["ppo_look_dir"] = look_dir
+                cam_mode_meta["ppo_look_targets_loaded"] = sorted(loaded.keys())
+                if "look_up" not in loaded or "look_down" not in loaded:
+                    (self.out / "ppo_look_TARGETS_MISSING.txt").write_text(
+                        "LOOK_BACKEND=ppo_ee_rpy requires look_up.json + look_down.json "
+                        f"under --ppo_look_dir (got {look_dir!r}, loaded={sorted(loaded.keys())})\n"
+                    )
+            # ################################
+            # Load host-precomputed teleop-PPO chassis unit segments (MOVE/TURN).
+            # ################################
+            chassis_dir = str(getattr(args, "ppo_chassis_dir", "") or "")
+            cam_mode_meta["exec_backend"] = self._exec_backend
+            if self._exec_backend == EXEC_BACKEND_PPO_CHASSIS:
+                loaded_c: Dict[str, dict] = {}
+                if chassis_dir and Path(chassis_dir).is_dir():
+                    for name in ("move_forward", "turn_left", "turn_right"):
+                        jp = Path(chassis_dir) / f"{name}.json"
+                        if not jp.is_file():
+                            continue
+                        rep = json.loads(jp.read_text())
+                        if isinstance(rep.get("delta_final"), dict):
+                            loaded_c[name] = rep
+                self._ppo_chassis_segments = loaded_c
+                cam_mode_meta["ppo_chassis_dir"] = chassis_dir
+                cam_mode_meta["ppo_chassis_segments_loaded"] = sorted(loaded_c.keys())
+                need = ("move_forward", "turn_left", "turn_right")
+                if any(n not in loaded_c for n in need):
+                    (self.out / "ppo_chassis_TARGETS_MISSING.txt").write_text(
+                        "EXEC_BACKEND=ppo_chassis requires move_forward/turn_left/turn_right.json "
+                        f"under --ppo_chassis_dir (got {chassis_dir!r}, "
+                        f"loaded={sorted(loaded_c.keys())}); MOVE/TURN fall back to kinematic.\n"
+                    )
             (self.out / "camera_mode.json").write_text(json.dumps(cam_mode_meta, indent=2))
             init_pen = report_initial_penetration(self.env)
             (self.out / "initial_penetration.json").write_text(json.dumps(init_pen, indent=2))
@@ -1449,11 +1671,16 @@ class ApexNavRangerBridge:
                     assert self.map_listener is not None
                     # ROS yaw for map arrow (hab_yaw+π); matches /grid_map world frame.
                     yaw_ros = float(meta.get("base_yaw_ros", self.env.base_yaw))
+                    # ################################
+                    # Overlay executed traj + latest native A* selected_path.
+                    # ################################
+                    plan_xy = self._refresh_astar_plan_ros()
                     map_rgb = self.map_listener.render_panel(
                         size=(320, 240),
                         robot_xy=(float(br[0]), float(br[1])),
                         robot_yaw=yaw_ros,
                         traj_xy=list(self.traj_ros),
+                        plan_xy=list(plan_xy),
                         target_label=str(label),
                         value_score=float(cosine) if cosine >= 0.0 else None,
                         show_legend=True,
@@ -1525,6 +1752,10 @@ class ApexNavRangerBridge:
                     "distance_to_goal_point_eval_only": dtg_point,
                     "distance_to_goal_mode": "VIEW_POINTS",
                     "map_stats": map_stats,
+                    # ################################
+                    # Demo overlay audit: latest A* path used on map panel.
+                    # ################################
+                    "astar_plan_ros": [[float(x), float(y)] for x, y in self.plan_ros],
                     "base": {
                         "x": float(self.env.base_xyz[0]),
                         "y": float(self.env.base_xyz[1]),
@@ -1667,6 +1898,8 @@ class ApexNavRangerBridge:
             "out_dir": str(self.out),
             "executor_version": EXECUTOR_VERSION,
             "camera_mode": getattr(self.env, "camera_mode", None) if self.env else getattr(args, "camera_mode", None),
+            "look_backend": self._look_backend,
+            "exec_backend": self._exec_backend,
             "simulated_gimbal": bool(getattr(self.env, "simulated_gimbal", False)) if self.env else False,
             "camera_mode_meta": getattr(self, "_camera_mode_meta", None),
             "initial_penetration": getattr(self, "_initial_penetration", None),
@@ -1675,6 +1908,7 @@ class ApexNavRangerBridge:
                 "Executor kinematic_collision_v1.2: probe/commit; start/first_blocking/committed contacts logged.",
                 "Wheel support requires upright normal; vs_stage alone does not exempt side hits.",
                 "ApexNav primary camera_mode=fixed_base_gimbal (simulated_gimbal); LOOK does not move optical center.",
+                "Default LOOK_BACKEND=ppo_ee_rpy; EXEC_BACKEND=ppo_chassis (MuJoCo vel_cmd unit segments + Habitat probe).",
                 "legacy_arm_look keeps joint3 LOOK for old-result review only.",
                 "F0/expand affect map query only — do not exempt execution collision.",
                 "Initial EE uses ARM_APEXNAV_INIT FK (height × robot_scale); runtime sensor_pose is full SE3.",
@@ -1748,6 +1982,10 @@ class ApexNavRangerBridge:
                     "episode_id": getattr(args, "episode_id", None),
                     "force_spawn_json": getattr(args, "force_spawn_json", None),
                     "ppo_raise_json": getattr(args, "ppo_raise_json", None),
+                    "look_backend": getattr(args, "look_backend", None),
+                    "ppo_look_dir": getattr(args, "ppo_look_dir", None),
+                    "exec_backend": getattr(args, "exec_backend", None),
+                    "ppo_chassis_dir": getattr(args, "ppo_chassis_dir", None),
                     "max_steps": getattr(args, "max_steps", None),
                     "max_explore_actions": getattr(args, "max_explore_actions", None),
                     "camera_mode": getattr(args, "camera_mode", None),
@@ -1797,9 +2035,42 @@ def main(argv=None) -> int:
     )
     # ################################
     # MuJoCo teleop-PPO raise result JSON (arm_q_final); Habitat only syncs joints.
-    # This deployment baseline leaves it empty (no PPO).
     # ################################
-    p.add_argument("--ppo_raise_json", default="")
+    # Default: host teleop-PPO Z-raise JSON (z_hold=0.40). Empty disables raise.
+    # ################################
+    p.add_argument(
+        "--ppo_raise_json",
+        default="/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/ppo_raise_stage410d_z040.json",
+    )
+    # ################################
+    # Default LOOK = ppo_ee_rpy (trained EE pitch). Use gimbal for legacy optical.
+    # ppo_look_dir: host-written look_up.json / look_down.json from look_bundle.
+    # ################################
+    p.add_argument(
+        "--look_backend",
+        default=LOOK_BACKEND_PPO_EE_RPY,
+        choices=list(LOOK_BACKENDS),
+        help="LOOK_UP/DOWN: simulated gimbal vs teleop-PPO EE orientation.",
+    )
+    p.add_argument(
+        "--ppo_look_dir",
+        default="/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/ppo_look_bundle_model9999",
+        help="Directory with look_up.json / look_down.json (arm_q_final) for ppo_ee_rpy.",
+    )
+    # ################################
+    # Chassis low-level: ppo_chassis replays host MuJoCo vel_cmd unit segments.
+    # ################################
+    p.add_argument(
+        "--exec_backend",
+        default=EXEC_BACKEND_PPO_CHASSIS,
+        choices=list(EXEC_BACKENDS),
+        help="MOVE/TURN: kinematic SE2 teleport vs teleop-PPO chassis segments.",
+    )
+    p.add_argument(
+        "--ppo_chassis_dir",
+        default=DEFAULT_PPO_CHASSIS_DIR,
+        help="Directory with move_forward/turn_left/turn_right.json for ppo_chassis.",
+    )
     p.add_argument("--gpu", type=int, default=0)
     p.add_argument("--max_steps", type=int, default=40)
     # ################################

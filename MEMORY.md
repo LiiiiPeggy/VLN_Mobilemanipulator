@@ -113,7 +113,7 @@ VLN_Mobilemanipulator/
 | ApexNav=`BATCH_OK`（8/8 无崩溃；任务成功 6/8；峰显存 12912 MiB） | `runs/ApexNav/batch_8ep_status.md`；D `.../batch_20261101/ApexNav/metrics.csv`；VLM=`vlm.*` 非 `vlfm.vlm` |
 | ApexNav 原生 HM3D-v2 val **1000-ep 论文复现**：SR **74.4%** / SPL **37.65%**（论文 76.2 / 38.0；Δ −1.8 / −0.35 pp）；失败主因 **false positive 14.4%**（占失败 56%） | `reports/apexnav_hm3dv2_full_repro.md`；D `.../hm3dv2_full_20261109_231528`；墙钟 ~13.1 h；ROS `:11313` |
 | Ranger 执行层：`MotionType.KINEMATIC` 须经试探/提交碰撞裁决（**`kinematic_collision_v1.2`**）；拒绝时分别记 `start` / `first_blocking` / `committed` contacts；轮地 support **必须 upright**（`vs_stage`  alone 不再豁免侧面）；离散步 0.05 m / 5°；`contact_test` 不能当无碰撞判据 | `execution_collision.py`；`verify_wheel_support_classification.py` |
-| 相机模式：`fixed_base` / **`fixed_base_gimbal`（ApexNav 主对照，simulated_gimbal）** / `legacy_arm_look`；gimbal LOOK 不改光心相对底盘位置；臂冻 `ARM_APEXNAV_INIT` | `camera_modes.py`；`--camera_mode` |
+| 相机模式：`fixed_base` / `fixed_base_gimbal`（云台 LOOK 对照） / `legacy_arm_look`；**默认 LOOK=`LOOK_BACKEND=ppo_ee_rpy`**：teleop-PPO `ee_offset_rpy` 俯仰末端（Z hold），Habitat 只同步关节；`gimbal` 为旧对照 | `camera_modes.py`；`ppo_mujoco_raise.run_mujoco_ee_orient`；`--look_backend` |
 | 短预算批 `MAX_STEPS=50`（init26 后≈24 explore；`MAX_EXPLORE=100` 不生效）≠ 协议预算 `150/100`；禁止混算 | `SHORT_BUDGET_50.md`；`short50_corrected_stop_accounting.json` |
 | short50 合并 24-ep：SR_proxy **0/24**（any-phase STOP 校正后仍 0；2× far STOP）；taxonomy：invalid_spawn 4 / zero_trans stall 10 / moved_ok 10 | `ab24_combined_aggregate.json` |
 | 连续 3 次相同底盘全拒绝 → 本步改为 gimbal LOOK/反向转（计入预算）；`ACTION_FINISH`≠运动完成；`near_goal` 仅诊断 | `apexnav_real_episode.py` |
@@ -141,7 +141,7 @@ VLN_Mobilemanipulator/
 | ObjectNav 原始起点常不适配完整 Ranger+CR10 → `find_adapted_start`，须标 `adapted_episode` | `spawn_utils.py` |
 | Stage **4.10d** 默认臂 `[0.236,0.086,-2.398,-0.830,-1.335,0]`；D455 **顶装** AG95；MuJoCo 光学≈0.88 m，Habitat FK≈0.857 m、水平、near=0 | `ARM_DEFAULT`；`fk_compare_stage410d_*` |
 | URDF/D455/PPO **必须共钉扎**；禁止旧侧装 URDF + 新 PPO | `URDF_HABITAT` pin `stage410d_ec5fd65` |
-| LOOK：joint3 ±0.6 rad（臂适配）；4.10d 下 INIT/DOWN/UP near≈0 | `camera_view_diag.py` |
+| LOOK（历史臂适配）：joint3 ±0.6 rad；4.10d 下 INIT/DOWN/UP near≈0。**现默认改走 `LOOK_BACKEND=ppo_ee_rpy`**，见下表 | `camera_view_diag.py`；`look_offset_rpy` |
 | 真实 ApexNav ROS 闭环：孤立 master `:11312`；勿占 NBV `:11311` | `run_apexnav_real_episode.sh` |
 | FSM 前 26 步 init lookaround；其后 `callActionPlanner` | `exploration_fsm.cpp` |
 | free 过少/NO_PASSABLE：近场遮挡+狭窄出生+膨胀；开阔 ep + 4.10d 可达 free≈180 与多步 FWD | `20261104_114652` vs `real_20261103_124521` |
@@ -153,7 +153,7 @@ VLN_Mobilemanipulator/
 | Optical→ROS：`R_ros=C@R_optical`（勿用 `C@R@C.T` 发 camera pose）；render=`optical@Rx(π)` | `hab_optical_rot_to_ros`；`mat4_hab_optical_to_ros_pose` |
 | `/habitat/odom` 默认真实底盘 XY；旧相机 XY 代理仅 `legacy_camera_xy_proxy` | `ros_dynamic_publisher` |
 | ApexNav TURN=π/6≈30° → 水平重叠 **49° ≈ HFOV 的 62%**（勿写「49%」）；旧 VFOV=59.25° 已降级 | `habitat_rangercr10_camera_odom_coord_fix.md` |
-| LOOK pitch 用 **joint3 ±0.60**；缺 TURN_DOWN 时高度滤波易清空地图；「未 TURN_DOWN 光轴朝上」**待实际光轴测量验证** | `apexnav_real_episode._execute_action` |
+| 缺 TURN_DOWN 时高度滤波易清空地图；光轴俯仰以 FK/`camera_world_matrix` 实测为准（PPO LOOK 已校准 ±30°） | `apexnav_real_episode._execute_action`；`pose_look_views/` |
 | `planner_first_call_diag` 是 Python 近似，不是 C++ frontier/A* 正式结果 | `planner_first_call_diag.py` 头注释 |
 | 原生规划诊断：`exploration/plan_diag_*` → `native_plan_diag.jsonl`；建图流水线 `map_ros/pipeline_diag_*` | 可关；不改决策 |
 | a5e291b 后运行时几何验收通过；yr17 30° 可持续探索；修复前 eF36/HY1 底盘起点 UNKNOWN→NO_PASSABLE | `habitat_rangercr10_geomreg_30deg_native_plan.md` |
@@ -202,7 +202,9 @@ VLN_Mobilemanipulator/
 | GT occ 探针是 navmesh **邻域**审计，不是 precise false-occupied rate | `gt_false_occupied_probe` |
 | ITM cosine 须在同帧 RGB-D 之前发布到 `/blip2/cosine_score`，否则 value_map 融旧分 | `apexnav_real_episode` 发布顺序；`value_map2d.cpp` |
 | 7fps 离线重渲染勿对已含价值热力的 paper map 做 legacy 重映射 | `demo_7fps_from_run._is_paper_or_value_map` |
-| Demo 7 Hz：按真实时间戳插值重渲染，检测/地图内容 hold；勿用 ffmpeg 加速 2 FPS 冒充 | `demo_7fps_from_run.py`；`run_demo_7fps.sh`；`demo_7fps_rates.json` |
+| Demo 观影：**优先 7fps**（`apexnav_ranger_paper_demo_7fps.mp4`）看运动/轮胎；2fps paper demo 为一帧一动作，轮转易被离散掩盖；勿用 ffmpeg 加速 2 FPS 冒充 7 Hz | `demo_7fps_from_run.py`；`run_demo_7fps.sh`；`demo_7fps_rates.json` |
+| Demo 7 Hz：按真实时间戳插值重渲染，检测/地图内容 hold | 同上 |
+| Demo 地图 inset：橙=已执行 traj，紫=原生 A* `selected_path`（有 `plan_diag`/`astar_plan_ros` 时）；在线 `render_panel(plan_xy=...)`，离线 `overlay_astar_path_on_demo.py` | `map_listener.py`；`apexnav_real_episode`；`scripts/overlay_astar_path_on_demo.py` |
 | Ranger 底盘碰撞半长/半宽 ≈0.651/0.435 m；外接 R≈0.783 m；ApexNav 默认膨胀 0.18 m **小于** 足迹 | MuJoCo `base_link_col`；`apexnav_rangercr10_frontier_inflation.md` |
 | Habitat→ROS odom 航向须 `hab_yaw+π`（与 `(-z,-x)` 位移一致）；否则恒差 180° 导致 TURN_LEFT 空转 | `hab_yaw_to_ros`；`ros_dynamic_publisher.py` |
 | ApexNav `optimistic=false` 时未知格进 ESDF 障碍；膨胀↑会进一步吃掉 free | `sdf_map2d.cpp`；足迹对照实验 |
@@ -212,7 +214,7 @@ VLN_Mobilemanipulator/
 | HM3D val 100 景；ObjectNav-v2 val content 36 与场景对齐；MP3D 11 景可用但本轮未跑 | `scene_datasets/hm3d/val`；`objectnav/hm3d/v2/val/content` |
 | Ranger 足迹筛选：重算 navmesh r=0.18/0.435/0.485/0.783；Top 几何场景 HY1、yr17、eF36、LT9、k1cup | `scene_clearance/`；`apexnav_rangercr10_scene_screening.md` |
 | 大场景原起点易 NO_PASSABLE；spawn 偏好 clearance≈0.55 m 且 offset≤1.5 m 后 yr17 多步 FWD×6/1.5 m | `spawn_utils.prefer_open_clearance`；`real_wide_yr17_openband_*` |
-| Habitat 四轮可视化：4WS+URDF 左右轴符号；臂静止时轮胎冻结；≠轮地动力学 | `kinematic_demo._update_wheels_from_base_delta`；`wheel_kinematics_smoke` |
+| Habitat 四轮可视化：4WS+URDF 左右轴符号；由底盘 ΔSE2 / PPO segment `wheel_q_final` 驱动的**运动学**关节更新（位姿插值后 7fps 可见滚动）；臂静止时轮胎冻结；≠轮地动力学 | `kinematic_demo._update_wheels_from_base_delta`；`wheel_q_final` in chassis segments；`wheel_kinematics_smoke` |
 | spawn 探针须 `update_wheel_joints=False` 并复位轮角，否则大场景易 NaN FK | `spawn_utils.py` |
 | Top-5 均可 `entered_callActionPlanner`；多步规划：yr17=SEARCH_EXTREME，eF36=EXPLORATION；HY1/LT9/k1cup 早停 | `top5_openband_compare.json` |
 | yr17 legacy018 路径足迹回放 oriented_safe_ratio=0（中心 clearance 降至 <0.435） | `footprint_path_safety/yr17_openband/` |
@@ -221,8 +223,16 @@ VLN_Mobilemanipulator/
 | `scaled_robot_proxy_070`：半宽≈0.304 m，相机目标 0.616 m；yr17 足迹 safe_ratio 1.0；不可冒充实机成绩 | `apexnav_rangercr10_scale070.md` |
 | 缩尺改善足迹安全 ≠ 自动更长探索；HY1 早停在 0.7× 仍在 | `scale070_compare_batch_*.jsonl` |
 | 初始化抬臂：MuJoCo 原生 teleop-PPO（`ee_command_from_offset` Z+≤0.40），Habitat **只同步臂关节**；禁止 IK 替代 | `ppo_mujoco_raise.py`；`run_ppo_raise_then_apexnav_s070.sh` |
+| LOOK_UP/DOWN（**默认评测**）：`LOOK_BACKEND=ppo_ee_rpy`；同一权重 `dpos=(0,0,z_hold)` + `drpy=(0,∓π/6,0)`——**ee pitch 与 Hab optical 符号相反**（UP=−π/6→optical≈+30°；DOWN=+π/6→optical≈−30°）；宿主 `run_ppo_ee_look_bundle_host.sh` → `PPO_LOOK_DIR=.../ppo_look_bundle_model9999`；开局默认 `PPO_RAISE_JSON=.../ppo_raise_stage410d_z040.json`；episode 强制 `legacy_arm_look` FK | `look_offset_rpy`；`run_integrate_defaults.env`；`run_apexnav_real_episode.sh` |
+| PPO LOOK 实测（0.7× hy1 开敞 SE2）：LEVEL optical≈+1.6° / cam_AGL≈0.878 m；UP≈+29.9° / 0.857 m；DOWN≈−30.4° / 0.860 m | `reports/integration_20261122/pose_look_views/ppo_look_*_{side,ee_rgb}.png`；`ppo_look_capture_meta.json` |
+| 截图/机载 RGB：**必须** `observe_ee_only()`（`sync_agent_sensors` 只填 `_ee_T`，不 `_set_agent_pose`→易得到贴地假视角） | `kinematic_demo.observe_ee_only`；`capture_ppo_look_side_ee.py` |
+| 云台 LOOK 旧对照：`LOOK_BACKEND=gimbal` + 空 `PPO_RAISE_JSON`；`fixed_base_gimbal` 只改姿态不改光心相对底盘 | `camera_modes.py` |
 | 0.7× FK：抬臂后 TCP AGL≈0.811 m（目标 0.88±0.02 未达）；D455 optical≈0.881 m 且水平（≠TCP） | `ppo_raise_habitat_fk_070.json`；`apexnav_rangercr10_ppo_raise_s070.md` |
 | PPO/ApexNav 交接：抬臂完成保持 `arm_q`，再 26 步环视；二者不同时控底盘/臂 | `--ppo_raise_json`；`handover.json` |
+| 底盘 MOVE/TURN（**默认保持** `EXEC_BACKEND=ppo_chassis`，勿擅自切回 kinematic-only）：宿主 MuJoCo `vel_cmd` unit segment（`move_forward`/`turn_*`）→ Habitat 回放 body-frame ΔSE2 + `probe_base_motion`；MuJoCo 无 HM3D；对照回退 `kinematic` | `run_mujoco_chassis_segment`；`run_ppo_chassis_bundle_host.sh`；`run_integrate_defaults.env`；`--exec_backend` |
+| hy1 ppo_chassis 冒烟（2026-11-23）：`.../apexnav_real_integrate/ppo_chassis_hy1_20261123_220210_hy1_plant_0`；观影用 `demo/apexnav_ranger_paper_demo_7fps.mp4`（用户确认可见轮运动） | 该 run 目录；`PROGRESS.md` |
+| BaseCommandFilter 官方：`lock_output=True, hysteresis=0`（抬臂/LOOK/底盘共用） | `ppo_mujoco_raise._official_base_filter` |
+| `ARM_DEFAULT` 水平投影仍超出底盘轮廓；用户拟重训更收拢 home 后再换 ckpt/bundle | `pose_look_views/ppo_arm_default_side.png` |
 | ROS Z 必须发 **AGL**（`hab_y - floor_y`）；绝对 Habitat Y 会使 map_ros 高度滤波错位 | `coord_habitat_ros.hab_pos_to_ros` |
 | `/habitat/odom` 默认真实底盘 XY（`odom_xy_mode=chassis`）；旧相机 XY 代理仅 `legacy_camera_xy_proxy` | `ros_dynamic_publisher`（a5e291b 后） |
 | Habitat `depth_sensor.min_depth` 会覆盖 `map_ros/depth_filter_mindist`；近距/无效深度须在适配层处理 | 无效→**NaN**（禁改写 5 m/0）；`depth_validity.py` 几何自遮挡；`map_ros` 跳过 NaN |
@@ -253,7 +263,7 @@ VLN_Mobilemanipulator/
 | 原生 URDF 入场 | `vln-rangercr10:bullet` + 物理开启可加载 51+1 links | `run_kinematic_demo.sh` |
 | 运动学 vs 动力学 | Demo 为状态写入 | 必须标 `kinematic_state_set`，禁止写成全身动力学 |
 | habitat-sim close | 0.3.1 常 rc=134 / heap 噪声 | 以 `summary.status` 判定；脚本接受 0/134 |
-| PPO→Habitat 全身控制 | 117-D 观测与 ChassisAction 仍未对齐；勿把力矩/MuJoCo 动作当 Habitat 关节位 | 抬臂仅用 MuJoCo 推理+关节同步；Habitat 探针勿当全身策略成功 |
+| PPO→Habitat 全身控制 | 勿把 MuJoCo 力矩/轮速 ctrl 当 Habitat 驱动；场景几何只在 Habitat | 抬臂/LOOK/底盘 unit-segment：MuJoCo 推理 → sync 关节/ΔSE2；`probe_*` 门控 |
 | teleop Z+ 箱顶 | KEYBOARD_BOX_410 Z_OFFSET_MAX=0.40；再抬需训练侧改箱/策略 | 0.7× 上 TCP 0.88 当前不可达；诚实记录 shortfall |
 | 抬臂后 NO_PASSABLE | 高度错位 + 相机/底盘起点分裂 + 自遮挡进 occupied | 见 `apexnav_rangercr10_nopassable_after_ppo_raise.md`；禁 optimistic=true 凑数 |
 | ApexNav VLM 离线 | bert/blip2/dino 勿直连 HF | `HF_HOME`/`TORCH_HOME` + `/workspace/ApexNav/bert-base-uncased`；dino 权重用 D 盘实文件 |
@@ -288,4 +298,6 @@ VLN_Mobilemanipulator/
 | 开关 | `SOFT_REACH_ON_ANY_STUCK` / `soft_reach_on_any_stuck`；默认 **false**；候选 **true** |
 | 行为 | ON：MOVE→\|Δxy\| stuck；TURN_L/R→\|Δyaw\|&lt;ACTION_ANGLE/2；LOOK（UP/DOWN）不因 XY 闲置触发 |
 | 证据 | 已发布 ON 误 STOP（成功 TURN−30°）；yaw-aware ON：TRUNC TURN dyaw=−0.087 → 合法 STOP；`SOFT_REACH_YAW_AUDIT.md` |
+| 近期近成功 demo（云台 LOOK，非 PPO LOOK） | hy1 yaw-aware：`sr_proxy=true`，DTG≈0.48 m，`planner_stop`；视频 `apexnav_real_integrate/stop_fix_yaw_20261123_174959/.../demo/apexnav_ranger_paper_demo.mp4`；证据 `stop_fix/evidence_hy1_yaw_aware/` |
 | 相关 | `reports/integration_20261122/stop_fix/` |
+| 清理 | 已删 CONTAMINATED joint4、失败 dd4b 重试、重复 `*_clear` 副本、wrapper pid、look bundle `*.jsonl`；保留最终 `ppo_look_*` 与 hy1 demo |

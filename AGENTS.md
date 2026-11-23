@@ -102,11 +102,16 @@
 
 ## 主会话与子代理（Ranger 整合期）
 
-- **主会话唯一统筹**：分支整合、公共文件、编译、仿真调度、结果验收与最终交付。工作树默认：`/home/ubuntu/locomani/VLN_Mobilemanipulator_integrate`；统一工作分支目标：`cursor/habitat-rangercr10-scale070`（本地整合分支可带 `-integrate` 后缀）。
-- **子代理**：仅承担边界清晰的任务（审查、日志分析、指标汇总、隔离实现）。每项任务须写明输入、负责文件、输出；**同一文件串行**；需并行改码时用隔离工作区，由主会话合入。
-- **子代理 Git**：只许在自己的隔离目录操作；**不得**改公共分支、不得 push 公共远端、不得动他人容器。
+- **唯一工作区**：`/home/ubuntu/locomani/VLN_Mobilemanipulator`（禁止再开 `*_integrate` / `*_agentA*` / `B_VLN_*` 并列目录作日常入口）。
+- **主会话唯一统筹**：分支整合、公共文件、编译、仿真调度、结果验收与最终交付。统一工作分支：`cursor/habitat-rangercr10-scale070`。
+- **子代理**：仅承担边界清晰的任务（审查、日志分析、指标汇总）。每项任务须写明输入、负责文件、输出；**同一文件串行**；默认在同一工作区内改码，由主会话验收。
+- **子代理 Git**：不得另开并列 clone 作长期工作区；不得 push 公共远端（除非主会话明确要求）；不得动他人容器。
 - **在线仿真锁**：主会话统一调度。取得 `/home/ubuntu/locomani/_sim_host_run.lock` 后方可启动仿真；持有至相关运行结束再释放。等跑期间可并行分析已有日志。
-- **统一运行入口**：`adapters/habitat_rangercr10/scripts/run_apexnav_real_episode.sh`  
-  关键开关：`INFLATION_PROFILE`、`ENABLE_NO_FRONTIER_LOOK`、`BLOCKED_RECOVERY_MODE`、`CONTAINER`、`CATKIN_DEVEL_PREFIX`。  
+- **统一运行入口**：`adapters/habitat_rangercr10/scripts/run_apexnav_real_episode.sh`（可先 `source .../run_integrate_defaults.env`）。  
+  关键开关：`INFLATION_PROFILE`、`ENABLE_NO_FRONTIER_LOOK`、`BLOCKED_RECOVERY_MODE`、`LOOK_BACKEND`（**默认 `ppo_ee_rpy`**|`gimbal`）、`EXEC_BACKEND`（**默认 `ppo_chassis`**|`kinematic`）、`PPO_LOOK_DIR`、`PPO_CHASSIS_DIR`、`PPO_RAISE_JSON`（默认 z040）、`CONTAINER`、`CATKIN_DEVEL_PREFIX`。  
+  **默认保持 PPO**：未经用户明确要求，勿把 LOOK/EXEC 默认改回 `gimbal` / `kinematic-only`。  
+  **Demo 观影**：查轮胎/底盘运动用 `apexnav_ranger_paper_demo_7fps.mp4`（2fps 一帧一动作，轮转难辨）。  
   `run_apexnav_real_episode_agentA.sh` / `_agentB.sh` 及 reports 内一次性脚本仅作历史复现，不作新实验入口。
-- **容器**：整合评测用 `vln-rangercr10-integrate`（`docker-compose.integrate.yml`）；不复用/不停杀 `agentA`/`agentB`/他人容器，除非任务明确交接归属。
+- **容器**：整合评测用 `vln-rangercr10-integrate`（`docker-compose.integrate.yml`，挂载本仓根目录）。`vln-rangercr10-agentA-navinf` / `vln-rangercr10-agentB-nofrontier` 已退役，勿再启动。
+- **机载 RGB 截图**：用 `env.observe_ee_only()`；禁止只调 `sync_agent_sensors()` 后读 `ee_rgb`（会贴地假视角）。
+- **中间产物**：污染/失败重试/wrapper pid/`*_clear` 重复件/look bundle `*.jsonl` 可删；保留最终 `ppo_look_*`、成功 demo 与证据目录。

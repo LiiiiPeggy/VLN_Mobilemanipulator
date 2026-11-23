@@ -67,9 +67,12 @@ def compose_frame(
     rx, ry = W - inset_w - margin, H - inset_h - margin
     canvas.paste(mp, (rx, ry))
     draw.rectangle([rx, ry - 22, rx + inset_w, ry], fill=(0, 0, 0, 160))
+    # ################################
+    # Map inset: occ/value + executed traj (orange) + A* plan (purple).
+    # ################################
     draw.text(
         (rx + 8, ry - 20),
-        "ApexNav Occ + Value Map",
+        "ApexNav map + traj/A*",
         fill=(255, 255, 255),
         font=font_s,
     )

@@ -1,0 +1,54 @@
+{
+  "DEFAULT_TELEOP_CKPT": "models/ranger_cr10/model_9999.pt",
+  "raise_json": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/ppo_raise_stage410d_z040.json",
+  "handover": "/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real/real_s070_pporaise_hy1_failframe_20261106_181431/ppo_raise/handover.json",
+  "arm_default": [
+    0.236,
+    0.086,
+    -2.398,
+    -0.83,
+    -1.335,
+    0.0
+  ],
+  "arm_ppo_raised": [
+    0.2645583850472145,
+    0.3174832537076751,
+    -1.8185084527513258,
+    -1.6109017903815641,
+    -1.286388091422162,
+    0.03989165155717931
+  ],
+  "raise_policy_field": "/home/ubuntu/locomani/LocoManip_Lab/logs/rsl_rl/ranger_cr10_teleop/2026-11-03_16-30-44_stage410d_ppo/model_5999.pt",
+  "d455_agl_after_raise_m": 0.8811983292770386,
+  "tcp_agl_after_raise_m": 0.8110135006795861,
+  "states": [
+    {
+      "name": "gimbal_look_up",
+      "uses_trained_weights": false,
+      "cam_agl_m": 0.59974626953125,
+      "optical_pitch_deg": 29.97704214112086,
+      "arm_q": [
+        0.236,
+        0.086,
+        -2.398,
+        -0.83,
+        -1.335,
+        0.0
+      ]
+    },
+    {
+      "name": "ppo_raise",
+      "uses_trained_weights": true,
+      "cam_agl_m": 0.8811984484863281,
+      "optical_pitch_deg": 1.631146876225171,
+      "arm_q": [
+        0.2645583850472145,
+        0.3174832537076751,
+        -1.8185084527513258,
+        -1.6109017903815641,
+        -1.286388091422162,
+        0.03989165155717931
+      ]
+    }
+  ]
+}

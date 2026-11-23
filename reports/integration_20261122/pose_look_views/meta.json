@@ -1,0 +1,180 @@
+{
+  "camera_mode": "fixed_base_gimbal",
+  "arm_default": [
+    0.236,
+    0.086,
+    -2.398,
+    -0.83,
+    -1.335,
+    0.0
+  ],
+  "activate": {
+    "camera_mode": "fixed_base_gimbal",
+    "simulated_gimbal": true,
+    "arm_baseline": [
+      0.236,
+      0.086,
+      -2.398,
+      -0.83,
+      -1.335,
+      0.0
+    ],
+    "hfov_deg": 79.0,
+    "resolution_hw": [
+      480,
+      640
+    ],
+    "fixed_cam_pos_base_m": [
+      0.638984203338623,
+      -0.07466697692871094,
+      0.29042547941207886
+    ],
+    "init_optical_pitch_rad": 0.00020004436507132714,
+    "gimbal_pitch_step_rad": 0.5235987755982988,
+    "gimbal_pitch_limit_rad": 1.5207963267948965,
+    "warning_cam_inside_body": false,
+    "note": "LOOK changes orientation only; arm joints frozen. simulated_gimbal \u2014 not a physical pan-tilt unit."
+  },
+  "base_xyz": [
+    25.869729330758922,
+    0.37150083226203917,
+    -6.046013830259824
+  ],
+  "base_yaw": 3.0913963488351746,
+  "floor_y": 0.06218,
+  "robot_scale": 0.7,
+  "note": "open-room SE2 from hy1 step95 for visibility; arm/cam=ApexNav init (ARM_DEFAULT,fixed_base_gimbal)",
+  "framing": "open_room_step95_SE2",
+  "arm_camera": "ARM_DEFAULT + fixed_base_gimbal (episode init)",
+  "states": [
+    {
+      "name": "init",
+      "gimbal_pitch_deg": 0.0,
+      "optical_pitch_deg": -0.02296136571152299,
+      "optical_origin_world": [
+        25.976364135742188,
+        0.66192626953125,
+        -6.680446624755859
+      ],
+      "cam_agl_m": 0.59974626953125,
+      "look_meta": null,
+      "camera_summary": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.0,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.638984203338623,
+          -0.07466697692871094,
+          0.29042547941207886
+        ],
+        "optical_pos_world": [
+          25.976364135742188,
+          0.66192626953125,
+          -6.680446624755859
+        ]
+      }
+    },
+    {
+      "name": "look_up",
+      "gimbal_pitch_deg": 29.999999999999996,
+      "optical_pitch_deg": 29.97704214112086,
+      "optical_origin_world": [
+        25.976364135742188,
+        0.66192626953125,
+        -6.680446624755859
+      ],
+      "cam_agl_m": 0.59974626953125,
+      "look_meta": {
+        "executed": true,
+        "blocked": false,
+        "block_reason": null,
+        "gimbal_pitch_before": 0.0,
+        "gimbal_pitch_after": 0.5235987755982988,
+        "pitch_delta_rad": 0.5235987755982988,
+        "optical_pos_base_drift_m": 5.960464477539063e-08,
+        "look_equivalence": "simulated_gimbal_pitch",
+        "simulated_gimbal": true
+      },
+      "camera_summary": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": 0.5235987755982988,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.638984203338623,
+          -0.07466697692871094,
+          0.29042547941207886
+        ],
+        "optical_pos_world": [
+          25.976364135742188,
+          0.66192626953125,
+          -6.680446624755859
+        ]
+      }
+    },
+    {
+      "name": "look_down",
+      "gimbal_pitch_deg": -29.999999999999996,
+      "optical_pitch_deg": -30.022965143310035,
+      "optical_origin_world": [
+        25.976364135742188,
+        0.66192626953125,
+        -6.680446624755859
+      ],
+      "cam_agl_m": 0.59974626953125,
+      "look_meta": {
+        "executed": true,
+        "blocked": false,
+        "block_reason": null,
+        "gimbal_pitch_before": 0.0,
+        "gimbal_pitch_after": -0.5235987755982988,
+        "pitch_delta_rad": -0.5235987755982988,
+        "optical_pos_base_drift_m": 5.960464477539063e-08,
+        "look_equivalence": "simulated_gimbal_pitch",
+        "simulated_gimbal": true
+      },
+      "camera_summary": {
+        "camera_mode": "fixed_base_gimbal",
+        "simulated_gimbal": true,
+        "gimbal_pitch_rad": -0.5235987755982988,
+        "arm_q": [
+          0.236,
+          0.086,
+          -2.398,
+          -0.83,
+          -1.335,
+          0.0
+        ],
+        "arm_is_apexnav_init": true,
+        "fixed_cam_pos_base_m": [
+          0.638984203338623,
+          -0.07466697692871094,
+          0.29042547941207886
+        ],
+        "optical_pos_world": [
+          25.976364135742188,
+          0.66192626953125,
+          -6.680446624755859
+        ]
+      }
+    }
+  ],
+  "official_onboard_init": "init_ee_rgb_official_episode.png"
+}

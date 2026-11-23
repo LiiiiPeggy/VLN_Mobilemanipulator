@@ -1221,3 +1221,65 @@
 
 **相关**：`reports/integration_20261122/stop_fix/SOFT_REACH_YAW_AUDIT.md`
 
+---
+
+## 2026-11-23 默认 LOOK 切 teleop-PPO EE（主会话）
+
+**模块**：habitat_rangercr10 / LOOK / PPO  
+
+**问题**：`fixed_base_gimbal` LOOK 只改光学俯仰，不是训练栈末端姿态；开局抬臂已用 teleop-PPO，LOOK 应对齐同一权重。  
+
+**操作**：
+- 新增 `run_mujoco_ee_orient` + `look_offset_rpy`（ee pitch 与 Hab optical **符号相反**已 FK 校准）。
+- 宿主 `run_ppo_ee_look_bundle_host.sh` → `ppo_look_bundle_model9999/{look_up,look_down,look_level}.json`。
+- Episode：`LOOK_BACKEND=ppo_ee_rpy` 时强制 `legacy_arm_look` + 预计算关节 + `probe_arm_motion` 回滚。
+- **默认评测**改为：`LOOK_BACKEND=ppo_ee_rpy` + `PPO_LOOK_DIR` + `PPO_RAISE_JSON` z040（`run_integrate_defaults.env` / `run_apexnav_real_episode.sh` / argparse）。
+- 截图脚本须 `observe_ee_only()`（仅 `sync_agent_sensors` 会得到贴地假机载图）。
+- 清理：CONTAMINATED joint4、失败 dd4b 重试、重复 clear 截图、pid/tmp、bundle `*.jsonl`。
+
+**实测**：
+- LOOK 侧面光轴 UP≈+29.9° / DOWN≈−30.4° / LEVEL≈+1.6°；cam_AGL≈0.86–0.88 m（`pose_look_views/ppo_look_*`）。
+- 尚无默认 PPO LOOK 的成功 episode；近期近成功仍为云台 hy1 yaw-aware（DTG≈0.48 m，`sr_proxy`）。
+
+**结论**：评测默认走训练权重抬臂+LOOK；云台仅对照（`LOOK_BACKEND=gimbal PPO_RAISE_JSON=`）。底盘运动仍非 PPO。
+
+**相关**：`MEMORY.md` §7 LOOK/PPO 行；`PROGRESS.md`；`reports/integration_20261122/pose_look_views/`
+
+---
+
+## 2026-11-23 默认底盘低层切 teleop-PPO（主会话）
+
+**模块**：habitat_rangercr10 / chassis exec / PPO  
+
+**问题**：ApexNav 离散 MOVE/TURN 原为 Habitat 运动学瞬移；用户要求底盘也用训练权重看效果。  
+
+**操作**：
+- 宿主 `run_mujoco_chassis_segment`：raised EE hold + `vel_cmd` → body-frame ΔSE2 unit segments。
+- `EXEC_BACKEND=ppo_chassis`（默认）回放 + `probe_base_motion`；缺 bundle 回退 kinematic。
+- Filter 对齐官方 `lock_output=True`。
+
+**实测**（空地 MuJoCo）：forward≈0.27 m；turn ≈±0.59–0.60 rad。  
+
+**结论**：高层仍 ApexNav；底盘低层可走 PPO 跟踪位移；场景碰撞只认 Habitat。非全身动力学。  
+
+**相关**：`ppo_chassis_bundle_model9999/`；`--exec_backend`；`MEMORY.md`
+
+---
+
+## 2026-11-23 hy1 ppo_chassis 冒烟 + 7fps 轮胎确认（主会话）
+
+**模块**：habitat_rangercr10 / demo 观影 / 默认后端  
+
+**问题**：2fps paper demo 上看不出轮胎是否在转，担心轮可视化失效；是否应回退 kinematic-only。  
+
+**操作 / 确认**：
+- 冒烟 run：`/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real_integrate/ppo_chassis_hy1_20261123_220210_hy1_plant_0`（LOOK=ppo_ee_rpy，EXEC=ppo_chassis）。
+- 用户确认：同 run 的 **`demo/apexnav_ranger_paper_demo_7fps.mp4` 可见轮胎/轮运动**；2fps 为一帧一动作过粗。
+- 轮胎为运动学可视化（底盘 Δ / segment `wheel_q_final` + 7fps 位姿插值），不是轮地动力学。
+- **决策：默认保持 PPO**（`LOOK_BACKEND=ppo_ee_rpy`，`EXEC_BACKEND=ppo_chassis`）；不切回 kinematic-only。
+- Demo 地图 inset 意图：橙=已执行 traj，紫=原生 A* `selected_path`（`plan_xy` / `overlay_astar_path_on_demo.py`）；与并行 overlay 工作不冲突。
+
+**结论**：轮 viz 正常；观影用 7fps；评测默认继续 PPO 控制。
+
+**相关**：`PROGRESS.md`；`MEMORY.md` Demo/轮行；`run_integrate_defaults.env`
+

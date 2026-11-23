@@ -64,8 +64,12 @@ while IFS=$'\t' read -r EP_ID SCENE CAT EP FORCE; do
   INFLATION_PROFILE=legacy018 \
     SCENE_FILTER="$SCENE" CATEGORY_FILTER="$CAT" EPISODE_ID="$EP" \
     MAX_STEPS="$MAX_STEPS" MAX_EXPLORE_ACTIONS="$MAX_EXPLORE_ACTIONS" GPU="$GPU" \
+    # ################################
+    # Inherit default PPO LOOK/raise from run_apexnav_real_episode.sh
+    # (LOOK_BACKEND=ppo_ee_rpy + PPO_LOOK_DIR + PPO_RAISE_JSON).
+    # ################################
     RUN_ID="$RUN_ID" ROBOT_SCALE=0.7 CAMERA_MODE="$CAMERA_MODE" \
-    FORCE_SPAWN_JSON="$FORCE" PPO_RAISE_JSON="" \
+    FORCE_SPAWN_JSON="$FORCE" \
     STARTUP_PRIOR_MODE=initial_footprint \
     STARTUP_PRIOR_EXPAND_M=0.3 \
     OBSTACLE_DENOISE=none \
