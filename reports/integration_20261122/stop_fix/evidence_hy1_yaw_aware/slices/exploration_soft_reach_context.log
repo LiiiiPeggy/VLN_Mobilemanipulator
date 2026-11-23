@@ -1,0 +1,46 @@
+[33m[WARN] [1795427794.159228868]: To the next point (6.26m -26.02m), distance = 0.72 m[0m
+[0m[INFO] [1795427794.159245640]: [Calculating Time] Planning process time = 0.043 s[0m
+[ FSM]: from PLAN_ACTION to PUB_ACTION
+[ FSM]: from PUB_ACTION to WAIT_ACTION_FINISH
+[31m[ERROR] [1795427795.106376864]: merged_object good cells size = 16[0m
+[33m[WARN] [1795427795.106424996]: [1;35m[Fusion] id = 2 label = 0 confidence score = 0.404 [0m[0m
+[33m[WARN] [1795427795.106494459]: [1;32m[Fusion] id = 3 label = 1 confidence score = 0.284 [0m[0m
+[ Habitat Finish Action]: from WAIT_ACTION_FINISH to PLAN_ACTION
+[33m[WARN] [1795427798.136274123]: [Navigation Mode] Get object_cloud num = 1[0m
+[33m[WARN] [1795427798.136391047]: I'm going to the object! dist = 0.5m![0m
+[33m[WARN] [1795427798.140071643]: To the next point (6.26m -26.01m), distance = 0.73 m[0m
+[ FSM]: from PLAN_ACTION to PUB_ACTION
+[ FSM]: from PUB_ACTION to WAIT_ACTION_FINISH
+[33m[WARN] [1795427799.024946572]: [1;32m[Observation] id = 2 label = 0 confidence score = 0.383 [0m[0m
+[ Habitat Finish Action]: from WAIT_ACTION_FINISH to PLAN_ACTION
+[33m[WARN] [1795427801.951470028]: [Exploration Mode] Working on Hybrid Mode[0m
+Mean Value: 0.129 , Standard Deviation: 0.030 , Max-to-Mean: 1.761
+[33m[WARN] [1795427801.975131635]: Exploit the semantic value (TSP)!![0m
+[31m[ERROR] [1795427801.985159038]: No frontier to compute tsp![0m
+[33m[WARN] [1795427801.985173947]: Maybe no passable frontier.[0m
+[33m[WARN] [1795427801.985882272]: I'm going to the object! dist = 0.5m![0m
+[33m[WARN] [1795427801.988663426]: To the next point (6.26m -26.00m), distance = 0.48 m[0m
+[ FSM]: from PLAN_ACTION to PUB_ACTION
+[ FSM]: from PUB_ACTION to WAIT_ACTION_FINISH
+[33m[WARN] [1795427802.833482589]: [1;32m[Observation] id = 2 label = 0 confidence score = 0.376 [0m[0m
+[0m[INFO] [1795427802.833543585]: [Calculating Time] Object Map process time = 0.004 s[0m
+[ Habitat Finish Action]: from WAIT_ACTION_FINISH to PLAN_ACTION
+[33m[WARN] [1795427805.663875714]: [Exploration Mode] Working on Hybrid Mode[0m
+Mean Value: 0.129 , Standard Deviation: 0.030 , Max-to-Mean: 1.761
+[33m[WARN] [1795427805.681992643]: Exploit the semantic value (TSP)!![0m
+[31m[ERROR] [1795427805.692029139]: No frontier to compute tsp![0m
+[33m[WARN] [1795427805.692045731]: Maybe no passable frontier.[0m
+[33m[WARN] [1795427805.693060693]: I'm going to the object! dist = 0.5m![0m
+[33m[WARN] [1795427805.695797631]: To the next point (6.26m -25.99m), distance = 0.25 m[0m
+[0m[INFO] [1795427805.698629460]: [Calculating Time] Planning process time = 0.035 s[0m
+[ FSM]: from PLAN_ACTION to PUB_ACTION
+[ FSM]: from PUB_ACTION to WAIT_ACTION_FINISH
+[31m[ERROR] [1795427806.601076271]: merged_object good cells size = 2[0m
+[33m[WARN] [1795427806.601125756]: [1;32m[Fusion] id = 2 label = 0 confidence score = 0.378 [0m[0m
+[ Habitat Finish Action]: from WAIT_ACTION_FINISH to PLAN_ACTION
+[31m[ERROR] [1795427809.600600745]: Reach the object successfully!!! (soft_reach dist=0.25m last_action=3 any_stuck=1 pose_stuck=1 yaw_stuck=1 dyaw=-0.087)[0m
+[ FSM]: from PLAN_ACTION to FINISH
+[33m[WARN] [1795427810.455692695]: Finish One Episode!!![0m
+[31m[ERROR] [1795427811.250532267]: merged_object good cells size = 3[0m
+[33m[WARN] [1795427811.250661404]: [1;32m[Fusion] id = 2 label = 0 confidence score = 0.380 [0m[0m
+[33m[WARN] [1795427811.462469669]: Finish One Episode!!![0m

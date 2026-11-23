@@ -1,0 +1,68 @@
+[0m[INFO] [1795364883.547686422]: [Calculating Time] Planning process time = 0.003 s[0m
+[ FSM]: from PLAN_ACTION to PUB_ACTION
+[ FSM]: from PUB_ACTION to WAIT_ACTION_FINISH
+[31m[ERROR] [1795364884.589720350]: merged_object good cells size = 36[0m
+[33m[WARN] [1795364884.589770814]: [1;35m[Fusion] id = 2 label = 0 confidence score = 0.576 [0m[0m
+[33m[WARN] [1795364884.589841456]: [1;32m[Fusion] id = 3 label = 1 confidence score = 0.253 [0m[0m
+[ Habitat Finish Action]: from WAIT_ACTION_FINISH to PLAN_ACTION
+[33m[WARN] [1795364887.947903819]: [Navigation Mode] Get object_cloud num = 1[0m
+[33m[WARN] [1795364887.948279080]: I'm going to the object! dist = 0.5m![0m
+[33m[WARN] [1795364887.953837289]: To the next point (6.31m -26.06m), distance = 1.22 m[0m
+[ FSM]: from PLAN_ACTION to PUB_ACTION
+[ FSM]: from PUB_ACTION to WAIT_ACTION_FINISH
+[33m[WARN] [1795364888.890929392]: [1;32m[Fusion] id = 3 label = 1 confidence score = 0.268 [0m[0m
+[33m[WARN] [1795364888.895499957]: [1;35m[Observation] id = 2 label = 0 confidence score = 0.482 [0m[0m
+[33m[WARN] [1795364888.895535603]: [1;32m[Observation] id = 2 label = 2 confidence score = 0.038 [0m[0m
+[ Habitat Finish Action]: from WAIT_ACTION_FINISH to PLAN_ACTION
+[33m[WARN] [1795364892.111405590]: [Navigation Mode] Get object_cloud num = 1[0m
+[33m[WARN] [1795364892.111482925]: I'm going to the object! dist = 0.5m![0m
+[33m[WARN] [1795364892.114783488]: To the next point (6.31m -26.05m), distance = 0.97 m[0m
+[ FSM]: from PLAN_ACTION to PUB_ACTION
+[ FSM]: from PUB_ACTION to WAIT_ACTION_FINISH
+[31m[ERROR] [1795364893.071617727]: merged_object good cells size = 7[0m
+[33m[WARN] [1795364893.071731971]: [1;35m[Fusion] id = 2 label = 0 confidence score = 0.477 [0m[0m
+[33m[WARN] [1795364893.078048165]: [1;32m[Observation] id = 3 label = 1 confidence score = 0.229 [0m[0m
+[0m[INFO] [1795364893.078183007]: [Calculating Time] Object Map process time = 0.011 s[0m
+[ Habitat Finish Action]: from WAIT_ACTION_FINISH to PLAN_ACTION
+[33m[WARN] [1795364896.010885525]: [Navigation Mode] Get object_cloud num = 1[0m
+[33m[WARN] [1795364896.010962499]: I'm going to the object! dist = 0.5m![0m
+[33m[WARN] [1795364896.016197596]: To the next point (6.32m -26.04m), distance = 0.73 m[0m
+[0m[INFO] [1795364896.016748775]: [Calculating Time] Planning process time = 0.006 s[0m
+[ FSM]: from PLAN_ACTION to PUB_ACTION
+[ FSM]: from PUB_ACTION to WAIT_ACTION_FINISH
+[33m[WARN] [1795364896.966120368]: [1;35m[Observation] id = 2 label = 0 confidence score = 0.461 [0m[0m
+[33m[WARN] [1795364896.966206359]: [1;32m[Observation] id = 3 label = 1 confidence score = 0.200 [0m[0m
+[ Habitat Finish Action]: from WAIT_ACTION_FINISH to PLAN_ACTION
+[33m[WARN] [1795364899.801551045]: [Navigation Mode] Get object_cloud num = 1[0m
+[33m[WARN] [1795364899.801623400]: I'm going to the object! dist = 0.5m![0m
+[33m[WARN] [1795364899.804380418]: To the next point (6.32m -26.04m), distance = 0.48 m[0m
+[ FSM]: from PLAN_ACTION to PUB_ACTION
+[ FSM]: from PUB_ACTION to WAIT_ACTION_FINISH
+[33m[WARN] [1795364900.715020176]: [1;35m[Observation] id = 2 label = 0 confidence score = 0.446 [0m[0m
+[ Habitat Finish Action]: from WAIT_ACTION_FINISH to PLAN_ACTION
+[33m[WARN] [1795364903.600302825]: [Navigation Mode] Get object_cloud num = 1[0m
+[33m[WARN] [1795364903.600674219]: I'm going to the object! dist = 0.5m![0m
+[33m[WARN] [1795364903.605325635]: To the next point (6.32m -26.04m), distance = 0.48 m[0m
+[ FSM]: from PLAN_ACTION to PUB_ACTION
+[ FSM]: from PUB_ACTION to WAIT_ACTION_FINISH
+[31m[ERROR] [1795364904.532293453]: merged_object good cells size = 9[0m
+[33m[WARN] [1795364904.532348987]: [1;35m[Fusion] id = 2 label = 0 confidence score = 0.446 [0m[0m
+[0m[INFO] [1795364904.538963538]: [Calculating Time] Object Map process time = 0.011 s[0m
+[ Habitat Finish Action]: from WAIT_ACTION_FINISH to PLAN_ACTION
+[33m[WARN] [1795364907.429555613]: [Navigation Mode] Get object_cloud num = 1[0m
+[33m[WARN] [1795364907.429621957]: I'm going to the object! dist = 0.5m![0m
+[33m[WARN] [1795364907.434622876]: To the next point (6.22m -26.03m), distance = 0.25 m[0m
+[0m[INFO] [1795364907.434638726]: [Calculating Time] Planning process time = 0.005 s[0m
+[ FSM]: from PLAN_ACTION to PUB_ACTION
+[ FSM]: from PUB_ACTION to WAIT_ACTION_FINISH
+[33m[WARN] [1795364908.363695204]: [1;35m[Observation] id = 2 label = 0 confidence score = 0.436 [0m[0m
+[33m[WARN] [1795364908.363777758]: [1;32m[Observation] id = 3 label = 1 confidence score = 0.178 [0m[0m
+[ Habitat Finish Action]: from WAIT_ACTION_FINISH to PLAN_ACTION
+[31m[ERROR] [1795364911.418193546]: Reach the object successfully!!! (soft_reach dist=0.25m last_action=3 any_stuck=1)[0m
+[ FSM]: from PLAN_ACTION to FINISH
+[33m[WARN] [1795364912.271761018]: Finish One Episode!!![0m
+[33m[WARN] [1795364913.057241457]: [1;35m[Observation] id = 2 label = 0 confidence score = 0.427 [0m[0m
+[33m[WARN] [1795364913.057328990]: [1;32m[Observation] id = 3 label = 1 confidence score = 0.160 [0m[0m
+[33m[WARN] [1795364913.273373377]: Finish One Episode!!![0m
+[33m[WARN] [1795364914.279432830]: Finish One Episode!!![0m
+[33m[WARN] [1795364915.279497598]: Finish One Episode!!![0m
