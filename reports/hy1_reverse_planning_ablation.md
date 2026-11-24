@@ -78,7 +78,7 @@
 
 ## 7. 轨迹与碰撞
 
-图：`reports/hy1_reverse_planning/figures/fig{1..4}_{traj,progress,action_collision,efficiency}.{png,pdf}`
+图（仅 PNG）：`reports/hy1_reverse_planning/figures/fig{1..4}_*.png`
 
 - A：贴墙后大量 TURN_* blocked/truncated。
 - B：step 31/35/39/44 路径引导 `MOVE_BACKWARD`，位移与档位切换上升。

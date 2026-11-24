@@ -218,7 +218,6 @@ def main() -> int:
     ax.grid(True, alpha=0.3)
     fig.tight_layout()
     fig.savefig(fig_dir / "fig1_traj_xyz.png", dpi=160)
-    fig.savefig(fig_dir / "fig1_traj_xyz.pdf")
     plt.close(fig)
 
     # Fig2: progress vs step
@@ -241,7 +240,6 @@ def main() -> int:
     ax.grid(True, alpha=0.3)
     fig.tight_layout()
     fig.savefig(fig_dir / "fig2_progress.png", dpi=160)
-    fig.savefig(fig_dir / "fig2_progress.pdf")
     plt.close(fig)
 
     # Fig3: action/collision bars
@@ -270,7 +268,6 @@ def main() -> int:
     ax.legend()
     fig.tight_layout()
     fig.savefig(fig_dir / "fig3_action_collision.png", dpi=160)
-    fig.savefig(fig_dir / "fig3_action_collision.pdf")
     plt.close(fig)
 
     # Fig4: efficiency
@@ -287,7 +284,6 @@ def main() -> int:
     ax.legend()
     fig.tight_layout()
     fig.savefig(fig_dir / "fig4_efficiency.png", dpi=160)
-    fig.savefig(fig_dir / "fig4_efficiency.pdf")
     plt.close(fig)
 
     print(json.dumps({"csv": str(csv_path), "figures": str(fig_dir), "n": len(rows)}, indent=2))
