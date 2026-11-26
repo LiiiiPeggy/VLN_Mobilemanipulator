@@ -208,7 +208,7 @@ VLN_Mobilemanipulator/
 | Ranger 底盘碰撞半长/半宽 ≈0.651/0.435 m；外接 R≈0.783 m；ApexNav 默认膨胀 0.18 m **小于** 足迹 | MuJoCo `base_link_col`；`apexnav_rangercr10_frontier_inflation.md` |
 | Habitat→ROS odom 航向须 `hab_yaw+π`（与 `(-z,-x)` 位移一致）；否则恒差 180° 导致 TURN_LEFT 空转 | `hab_yaw_to_ros`；`ros_dynamic_publisher.py` |
 | ApexNav `optimistic=false` 时未知格进 ESDF 障碍；膨胀↑会进一步吃掉 free | `sdf_map2d.cpp`；足迹对照实验 |
-| 适配膨胀档：`legacy018`(P0) / `halfwidth`(P1) / `halfwidth_softcost`(P2旧) / **`inf020_soft010`（当前候选：硬0.20+软R=0.10/w=2.0）** / `mid030` / `ranger_safe`；`lock_obstacles_inflation` 解耦 Habitat radius | `overlay_*.yaml`；`sdf_map2d` lock；`RECOMMENDATION.md` |
+| 适配膨胀档：**默认 `inf020_soft010`（硬0.20+软R=0.10/w=2.0+lock）**；历史 `legacy018`(P0) / `halfwidth` / `halfwidth_softcost` / `mid030` / `ranger_safe`；`lock_obstacles_inflation` 解耦 Habitat radius | `overlay_*.yaml`；`run_integrate_defaults.env`；`sdf_map2d` lock |
 | 软代价距离场须用 inflate-only ESDF（`distance_buffer_obs_`），勿用含 UNKNOWN 的 `getDistance`（optimistic=false 会压 frontier） | `astar2d::edgeTraversalCost` |
 | 在线 ≥0.30 m 半径即可把开阔图 free 压到 ≈0–1；窄场景 yaw 修复后仍 `NO_PASSABLE` | `real_yawfix_open_mid030_*`；`real_yawfix_narrow_legacy018_*` |
 | HM3D val 100 景；ObjectNav-v2 val content 36 与场景对齐；MP3D 11 景可用但本轮未跑 | `scene_datasets/hm3d/val`；`objectnav/hm3d/v2/val/content` |
@@ -232,7 +232,7 @@ VLN_Mobilemanipulator/
 | 底盘 MOVE/TURN（**默认保持** `EXEC_BACKEND=ppo_chassis`，勿擅自切回 kinematic-only）：宿主 MuJoCo `vel_cmd` unit segment（`move_forward`/`turn_*`）→ Habitat 回放 body-frame ΔSE2 + `probe_base_motion`；MuJoCo 无 HM3D；对照回退 `kinematic` | `run_mujoco_chassis_segment`；`run_ppo_chassis_bundle_host.sh`；`run_integrate_defaults.env`；`--exec_backend` |
 | hy1 ppo_chassis 冒烟（2026-11-23）：`.../apexnav_real_integrate/ppo_chassis_hy1_20261123_220210_hy1_plant_0`；默认 demo 2fps；同目录 7fps 仅作点名复查（用户曾确认可见轮运动） | 该 run 目录；`PROGRESS.md` |
 | PPO 倒车（`model_9999`，`vx=-0.25`，z040）：0.15/0.25/0.40 m 目标均真实后退（Δ≈−0.19/−0.29/−0.42，yaw/横漂 <3 mm）；unit=`move_backward.json`；**禁止**用前进片段取负伪造 | `ppo_reverse_validation_model9999/`；`run_ppo_reverse_validation.sh` |
-| `REVERSE_PLANNING_MODE=A\|B\|C`（**默认 A**，未改正式部署）：B=路径引导倒车；C=PPO 基元 Hybrid A*（非 KinoAstar/非 Reeds–Shepp）；KinoAstar 现为 Dubins+非负 arc | `reverse_planning.py`；`run_abc_hy1.sh` |
+| `REVERSE_PLANNING_MODE=A\|B\|C`（**默认 C**）：C=PPO 基元 Hybrid A*（非 KinoAstar/非 Reeds–Shepp）；A/B 仅历史复现；KinoAstar 现为 Dubins+非负 arc | `reverse_planning.py`；`run_integrate_defaults.env`；`run_apexnav_real_episode.sh` |
 | HY1 plant 同 spawn 消融（orig 预算）：A moved≈0.85/blocked=29；B≈2.92/23/rev≈1.16 m；C≈4.23/13/rev≈1.74 m；三者均 budget exhausted（非 ObjectNav 成功） | `reports/hy1_reverse_planning_ablation.md`；`reports/hy1_reverse_planning/` |
 | BaseCommandFilter 官方：`lock_output=True, hysteresis=0`（抬臂/LOOK/底盘共用） | `ppo_mujoco_raise._official_base_filter` |
 | `ARM_DEFAULT` 水平投影仍超出底盘轮廓；用户拟重训更收拢 home 后再换 ckpt/bundle | `pose_look_views/ppo_arm_default_side.png` |

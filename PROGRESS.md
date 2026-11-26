@@ -1,40 +1,37 @@
 # PROGRESS.md — 当前状态
 
-更新时间：2026-11-24（HY1 倒车规划 A/B/C 消融首轮完成；**正式默认仍 REVERSE_PLANNING_MODE=A / EXEC=ppo_chassis**）  
+更新时间：2026-11-26（**正式默认**：`REVERSE_PLANNING_MODE=C` + `INFLATION_PROFILE=inf020_soft010`；EXEC/LOOK 仍 PPO）  
 证据优先于本文；冲突时以代码、`reports/`、`runs/`、容器实测为准。
 
 ## 研究目标与阶段
 
 **目标**：六套 VLN/ObjectNav baseline 可复现评测 → 再适配 RangerBox-CR10（0.7× + 固定夹爪）。
 
-**当前阶段**：默认评测抬臂/LOOK/底盘低层均走 teleop-PPO；ApexNav 高层规划。HY1 狭窄贴墙案例上完成倒车消融首轮。  
+**当前阶段**：默认导航 = teleop-PPO 低层 + ApexNav 高层 + **方案 C 倒车 Hybrid A\*** + **0.20 m 硬膨胀 / soft 0.10·w=2.0**。  
 **唯一工作区**：`/home/ubuntu/locomani/VLN_Mobilemanipulator`（分支 `cursor/habitat-rangercr10-scale070`）。  
 **容器**：`vln-rangercr10-integrate`。
 
 ## 已完成（本轮）
 
-- `LOOK_BACKEND=ppo_ee_rpy` + `EXEC_BACKEND=ppo_chassis` + PPO raise z040（默认保持）。
-- **HY1 reverse ablation**：`REVERSE_PLANNING_MODE=A|B|C`（默认 A，不改正式部署）。
-  - PPO 倒车实测 OK（0.15/0.25/0.40 m）：`.../ppo_reverse_validation_model9999/`
-  - A 基线：`.../ppo_chassis_hy1_20261123_220210_hy1_plant_0`（moved≈0.85, blocked=29）
-  - B：`.../hy1_rev_B_orig_r1_20261124_050148_...`（moved≈2.92, rev×4≈1.16 m, blocked=23）
-  - C：`.../hy1_rev_C_orig_r3_20261124_065931_...`（moved≈4.23, rev×6≈1.74 m, blocked=13, hybrid=4）
-  - 报告/图：`reports/hy1_reverse_planning_ablation.md`；`reports/hy1_reverse_planning/{metrics.csv,figures,plot_metrics.py}`
-- KinoAstar 确认为 Dubins+非负 arc；方案 C 用 PPO 基元 Hybrid A*（非 Reeds–Shepp 宣称）。
+- 默认切换：`run_integrate_defaults.env` / `run_apexnav_real_episode.sh` / `exploration_rangercr10.launch` / argparse / `AGENTS.md` → **C + inf020_soft010**。
+- 运行时验收（`hy1_defC_inf020_ms200_20261126_160827`）：
+  - ROS：`obstacles_inflation=0.2`，`lock_obstacles_inflation=true`，`astar/soft_cost_range_m=0.1`，`soft_cost_weight=2.0`
+  - C++：`[Astar2D] soft_cost enabled: R=0.100 m  w=2.000`；`libpath_searching.so` 含 `edgeTraversalCost`
+  - 方案 C：`reverse_planning_mode=C`；PPO 段含 `move_backward`；`n_hybrid_calls=91`，`MOVE_BACKWARD×11`
+- HY1 Demo（同 spawn，max_steps=200 / explore=170，2fps）：
+  - run：`/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real_integrate/hy1_defC_inf020_ms200_20261126_160827_hy1_plant_0`
+  - demo：`.../demo/apexnav_ranger_paper_demo.mp4`（2fps，196 frames）
+  - `termination=explore_budget_exhausted`，`sum_moved_m≈14.03`，`n_blocked_exec=117`（对照先前 C+legacy018 ms200：moved≈15.36 / blocked=109）
+- 历史 `legacy018` / mode A|B 仍可显式复现；未做膨胀扫参。
 
 ## 默认保持
 
-ObjectHold=3.0，legacy018，recovery=legacy，soft_reach=false，LOOK=ppo_ee_rpy，**exec=ppo_chassis**，PPO raise z040，**REVERSE_PLANNING_MODE=A**。
-
-## 扩展预算（已跑）
-
-- B ext：moved≈3.84，blocked=60，rev≈1.74 m（`hy1_rev_B_ext_r1_20261124_070540_...`）
-- C ext：moved≈5.27，blocked=50，rev≈1.74 m，hybrid_calls=38（`hy1_rev_C_ext_r1_20261124_071619_...`）
+ObjectHold=3.0，**inf020_soft010**（inflate=0.20，lock=true，soft R=0.10/w=2.0），recovery=legacy，soft_reach=false，LOOK=ppo_ee_rpy，**exec=ppo_chassis**，PPO raise z040，**REVERSE_PLANNING_MODE=C**。
 
 ## 下一步（最多 5）
 
-1. 开阔/另一狭窄场景小回归。  
-2. 少量重复一致性（或标明确定性）。  
-3. 跑前强制清理残留 exploration_node（已写入运维注意）。  
-4. 用户确认后再考虑是否将 B/C 升为可选默认（当前禁止，默认 A）。  
-5. 大批量暂缓。
+1. 目视验收本轮 Demo：A* 离墙与贴墙转向碰撞。  
+2. 可选另一场景冒烟（非膨胀扫参）。  
+3. 大批量暂缓。  
+4. 用户点名再调 soft/R 或 Hybrid 细节。  
+5. Demo 默认仍 2fps；7fps 仅点名。

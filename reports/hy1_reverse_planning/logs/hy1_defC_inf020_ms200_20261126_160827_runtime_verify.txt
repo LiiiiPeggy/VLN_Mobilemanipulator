@@ -1,0 +1,50 @@
+ts=2026-11-26T16:09:24+08:00
+=== ROS effective ===
+/sdf_map/obstacles_inflation = 0.2
+/sdf_map/lock_obstacles_inflation = true
+/astar/soft_cost_range_m = 0.1
+/astar/soft_cost_weight = 2.0
+/exploration_node/sdf_map/obstacles_inflation = 0.2
+/exploration_node/sdf_map/lock_obstacles_inflation = true
+/exploration_node/astar/soft_cost_range_m = 0.1
+/exploration_node/astar/soft_cost_weight = 2.0
+=== soft_cost log line ===
+OUT_DIR=/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real_integrate/hy1_defC_inf020_ms200_20261126_160827_hy1_plant_0
+总计 480
+drwxrwxr-x 13 ubuntu ubuntu   4096 11月 26 16:09 .
+drwxrwxr-x 17 ubuntu ubuntu   4096 11月 26 16:08 ..
+-rw-r--r--  1 root   root     1977 11月 26 16:09 actions.jsonl
+-rw-r--r--  1 root   root     4137 11月 26 16:08 camera_init_summary.json
+-rw-r--r--  1 root   root      863 11月 26 16:08 camera_mode.json
+-rw-r--r--  1 root   root       79 11月 26 16:08 chassis_look_burst.json
+drwxr-xr-x  2 root   root     4096 11月 26 16:09 demo
+drwxr-xr-x  2 root   root     4096 11月 26 16:09 depth_ee
+drwxr-xr-x  2 root   root     4096 11月 26 16:09 depth_validity
+drwxr-xr-x  2 root   root     4096 11月 26 16:09 detections
+-rw-r--r--  1 root   root   138860 11月 26 16:08 episode.json
+-rw-r--r--  1 root   root     7662 11月 26 16:08 initial_penetration.json
+drwxrwxr-x  2 ubuntu ubuntu   4096 11月 26 16:08 launch_logs
+drwxr-xr-x  2 root   root     4096 11月 26 16:09 maps
+drwxrwxr-x  2 ubuntu ubuntu   4096 11月 26 16:08 native_diag
+drwxr-xr-x  2 root   root     4096 11月 26 16:08 pose_diag
+drwxr-xr-x  3 root   root     4096 11月 26 16:08 ppo_raise
+-rw-r--r--  1 root   root       94 11月 26 16:08 ppo_raise_TCP_SHORT.txt
+-rw-r--r--  1 root   root     1485 11月 26 16:08 pre_plan_obs_meta.json
+drwxr-xr-x  2 root   root     4096 11月 26 16:09 rgb_ee
+-rw-r--r--  1 root   root     6020 11月 26 16:08 start_pose.json
+-rw-r--r--  1 root   root   246857 11月 26 16:09 steps.jsonl
+-rw-r--r--  1 root   root      449 11月 26 16:08 target_label.json
+drwxr-xr-x  2 root   root     4096 11月 26 16:09 third
+/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real_integrate/hy1_defC_inf020_ms200_20261126_160827_hy1_plant_0/launch_logs/exploration.log
+/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real_integrate/hy1_defC_inf020_ms200_20261126_160827_hy1_plant_0/launch_logs/effective_params.txt
+/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real_integrate/hy1_defC_inf020_ms200_20261126_160827_hy1_plant_0/launch_logs/exploration.log:[33m[WARN] [1795680511.003653341]: [Astar2D] soft_cost enabled: R=0.100 m  w=2.000 (d from inflate-only ESDF)[0m
+/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real_integrate/hy1_defC_inf020_ms200_20261126_160827_hy1_plant_0/launch_logs/exploration.log
+/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real_integrate/hy1_defC_inf020_ms200_20261126_160827_hy1_plant_0/launch_logs/blip2.log
+/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real_integrate/hy1_defC_inf020_ms200_20261126_160827_hy1_plant_0/launch_logs/sam.log
+/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real_integrate/hy1_defC_inf020_ms200_20261126_160827_hy1_plant_0/launch_logs/yolov7.log
+/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real_integrate/hy1_defC_inf020_ms200_20261126_160827_hy1_plant_0/launch_logs/roscore.log
+/media/ubuntu/D/VLN_shared/runs/habitat_rangercr10/apexnav_real_integrate/hy1_defC_inf020_ms200_20261126_160827_hy1_plant_0/launch_logs/dino.log
+=== binary ===
+_ZNK15apexnav_planner7Astar2D17edgeTraversalCostERKN5Eigen6MatrixIdLi2ELi1ELi0ELi2ELi1EEES5_
+[Astar2D] soft_cost enabled: R=%.3f m  w=%.3f (d from inflate-only ESDF)
+_ZNK15apexnav_planner7Astar2D17edgeTraversalCostERKN5Eigen6MatrixIdLi2ELi1ELi0ELi2ELi1EEES5_

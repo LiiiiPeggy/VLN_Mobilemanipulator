@@ -48,10 +48,10 @@ LAUNCH_FILE="/workspace/VLN_Mobilemanipulator/adapters/habitat_rangercr10/launch
 #   halfwidth (P1): footprint half_w @ scale; lock; soft off.
 #   halfwidth_softcost (P2旧): half_w + soft R=0.40/w=2.0.
 # ################################
-#   inf020_soft010 (当前候选): hard 0.20 m + soft R=0.10 m / w=2.0; lock=true.
+#   inf020_soft010 (默认): hard 0.20 m + soft R=0.10 m / w=2.0; lock=true.
 # ################################
-#   mid030 / ranger_safe: legacy sensitivity profiles.
-PROFILE="${INFLATION_PROFILE:-legacy018}"
+#   mid030 / ranger_safe / legacy018: historical sensitivity profiles.
+PROFILE="${INFLATION_PROFILE:-inf020_soft010}"
 case "$PROFILE" in
   ranger_safe)
     OVERLAY="/workspace/VLN_Mobilemanipulator/adapters/habitat_rangercr10/config/apexnav_rangercr10_overlay.yaml"
@@ -242,9 +242,9 @@ fi
 
 MAX_EXPLORE_ACTIONS="${MAX_EXPLORE_ACTIONS:-20}"
 # ################################
-# Ablation: A|B|C — default A (no reverse). Does not change formal deploy default.
+# Reverse planning: default C (PPO Hybrid A*). Historical: A|B.
 # ################################
-REVERSE_PLANNING_MODE="${REVERSE_PLANNING_MODE:-A}"
+REVERSE_PLANNING_MODE="${REVERSE_PLANNING_MODE:-C}"
 SCALE_ARGS="$SCALE_ARGS --reverse_planning_mode $REVERSE_PLANNING_MODE"
 echo "[4/4] run real ApexNav episode → $OUT (robot_scale=$ROBOT_SCALE camera_mode=$CAMERA_MODE look_backend=$LOOK_BACKEND exec_backend=$EXEC_BACKEND max_explore=$MAX_EXPLORE_ACTIONS recovery=$BLOCKED_RECOVERY_MODE reverse=$REVERSE_PLANNING_MODE)"
 # ################################

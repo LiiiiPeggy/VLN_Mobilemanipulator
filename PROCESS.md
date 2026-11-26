@@ -1309,3 +1309,20 @@
 **结论**：倒车可改善该狭窄案例的位移与碰撞次数；**单场景不得外推 SR**；正式默认仍为 mode A。  
 
 **相关**：`reports/hy1_reverse_planning_ablation.md`；`reverse_planning.py`；`run_abc_hy1.sh`
+
+---
+
+## 2026-11-26 默认导航切换为 C + inf020_soft010（主会话）
+
+**模块**：habitat_rangercr10 默认配置  
+
+**问题**：消融后需将已验证的倒车方案 C 与硬膨胀 0.20 + soft cost 设为正式默认；停止继续扫膨胀参数。  
+
+**操作**：
+- `run_integrate_defaults.env` / `run_apexnav_real_episode.sh` / `exploration_rangercr10.launch` / argparse 默认改为 `REVERSE_PLANNING_MODE=C`、`INFLATION_PROFILE=inf020_soft010`（inflate=0.20，lock=true，soft R=0.10/w=2.0）。
+- 保留 `legacy018` / mode A|B 显式复现开关。
+- 同 HY1 plant spawn、`MAX_STEPS=200`/`MAX_EXPLORE=170` 跑一次新默认 Demo，并用 rosparam + C++ soft_cost 日志验收。
+
+**结论**：后续入口默认走 C + inf020_soft010；未经用户要求勿改回 A/legacy018。  
+
+**相关**：`AGENTS.md`；`PROGRESS.md`；`MEMORY.md`；本轮 HY1 run 目录

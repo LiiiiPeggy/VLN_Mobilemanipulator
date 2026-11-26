@@ -416,14 +416,13 @@ class ApexNavRangerBridge:
         self.n_blocked_exec = 0
         self.n_truncated_exec = 0
         # ################################
-        # Reverse planning ablation: A=baseline, B=path-guided, C=Hybrid A* lattice.
-        # Default A — formal nav unchanged until ablation validated.
+        # Reverse planning: default C (PPO Hybrid A*). Historical A|B via CLI/env.
         # ################################
         _rpm = str(
-            getattr(args, "reverse_planning_mode", revplan.MODE_A) or revplan.MODE_A
+            getattr(args, "reverse_planning_mode", revplan.MODE_C) or revplan.MODE_C
         ).upper()
         if _rpm not in revplan.MODES:
-            _rpm = revplan.MODE_A
+            _rpm = revplan.MODE_C
         self._rev_state = revplan.ReversePlannerState(mode=_rpm)
         self._blocked_turn_streak = 0
         self._last_path_geom: Dict[str, Any] = {}
@@ -2078,9 +2077,12 @@ class ApexNavRangerBridge:
             "scale_tag": getattr(self.env, "scale_tag", "robot_scale_1x_real") if self.env else "robot_scale_1x_real",
             "urdf": getattr(self.env, "urdf", args.urdf) if self.env else args.urdf,
             "footprint": getattr(self.env, "footprint", None) if self.env else None,
+            # ################################
+            # Default planning: inf020_soft010; legacy018 only if explicitly overridden.
+            # ################################
             "planner_inflation_note": (
-                "ApexNav overlay still legacy018 (0.18m) unless INFLATION_PROFILE overridden; "
-                "planner success ≠ scaled footprint safety."
+                "Default INFLATION_PROFILE=inf020_soft010 (hard 0.20 + soft R=0.10/w=2.0 + lock); "
+                "legacy018 is historical reproduce only. Planner success ≠ scaled footprint safety."
             ),
             "online_grid_map": {
                 "has_data": map_ok,
@@ -2311,13 +2313,13 @@ def main(argv=None) -> int:
         help="Chassis blocked recovery policy after ≥3 identical full rejects.",
     )
     # ################################
-    # Ablation only — default A keeps formal nav unchanged.
+    # Default C = PPO Hybrid A* reverse lattice. Historical A|B for reproduce.
     # ################################
     p.add_argument(
         "--reverse_planning_mode",
-        default=revplan.MODE_A,
+        default=revplan.MODE_C,
         choices=list(revplan.MODES),
-        help="A=baseline 2D A*; B=path-guided reverse; C=PPO Hybrid A* lattice.",
+        help="A=baseline 2D A*; B=path-guided reverse; C=PPO Hybrid A* lattice (default).",
     )
     p.add_argument("--success_distance", type=float, default=1.0)
     p.add_argument("--handshake_timeout_s", type=float, default=120.0)

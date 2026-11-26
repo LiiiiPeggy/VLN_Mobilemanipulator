@@ -30,11 +30,12 @@
   <arg name="obstacle_denoise" default="none"/>
   <!-- ################################
     Planning inflation knob (independent of Habitat radius when locked).
+    Default = inf020_soft010; historical legacy018 via run script override.
   ################################ -->
-  <arg name="obstacles_inflation" default="0.18"/>
-  <arg name="lock_obstacles_inflation" default="false"/>
-  <arg name="soft_cost_range_m" default="0.0"/>
-  <arg name="soft_cost_weight" default="0.0"/>
+  <arg name="obstacles_inflation" default="0.20"/>
+  <arg name="lock_obstacles_inflation" default="true"/>
+  <arg name="soft_cost_range_m" default="0.10"/>
+  <arg name="soft_cost_weight" default="2.0"/>
   <!-- ################################
     NoFrontierLook pairing switch (Agent B).
     false = legacy NO_FRONTIER→FINISH→STOP; true = bounded lookaround.
