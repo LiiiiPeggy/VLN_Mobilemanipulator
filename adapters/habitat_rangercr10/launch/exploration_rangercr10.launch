@@ -16,7 +16,11 @@
   <!-- ################################
     Native C++ plan + map pipeline diagnostics (observe-only).
   ################################ -->
-  <arg name="plan_diag_enable" default="false"/>
+  <!-- ################################
+    Default ON: C++ writes native_plan_diag.jsonl so Demo can overlay
+    purple A* path + red goal (selected_path tail). Disable only for repro.
+  ################################ -->
+  <arg name="plan_diag_enable" default="true"/>
   <arg name="plan_diag_dir" default=""/>
   <arg name="pipeline_diag_enable" default="false"/>
   <arg name="pipeline_diag_dir" default=""/>
@@ -30,11 +34,11 @@
   <arg name="obstacle_denoise" default="none"/>
   <!-- ################################
     Planning inflation knob (independent of Habitat radius when locked).
-    Default = inf020_soft010; historical legacy018 via run script override.
+    Default = inf020_soft030; historical soft010/legacy018 via run script override.
   ################################ -->
   <arg name="obstacles_inflation" default="0.20"/>
   <arg name="lock_obstacles_inflation" default="true"/>
-  <arg name="soft_cost_range_m" default="0.10"/>
+  <arg name="soft_cost_range_m" default="0.30"/>
   <arg name="soft_cost_weight" default="2.0"/>
   <!-- ################################
     NoFrontierLook pairing switch (Agent B).

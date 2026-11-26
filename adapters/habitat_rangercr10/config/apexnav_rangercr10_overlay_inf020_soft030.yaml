@@ -1,0 +1,19 @@
+# ################################
+# Default: hard inflate 0.20 m + soft clearance R=0.30 m (w=2.0).
+# Habitat agent radius stays 0.18 (sim / execution collision unchanged).
+# lock_obstacles_inflation keeps planning inflation independent of radius.
+# Soft: length × [1 + w × max(0, 1 − d/R)²], d from inflate-only known-obstacle ESDF.
+# Historical soft010: apexnav_rangercr10_overlay_inf020_soft010.yaml
+# ################################
+habitat:
+  simulator:
+    agents:
+      main_agent:
+        radius: 0.18
+sdf_map:
+  obstacles_inflation: 0.20
+  lock_obstacles_inflation: true
+  optimistic: false
+astar:
+  soft_cost_range_m: 0.30
+  soft_cost_weight: 2.0

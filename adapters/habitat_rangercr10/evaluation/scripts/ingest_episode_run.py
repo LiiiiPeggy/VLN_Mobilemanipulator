@@ -86,7 +86,7 @@ def ingest_run(
     ):
         run_status = "empty_run"
 
-    # distances from steps (eval-only VIEW_POINTS field)
+    # distances from steps (eval-only; primary = camera→VIEW_POINT 3D)
     dtgs = [
         float(st["distance_to_goal_eval_only"])
         for st in steps
@@ -133,8 +133,8 @@ def ingest_run(
     entered_search_best = True if n_search_best > 0 else (False if plans else MISSING)
     entered_search_any = True if n_search_any > 0 else (False if plans else MISSING)
 
-    # SR_proxy: STOP near VIEW_POINTS. Prefer dtg at STOP step; else if termination
-    # is planner_stop and a STOP action exists, use that STOP's dtg.
+    # SR_proxy: STOP with dtg≤thr. Prefer dtg at STOP step (camera→VIEW_POINT 3D
+    # when run used DIST_CAMERA_VIEW_POINTS_3D).
     sr_proxy = MISSING
     sr_dtg = MISSING
     if has_stop_action is True:

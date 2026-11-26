@@ -281,21 +281,34 @@ def hab_quat_yaw(rotation_xyzw_or_wxyz) -> float:
     return float(math.atan2(2 * (w * y + x * z), 1 - 2 * (y * y + z * z)))
 
 
-def _horizontal_goal_distance(base_xyz: np.ndarray, positions: List) -> float:
-    """Min horizontal (xz) distance from chassis to a list of Habitat positions."""
+def _horizontal_goal_distance(xyz: np.ndarray, positions: List) -> float:
+    """Min horizontal (xz) distance from a Habitat xyz to a list of positions."""
     best = 1e9
     for p in positions:
         if p is None or len(p) < 3:
             continue
-        d = math.hypot(float(base_xyz[0]) - float(p[0]), float(base_xyz[2]) - float(p[2]))
+        d = math.hypot(float(xyz[0]) - float(p[0]), float(xyz[2]) - float(p[2]))
         best = min(best, d)
     return best
 
 
-def goal_object_center_distance(base_xyz: np.ndarray, goals: List[dict]) -> float:
-    """Eval-only: distance to object-center positions (NOT Habitat ObjectNav default)."""
+def _euclidean_3d_goal_distance(xyz: np.ndarray, positions: List) -> float:
+    """Min Euclidean 3D distance from a Habitat xyz to a list of positions."""
+    best = 1e9
+    for p in positions:
+        if p is None or len(p) < 3:
+            continue
+        dx = float(xyz[0]) - float(p[0])
+        dy = float(xyz[1]) - float(p[1])
+        dz = float(xyz[2]) - float(p[2])
+        best = min(best, math.sqrt(dx * dx + dy * dy + dz * dz))
+    return best
+
+
+def goal_object_center_distance(xyz: np.ndarray, goals: List[dict]) -> float:
+    """Eval-only diagnostic: horizontal distance to object-center positions."""
     return _horizontal_goal_distance(
-        base_xyz, [g.get("position") for g in goals if isinstance(g, dict)]
+        xyz, [g.get("position") for g in goals if isinstance(g, dict)]
     )
 
 
@@ -321,24 +334,44 @@ def goal_viewpoint_positions(goals: List[dict]) -> List:
 
 
 # ################################
-# Habitat ObjectNav DistanceToGoal defaults to distance_to=VIEW_POINTS (see
-# habitat/config/habitat/task/objectnav.yaml). Measuring only goal.position
-# (object center) falsely labels STOP-near-viewpoint sofa/bed/chair as
-# stop_not_near when the center is > success_distance away. Eval-only; never
-# fed to planner / object selection / STOP.
+# Ranger eval distance (default): camera optical → nearest VIEW_POINT, 3D.
+# Official Habitat ObjectNav still uses agent→VIEW_POINTS (usually geodesic /
+# planar); we keep chassis-horizontal as a diagnostic only.
+# Eval-only; never fed to planner / object selection / STOP.
+# Modes:
+#   CAMERA_VIEW_POINTS_3D — primary (camera xyz ↔ nearest view_point, 3D)
+#   CHASSIS_VIEW_POINTS_HORIZONTAL — legacy diagnostic (base xz ↔ view_points)
+#   POINT — object-center horizontal diagnostic
 # ################################
+DIST_CAMERA_VIEW_POINTS_3D = "CAMERA_VIEW_POINTS_3D"
+DIST_CHASSIS_VIEW_POINTS_HORIZONTAL = "CHASSIS_VIEW_POINTS_HORIZONTAL"
+DIST_POINT = "POINT"
+
+
 def goal_distance(
-    base_xyz: np.ndarray, goals: List[dict], *, distance_to: str = "VIEW_POINTS"
+    query_xyz: np.ndarray,
+    goals: List[dict],
+    *,
+    distance_to: str = DIST_CAMERA_VIEW_POINTS_3D,
 ) -> float:
-    """Eval-only ObjectNav-style distance. Default matches Habitat VIEW_POINTS."""
-    if distance_to == "VIEW_POINTS":
+    """Eval-only goal distance. Default = camera→nearest VIEW_POINT (3D)."""
+    # ################################
+    # CAMERA_VIEW_POINTS_3D (default): 3D Euclidean, query=camera optical.
+    # "VIEW_POINTS" kept as alias → same 3D path (callers must pass camera xyz).
+    # CHASSIS_VIEW_POINTS_HORIZONTAL: legacy base xz diagnostic.
+    # ################################
+    if distance_to in (DIST_CAMERA_VIEW_POINTS_3D, "VIEW_POINTS"):
         vps = goal_viewpoint_positions(goals)
         if vps:
-            return _horizontal_goal_distance(base_xyz, vps)
-        # Fall back if episode lacks view_points.
-        distance_to = "POINT"
-    if distance_to == "POINT":
-        return goal_object_center_distance(base_xyz, goals)
+            return _euclidean_3d_goal_distance(query_xyz, vps)
+        distance_to = DIST_POINT
+    if distance_to == DIST_CHASSIS_VIEW_POINTS_HORIZONTAL:
+        vps = goal_viewpoint_positions(goals)
+        if vps:
+            return _horizontal_goal_distance(query_xyz, vps)
+        distance_to = DIST_POINT
+    if distance_to == DIST_POINT:
+        return goal_object_center_distance(query_xyz, goals)
     raise ValueError(f"Unsupported distance_to={distance_to!r}")
 # ################################
 
@@ -487,12 +520,13 @@ class ApexNavRangerBridge:
         """Read latest native A* selected_path from plan_diag jsonl (ROS planar)."""
         # ################################
         # C++ ExplorationManager flushPlanDiag → native_diag/native_plan_diag.jsonl
-        # Demo-only overlay; does not change planning.
+        # Demo overlay (purple path + red goal at path tail). Requires
+        # plan_diag_enable=true (default). Hold last non-empty path so the
+        # map panel does not blank between plan flushes.
         # ################################
         path = self.out / "native_diag" / "native_plan_diag.jsonl"
         if not path.is_file():
-            self.plan_ros = []
-            return []
+            return list(self.plan_ros)
         last = None
         try:
             for line in path.read_text().splitlines():
@@ -502,15 +536,15 @@ class ApexNavRangerBridge:
         except Exception:
             return list(self.plan_ros)
         if not last:
-            self.plan_ros = []
-            return []
+            return list(self.plan_ros)
         pts = last.get("selected_path") or []
         out: List[Tuple[float, float]] = []
         for p in pts:
             if isinstance(p, (list, tuple)) and len(p) >= 2:
                 out.append((float(p[0]), float(p[1])))
-        self.plan_ros = out
-        return out
+        if len(out) >= 2:
+            self.plan_ros = out
+        return list(self.plan_ros)
 
     def _publish_obs_bundle(self, rgb, depth, step_i: int) -> dict:
         assert self.env and self.ros_pub
@@ -1919,10 +1953,32 @@ class ApexNavRangerBridge:
                     )
 
                 # ################################
-                # Eval-only distances: VIEW_POINTS (Habitat default) + POINT diagnostic.
+                # Eval-only distances (do not feed planner / STOP):
+                # primary = camera optical → nearest VIEW_POINT (3D);
+                # chassis-horizontal VIEW_POINTS + object-center kept as diagnostics.
                 # ################################
-                dtg = goal_distance(self.env.base_xyz, ep["goals"], distance_to="VIEW_POINTS")
-                dtg_point = goal_distance(self.env.base_xyz, ep["goals"], distance_to="POINT")
+                cam_T_eval = self.env.camera_world_matrix()
+                cam_xyz_eval = np.array(
+                    [
+                        float(cam_T_eval.translation.x),
+                        float(cam_T_eval.translation.y),
+                        float(cam_T_eval.translation.z),
+                    ],
+                    dtype=np.float64,
+                )
+                dtg = goal_distance(
+                    cam_xyz_eval,
+                    ep["goals"],
+                    distance_to=DIST_CAMERA_VIEW_POINTS_3D,
+                )
+                dtg_chassis_h = goal_distance(
+                    self.env.base_xyz,
+                    ep["goals"],
+                    distance_to=DIST_CHASSIS_VIEW_POINTS_HORIZONTAL,
+                )
+                dtg_point = goal_distance(
+                    self.env.base_xyz, ep["goals"], distance_to=DIST_POINT
+                )
                 # ################################
                 rec = {
                     "step": step,
@@ -1955,8 +2011,15 @@ class ApexNavRangerBridge:
                     "itm_cosine": cosine,
                     "n_detections": len(score_list),
                     "distance_to_goal_eval_only": dtg,
+                    "distance_to_goal_camera_viewpoints_3d_eval_only": dtg,
+                    "distance_to_goal_chassis_viewpoints_horizontal_eval_only": dtg_chassis_h,
                     "distance_to_goal_point_eval_only": dtg_point,
-                    "distance_to_goal_mode": "VIEW_POINTS",
+                    "distance_to_goal_mode": DIST_CAMERA_VIEW_POINTS_3D,
+                    "camera_xyz_hab_eval": [
+                        float(cam_xyz_eval[0]),
+                        float(cam_xyz_eval[1]),
+                        float(cam_xyz_eval[2]),
+                    ],
                     "map_stats": map_stats,
                     # ################################
                     # Demo overlay audit: latest A* path used on map panel.
@@ -2078,11 +2141,11 @@ class ApexNavRangerBridge:
             "urdf": getattr(self.env, "urdf", args.urdf) if self.env else args.urdf,
             "footprint": getattr(self.env, "footprint", None) if self.env else None,
             # ################################
-            # Default planning: inf020_soft010; legacy018 only if explicitly overridden.
+            # Default planning: inf020_soft030; soft010/legacy018 only if explicitly overridden.
             # ################################
             "planner_inflation_note": (
-                "Default INFLATION_PROFILE=inf020_soft010 (hard 0.20 + soft R=0.10/w=2.0 + lock); "
-                "legacy018 is historical reproduce only. Planner success ≠ scaled footprint safety."
+                "Default INFLATION_PROFILE=inf020_soft030 (hard 0.20 + soft R=0.30/w=2.0 + lock); "
+                "inf020_soft010/legacy018 are historical reproduce only. Planner success ≠ scaled footprint safety."
             ),
             "online_grid_map": {
                 "has_data": map_ok,
@@ -2100,7 +2163,12 @@ class ApexNavRangerBridge:
             "first_plan_diag": self.first_plan_diag,
             "final_distance_to_goal_eval_only": final_dtg,
             "final_distance_to_goal_point_eval_only": final_dtg_point,
-            "distance_to_goal_mode": "VIEW_POINTS",
+            "final_distance_to_goal_chassis_viewpoints_horizontal_eval_only": (
+                self.log[-1].get("distance_to_goal_chassis_viewpoints_horizontal_eval_only")
+                if self.log
+                else None
+            ),
+            "distance_to_goal_mode": DIST_CAMERA_VIEW_POINTS_3D,
             "success_claimed": False,  # never claim ObjectNav success without official evaluator
             "near_goal": bool(final_dtg is not None and final_dtg <= args.success_distance),
             "locomanip_commit": LOCOMANIP_COMMIT,
@@ -2138,8 +2206,8 @@ class ApexNavRangerBridge:
                 "F0/expand affect map query only — do not exempt execution collision.",
                 "Initial EE uses ARM_APEXNAV_INIT FK (height × robot_scale); runtime sensor_pose is full SE3.",
                 "ROS Z = Habitat AGL (hab_y - floor_y) so ApexNav map_ros height filter [0.28,1.18] matches furniture.",
-                "Goal distance is eval-only (Habitat VIEW_POINTS; POINT kept as diagnostic) and not fed to planner.",
-                "near_goal is distance diagnostic only — never auto-STOP or success.",
+                "Goal distance eval-only: camera→nearest VIEW_POINT (3D); chassis-horizontal + POINT are diagnostics only.",
+                "near_goal uses camera–VIEW_POINT 3D ≤ success_distance; never auto-STOP or official ObjectNav success.",
                 "ACTION_FINISH means handler done, not that requested yaw/translation completed.",
                 "Blocked-recovery LOOK/opposite-turn after 3 identical full rejects; counts against budget.",
                 "Initial penetration → spawn_status=invalid_initial_penetration; do not enlarge contact tolerance.",

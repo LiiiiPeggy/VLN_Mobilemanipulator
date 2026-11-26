@@ -116,8 +116,8 @@ VLN_Mobilemanipulator/
 | 相机模式：`fixed_base` / `fixed_base_gimbal`（云台 LOOK 对照） / `legacy_arm_look`；**默认 LOOK=`LOOK_BACKEND=ppo_ee_rpy`**：teleop-PPO `ee_offset_rpy` 俯仰末端（Z hold），Habitat 只同步关节；`gimbal` 为旧对照 | `camera_modes.py`；`ppo_mujoco_raise.run_mujoco_ee_orient`；`--look_backend` |
 | 短预算批 `MAX_STEPS=50`（init26 后≈24 explore；`MAX_EXPLORE=100` 不生效）≠ 协议预算 `150/100`；禁止混算 | `SHORT_BUDGET_50.md`；`short50_corrected_stop_accounting.json` |
 | short50 合并 24-ep：SR_proxy **0/24**（any-phase STOP 校正后仍 0；2× far STOP）；taxonomy：invalid_spawn 4 / zero_trans stall 10 / moved_ok 10 | `ab24_combined_aggregate.json` |
-| 连续 3 次相同底盘全拒绝 → 本步改为 gimbal LOOK/反向转（计入预算）；`ACTION_FINISH`≠运动完成；`near_goal` 仅诊断 | `apexnav_real_episode.py` |
-| STOP/`SR_proxy` 按**任意 phase** 的 STOP 动作+VIEW_POINTS 距判定；勿用 `step<26`/`explore_planner` 过滤漏计 | batch 脚本；B `ingest_episode_run.py` |
+| 连续 3 次相同底盘全拒绝 → 本步改为 gimbal LOOK/反向转（计入预算）；`ACTION_FINISH`≠运动完成 | `apexnav_real_episode.py` |
+| STOP/`SR_proxy`：任意 phase 的 STOP + **dtg≤1.0**；dtg=相机→最近 VIEW_POINT **3D**；勿用 `step<26` 过滤漏计 | `ingest_episode_run.py`；`goal_distance` |
 | 与 Cursor B 共享 `vln-rangercr10` ROS：formal lock 存在时开发批拒绝启动（exit 75） | `run_exec_collision_baseline_batch.sh`；`budget_ab150/queue_after_formal.sh` |
 | ApexNav 需 ROS1 Noetic + catkin planner；Jammy 上可用 Focal Noetic 文件树 + focal `.so`，但 `cv_bridge`/py3.8 boost 与 conda py3.9 不兼容 → 适配层手写 Image | 同 status；`habitat2ros/habitat_publisher.py` |
 | MSGNav 需 `ollama` 包（即使 `use_ollama:false` 也会 import） | 已 bake 进 `:msgnav-deps` |
@@ -191,8 +191,10 @@ VLN_Mobilemanipulator/
 | 未映射时 plant/sofa/tv_monitor：`read_answer` 键缺失→`llm_warn`；YOLO 不命中 COCO → 全剧 `n_detections=0` → 永不 SEARCH（类 B，Hold 批 14/16） | `reports/discovery_label_map_20261108.md` |
 | 映射修复 24-ep：有效候选 10→24；SEARCH_BEST 8→13；SR_proxy 4→5；原 4 成功保留；+`dd4b_plant_5`；explore_no_goal 16→11 | `ab24_labelmap_20261108_220204` vs Hold |
 | 映射后主剩余：有检/近义簇不进 SEARCH_BEST，或 SEARCH 后 `stop_not_near`（勿再改映射阈值） | 同上；tv 簇常 label≠0 |
-| ObjectNav 评估距离须对齐 Habitat：`DistanceToGoal.distance_to=VIEW_POINTS`；仅用 `goal.position` 会把已到 viewpoint 的大件家具误判为 stop_not_near | `habitat/.../objectnav.yaml`；`goal_distance` |
-| SR_proxy 仍为 `planner_stop ∧ dtg≤1.0`；dtg 改为最近 viewpoint 水平距后 LabelMap 同轨迹 5→8/24（评估修正，非策略增益） | `reports/stop_near_viewpoint_20261109.md` |
+| ObjectNav `view_points`：每个 goal 一组**离散 agent 位姿**（xyz+四元数+iou），非单点最优、非连续范围；成功看最近视点。HY1 plant 单实例可达数百点 | episode.json；Habitat DistanceToGoal |
+| Ranger 评估距离（**默认**）：**相机光学 xyz → 最近 VIEW_POINT 三维欧氏距**；底盘水平/POINT 仅诊断。视点高度≈站立高，3D 含相机 AGL 差。官方 Habitat 仍是 agent→VIEW_POINTS | `goal_distance`；`DIST_CAMERA_VIEW_POINTS_3D` |
+| SR_proxy=`planner_stop ∧ dtg≤1.0`；dtg=相机–视点 3D；**不可直接比论文 SR**；`success_claimed` 恒 False | `ingest_episode_run.py`；`apexnav_real_episode` |
+| **在线 STOP 仍=ApexNav REACH（底盘/`next_pos_`）**，评估相机距不触发 STOP。若要「相机到视点附近再停」：推荐把视点反解为底盘停靠点 \(p_{vp}-R\cdot t_{cam}\)（目标偏置）；适配层强制 STOP 为次选。**待实现** | 设计结论 2026-11-26；未改 FSM |
 | `get_object` 的 `label_indices`：0=目标类，>0=similar_answer 辅助；`ndet>0`≠目标类候选；SEARCH 成功口径用 SEARCH_BEST | `get_object_utils.py`；LabelMap 分类表 |
 | STOP 判据：底盘距接近点 `next_pos_` < 0.20（soft 0.45）；与 eval viewpoint/中心无关 | `exploration_fsm.cpp` REACH_DISTANCE |
 | 改 `path_searching` ABI 相关接口后须同步重编 `exploration_manager`（仅编前者会 segfault=infra_fail） | `adapters/habitat_rangercr10/README.md` |
@@ -208,7 +210,7 @@ VLN_Mobilemanipulator/
 | Ranger 底盘碰撞半长/半宽 ≈0.651/0.435 m；外接 R≈0.783 m；ApexNav 默认膨胀 0.18 m **小于** 足迹 | MuJoCo `base_link_col`；`apexnav_rangercr10_frontier_inflation.md` |
 | Habitat→ROS odom 航向须 `hab_yaw+π`（与 `(-z,-x)` 位移一致）；否则恒差 180° 导致 TURN_LEFT 空转 | `hab_yaw_to_ros`；`ros_dynamic_publisher.py` |
 | ApexNav `optimistic=false` 时未知格进 ESDF 障碍；膨胀↑会进一步吃掉 free | `sdf_map2d.cpp`；足迹对照实验 |
-| 适配膨胀档：**默认 `inf020_soft010`（硬0.20+软R=0.10/w=2.0+lock）**；历史 `legacy018`(P0) / `halfwidth` / `halfwidth_softcost` / `mid030` / `ranger_safe`；`lock_obstacles_inflation` 解耦 Habitat radius | `overlay_*.yaml`；`run_integrate_defaults.env`；`sdf_map2d` lock |
+| 适配膨胀档：**默认 `inf020_soft030`（硬0.20+软R=0.30/w=2.0+lock）**；历史 `inf020_soft010` / `legacy018`(P0) / `halfwidth` / `halfwidth_softcost` / `mid030` / `ranger_safe`；`lock_obstacles_inflation` 解耦 Habitat radius | `overlay_*.yaml`；`run_integrate_defaults.env`；`sdf_map2d` lock |
 | 软代价距离场须用 inflate-only ESDF（`distance_buffer_obs_`），勿用含 UNKNOWN 的 `getDistance`（optimistic=false 会压 frontier） | `astar2d::edgeTraversalCost` |
 | 在线 ≥0.30 m 半径即可把开阔图 free 压到 ≈0–1；窄场景 yaw 修复后仍 `NO_PASSABLE` | `real_yawfix_open_mid030_*`；`real_yawfix_narrow_legacy018_*` |
 | HM3D val 100 景；ObjectNav-v2 val content 36 与场景对齐；MP3D 11 景可用但本轮未跑 | `scene_datasets/hm3d/val`；`objectnav/hm3d/v2/val/content` |
@@ -291,7 +293,9 @@ VLN_Mobilemanipulator/
 | 现象 | over-depth SEARCH 的 `next_pos` 常约 5 m；`OBJECT_HOLD_MAX_DIST=3.0` 首 miss 即 drop |
 | 开关 | ROS/`OBJECT_HOLD_MAX_DIST`（launch→exploration_node）；默认 **3.0**；候选 **8.0** |
 | 证据 | hy1：hold 8.0 时 keep×26，dtg 0.485→0.167，moved↑；仍无 REACH/STOP（阻断见 soft_reach） |
-| 注意 | `success_claimed` 恒 False；SR_proxy=`planner_stop∧near_goal`；eval VIEW_POINTS 不进在线 STOP |
+| 注意 | `success_claimed` 恒 False；SR_proxy=`planner_stop∧near_goal`；near_goal=相机–VIEW_POINT 3D；**不进在线 STOP** |
+| Demo 紫 A* / 红目标：`selected_path`（尾点=红目标）；**默认 `PLAN_DIAG_ENABLE=true`**；缺 `native_plan_diag.jsonl` 则无叠加（调试精简 launch 曾踩坑） | `exploration_rangercr10.launch`；`_refresh_astar_plan_ros` |
+| 机载 D455 相对底盘 XY≈0.65 m；检测用 EE；底盘到官方视点时相机易偏出→低检测。soft030 HY1：`planner_stop`、底盘水平 dtg≈0.015、`n_detections=0` | `hy1_defC_inf020_soft030_attach_20261126_205757_*` |
 
 ## soft REACH any-stuck（2026-11-23 stop_fix，yaw-aware 修正）
 

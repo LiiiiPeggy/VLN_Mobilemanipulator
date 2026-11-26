@@ -108,8 +108,9 @@
 - **子代理 Git**：不得另开并列 clone 作长期工作区；不得 push 公共远端（除非主会话明确要求）；不得动他人容器。
 - **在线仿真锁**：主会话统一调度。取得 `/home/ubuntu/locomani/_sim_host_run.lock` 后方可启动仿真；持有至相关运行结束再释放。等跑期间可并行分析已有日志。
 - **统一运行入口**：`adapters/habitat_rangercr10/scripts/run_apexnav_real_episode.sh`（可先 `source .../run_integrate_defaults.env`）。  
-  关键开关：`INFLATION_PROFILE`（**默认 `inf020_soft010`**|`legacy018`）、`ENABLE_NO_FRONTIER_LOOK`、`BLOCKED_RECOVERY_MODE`、`LOOK_BACKEND`（**默认 `ppo_ee_rpy`**|`gimbal`）、`EXEC_BACKEND`（**默认 `ppo_chassis`**|`kinematic`）、`REVERSE_PLANNING_MODE`（**默认 `C`**|`A`|`B`）、`PPO_LOOK_DIR`、`PPO_CHASSIS_DIR`、`PPO_RAISE_JSON`（默认 z040）、`CONTAINER`、`CATKIN_DEVEL_PREFIX`。 
-  **默认保持**：PPO LOOK/EXEC；**规划默认 `inf020_soft010`（硬膨胀 0.20 + soft R=0.10/w=2.0 + lock）+ `REVERSE_PLANNING_MODE=C`**。历史复现可显式设 `legacy018` / `A|B`；未经用户明确要求勿改回。
+  关键开关：`INFLATION_PROFILE`（**默认 `inf020_soft030`**|`inf020_soft010`|`legacy018`）、`ENABLE_NO_FRONTIER_LOOK`、`BLOCKED_RECOVERY_MODE`、`LOOK_BACKEND`（**默认 `ppo_ee_rpy`**|`gimbal`）、`EXEC_BACKEND`（**默认 `ppo_chassis`**|`kinematic`）、`REVERSE_PLANNING_MODE`（**默认 `C`**|`A`|`B`）、`PPO_LOOK_DIR`、`PPO_CHASSIS_DIR`、`PPO_RAISE_JSON`（默认 z040）、`CONTAINER`、`CATKIN_DEVEL_PREFIX`。 
+  **默认保持**：PPO LOOK/EXEC；**规划默认 `inf020_soft030`（硬膨胀 0.20 + soft R=0.30/w=2.0 + lock）+ `REVERSE_PLANNING_MODE=C`**；**`PLAN_DIAG_ENABLE=true`**（Demo 紫 A* + 红目标点依赖 `native_plan_diag.jsonl`）。  
+  **评估**：`near_goal`/SR_proxy 的 dtg=**相机→最近 VIEW_POINT 三维距**（不进在线 STOP）；官方 Habitat agent 距不可直接比。历史复现可显式设 `inf020_soft010` / `legacy018` / `A|B`；未经用户明确要求勿改回。
   **Demo 录制默认 2fps**（`apexnav_ranger_paper_demo.mp4` / `ffmpeg -framerate 2`）；**未经用户明确要求勿自动跑 7fps**。仅当用户点名要 7fps / 查轮胎运动时再用 `run_demo_7fps.sh`。  
   `run_apexnav_real_episode_agentA.sh` / `_agentB.sh` 及 reports 内一次性脚本仅作历史复现，不作新实验入口。
 - **容器**：整合评测用 `vln-rangercr10-integrate`（`docker-compose.integrate.yml`，挂载本仓根目录）。`vln-rangercr10-agentA-navinf` / `vln-rangercr10-agentB-nofrontier` 已退役，勿再启动。

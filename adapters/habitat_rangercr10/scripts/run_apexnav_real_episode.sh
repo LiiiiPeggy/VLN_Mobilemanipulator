@@ -48,10 +48,11 @@ LAUNCH_FILE="/workspace/VLN_Mobilemanipulator/adapters/habitat_rangercr10/launch
 #   halfwidth (P1): footprint half_w @ scale; lock; soft off.
 #   halfwidth_softcost (P2旧): half_w + soft R=0.40/w=2.0.
 # ################################
-#   inf020_soft010 (默认): hard 0.20 m + soft R=0.10 m / w=2.0; lock=true.
+#   inf020_soft030 (默认): hard 0.20 m + soft R=0.30 m / w=2.0; lock=true.
+#   inf020_soft010: historical soft R=0.10.
 # ################################
 #   mid030 / ranger_safe / legacy018: historical sensitivity profiles.
-PROFILE="${INFLATION_PROFILE:-inf020_soft010}"
+PROFILE="${INFLATION_PROFILE:-inf020_soft030}"
 case "$PROFILE" in
   ranger_safe)
     OVERLAY="/workspace/VLN_Mobilemanipulator/adapters/habitat_rangercr10/config/apexnav_rangercr10_overlay.yaml"
@@ -66,6 +67,9 @@ case "$PROFILE" in
     OVERLAY="/workspace/VLN_Mobilemanipulator/adapters/habitat_rangercr10/config/apexnav_rangercr10_overlay_halfwidth_softcost.yaml"
     ;;
   # ################################
+  inf020_soft030)
+    OVERLAY="/workspace/VLN_Mobilemanipulator/adapters/habitat_rangercr10/config/apexnav_rangercr10_overlay_inf020_soft030.yaml"
+    ;;
   inf020_soft010)
     OVERLAY="/workspace/VLN_Mobilemanipulator/adapters/habitat_rangercr10/config/apexnav_rangercr10_overlay_inf020_soft010.yaml"
     ;;
@@ -120,8 +124,14 @@ case "$PROFILE" in
     SOFT_COST_WEIGHT="${SOFT_COST_WEIGHT:-2.0}"
     ;;
   # ################################
-  # Current candidate: 0.20 m hard inflate + soft band 0.10 m (w=2.0).
+  # Default: 0.20 m hard inflate + soft band 0.30 m (w=2.0).
   # ################################
+  inf020_soft030)
+    OBSTACLES_INFLATION="${OBSTACLES_INFLATION:-0.20}"
+    LOCK_OBSTACLES_INFLATION="${LOCK_OBSTACLES_INFLATION:-true}"
+    SOFT_COST_RANGE_M="${SOFT_COST_RANGE_M:-0.30}"
+    SOFT_COST_WEIGHT="${SOFT_COST_WEIGHT:-2.0}"
+    ;;
   inf020_soft010)
     OBSTACLES_INFLATION="${OBSTACLES_INFLATION:-0.20}"
     LOCK_OBSTACLES_INFLATION="${LOCK_OBSTACLES_INFLATION:-true}"

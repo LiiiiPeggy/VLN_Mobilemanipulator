@@ -1326,3 +1326,57 @@
 **结论**：后续入口默认走 C + inf020_soft010；未经用户要求勿改回 A/legacy018。  
 
 **相关**：`AGENTS.md`；`PROGRESS.md`；`MEMORY.md`；本轮 HY1 run 目录
+
+---
+
+## 2026-11-26 near_goal 改为相机→VIEW_POINT 三维距（主会话）
+
+**模块**：habitat_rangercr10 评估距离  
+
+**问题**：底盘到视点水平距会在相机外伸 ~0.65 m 时产生假 near_goal / 低检测。  
+
+**操作**：默认 `distance_to_goal_mode=CAMERA_VIEW_POINTS_3D`（相机光学 xyz↔最近 view_point 欧氏 3D）；保留底盘水平与 POINT 诊断字段；不改规划/STOP。  
+
+**结论**：评估与官方 agent 距脱钩；在线 STOP 仍是 ApexNav 底盘 REACH。视点为离散 agent 位姿集（非单点/非连续范围）。  
+
+**相关**：`apexnav_real_episode.goal_distance`；`MEMORY.md`
+
+---
+
+## 2026-11-26 相机对齐 STOP 设计共识（未实现）
+
+**模块**：接近 / STOP  
+
+**问题**：用户希望「相机到视点附近即 STOP」，而非底盘踩到官方视点再停。  
+
+**结论（待实现）**：
+1. **推荐**：视点反解底盘停靠 \(p_{chassis}^*=p_{vp,xy}-R(yaw)t_{cam\_in\_base}\)，规划仍跟底盘目标。  
+2. 次选：适配层用相机–视点距强制 STOP（易与 FSM 抢控制）。  
+3. 不优先改 C++ REACH 参考点。  
+评估已用相机 3D dtg；在线策略未改。  
+
+**相关**：`PROGRESS.md` 下一步；`MEMORY.md`
+
+---
+
+## 2026-11-26 Demo 默认开启 A* 路径/目标叠加（主会话）
+
+**模块**：plan_diag / Demo map overlay  
+
+**问题**：soft030 attach 调试 launch 未开 plan_diag → 无 `native_plan_diag.jsonl`，地图无紫 A*/红目标。  
+
+**操作**：launch/`run_integrate_defaults.env` 默认 `PLAN_DIAG_ENABLE=true`；`_refresh_astar_plan_ros` 保持上一帧非空路径以免闪断。  
+
+**相关**：`exploration_rangercr10.launch`；`apexnav_real_episode.py`
+
+---
+
+## 2026-11-26 soft 代价半径 0.10→0.30（主会话）
+
+**模块**：habitat_rangercr10 默认膨胀档  
+
+**问题**：inf020_soft010 下 HY1 Demo 仍明显贴墙；用户要求加大软代价半径至 0.30 m。  
+
+**操作**：新增默认档 `inf020_soft030`（硬 0.20 + soft R=0.30/w=2.0 + lock）；保留 `inf020_soft010` 历史复现；同 HY1 spawn 重跑验收。  
+
+**相关**：`overlay_inf020_soft030.yaml`；`run_integrate_defaults.env`
